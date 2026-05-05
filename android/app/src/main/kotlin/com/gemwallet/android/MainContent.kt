@@ -1,7 +1,10 @@
 package com.gemwallet.android
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Modifier
 import com.gemwallet.android.model.AuthState
 import com.gemwallet.android.ui.WalletApp
 import com.gemwallet.android.ui.theme.WalletTheme
@@ -24,6 +27,7 @@ internal fun MainContent(
     val requiresAuthPrompt = state.initialAuth == AuthState.Required || state.authState == AuthState.Required
     val isWalletUnlocked = state.initialAuth == AuthState.Success
     val isEnrollmentRequired = state.initialAuth == AuthState.Required && systemAuthEnrollmentMissing
+    val unlockedPendingRoute = pendingRoute.takeIf { isWalletUnlocked }
     val walletConnectOverlay = rememberWalletConnectOverlay(walletConnectViewModel)
 
     LaunchedEffect(requiresAuthPrompt, canAttemptSystemAuth, state.authPromptRequest) {
@@ -39,16 +43,21 @@ internal fun MainContent(
             }
         }
 
-        when {
-            isWalletUnlocked -> WalletApp(
-                pendingRoute = pendingRoute,
-                onIntentConsumed = onIntentConsumed,
-                walletConnectOverlay = walletConnectOverlay,
-            )
-            isEnrollmentRequired -> SystemAuthEnrollmentRequired(
-                onOpenSettings = onOpenSystemAuthSettings,
-            )
-            else -> LockedSplash()
+        Box(modifier = Modifier.fillMaxSize()) {
+            if (state.hasUnlockedApp) {
+                WalletApp(
+                    pendingRoute = unlockedPendingRoute,
+                    onIntentConsumed = onIntentConsumed,
+                    walletConnectOverlay = walletConnectOverlay,
+                )
+            }
+
+            when {
+                isEnrollmentRequired -> SystemAuthEnrollmentRequired(
+                    onOpenSettings = onOpenSystemAuthSettings,
+                )
+                !isWalletUnlocked -> LockedSplash()
+            }
         }
 
         WalletConnectPairingToast(

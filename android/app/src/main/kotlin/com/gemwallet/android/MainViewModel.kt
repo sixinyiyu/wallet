@@ -16,7 +16,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicLong
@@ -31,12 +31,15 @@ class MainViewModel @Inject constructor(
     private val notificationNavigation: NotificationNavigation,
 ) : ViewModel() {
 
+    private val isInitialAuthRequired = userConfig.authRequired()
+
     private val _pendingNavigation = MutableStateFlow<PendingNavigation?>(null)
     internal val pendingNavigation = _pendingNavigation.asStateFlow()
 
     private val _uiState = MutableStateFlow(
         MainUIState(
-            initialAuth = if (userConfig.authRequired()) AuthState.Required else AuthState.Success
+            initialAuth = if (isInitialAuthRequired) AuthState.Required else AuthState.Success,
+            hasUnlockedApp = !isInitialAuthRequired,
         )
     )
 
@@ -85,7 +88,10 @@ class MainViewModel @Inject constructor(
             if (current.initialAuth == AuthState.Success) {
                 current
             } else {
-                current.copy(initialAuth = authState)
+                current.copy(
+                    initialAuth = authState,
+                    hasUnlockedApp = current.hasUnlockedApp || authState == AuthState.Success,
+                )
             }
         }
     }
@@ -128,10 +134,21 @@ class MainViewModel @Inject constructor(
             if (!userConfig.authRequired()) return@launch
 
             val interval = SystemClock.elapsedRealtime() - pauseTime.get()
-            val lockInterval = (userConfig.getLockInterval().firstOrNull() ?: 0) * DateUtils.MINUTE_IN_MILLIS
+            val lockInterval = userConfig.getLockInterval().first() * DateUtils.MINUTE_IN_MILLIS
             if (interval > lockInterval) {
-                _uiState.update { it.copy(initialAuth = AuthState.Required) }
+                relock()
             }
+        }
+    }
+
+    internal fun relock() {
+        activeAuthRequestId.set(NoActiveAuthRequestId)
+        _uiState.update { current ->
+            current.copy(
+                initialAuth = AuthState.Required,
+                authState = null,
+                authPromptRequest = current.authPromptRequest + 1,
+            )
         }
     }
 
@@ -214,6 +231,7 @@ class MainViewModel @Inject constructor(
         val initialAuth: AuthState = AuthState.Required,
         val authState: AuthState? = null,
         val authPromptRequest: Int = 0,
+        val hasUnlockedApp: Boolean = false,
         val isWalletConnectPairingToastVisible: Boolean = false,
         val walletConnectError: String? = null,
     )
