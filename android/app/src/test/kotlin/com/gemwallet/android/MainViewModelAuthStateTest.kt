@@ -91,7 +91,8 @@ class MainViewModelAuthStateTest {
             bridgesRepository = mockk<BridgesRepository>(relaxed = true),
             syncService = mockk<SyncService>(relaxed = true),
             checkAccountsService = mockk<CheckAccountsService>(relaxed = true),
-            notificationNavigation = mockk<NotificationNavigation>(relaxed = true),
+            lockTimer = mockk<LockTimer>(relaxed = true),
+            pendingNavigationCoordinator = mockk<PendingNavigationCoordinator>(relaxed = true),
         )
     }
 }

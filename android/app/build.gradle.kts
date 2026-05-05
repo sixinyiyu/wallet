@@ -320,6 +320,7 @@ dependencies {
     testImplementation(libs.androidx.junit)
     testImplementation(libs.androidx.junit.runner)
     testImplementation(libs.androidx.junit.ktx)
+    testImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.turbine)
     androidTestImplementation(libs.mockk.android)
     androidTestImplementation(libs.mockk.agent)

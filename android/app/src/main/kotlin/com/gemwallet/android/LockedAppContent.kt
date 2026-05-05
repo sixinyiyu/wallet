@@ -8,11 +8,20 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.gemwallet.android.ui.R
 import com.gemwallet.android.ui.components.empty.EmptyAction
 import com.gemwallet.android.ui.components.empty.EmptyStateView
+
+private fun Modifier.consumeAllPointerEvents(): Modifier = pointerInput(Unit) {
+    awaitPointerEventScope {
+        while (true) {
+            awaitPointerEvent().changes.forEach { it.consume() }
+        }
+    }
+}
 
 @Composable
 internal fun LockedSplash() {
@@ -20,6 +29,7 @@ internal fun LockedSplash() {
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface)
+            .consumeAllPointerEvents()
     ) {
         Image(
             modifier = Modifier
@@ -37,7 +47,8 @@ internal fun SystemAuthEnrollmentRequired(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface),
+            .background(MaterialTheme.colorScheme.surface)
+            .consumeAllPointerEvents(),
     ) {
         EmptyStateView(
             modifier = Modifier.align(Alignment.Center),
