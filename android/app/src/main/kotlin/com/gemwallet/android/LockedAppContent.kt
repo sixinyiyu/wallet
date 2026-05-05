@@ -11,7 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import com.gemwallet.android.ui.R
+import com.gemwallet.android.R as AppR
+import com.gemwallet.android.ui.R as UiR
 import com.gemwallet.android.ui.components.empty.EmptyAction
 import com.gemwallet.android.ui.components.empty.EmptyStateView
 
@@ -34,7 +35,7 @@ internal fun LockedSplash() {
         Image(
             modifier = Modifier
                 .align(Alignment.Center),
-            painter = painterResource(id = R.drawable.ic_splash_screen),
+            painter = painterResource(id = AppR.drawable.ic_splash_screen),
             contentDescription = null,
         )
     }
@@ -52,10 +53,10 @@ internal fun SystemAuthEnrollmentRequired(
     ) {
         EmptyStateView(
             modifier = Modifier.align(Alignment.Center),
-            title = stringResource(R.string.settings_security_authentication),
+            title = stringResource(UiR.string.settings_security_authentication),
             buttons = listOf(
                 EmptyAction(
-                    title = stringResource(R.string.common_open_settings),
+                    title = stringResource(UiR.string.common_open_settings),
                     onClick = onOpenSettings,
                 )
             ),

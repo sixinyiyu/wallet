@@ -4,6 +4,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.gemwallet.android.model.AuthState
 import com.gemwallet.android.ui.WalletApp
@@ -29,6 +33,13 @@ internal fun MainContent(
     val isEnrollmentRequired = state.initialAuth == AuthState.Required && systemAuthEnrollmentMissing
     val unlockedPendingRoute = pendingRoute.takeIf { isWalletUnlocked }
     val walletConnectOverlay = rememberWalletConnectOverlay(walletConnectViewModel)
+    var isWalletContentReady by remember { mutableStateOf(state.hasUnlockedApp) }
+    val onWalletContentReady: () -> Unit = remember { { isWalletContentReady = true } }
+    val shouldShowLockedSplash = !isWalletUnlocked || !isWalletContentReady
+
+    LaunchedEffect(isWalletUnlocked) {
+        if (!isWalletUnlocked) isWalletContentReady = false
+    }
 
     LaunchedEffect(requiresAuthPrompt, canAttemptSystemAuth, state.authPromptRequest) {
         if (requiresAuthPrompt && canAttemptSystemAuth) {
@@ -48,6 +59,7 @@ internal fun MainContent(
                 WalletApp(
                     pendingRoute = unlockedPendingRoute,
                     onIntentConsumed = onIntentConsumed,
+                    onContentReady = onWalletContentReady,
                     walletConnectOverlay = walletConnectOverlay,
                 )
             }
@@ -56,7 +68,7 @@ internal fun MainContent(
                 isEnrollmentRequired -> SystemAuthEnrollmentRequired(
                     onOpenSettings = onOpenSystemAuthSettings,
                 )
-                !isWalletUnlocked -> LockedSplash()
+                shouldShowLockedSplash -> LockedSplash()
             }
         }
 

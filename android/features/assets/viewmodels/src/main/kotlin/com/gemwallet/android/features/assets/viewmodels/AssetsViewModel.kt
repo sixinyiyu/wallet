@@ -54,10 +54,7 @@ class AssetsViewModel @Inject constructor(
     private val assetGroups = getActiveAssetsInfo.getAssetsInfo(isHideBalances)
         .map { items ->
             val (pinned, unpinned) = items.partition { it.pinned }
-            AssetGroups(
-                pinned = pinned,
-                unpinned = unpinned,
-            )
+            AssetGroups(pinned = pinned, unpinned = unpinned)
         }
         .stateIn(viewModelScope, SharingStarted.Eagerly, AssetGroups())
 

@@ -62,6 +62,7 @@ import kotlinx.coroutines.launch
 fun MainScreen(
     navigator: WalletNavigator,
     currentTab: MutableState<String>,
+    onWalletContentReady: () -> Unit = {},
     viewModel: MainScreenViewModel = hiltViewModel()
 ) {
     val pendingCount by viewModel.pendingTxCount.collectAsStateWithLifecycle()
@@ -216,6 +217,7 @@ fun MainScreen(
                             onBuyClick = navigator::openBuy,
                             onSwapClick = navigator::openSwap,
                             onAssetClick = navigator::openAsset,
+                            onContentReady = onWalletContentReady,
                             listState = assetsListState,
                             viewModel = assetsViewModel,
                         )
