@@ -235,7 +235,6 @@ dependencies {
     implementation(project(":features:earn:delegation:presents"))
     implementation(project(":features:earn:delegation:viewmodels"))
     implementation(project(":features:settings:aboutus:presents"))
-    implementation(project(":features:settings:aboutus:viewmodels"))
     implementation(project(":features:settings:currency:presents"))
     implementation(project(":features:settings:currency:viewmodels"))
     implementation(project(":features:settings:develop:presents"))
@@ -265,7 +264,7 @@ dependencies {
 
     implementation(libs.tink)
 
-    implementation(libs.hilt.navigation.compose)
+    implementation(libs.hilt.lifecycle.viewmodel.compose)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
@@ -273,8 +272,8 @@ dependencies {
     implementation(libs.lifecycle.runtime.compose)
     implementation(libs.lifecycle.viewmodel.savedstate)
 
-    implementation(libs.compose.navigation)
-    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.navigation3.runtime)
+    implementation(libs.navigation3.ui)
 
     implementation(libs.widgets)
     implementation(libs.widgets.material3)
