@@ -28,10 +28,10 @@ fun PerpetualPositionNavScreen(
         onOpenPosition = { direction ->
             val currentPerpetual = perpetual ?: return@PerpetualPositionScene
             onOpenPosition(
-                AmountParams.buildPerpetualOpenPosition(
-                    currentPerpetual.asset.id,
-                    currentPerpetual.id,
-                    direction,
+                AmountParams.Perpetual(
+                    assetId = currentPerpetual.asset.id,
+                    perpetualId = currentPerpetual.id,
+                    direction = direction,
                 )
             )
         }

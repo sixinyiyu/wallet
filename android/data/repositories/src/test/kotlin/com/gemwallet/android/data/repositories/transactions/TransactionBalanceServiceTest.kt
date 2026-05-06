@@ -10,7 +10,6 @@ import com.gemwallet.android.testkit.mockAssetInfo
 import com.gemwallet.android.testkit.mockDelegation
 import com.gemwallet.android.testkit.mockDelegationValidator
 import com.gemwallet.android.testkit.mockAssetMonad
-import com.wallet.core.primitives.TransactionType
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -43,7 +42,7 @@ class TransactionBalanceServiceTest {
         )
         coEvery { stakeRepository.getRewards(asset.id, "wallet-address") } returns rewards
 
-        val amountParams = AmountParams.buildStake(asset.id, TransactionType.StakeRewards)
+        val amountParams = AmountParams.Stake.Rewards(asset.id)
         val confirmParams = ConfirmParams.Builder(
             asset = asset,
             from = requireNotNull(assetInfo.owner),

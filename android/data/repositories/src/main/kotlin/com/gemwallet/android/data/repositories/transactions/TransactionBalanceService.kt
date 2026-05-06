@@ -59,7 +59,7 @@ class TransactionBalanceService @Inject constructor(
         resource: Resource? = null,
     ): BigInteger {
         return assetInfo.balance(
-            txType = params.txType,
+            txType = params.transactionType,
             context = getContext(assetInfo, params, delegation, resource),
         )
     }
@@ -70,7 +70,7 @@ class TransactionBalanceService @Inject constructor(
         delegation: Delegation? = null,
         resource: Resource? = null,
     ): TransactionBalanceContext {
-        return when (params.txType) {
+        return when (params.transactionType) {
             TransactionType.StakeRewards -> TransactionBalanceContext(
                 rewardsBalance = delegation?.rewardsBalance() ?: getRewardsBalance(assetInfo),
             )

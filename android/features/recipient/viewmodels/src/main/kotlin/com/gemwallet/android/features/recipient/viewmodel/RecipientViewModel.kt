@@ -162,7 +162,7 @@ class RecipientViewModel @Inject constructor(
         when (type) {
             is RecipientType.Nft -> onNftConfirm(type.nftAsset, destination, confirmAction)
             is RecipientType.Asset -> amountAction(
-                AmountParams.buildTransfer(type.assetInfo.id(), destination, memo.value)
+                AmountParams.Transfer(type.assetInfo.id(), destination, memo.value)
             )
         }
     }

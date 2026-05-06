@@ -36,17 +36,14 @@ internal fun LazyListScope.stakeActions(
             StakeAction.Unfreeze -> R.string.transfer_unfreeze_title
         }
         val onClick = when (item) {
-            StakeAction.Stake,
-            StakeAction.Freeze,
+            StakeAction.Stake -> {
+                { amountAction(AmountParams.Stake.Delegate(assetId)) }
+            }
+            StakeAction.Freeze -> {
+                { amountAction(AmountParams.Freeze(assetId, AmountParams.Freeze.Direction.Freeze)) }
+            }
             StakeAction.Unfreeze -> {
-                {
-                    amountAction(
-                        AmountParams.Companion.buildStake(
-                            assetId = assetId,
-                            txType = item.transactionType,
-                        )
-                    )
-                }
+                { amountAction(AmountParams.Freeze(assetId, AmountParams.Freeze.Direction.Unfreeze)) }
             }
             is StakeAction.Rewards -> onRewards
         }
