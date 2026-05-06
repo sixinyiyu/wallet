@@ -1,0 +1,53 @@
+package com.gemwallet.android.features.transfer_amount.viewmodels.providers
+
+import com.gemwallet.android.application.perpetual.coordinators.GetPerpetual
+import com.gemwallet.android.application.perpetual.coordinators.GetPerpetualBalance
+import com.gemwallet.android.data.repositories.assets.AssetsRepository
+import com.gemwallet.android.data.repositories.session.SessionRepository
+import com.gemwallet.android.data.repositories.stake.StakeRepository
+import com.gemwallet.android.data.repositories.tokens.TokensRepository
+import com.gemwallet.android.data.repositories.transactions.TransactionBalanceService
+import com.gemwallet.android.model.AmountParams
+import kotlinx.coroutines.CoroutineScope
+import javax.inject.Inject
+
+class AmountProviderFactory @Inject constructor(
+    private val assetsRepository: AssetsRepository,
+    private val stakeRepository: StakeRepository,
+    private val transactionBalanceService: TransactionBalanceService,
+    private val getPerpetual: GetPerpetual,
+    private val getPerpetualBalance: GetPerpetualBalance,
+    private val sessionRepository: SessionRepository,
+    private val tokenRepository: TokensRepository,
+) {
+    fun create(params: AmountParams, scope: CoroutineScope): AmountDataProvider = when (params) {
+        is AmountParams.Transfer -> AmountTransferProvider(
+            params = params,
+            assetsRepository = assetsRepository,
+            transactionBalanceService = transactionBalanceService,
+            scope = scope,
+        )
+        is AmountParams.Stake -> AmountStakeProvider(
+            params = params,
+            assetsRepository = assetsRepository,
+            stakeRepository = stakeRepository,
+            transactionBalanceService = transactionBalanceService,
+            scope = scope,
+        )
+        is AmountParams.Freeze -> AmountFreezeProvider(
+            params = params,
+            assetsRepository = assetsRepository,
+            transactionBalanceService = transactionBalanceService,
+            scope = scope,
+        )
+        is AmountParams.Perpetual -> AmountPerpetualProvider(
+            params = params,
+            assetsRepository = assetsRepository,
+            tokenRepository = tokenRepository,
+            sessionRepository = sessionRepository,
+            getPerpetual = getPerpetual,
+            getPerpetualBalance = getPerpetualBalance,
+            scope = scope,
+        )
+    }
+}
