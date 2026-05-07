@@ -3,6 +3,7 @@ package com.gemwallet.android.features.transfer_amount.viewmodels.providers
 import com.gemwallet.android.data.repositories.assets.AssetsRepository
 import com.gemwallet.android.data.repositories.stake.StakeRepository
 import com.gemwallet.android.data.repositories.transactions.TransactionBalanceService
+import com.gemwallet.android.domains.stake.hasRewards
 import com.gemwallet.android.ext.byChain
 import com.gemwallet.android.ext.freezed
 import com.gemwallet.android.features.transfer_amount.models.AmountError
@@ -81,12 +82,14 @@ class AmountStakeProvider(
                 stakeRepository.getDelegation(validatorId = params.validatorId, delegationId = params.delegationId)
             is AmountParams.Stake.Withdraw ->
                 stakeRepository.getDelegation(validatorId = "", delegationId = params.delegationId)
-            is AmountParams.Stake.Rewards -> assetInfo.filterNotNull().flatMapLatest { current ->
-                val owner = current.owner?.address ?: return@flatMapLatest flowOf<Delegation?>(null)
-                stakeRepository.getDelegations(current.asset.id, owner).mapLatest { delegations ->
-                    val withRewards = delegations.filter { it.base.rewards.toBigIntegerOrNull()?.signum() == 1 }
-                    withRewards.firstOrNull { it.validator.id == selectedValidatorId.value }
-                        ?: withRewards.firstOrNull()
+            is AmountParams.Stake.Rewards -> {
+                val rewardsList = assetInfo.filterNotNull().flatMapLatest { current ->
+                    val owner = current.owner?.address ?: return@flatMapLatest flowOf<List<Delegation>>(emptyList())
+                    stakeRepository.getDelegations(current.asset.id, owner)
+                }
+                combine(rewardsList, selectedValidatorId) { delegations, pickedId ->
+                    val withRewards = delegations.filter { it.hasRewards() }
+                    withRewards.firstOrNull { it.validator.id == pickedId } ?: withRewards.firstOrNull()
                 }
             }
             else -> flowOf(null)
