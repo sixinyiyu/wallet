@@ -14,6 +14,8 @@ import io.mockk.mockk
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -43,6 +45,7 @@ class AmountFreezeProviderTest {
     @Test
     fun `freeze builds Stake Freeze ConfirmParams with selected resource`() = runBlocking {
         val provider = makeProvider(AmountParams.Freeze.Direction.Freeze)
+        provider.assetInfo.filterNotNull().first()
         provider.setResource(Resource.Bandwidth)
         val confirm = provider.buildConfirmParams(Crypto(BigInteger.ONE), isMax = false)
         assertTrue(confirm is ConfirmParams.Stake.Freeze)
@@ -52,6 +55,7 @@ class AmountFreezeProviderTest {
     @Test
     fun `unfreeze builds Stake Unfreeze ConfirmParams`() = runBlocking {
         val provider = makeProvider(AmountParams.Freeze.Direction.Unfreeze)
+        provider.assetInfo.filterNotNull().first()
         provider.setResource(Resource.Energy)
         val confirm = provider.buildConfirmParams(Crypto(BigInteger.ONE), isMax = false)
         assertTrue(confirm is ConfirmParams.Stake.Unfreeze)

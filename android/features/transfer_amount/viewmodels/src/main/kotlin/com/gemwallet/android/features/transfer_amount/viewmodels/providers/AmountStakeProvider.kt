@@ -53,19 +53,27 @@ class AmountStakeProvider(
         is AmountParams.Stake.Rewards -> false
     }
 
-    override val minimumValue: BigInteger = when (params) {
-        is AmountParams.Stake.Delegate,
-        is AmountParams.Stake.Redelegate ->
-            BigInteger.valueOf(Config().getStakeConfig(params.assetId.chain.string).minAmount.toLong())
-        else -> BigInteger.ZERO
-    }
+    override val minimumValue: BigInteger
+        get() = when (params) {
+            is AmountParams.Stake.Delegate,
+            is AmountParams.Stake.Redelegate ->
+                BigInteger.valueOf(Config().getStakeConfig(params.assetId.chain.string).minAmount.toLong())
+            is AmountParams.Stake.Undelegate,
+            is AmountParams.Stake.Withdraw,
+            is AmountParams.Stake.Rewards -> BigInteger.ZERO
+        }
 
-    override val reserveForFee: BigInteger = run {
-        if (params !is AmountParams.Stake.Delegate) return@run BigInteger.ZERO
-        val stakeChain = StakeChain.byChain(params.assetId.chain)
-        if (stakeChain?.freezed() == true) return@run BigInteger.ZERO
-        BigInteger.valueOf(Config().getStakeConfig(params.assetId.chain.string).reservedForFees.toLong())
-    }
+    override val reserveForFee: BigInteger
+        get() = when (params) {
+            is AmountParams.Stake.Delegate -> when (StakeChain.byChain(params.assetId.chain)?.freezed()) {
+                true -> BigInteger.ZERO
+                else -> BigInteger.valueOf(Config().getStakeConfig(params.assetId.chain.string).reservedForFees.toLong())
+            }
+            is AmountParams.Stake.Undelegate,
+            is AmountParams.Stake.Redelegate,
+            is AmountParams.Stake.Withdraw,
+            is AmountParams.Stake.Rewards -> BigInteger.ZERO
+        }
 
     override val assetInfo: StateFlow<AssetInfo?> =
         assetsRepository.getAssetInfo(params.assetId)

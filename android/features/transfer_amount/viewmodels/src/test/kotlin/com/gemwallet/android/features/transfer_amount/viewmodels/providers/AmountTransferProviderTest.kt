@@ -15,6 +15,8 @@ import io.mockk.mockk
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -68,6 +70,7 @@ class AmountTransferProviderTest {
     @Test
     fun `buildConfirmParams produces TransferParams with destination and memo`() = runBlocking {
         val provider = makeProvider()
+        provider.assetInfo.filterNotNull().first()
         val confirm = provider.buildConfirmParams(amount = Crypto(BigInteger.ONE), isMax = false)
         assertTrue(confirm is ConfirmParams.TransferParams)
         confirm as ConfirmParams.TransferParams

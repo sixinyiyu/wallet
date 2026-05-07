@@ -36,17 +36,19 @@ class AmountFreezeProvider(
     override val canChangeValue: Boolean = true
     override val canSwitchInputType: Boolean = false
 
-    override val minimumValue: BigInteger = when (params.direction) {
-        AmountParams.Freeze.Direction.Freeze ->
-            BigInteger.valueOf(Config().getStakeConfig(params.assetId.chain.string).minAmount.toLong())
-        AmountParams.Freeze.Direction.Unfreeze -> BigInteger.ZERO
-    }
+    override val minimumValue: BigInteger
+        get() = when (params.direction) {
+            AmountParams.Freeze.Direction.Freeze ->
+                BigInteger.valueOf(Config().getStakeConfig(params.assetId.chain.string).minAmount.toLong())
+            AmountParams.Freeze.Direction.Unfreeze -> BigInteger.ZERO
+        }
 
-    override val reserveForFee: BigInteger = when (params.direction) {
-        AmountParams.Freeze.Direction.Freeze ->
-            BigInteger.valueOf(Config().getStakeConfig(params.assetId.chain.string).reservedForFees.toLong())
-        AmountParams.Freeze.Direction.Unfreeze -> BigInteger.ZERO
-    }
+    override val reserveForFee: BigInteger
+        get() = when (params.direction) {
+            AmountParams.Freeze.Direction.Freeze ->
+                BigInteger.valueOf(Config().getStakeConfig(params.assetId.chain.string).reservedForFees.toLong())
+            AmountParams.Freeze.Direction.Unfreeze -> BigInteger.ZERO
+        }
 
     private val selectedResource = MutableStateFlow(Resource.Bandwidth)
     val resource: StateFlow<Resource> = selectedResource.asStateFlow()

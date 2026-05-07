@@ -17,6 +17,8 @@ import io.mockk.mockk
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -33,6 +35,7 @@ class AmountStakeProviderTest {
     private val delegation = mockDelegation(
         assetId = asset.id,
         balance = "100",
+        rewards = "5",
         validatorId = "v1",
         delegationId = "d1",
     )
@@ -61,6 +64,7 @@ class AmountStakeProviderTest {
     @Test
     fun `delegate builds DelegateParams`() = runBlocking {
         val provider = makeProvider(AmountParams.Stake.Delegate(asset.id, validatorId = "v1"))
+        provider.validatorState.filterNotNull().first()
         val confirm = provider.buildConfirmParams(Crypto(BigInteger.ONE), isMax = false)
         assertTrue(confirm is ConfirmParams.Stake.DelegateParams)
     }
@@ -70,6 +74,7 @@ class AmountStakeProviderTest {
         coEvery { stakeRepository.getStakeValidator(any(), any()) } returns null
         every { stakeRepository.getDelegation(any(), any()) } returns flowOf(null)
         val provider = makeProvider(AmountParams.Stake.Delegate(asset.id, validatorId = null))
+        provider.assetInfo.filterNotNull().first()
         assertThrows(AmountError.NoValidatorSelected::class.java) {
             provider.buildConfirmParams(Crypto(BigInteger.ONE), isMax = false)
         }
@@ -79,6 +84,7 @@ class AmountStakeProviderTest {
     @Test
     fun `undelegate builds UndelegateParams`() = runBlocking {
         val provider = makeProvider(AmountParams.Stake.Undelegate(asset.id, delegationId = "d1"))
+        provider.assetInfo.filterNotNull().first()
         val confirm = provider.buildConfirmParams(Crypto(BigInteger.ONE), isMax = false)
         assertTrue(confirm is ConfirmParams.Stake.UndelegateParams)
     }
@@ -86,6 +92,7 @@ class AmountStakeProviderTest {
     @Test
     fun `redelegate builds RedelegateParams`() = runBlocking {
         val provider = makeProvider(AmountParams.Stake.Redelegate(asset.id, "v1", "d1"))
+        provider.validatorState.filterNotNull().first()
         val confirm = provider.buildConfirmParams(Crypto(BigInteger.ONE), isMax = false)
         assertTrue(confirm is ConfirmParams.Stake.RedelegateParams)
     }
@@ -93,6 +100,7 @@ class AmountStakeProviderTest {
     @Test
     fun `withdraw builds WithdrawParams`() = runBlocking {
         val provider = makeProvider(AmountParams.Stake.Withdraw(asset.id, "d1"))
+        provider.assetInfo.filterNotNull().first()
         val confirm = provider.buildConfirmParams(Crypto(BigInteger.ONE), isMax = false)
         assertTrue(confirm is ConfirmParams.Stake.WithdrawParams)
     }
@@ -100,6 +108,7 @@ class AmountStakeProviderTest {
     @Test
     fun `rewards builds RewardsParams`() = runBlocking {
         val provider = makeProvider(AmountParams.Stake.Rewards(asset.id))
+        provider.validatorState.filterNotNull().first()
         val confirm = provider.buildConfirmParams(Crypto(BigInteger.ONE), isMax = false)
         assertTrue(confirm is ConfirmParams.Stake.RewardsParams)
     }
