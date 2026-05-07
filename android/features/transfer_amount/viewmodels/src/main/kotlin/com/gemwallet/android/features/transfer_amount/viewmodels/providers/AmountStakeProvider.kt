@@ -105,14 +105,22 @@ class AmountStakeProvider(
         source.flowOn(Dispatchers.IO).stateIn(scope, SharingStarted.Eagerly, null)
     }
 
+    private val recommendedValidator: StateFlow<DelegationValidator?> = when (params) {
+        is AmountParams.Stake.Delegate,
+        is AmountParams.Stake.Redelegate -> stakeRepository.getRecommended(params.assetId.chain)
+            .flowOn(Dispatchers.IO)
+            .stateIn(scope, SharingStarted.Eagerly, null)
+        else -> MutableStateFlow(null)
+    }
+
     val validatorState: StateFlow<DelegationValidator?> =
-        combine(assetInfo, delegation, selectedValidatorId) { current, currentDelegation, pickedId ->
+        combine(assetInfo, delegation, selectedValidatorId, recommendedValidator) { current, currentDelegation, pickedId, recommended ->
             val byId = if (current != null && pickedId != null) {
                 stakeRepository.getStakeValidator(current.asset.id, pickedId)
             } else {
                 null
             }
-            byId ?: currentDelegation?.validator
+            byId ?: currentDelegation?.validator ?: recommended
         }.flowOn(Dispatchers.IO).stateIn(scope, SharingStarted.Eagerly, null)
 
     val validatorSource: StateFlow<ValidatorsSource?> = assetInfo.mapLatest { current ->
