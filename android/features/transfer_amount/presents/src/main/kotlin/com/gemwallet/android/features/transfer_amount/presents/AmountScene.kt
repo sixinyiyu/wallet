@@ -49,6 +49,7 @@ fun AmountScene(
     currency: Currency,
     canSwitchInputType: Boolean,
     readOnly: Boolean,
+    showsAssetBalance: Boolean,
     error: AmountError,
     equivalent: String,
     availableBalance: String,
@@ -102,12 +103,14 @@ fun AmountScene(
                     onNext = onNext,
                 )
             }
-            item {
-                PropertyAssetInfoItem(
-                    asset = asset,
-                    availableAmount = availableBalance,
-                    onMaxAmount = onMaxAmount,
-                )
+            if (showsAssetBalance) {
+                item {
+                    PropertyAssetInfoItem(
+                        asset = asset,
+                        availableAmount = availableBalance,
+                        onMaxAmount = onMaxAmount,
+                    )
+                }
             }
             item { additionParams?.invoke() }
             reserveForFee?.let {

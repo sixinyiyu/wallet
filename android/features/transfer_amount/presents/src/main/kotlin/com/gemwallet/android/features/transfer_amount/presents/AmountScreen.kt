@@ -70,6 +70,7 @@ fun AmountScreen(
                 currency = assetInfo!!.price?.currency ?: Currency.USD,
                 canSwitchInputType = provider.canSwitchInputType,
                 readOnly = !provider.canChangeValue,
+                showsAssetBalance = provider.showsAssetBalance,
                 error = error,
                 equivalent = equivalent,
                 availableBalance = available,

@@ -53,6 +53,11 @@ class AmountStakeProvider(
         is AmountParams.Stake.Rewards -> false
     }
 
+    override val showsAssetBalance: Boolean = when (params) {
+        is AmountParams.Stake.Rewards -> true
+        else -> canChangeValue
+    }
+
     override val minimumValue: BigInteger
         get() = when (params) {
             is AmountParams.Stake.Delegate,
