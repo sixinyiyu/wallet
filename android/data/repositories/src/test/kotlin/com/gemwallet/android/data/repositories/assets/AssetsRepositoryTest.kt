@@ -37,6 +37,7 @@ import com.gemwallet.android.testkit.mockAssetSolanaUSDC
 import com.gemwallet.android.testkit.mockTransaction
 import com.gemwallet.android.testkit.mockTransactionExtended
 import com.gemwallet.android.testkit.mockWallet
+import com.gemwallet.android.testkit.mockWalletId
 import com.gemwallet.android.testkit.mockChartValuePercentage
 import com.gemwallet.android.testkit.mockPrice
 import com.wallet.core.primitives.AssetBasic
@@ -163,7 +164,7 @@ class AssetsRepositoryTest {
             }
         )
 
-        coVerify(exactly = 3) { syncNfts.sync("wallet-1") }
+        coVerify(exactly = 3) { syncNfts.sync(mockWalletId()) }
         coVerify(exactly = 0) { syncStakeDelegations.sync(any(), any(), any(), any()) }
     }
 
@@ -428,7 +429,7 @@ class AssetsRepositoryTest {
         every { assetsDao.getAssetInfo("solana", Chain.Solana) } returns flowOf(null)
 
         val subject = createSubject()
-        subject.switchVisibility("wallet-1", AssetId(Chain.Solana), false)
+        subject.switchVisibility(mockWalletId(), AssetId(Chain.Solana), false)
 
         coVerify(exactly = 0) { assetsDao.setWalletAssetVisibility(any(), any(), any()) }
     }
@@ -441,7 +442,7 @@ class AssetsRepositoryTest {
         every { assetsDao.getAssetsInfo(listOf("solana")) } returns flowOf(emptyList())
 
         val subject = createSubject()
-        subject.switchVisibility("wallet-1", AssetId(Chain.Solana), true)
+        subject.switchVisibility(mockWalletId(), AssetId(Chain.Solana), true)
 
         coVerify(exactly = 1) {
             assetsDao.setWalletAssetVisibility(

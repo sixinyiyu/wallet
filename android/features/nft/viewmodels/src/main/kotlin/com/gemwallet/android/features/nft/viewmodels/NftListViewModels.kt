@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -43,16 +42,14 @@ class NftListViewModels @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
     private val nftData: StateFlow<List<NFTData>> = nftCollectionId
-        .flatMapLatest { nftCollectionId ->
-            getNftCollections(nftCollectionId).map { data -> data.filter { it.assets.isNotEmpty() } }
+        .flatMapLatest { collectionId ->
+            getNftCollections(collectionId).map { data -> data.filter { it.assets.isNotEmpty() } }
         }
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
-            if (nftCollectionId.firstOrNull() == null) {
-                syncNftCollections()
-            }
+        if (nftCollectionId.value == null) {
+            viewModelScope.launch(Dispatchers.IO) { syncNftCollections() }
         }
     }
 
