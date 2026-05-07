@@ -163,7 +163,7 @@ class AmountStakeProvider(
         return maxAfterFee > minimumValue
     }
 
-    override fun buildConfirmParams(amount: Crypto, isMax: Boolean): ConfirmParams {
+    override suspend fun buildConfirmParams(amount: Crypto, isMax: Boolean): ConfirmParams {
         val current = assetInfo.value ?: error("assetInfo not loaded")
         val owner = current.owner ?: error("owner missing")
         val builder = ConfirmParams.Builder(current.asset, owner, amount.atomicValue, isMax)

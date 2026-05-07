@@ -19,5 +19,5 @@ sealed interface AmountDataProvider {
     val availableBalance: StateFlow<BigInteger>
 
     fun shouldReserveFee(isMaxAmount: Boolean): Boolean
-    fun buildConfirmParams(amount: Crypto, isMax: Boolean): ConfirmParams
+    suspend fun buildConfirmParams(amount: Crypto, isMax: Boolean): ConfirmParams
 }

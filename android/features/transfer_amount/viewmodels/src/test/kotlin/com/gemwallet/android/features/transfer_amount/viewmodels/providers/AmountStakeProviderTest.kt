@@ -77,7 +77,7 @@ class AmountStakeProviderTest {
         val provider = makeProvider(AmountParams.Stake.Delegate(asset.id, validatorId = null))
         provider.assetInfo.filterNotNull().first()
         assertThrows(AmountError.NoValidatorSelected::class.java) {
-            provider.buildConfirmParams(Crypto(BigInteger.ONE), isMax = false)
+            runBlocking { provider.buildConfirmParams(Crypto(BigInteger.ONE), isMax = false) }
         }
         Unit
     }
