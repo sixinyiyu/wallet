@@ -30,7 +30,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.math.BigInteger
@@ -93,8 +92,7 @@ class AmountViewModel @Inject constructor(
 
         if (!provider.canChangeValue) {
             provider.assetInfo.filterNotNull()
-                .combine(provider.availableBalance) { _, _ -> Unit }
-                .take(1)
+                .combine(provider.availableBalance) { _, balance -> balance }
                 .onEach { onMaxAmount() }
                 .launchIn(viewModelScope)
         }
