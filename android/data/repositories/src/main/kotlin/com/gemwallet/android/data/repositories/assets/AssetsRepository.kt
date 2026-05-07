@@ -57,6 +57,7 @@ import com.wallet.core.primitives.Currency
 import com.wallet.core.primitives.FiatRate
 import com.wallet.core.primitives.TransactionType
 import com.wallet.core.primitives.Wallet
+import com.wallet.core.primitives.WalletId
 import com.wallet.core.primitives.WalletType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
@@ -307,7 +308,7 @@ class AssetsRepository @Inject constructor(
     }
 
     suspend fun switchVisibility(
-        walletId: String,
+        walletId: WalletId,
         assetId: AssetId,
         visibility: Boolean,
     ) = withContext(Dispatchers.IO) {
@@ -319,14 +320,14 @@ class AssetsRepository @Inject constructor(
             if (!visibility) {
                 return@withContext
             }
-            linkAssetToWallet(walletId, assetId, true)
+            linkAssetToWallet(walletId.id, assetId, true)
             updateBalances(assetId)
             return@withContext
         }
         if (isVisible == visibility) {
             return@withContext
         }
-        linkAssetToWallet(walletId, assetId, visibility)
+        linkAssetToWallet(walletId.id, assetId, visibility)
         if (visibility) {
             updateBalances(assetId)
         }
@@ -448,7 +449,7 @@ class AssetsRepository @Inject constructor(
     }
 
     private suspend fun processCompleteTransaction(
-        walletId: String,
+        walletId: WalletId,
         transaction: Transaction,
         assetInfos: List<AssetInfo>,
     ) {
@@ -460,7 +461,7 @@ class AssetsRepository @Inject constructor(
             TransactionType.StakeWithdraw,
             TransactionType.StakeFreeze,
             TransactionType.StakeUnfreeze -> syncStakeDelegations.sync(
-                walletId = walletId,
+                walletId = walletId.id,
                 chain = transaction.assetId.chain,
                 address = transaction.from,
                 apr = assetInfos.firstOrNull { it.id() == transaction.assetId }?.stakeApr ?: 0.0,
@@ -530,7 +531,7 @@ class AssetsRepository @Inject constructor(
                             return@mapNotNull null
                         }
                         async {
-                            updateBalances.updateBalances(walletId, account, entry.value)
+                            updateBalances.updateBalances(walletId.id, account, entry.value)
                         }
                     }
             }
