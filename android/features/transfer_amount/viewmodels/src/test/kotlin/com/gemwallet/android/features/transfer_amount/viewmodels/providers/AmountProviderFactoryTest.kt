@@ -56,7 +56,7 @@ class AmountProviderFactoryTest {
     fun `Stake variants produce StakeProvider`() {
         assertTrue(factory.create(AmountParams.Stake.Delegate(asset.id), scope) is AmountStakeProvider)
         assertTrue(factory.create(AmountParams.Stake.Rewards(asset.id), scope) is AmountStakeProvider)
-        assertTrue(factory.create(AmountParams.Stake.Withdraw(asset.id, "d1"), scope) is AmountStakeProvider)
+        assertTrue(factory.create(AmountParams.Stake.Withdraw(asset.id, "v1", "d1"), scope) is AmountStakeProvider)
     }
 
     @Test

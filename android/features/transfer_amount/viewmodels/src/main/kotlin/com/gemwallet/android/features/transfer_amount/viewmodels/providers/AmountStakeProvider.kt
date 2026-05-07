@@ -85,11 +85,11 @@ class AmountStakeProvider(
     private val delegation: StateFlow<Delegation?> = run {
         val source = when (params) {
             is AmountParams.Stake.Undelegate ->
-                stakeRepository.getDelegation(validatorId = "", delegationId = params.delegationId)
+                stakeRepository.getDelegation(validatorId = params.validatorId, delegationId = params.delegationId)
             is AmountParams.Stake.Redelegate ->
                 stakeRepository.getDelegation(validatorId = params.validatorId, delegationId = params.delegationId)
             is AmountParams.Stake.Withdraw ->
-                stakeRepository.getDelegation(validatorId = "", delegationId = params.delegationId)
+                stakeRepository.getDelegation(validatorId = params.validatorId, delegationId = params.delegationId)
             is AmountParams.Stake.Rewards -> {
                 val rewardsList = assetInfo.filterNotNull().flatMapLatest { current ->
                     val owner = current.owner?.address ?: return@flatMapLatest flowOf<List<Delegation>>(emptyList())

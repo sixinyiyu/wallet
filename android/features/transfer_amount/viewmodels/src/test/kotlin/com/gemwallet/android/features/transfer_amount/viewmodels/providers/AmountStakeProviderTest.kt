@@ -47,6 +47,7 @@ class AmountStakeProviderTest {
         every { getDelegation(any(), any()) } returns flowOf(delegation)
         coEvery { getStakeValidator(asset.id, "v1") } returns validator
         every { getDelegations(any(), any()) } returns flowOf(listOf(delegation))
+        every { getRecommended(any()) } returns flowOf(null)
     }
     private val balanceService = mockk<TransactionBalanceService> {
         coEvery { getBalance(any(), any<AmountParams>(), any(), any()) } returns BigInteger("100")
@@ -83,7 +84,7 @@ class AmountStakeProviderTest {
 
     @Test
     fun `undelegate builds UndelegateParams`() = runBlocking {
-        val provider = makeProvider(AmountParams.Stake.Undelegate(asset.id, delegationId = "d1"))
+        val provider = makeProvider(AmountParams.Stake.Undelegate(asset.id, validatorId = "v1", delegationId = "d1"))
         provider.assetInfo.filterNotNull().first()
         val confirm = provider.buildConfirmParams(Crypto(BigInteger.ONE), isMax = false)
         assertTrue(confirm is ConfirmParams.Stake.UndelegateParams)
@@ -99,7 +100,7 @@ class AmountStakeProviderTest {
 
     @Test
     fun `withdraw builds WithdrawParams`() = runBlocking {
-        val provider = makeProvider(AmountParams.Stake.Withdraw(asset.id, "d1"))
+        val provider = makeProvider(AmountParams.Stake.Withdraw(asset.id, validatorId = "v1", delegationId = "d1"))
         provider.assetInfo.filterNotNull().first()
         val confirm = provider.buildConfirmParams(Crypto(BigInteger.ONE), isMax = false)
         assertTrue(confirm is ConfirmParams.Stake.WithdrawParams)
@@ -117,8 +118,8 @@ class AmountStakeProviderTest {
     fun `canChangeValue is false for Withdraw and Rewards`() {
         assertEquals(true, makeProvider(AmountParams.Stake.Delegate(asset.id)).canChangeValue)
         assertEquals(true, makeProvider(AmountParams.Stake.Redelegate(asset.id, "v", "d")).canChangeValue)
-        assertEquals(true, makeProvider(AmountParams.Stake.Undelegate(asset.id, "d")).canChangeValue)
-        assertEquals(false, makeProvider(AmountParams.Stake.Withdraw(asset.id, "d")).canChangeValue)
+        assertEquals(true, makeProvider(AmountParams.Stake.Undelegate(asset.id, "v", "d")).canChangeValue)
+        assertEquals(false, makeProvider(AmountParams.Stake.Withdraw(asset.id, "v", "d")).canChangeValue)
         assertEquals(false, makeProvider(AmountParams.Stake.Rewards(asset.id)).canChangeValue)
     }
 
@@ -127,7 +128,7 @@ class AmountStakeProviderTest {
         assertEquals(true, makeProvider(AmountParams.Stake.Delegate(asset.id)).canSelectValidator)
         assertEquals(true, makeProvider(AmountParams.Stake.Redelegate(asset.id, "v", "d")).canSelectValidator)
         assertEquals(true, makeProvider(AmountParams.Stake.Rewards(asset.id)).canSelectValidator)
-        assertEquals(false, makeProvider(AmountParams.Stake.Undelegate(asset.id, "d")).canSelectValidator)
-        assertEquals(false, makeProvider(AmountParams.Stake.Withdraw(asset.id, "d")).canSelectValidator)
+        assertEquals(false, makeProvider(AmountParams.Stake.Undelegate(asset.id, "v", "d")).canSelectValidator)
+        assertEquals(false, makeProvider(AmountParams.Stake.Withdraw(asset.id, "v", "d")).canSelectValidator)
     }
 }

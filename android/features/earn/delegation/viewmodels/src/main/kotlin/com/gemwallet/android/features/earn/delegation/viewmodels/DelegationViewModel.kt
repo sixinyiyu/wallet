@@ -226,7 +226,11 @@ class DelegationViewModel @Inject constructor(
     private fun buildUndelegate(): AmountParams.Stake.Undelegate? {
         val assetId = assetInfo.value?.asset?.id ?: return null
         val delegation = delegation.value ?: return null
-        return AmountParams.Stake.Undelegate(assetId, delegationId = delegation.base.delegationId)
+        return AmountParams.Stake.Undelegate(
+            assetId = assetId,
+            validatorId = delegation.validator.id,
+            delegationId = delegation.base.delegationId,
+        )
     }
 
     private fun buildRedelegate(): AmountParams.Stake.Redelegate? {

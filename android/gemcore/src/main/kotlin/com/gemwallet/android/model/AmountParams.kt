@@ -44,6 +44,7 @@ sealed interface AmountParams {
         @Serializable @SerialName("stake.undelegate")
         data class Undelegate(
             override val assetId: AssetId,
+            val validatorId: String,
             val delegationId: String,
         ) : Stake {
             override val transactionType: TransactionType get() = TransactionType.StakeUndelegate
@@ -61,6 +62,7 @@ sealed interface AmountParams {
         @Serializable @SerialName("stake.withdraw")
         data class Withdraw(
             override val assetId: AssetId,
+            val validatorId: String,
             val delegationId: String,
         ) : Stake {
             override val transactionType: TransactionType get() = TransactionType.StakeWithdraw
