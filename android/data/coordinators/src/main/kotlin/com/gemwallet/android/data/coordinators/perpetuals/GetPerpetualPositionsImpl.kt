@@ -8,6 +8,7 @@ import com.gemwallet.android.domains.perpetual.aggregates.PerpetualPositionDataA
 import com.gemwallet.android.domains.price.PriceState
 import com.gemwallet.android.ext.walletId
 import com.gemwallet.android.model.format
+import com.gemwallet.android.model.formatPnl
 import com.wallet.core.primitives.Asset
 import com.wallet.core.primitives.Currency
 import com.wallet.core.primitives.PerpetualDirection
@@ -18,7 +19,6 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
-import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class GetPerpetualPositionsImpl @Inject constructor(
@@ -45,13 +45,7 @@ class PerpetualPositionDataAggregateImpl(val data: PerpetualPositionData) : Perp
     override val pnlWithPercentage: String
         get() {
             val percentage = ((data.position.pnl / data.position.marginAmount) * 100).formatAsPercentage()
-            val pnl = data.position.pnl.absoluteValue
-            val pnlFormatted = Currency.USD.format(pnl)
-            return if (data.position.pnl >= 0) {
-                "+$pnlFormatted ($percentage)"
-            } else {
-                "-$pnlFormatted ($percentage)"
-            }
+            return "${Currency.USD.formatPnl(data.position.pnl)} ($percentage)"
         }
     override val pnlState: PriceState
         get() = if (data.position.pnl == 0.0) {
