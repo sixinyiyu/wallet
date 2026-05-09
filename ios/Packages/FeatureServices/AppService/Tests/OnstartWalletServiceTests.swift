@@ -3,6 +3,7 @@
 @testable import AppService
 import BannerService
 import DeviceServiceTestKit
+import Foundation
 import GemAPITestKit
 import NotificationService
 import Preferences
