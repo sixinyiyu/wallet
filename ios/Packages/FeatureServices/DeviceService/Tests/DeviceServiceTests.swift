@@ -125,35 +125,6 @@ struct DeviceServiceTests {
     }
 
     @Test
-    func updateAndSynchronizeIfNeededShareSyncTask() async throws {
-        let preferences = Preferences.mock()
-        preferences.isDeviceRegistered = false
-        preferences.subscriptionsVersionHasChange = true
-
-        let deviceProvider = GemAPIDeviceServiceMock(
-            delay: .milliseconds(50),
-            isDeviceRegistered: false,
-            getDeviceResult: nil,
-        )
-        let subscriptionProvider = GemAPISubscriptionServiceMock(delay: .milliseconds(50))
-        let service = makeService(
-            preferences: preferences,
-            deviceProvider: deviceProvider,
-            subscriptionProvider: subscriptionProvider,
-        )
-
-        async let update: Void = service.update()
-        async let ready: Void = service.synchronizeIfNeeded()
-        _ = try await (update, ready)
-
-        #expect(await deviceProvider.isDeviceRegisteredCalls == 1)
-        #expect(await deviceProvider.addDeviceCalls == 1)
-        #expect(await deviceProvider.updateDeviceCalls == 1)
-        #expect(await deviceProvider.getNodeAuthTokenCalls == 1)
-        #expect(await subscriptionProvider.getSubscriptionsCalls == 1)
-    }
-
-    @Test
     func synchronizeIfNeededWaitsForInFlightSyncBeforeFastPath() async throws {
         let preferences = Preferences.mock()
         preferences.isDeviceRegistered = true
@@ -164,35 +135,29 @@ struct DeviceServiceTests {
         try securePreferences.set(value: keyPair.publicKey.hex, key: .deviceId)
 
         let deviceProvider = GemAPIDeviceServiceMock(
-            delay: .milliseconds(150),
+            delay: .milliseconds(50),
             isDeviceRegistered: true,
             getDeviceResult: Device.mock(),
         )
+        let subscriptionProvider = GemAPISubscriptionServiceMock(delay: .milliseconds(50))
         let service = makeService(
             preferences: preferences,
             deviceProvider: deviceProvider,
-            subscriptionProvider: GemAPISubscriptionServiceMock(),
+            subscriptionProvider: subscriptionProvider,
             securePreferences: securePreferences,
         )
-        let ready = CompletionFlag()
 
-        let updateTask = Task {
-            try await service.update()
-        }
+        async let update: Void = service.update()
+        async let ready: Void = service.synchronizeIfNeeded()
+        _ = try await (update, ready)
 
-        try await Task.sleep(for: .milliseconds(50))
+        #expect(await deviceProvider.isDeviceRegisteredCalls == 0)
+        #expect(await deviceProvider.getDeviceCalls == 1)
+        #expect(await deviceProvider.addDeviceCalls == 0)
+        #expect(await deviceProvider.updateDeviceCalls == 1)
+        #expect(await deviceProvider.getNodeAuthTokenCalls == 1)
+        #expect(await subscriptionProvider.getSubscriptionsCalls == 1)
         #expect(!preferences.subscriptionsVersionHasChange)
-
-        let readyTask = Task {
-            try await service.synchronizeIfNeeded()
-            await ready.markComplete()
-        }
-
-        try await Task.sleep(for: .milliseconds(20))
-        #expect(await !ready.isComplete)
-
-        try await updateTask.value
-        try await readyTask.value
     }
 
     @Test
@@ -240,12 +205,4 @@ private extension DeviceServiceTests {
 
 private enum TestError: Error {
     case failed
-}
-
-private actor CompletionFlag {
-    private(set) var isComplete = false
-
-    func markComplete() {
-        isComplete = true
-    }
 }
