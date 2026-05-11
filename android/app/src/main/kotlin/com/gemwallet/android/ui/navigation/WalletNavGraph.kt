@@ -228,6 +228,7 @@ fun WalletNavGraph(
 
             perpetualScreen(
                 onOpenPerpetualDetails = navigator::openPerpetualDetails,
+                onOpenPerpetualPosition = navigator::openAmount,
                 onCancel = onCancel
             )
 

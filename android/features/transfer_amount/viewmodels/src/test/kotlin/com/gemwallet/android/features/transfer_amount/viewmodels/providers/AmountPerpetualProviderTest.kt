@@ -48,7 +48,7 @@ class AmountPerpetualProviderTest {
             every { getPerpetual(any()) } returns flowOf(null)
         }
         val getPerpetualBalance = mockk<GetPerpetualBalance>(relaxed = true) {
-            every { getBalance(any(), any()) } returns flowOf(null)
+            every { getBalance(any()) } returns flowOf(null)
         }
         return AmountPerpetualProvider(
             params = AmountParams.Perpetual(asset.id, "BTC-PERP", direction),

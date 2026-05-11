@@ -34,7 +34,7 @@ class AmountProviderFactoryTest {
             every { getPerpetual(any()) } returns flowOf(null)
         },
         getPerpetualBalance = mockk<GetPerpetualBalance>(relaxed = true) {
-            every { getBalance(any(), any()) } returns flowOf(null)
+            every { getBalance(any()) } returns flowOf(null)
         },
         sessionRepository = mockk<SessionRepository>(relaxed = true) {
             every { session() } returns MutableStateFlow(null)
