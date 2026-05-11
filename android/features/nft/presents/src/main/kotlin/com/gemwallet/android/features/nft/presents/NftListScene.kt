@@ -59,18 +59,16 @@ fun NftListNavScreen(
     listState: LazyGridState = rememberLazyGridState(),
     title: String = stringResource(R.string.nft_collections),
     onUnverifiedClick: (() -> Unit)? = null,
-    refreshKey: Any? = null,
     viewModel: NftListViewModels = hiltViewModel(),
 ) {
     val items by viewModel.collections.collectAsStateWithLifecycle()
     val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
     val error by viewModel.error.collectAsStateWithLifecycle()
     val unverifiedCount by viewModel.unverifiedCount.collectAsStateWithLifecycle()
+    val walletId by viewModel.walletId.collectAsStateWithLifecycle()
 
-    LaunchedEffect(refreshKey) {
-        if (refreshKey != null) {
-            viewModel.refresh()
-        }
+    LaunchedEffect(walletId) {
+        viewModel.syncIfNeeded()
     }
 
     NftListScene(

@@ -5,11 +5,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gemwallet.android.application.nft.coordinators.GetNftCollections
 import com.gemwallet.android.application.nft.coordinators.SyncNftCollections
+import com.gemwallet.android.application.session.coordinators.GetSession
 import com.gemwallet.android.cases.nft.NftError
+import com.gemwallet.android.ext.walletId
 import com.gemwallet.android.ui.models.NftItemUIModel
 import com.gemwallet.android.ui.models.navigation.RouteArgument
 import com.wallet.core.primitives.NFTData
 import com.wallet.core.primitives.VerificationStatus
+import com.wallet.core.primitives.WalletId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -17,6 +20,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -29,6 +33,7 @@ import javax.inject.Inject
 class NftListViewModels @Inject constructor(
     private val syncNftCollections: SyncNftCollections,
     private val getNftCollections: GetNftCollections,
+    getSession: GetSession,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -41,17 +46,19 @@ class NftListViewModels @Inject constructor(
     val unverified = savedStateHandle.getStateFlow(RouteArgument.Unverified.key, false)
         .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
+    private val session = getSession()
+
+    val walletId: StateFlow<WalletId?> = session
+        .map { it?.wallet?.walletId }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, null)
+
+    private var lastSyncedWalletId: WalletId? = null
+
     private val nftData: StateFlow<List<NFTData>> = nftCollectionId
         .flatMapLatest { collectionId ->
             getNftCollections(collectionId).map { data -> data.filter { it.assets.isNotEmpty() } }
         }
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
-
-    init {
-        if (nftCollectionId.value == null) {
-            viewModelScope.launch(Dispatchers.IO) { syncNftCollections() }
-        }
-    }
 
     val collections = combine(nftData, nftCollectionId, unverified) { data, nftCollectionId, unverified ->
         val filtered = when {
@@ -77,11 +84,23 @@ class NftListViewModels @Inject constructor(
 
     val error = MutableStateFlow<NftError?>(null)
 
+    fun syncIfNeeded() {
+        if (nftCollectionId.value != null) return
+        val current = walletId.value ?: return
+        if (current == lastSyncedWalletId) return
+        lastSyncedWalletId = current
+        viewModelScope.launch(Dispatchers.IO) {
+            val walletId = session.firstOrNull()?.wallet?.walletId ?: return@launch
+            syncNftCollections.syncNftCollections(walletId)
+        }
+    }
+
     fun refresh() {
         viewModelScope.launch(Dispatchers.IO) {
+            val walletId = session.firstOrNull()?.wallet?.walletId ?: return@launch
             _isRefreshing.update { true }
             try {
-                syncNftCollections()
+                syncNftCollections.syncNftCollections(walletId)
             } finally {
                 _isRefreshing.update { false }
             }

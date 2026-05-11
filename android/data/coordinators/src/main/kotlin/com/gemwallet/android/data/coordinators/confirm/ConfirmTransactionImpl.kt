@@ -2,7 +2,6 @@ package com.gemwallet.android.data.coordinators.confirm
 
 import com.gemwallet.android.application.PasswordStore
 import com.gemwallet.android.application.confirm.coordinators.ConfirmTransaction
-import com.gemwallet.android.application.confirm.coordinators.ConfirmTransaction.FinishRoute
 import com.gemwallet.android.blockchain.operators.LoadPrivateKeyOperator
 import com.gemwallet.android.blockchain.services.BroadcastService
 import com.gemwallet.android.blockchain.services.SignClientProxy
@@ -18,6 +17,8 @@ import com.gemwallet.android.serializer.jsonEncoder
 import com.wallet.core.primitives.TransactionDirection
 import com.wallet.core.primitives.TransactionNFTTransferMetadata
 import com.wallet.core.primitives.TransactionState
+import com.gemwallet.android.ext.walletId
+import com.wallet.core.primitives.Account
 import com.wallet.core.primitives.TransactionSwapMetadata
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -39,7 +40,7 @@ class ConfirmTransactionImpl(
         session: Session,
         assetInfo: AssetInfo,
         scope: CoroutineScope,
-    ): ConfirmTransaction.Result {
+    ): String {
         val account = assetInfo.owner ?: throw ConfirmError.TransactionIncorrect
 
         val signs = sign(signerParams, session, assetInfo)
@@ -49,8 +50,7 @@ class ConfirmTransactionImpl(
 
         if (signerParams.input is ConfirmParams.TransferParams.Generic) {
             if (!(signerParams.input as ConfirmParams.TransferParams.Generic).isSendable) {
-                val hash = String(signs.firstOrNull() ?: byteArrayOf())
-                return ConfirmTransaction.Result(txHash = hash, finishRoute = getFinishRoute(signerParams.input))
+                return String(signs.firstOrNull() ?: byteArrayOf())
             }
         }
 
@@ -61,13 +61,12 @@ class ConfirmTransactionImpl(
                 delay(500)
             } else {
                 lastHash = txHash
-                addTransaction(txHash, signerParams, assetInfo, session)
+                addTransaction(txHash, signerParams, assetInfo, account, session)
                 scope.launch(Dispatchers.IO) { addRecent(assetInfo, signerParams.input) }
             }
         }
 
-        val finishRoute = getFinishRoute(signerParams.input)
-        return ConfirmTransaction.Result(txHash = lastHash, finishRoute = finishRoute)
+        return lastHash
     }
 
     private suspend fun sign(
@@ -97,15 +96,16 @@ class ConfirmTransactionImpl(
         txHash: String,
         signerParams: SignerParams,
         assetInfo: AssetInfo,
+        account: Account,
         session: Session,
     ) {
         val destinationAddress = signerParams.input.destination()?.address ?: ""
 
         createTransactionsCase.createTransaction(
             hash = txHash,
-            walletId = session.wallet.id,
+            walletId = session.wallet.walletId,
             assetId = assetInfo.id(),
-            owner = assetInfo.owner!!,
+            owner = account,
             to = destinationAddress,
             state = TransactionState.Pending,
             fee = signerParams.fee(),
@@ -113,7 +113,7 @@ class ConfirmTransactionImpl(
             memo = signerParams.input.memo() ?: "",
             type = signerParams.input.getTxType(),
             metadata = assembleMetadata(signerParams),
-            direction = if (destinationAddress == assetInfo.owner!!.address) {
+            direction = if (destinationAddress == account.address) {
                 TransactionDirection.SelfTransfer
             } else {
                 TransactionDirection.Outgoing
@@ -157,13 +157,4 @@ class ConfirmTransactionImpl(
         else -> null
     }
 
-    private fun getFinishRoute(input: ConfirmParams): FinishRoute = when (input) {
-        is ConfirmParams.Stake -> FinishRoute.Stake
-        is ConfirmParams.SwapParams,
-        is ConfirmParams.TokenApprovalParams -> FinishRoute.Swap
-        is ConfirmParams.TransferParams,
-        is ConfirmParams.Activate,
-        is ConfirmParams.NftParams,
-        is ConfirmParams.PerpetualParams -> FinishRoute.Asset
-    }
 }

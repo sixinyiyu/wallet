@@ -73,12 +73,9 @@ class AmountPerpetualProvider(
         .flatMapLatest { current -> assetsRepository.getAssetInfo(perpetualUsdcAssetId(current.asset.id.chain)) }
         .stateIn(scope, SharingStarted.Eagerly, null)
 
-    override val availableBalance: StateFlow<BigInteger> = combine(
-        sessionRepository.session().filterNotNull(),
-        perpetual.filterNotNull(),
-    ) { session, current -> session.wallet.getAccount(current.asset.id.chain) }
+    override val availableBalance: StateFlow<BigInteger> = sessionRepository.session()
         .filterNotNull()
-        .flatMapLatest { account -> getPerpetualBalance.getBalance(account.chain, account.address) }
+        .flatMapLatest { getPerpetualBalance.getBalance(it.wallet.walletId) }
         .combine(assetInfo.filterNotNull()) { balance, current ->
             val available = balance?.available ?: 0.0
             Crypto(available.toBigDecimal(), current.asset.decimals).atomicValue

@@ -83,7 +83,7 @@ public final class PerpetualSceneViewModel {
 
         positionsQuery = ObservableQuery(PerpetualPositionsRequest(walletId: wallet.walletId, filter: .assetId(asset.id)), initialValue: [])
         perpetualQuery = ObservableQuery(PerpetualRequest(assetId: asset.id), initialValue: .empty)
-        perpetualTotalValueQuery = ObservableQuery(TotalValueRequest(walletId: wallet.walletId, balanceType: .perpetual), initialValue: .zero)
+        perpetualTotalValueQuery = ObservableQuery(TotalValueRequest(walletId: wallet.walletId, type: .perpetual), initialValue: .zero)
         transactionsQuery = ObservableQuery(
             TransactionsRequest.perpetualScene(
                 walletId: wallet.walletId,
@@ -445,7 +445,7 @@ private extension PerpetualSceneViewModel {
 
     func updateTransactions() async {
         do {
-            try await transactionsService.updateForAsset(wallet: wallet, assetId: asset.id)
+            try await transactionsService.updateForAsset(walletId: wallet.walletId, assetId: asset.id)
         } catch {
             debugLog("perpetual scene: fetchTransactions error \(error)")
         }
