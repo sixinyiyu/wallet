@@ -7,7 +7,6 @@ import com.gemwallet.android.data.repositories.session.SessionRepository
 import com.gemwallet.android.data.repositories.tokens.TokensRepository
 import com.gemwallet.android.domains.asset.chain
 import com.gemwallet.android.ext.getAccount
-import com.gemwallet.android.ext.walletId
 import com.gemwallet.android.features.transfer_amount.viewmodels.AmountTitle
 import com.gemwallet.android.model.AmountParams
 import com.gemwallet.android.model.AssetInfo
@@ -55,7 +54,7 @@ class AmountPerpetualProvider(
             val perpetualAssetId = perpetualUsdcAssetId(current?.asset?.chain ?: return@onEach)
             tokenRepository.search(perpetualAssetId, session.currency)
             session.wallet.getAccount(perpetualAssetId.chain) ?: return@onEach
-            assetsRepository.switchVisibility(session.wallet.walletId, perpetualAssetId, false)
+            assetsRepository.switchVisibility(session.wallet.id, perpetualAssetId, false)
         }
         .onEach { current -> selectedLeverage.update { min(current?.maxLeverage ?: 0, 5) } }
         .stateIn(scope, SharingStarted.Eagerly, null)
@@ -75,7 +74,7 @@ class AmountPerpetualProvider(
 
     override val availableBalance: StateFlow<BigInteger> = sessionRepository.session()
         .filterNotNull()
-        .flatMapLatest { getPerpetualBalance.getBalance(it.wallet.walletId) }
+        .flatMapLatest { getPerpetualBalance.getBalance(it.wallet.id) }
         .combine(assetInfo.filterNotNull()) { balance, current ->
             val available = balance?.available ?: 0.0
             Crypto(available.toBigDecimal(), current.asset.decimals).atomicValue
