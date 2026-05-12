@@ -23,10 +23,8 @@ fun AmountScreen(
     viewModel: AmountViewModel = hiltViewModel(),
 ) {
     val provider = viewModel.provider
-    val assetInfo by provider.assetInfo.collectAsStateWithLifecycle()
     val title = provider.title.asString()
-
-    if (assetInfo == null) {
+    val assetInfo = provider.assetInfo.collectAsStateWithLifecycle().value ?: run {
         LoadingScene(title, onCancel)
         return
     }
@@ -61,13 +59,12 @@ fun AmountScreen(
                 )
             }
         } else {
-            val asset = assetInfo!!.asset
             AmountScene(
                 title = title,
                 amount = viewModel.amount,
                 amountInputType = amountInputType,
-                asset = asset,
-                currency = assetInfo!!.price?.currency ?: Currency.USD,
+                asset = assetInfo.asset,
+                currency = assetInfo.price?.currency ?: Currency.USD,
                 canSwitchInputType = provider.canSwitchInputType,
                 readOnly = !provider.canChangeValue,
                 showsAssetBalance = provider.showsAssetBalance,
