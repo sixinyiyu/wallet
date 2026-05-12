@@ -14,7 +14,6 @@ import com.gemwallet.android.features.transfer_amount.viewmodels.providers.Amoun
 import com.gemwallet.android.model.ConfirmParams
 import com.gemwallet.android.ui.components.animation.navigationSlideTransition
 import com.gemwallet.android.ui.components.screen.LoadingScene
-import com.wallet.core.primitives.Currency
 
 @Composable
 fun AmountScreen(
@@ -38,6 +37,7 @@ fun AmountScreen(
     val equivalent by viewModel.amountEquivalent.collectAsStateWithLifecycle()
     val available by viewModel.availableBalanceFormatted.collectAsStateWithLifecycle()
     val reserve by viewModel.reserveForFeeFormatted.collectAsStateWithLifecycle()
+    val currency by viewModel.currency.collectAsStateWithLifecycle()
 
     AnimatedContent(
         isSelectValidator && canPickValidator,
@@ -64,7 +64,7 @@ fun AmountScreen(
                 amount = viewModel.amount,
                 amountInputType = amountInputType,
                 asset = assetInfo.asset,
-                currency = assetInfo.price?.currency ?: Currency.USD,
+                currency = currency,
                 canSwitchInputType = provider.canSwitchInputType,
                 readOnly = !provider.canChangeValue,
                 showsAssetBalance = provider.showsAssetBalance,

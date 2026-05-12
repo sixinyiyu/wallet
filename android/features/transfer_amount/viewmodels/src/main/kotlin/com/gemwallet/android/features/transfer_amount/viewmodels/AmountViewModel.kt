@@ -77,6 +77,10 @@ class AmountViewModel @Inject constructor(
         calculateEquivalent(input, direction, current.asset, price.price.price, price.currency)
     }.stateIn(viewModelScope, SharingStarted.Eagerly, "")
 
+    val currency: StateFlow<Currency> = provider.assetInfo
+        .mapLatest { it?.price?.currency ?: Currency.USD }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, Currency.USD)
+
     init {
         combine(
             snapshotFlow { amount },
