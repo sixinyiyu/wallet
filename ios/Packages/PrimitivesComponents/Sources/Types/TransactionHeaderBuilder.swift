@@ -35,7 +35,7 @@ public enum TransactionHeaderTypeBuilder {
                 guard let metadata = transaction.metadata?.decode(TransactionNFTTransferMetadata.self) else {
                     return .amount(showFiat: false)
                 }
-                return .nft(name: metadata.name, id: metadata.assetId)
+                return .nft(name: metadata.name, id: metadata.assetId.identifier)
             case .perpetualOpenPosition, .perpetualClosePosition, .perpetualModifyPosition:
                 return .symbol
             case .earnDeposit, .earnWithdraw:
@@ -63,7 +63,7 @@ public enum TransactionHeaderTypeBuilder {
             case .tokenApprove:
                 return .assetImage
             case let .transferNft(asset):
-                return .nft(name: asset.name, id: asset.id)
+                return .nft(name: asset.name, id: asset.id.identifier)
             case let .account(_, type):
                 switch type {
                 case .activate:

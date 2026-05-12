@@ -5,6 +5,7 @@ import androidx.navigation3.runtime.NavKey
 import com.gemwallet.android.features.activities.presents.details.TransactionDetailsNavScreen
 import com.gemwallet.android.ui.models.navigation.RouteArgument
 import com.gemwallet.android.ui.navigation.routeArguments
+import com.wallet.core.primitives.NFTAssetId
 import com.wallet.core.primitives.TransactionId
 import kotlinx.serialization.Serializable
 
@@ -17,7 +18,7 @@ data class TransactionDetailsRoute(
 
 fun EntryProviderScope<NavKey>.transactionDetailsScreen(
     onCancel: () -> Unit,
-    onNft: (String) -> Unit,
+    onNft: (NFTAssetId) -> Unit,
 ) {
     entry<TransactionDetailsRoute>(
         metadata = { key ->

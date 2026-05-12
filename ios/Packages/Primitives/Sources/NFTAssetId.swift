@@ -12,13 +12,27 @@ public struct NFTAssetId: Equatable, Hashable, Sendable {
         self.contractAddress = contractAddress
         self.tokenId = tokenId
     }
+
+    public var identifier: String {
+        "\(chain.rawValue)_\(contractAddress)\(AssetId.subTokenSeparator)\(tokenId)"
+    }
+
+    public static func from(id: String) throws -> NFTAssetId {
+        guard let (chain, rest) = AssetId.getData(id: id), let rest else {
+            throw AnyError("invalid nft asset id: \(id)")
+        }
+        let parts = rest.split(separator: AssetId.subTokenSeparator, maxSplits: 1, omittingEmptySubsequences: false)
+        guard parts.count == 2 else {
+            throw AnyError("invalid nft asset id: \(id)")
+        }
+        return NFTAssetId(chain: chain, contractAddress: String(parts[0]), tokenId: String(parts[1]))
+    }
 }
 
 extension NFTAssetId: Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
-        let stringValue = try container.decode(String.self)
-        self = try NFTAssetId(id: stringValue)
+        self = try Self.from(id: try container.decode(String.self))
     }
 
     public func encode(to encoder: Encoder) throws {

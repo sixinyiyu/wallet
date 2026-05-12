@@ -33,7 +33,7 @@ public struct TransactionViewModel: Sendable {
         if let nftMetadata = transaction.transaction.metadata?.decode(TransactionNFTTransferMetadata.self) {
             return AssetImage(
                 type: "",
-                imageURL: assetImageFormatter.getNFTUrl(for: nftMetadata.assetId),
+                imageURL: assetImageFormatter.getNFTUrl(for: nftMetadata.assetId.identifier),
                 placeholder: asset.placeholder,
                 chainPlaceholder: overlayImage,
             )

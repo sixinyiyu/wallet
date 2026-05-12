@@ -21,8 +21,8 @@ public enum GemDeviceAPI: TargetType {
     case getTransactions(walletId: WalletId, assetId: String?, fromTimestamp: Int)
     case getAssetsList(walletId: WalletId, fromTimestamp: Int)
     case getDeviceNFTAssets(walletId: WalletId)
-    case getDeviceNFTAsset(assetId: String)
-    case refreshNftAsset(walletId: WalletId, assetId: String)
+    case getDeviceNFTAsset(assetId: NFTAssetId)
+    case refreshNftAsset(walletId: WalletId, assetId: NFTAssetId)
 
     case reportNft(report: ReportNft)
     case scanTransaction(payload: ScanTransactionPayload)
@@ -126,9 +126,9 @@ public enum GemDeviceAPI: TargetType {
         case .getDeviceNFTAssets:
             return "/v2/devices/nft_assets"
         case let .getDeviceNFTAsset(assetId):
-            return "/v2/devices/nft_assets/\(assetId)"
+            return "/v2/devices/nft_assets/\(assetId.identifier)"
         case let .refreshNftAsset(_, assetId):
-            return "/v2/devices/nft_assets/\(assetId)/refresh"
+            return "/v2/devices/nft_assets/\(assetId.identifier)/refresh"
         case .reportNft:
             return "/v2/devices/nft/report"
         case .scanTransaction:

@@ -5,8 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gemwallet.android.application.nft.coordinators.GetNftAssetDetails
 import com.gemwallet.android.application.nft.coordinators.RefreshNftAsset
-import com.gemwallet.android.ui.models.navigation.RouteArgument
-import com.gemwallet.android.ui.models.navigation.requireAssetId
+import com.gemwallet.android.ui.models.navigation.requireNftAssetId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +23,7 @@ class NftDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
-    private val nftAssetId = savedStateHandle.requireAssetId(RouteArgument.NftAssetId)
+    private val nftAssetId = savedStateHandle.requireNftAssetId()
 
     val nftAsset = getNftAssetDetails(nftAssetId)
         .catch { }

@@ -15,6 +15,7 @@ import com.gemwallet.android.features.activities.presents.details.components.Des
 import com.gemwallet.android.features.activities.presents.details.components.TransactionExplorer
 import com.gemwallet.android.features.activities.presents.details.components.TransactionStatusProperty
 import com.gemwallet.android.ui.R
+import com.wallet.core.primitives.NFTAssetId
 import com.gemwallet.android.ui.components.list_head.AmountListHead
 import com.gemwallet.android.ui.components.list_head.NftHead
 import com.gemwallet.android.ui.components.list_head.SwapListHead
@@ -30,7 +31,7 @@ fun TransactionDetailsScene(
     data: TransactionDetailsAggregate,
     onShare: () -> Unit,
     onFeeDetails: () -> Unit,
-    onNft: (String) -> Unit,
+    onNft: (NFTAssetId) -> Unit,
     onCancel: () -> Unit,
 ) {
     Scene(

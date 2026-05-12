@@ -143,7 +143,7 @@ extension TransactionSceneViewModel {
         )
     }
 
-    private var nftAssetId: String? {
+    private var nftAssetId: NFTAssetId? {
         guard transactionExtended.transaction.type == .transferNFT else {
             return nil
         }

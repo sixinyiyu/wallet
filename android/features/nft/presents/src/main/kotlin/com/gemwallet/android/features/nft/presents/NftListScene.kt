@@ -45,6 +45,7 @@ import com.gemwallet.android.ui.components.screen.Scene
 import com.gemwallet.android.ui.models.ListPosition
 import com.gemwallet.android.ui.models.NftItemUIModel
 import com.gemwallet.android.ui.models.actions.CancelAction
+import com.gemwallet.android.ext.toIdentifier
 import com.gemwallet.android.ui.models.actions.NftAssetIdAction
 import com.gemwallet.android.ui.models.actions.NftCollectionIdAction
 import com.gemwallet.android.ui.theme.paddingDefault
@@ -193,7 +194,7 @@ internal fun NftListScene(
                             onClick = {
                                 val asset = item.asset
                                 if (asset == null) {
-                                    onAction(NftListAction.OpenCollection(item.collection.id))
+                                    onAction(NftListAction.OpenCollection(item.collection.id.toIdentifier()))
                                 } else {
                                     onAction(NftListAction.OpenAsset(asset.id))
                                 }

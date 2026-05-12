@@ -20,7 +20,7 @@ struct NFTCollectionRecord: Codable, FetchableRecord, PersistableRecord {
         static let previewImageMimeType = Column("previewImageMimeType")
     }
 
-    var id: String
+    var id: NFTCollectionId
     var name: String
     var description: String?
     var chain: Chain

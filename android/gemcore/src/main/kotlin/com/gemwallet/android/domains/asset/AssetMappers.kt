@@ -44,8 +44,8 @@ fun Asset.toGem() = GemAsset(
 )
 
 fun NFTAsset.toGem() = GemNftAsset(
-    id = id,
-    collectionId = collectionId,
+    id = id.toIdentifier(),
+    collectionId = collectionId.toIdentifier(),
     contractAddress = contractAddress,
     tokenId = tokenId,
     tokenType = when (tokenType) {

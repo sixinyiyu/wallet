@@ -5,8 +5,8 @@ import Primitives
 
 public extension NFTAsset {
     static func mock(
-        id: String = .empty,
-        collectionId: String = .empty,
+        id: NFTAssetId = .mock(),
+        collectionId: NFTCollectionId = .mock(),
         contractAddress: String? = nil,
         tokenId: String = .empty,
         tokenType: NFTType = .erc721,
@@ -32,3 +32,4 @@ public extension NFTAsset {
         )
     }
 }
+

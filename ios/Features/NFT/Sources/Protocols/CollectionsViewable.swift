@@ -54,7 +54,7 @@ public extension CollectionsViewable {
         }
         return GridPosterViewItem(
             id: data.id,
-            destination: Scenes.Collection(id: data.collection.id, name: data.collection.name),
+            destination: Scenes.Collection(id: data.collection.id.identifier, name: data.collection.name),
             model: GridPosterViewModel(
                 assetImage: AssetImage(type: data.collection.name, imageURL: data.collection.images.preview.url.asURL),
                 title: data.collection.name,
@@ -66,7 +66,7 @@ public extension CollectionsViewable {
 
     func buildGridItem(collection: NFTCollection, asset: NFTAsset) -> GridPosterViewItem {
         GridPosterViewItem(
-            id: asset.id,
+            id: asset.id.identifier,
             destination: Scenes.Collectible(assetData: NFTAssetData(collection: collection, asset: asset)),
             model: GridPosterViewModel(
                 assetImage: AssetImage(type: collection.name, imageURL: asset.images.preview.url.asURL),

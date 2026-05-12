@@ -11,11 +11,12 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.gemwallet.android.features.activities.viewmodels.TransactionDetailsViewModel
 import com.gemwallet.android.ui.components.screen.LoadingScene
+import com.wallet.core.primitives.NFTAssetId
 
 @Composable
 fun TransactionDetailsNavScreen(
     onCancel: () -> Unit,
-    onNft: (String) -> Unit,
+    onNft: (NFTAssetId) -> Unit,
     viewModel: TransactionDetailsViewModel = hiltViewModel(),
 ) {
     val data by viewModel.data.collectAsStateWithLifecycle()

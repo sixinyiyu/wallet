@@ -5,7 +5,7 @@ import Primitives
 
 public extension NFTCollection {
     static func mock(
-        id: String = "test-collection-id",
+        id: NFTCollectionId = .mock(),
         name: String = "Test Collection",
         description: String? = "Test Collection Description",
         chain: Chain = .mock(),

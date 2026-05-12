@@ -31,6 +31,7 @@ import com.gemwallet.android.testkit.mockAssetFull
 import com.gemwallet.android.testkit.mockAssetLink
 import com.gemwallet.android.testkit.mockAssetEthereum
 import com.gemwallet.android.testkit.mockAssetMarket
+import com.gemwallet.android.testkit.mockWalletId
 import com.gemwallet.android.testkit.mockAssetProperties
 import com.gemwallet.android.testkit.mockAssetSolana
 import com.gemwallet.android.testkit.mockAssetSolanaUSDC
@@ -145,7 +146,7 @@ class AssetsRepositoryTest {
         )
 
         coVerify(exactly = 3) {
-            syncStakeDelegations.sync("wallet-1", Chain.Solana, "solana-sender", apr = 7.5)
+            syncStakeDelegations.sync(mockWalletId("wallet-1"), Chain.Solana, "solana-sender", apr = 7.5)
         }
         coVerify(exactly = 0) { syncNfts.sync(any()) }
     }

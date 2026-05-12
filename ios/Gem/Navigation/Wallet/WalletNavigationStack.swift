@@ -4,6 +4,7 @@ import Assets
 import AssetsService
 import Components
 import InfoSheet
+import Localization
 import MarketInsight
 import NFT
 import Perpetuals
@@ -266,10 +267,10 @@ extension WalletNavigationStack {
         case let .nft(assetId):
             Task {
                 do {
-                    let assetData = try await nftService.assetData(assetId: assetId)
+                    let assetData = try await nftService.getOrFetchAssetData(assetId: assetId)
                     navigationState.wallet.append(Scenes.Collectible(assetData: assetData))
                 } catch {
-                    debugLog("Open NFT details error: \(error)")
+                    model.isPresentingToastMessage = .error(Localized.Errors.errorOccured)
                 }
             }
         }

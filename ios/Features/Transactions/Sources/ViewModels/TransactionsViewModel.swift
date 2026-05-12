@@ -30,6 +30,7 @@ public final class TransactionsViewModel {
     public var filterModel: TransactionsFilterViewModel
 
     public var isPresentingSheet: TransactionsSheetType?
+    public var isPresentingToastMessage: ToastMessage?
 
     public init(
         transactionsService: TransactionsService,

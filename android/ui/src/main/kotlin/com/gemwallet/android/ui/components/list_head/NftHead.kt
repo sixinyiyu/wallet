@@ -59,8 +59,8 @@ fun NftHead(
 }
 
 @Composable
-fun NftHead(nftAsset: NFTAsset, size: Dp = headerLargeImageSize, onClick: (() -> Unit)? = null) =
-    NftHead(nftAsset.toImageSource(), size, onClick)
+fun NftHead(nftAsset: NFTAsset, size: Dp = headerLargeImageSize) =
+    NftHead(nftAsset.toImageSource(), size)
 
 @Composable
 fun NftHead(metadata: TransactionNFTTransferMetadata, size: Dp = headerLargeImageSize, onClick: (() -> Unit)? = null) =

@@ -1,6 +1,7 @@
 package com.gemwallet.android.domains.asset
 
 import com.gemwallet.android.ext.asset
+import com.gemwallet.android.ext.toIdentifier
 import com.gemwallet.android.ext.twoSubtokenIds
 import com.gemwallet.android.ext.type
 import com.wallet.core.primitives.Asset
@@ -106,8 +107,8 @@ fun SwapperProvider.getSwapProviderIcon(): String {
     return "file:///android_asset/swap/${iconName.lowercase()}.svg"
 }
 
-fun NFTAsset.getImageUrl(): String = nftImageUrl(id)
+fun NFTAsset.getImageUrl(): String = nftImageUrl(id.toIdentifier())
 
-fun TransactionNFTTransferMetadata.getImageUrl(): String = nftImageUrl(assetId)
+fun TransactionNFTTransferMetadata.getImageUrl(): String = nftImageUrl(assetId.toIdentifier())
 
 private fun nftImageUrl(assetId: String): String = "${Constants.ASSETS_URL}/nft/assets/$assetId/preview"

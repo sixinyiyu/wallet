@@ -21,7 +21,7 @@ extension RecipientAssetType: Identifiable {
     public var id: String {
         switch self {
         case let .asset(asset): asset.id.identifier
-        case let .nft(asset): asset.id
+        case let .nft(asset): asset.id.identifier
         }
     }
 }

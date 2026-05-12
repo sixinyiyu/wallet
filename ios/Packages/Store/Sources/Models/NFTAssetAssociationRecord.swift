@@ -16,10 +16,10 @@ struct NFTAssetAssociationRecord: Codable, FetchableRecord, PersistableRecord, I
 
     var id: String
     var walletId: String
-    var collectionId: String
-    var assetId: String
+    var collectionId: NFTCollectionId
+    var assetId: NFTAssetId
 
-    init(walletId: String, collectionId: String, assetId: String) {
+    init(walletId: String, collectionId: NFTCollectionId, assetId: NFTAssetId) {
         id = Self.computedId(walletId: walletId, collectionId: collectionId, assetId: assetId)
         self.walletId = walletId
         self.collectionId = collectionId
@@ -28,18 +28,8 @@ struct NFTAssetAssociationRecord: Codable, FetchableRecord, PersistableRecord, I
 }
 
 extension NFTAssetAssociationRecord {
-    static func computedId(walletId: String, collectionId: String, assetId: String) -> String {
-        [walletId, collectionId, assetId].joined(separator: "_")
-    }
-}
-
-extension NFTAssetAssociationRecord {
-    func record() -> NFTAssetAssociationRecord {
-        NFTAssetAssociationRecord(
-            walletId: walletId,
-            collectionId: collectionId,
-            assetId: assetId,
-        )
+    static func computedId(walletId: String, collectionId: NFTCollectionId, assetId: NFTAssetId) -> String {
+        [walletId, collectionId.identifier, assetId.identifier].joined(separator: "_")
     }
 }
 

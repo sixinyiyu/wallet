@@ -48,8 +48,8 @@ data class NFTAttribute (
 
 @Serializable
 data class NFTAsset (
-	val id: String,
-	val collectionId: String,
+	val id: NFTAssetId,
+	val collectionId: NFTCollectionId,
 	val contractAddress: String? = null,
 	val tokenId: String,
 	val tokenType: NFTType,
@@ -63,7 +63,7 @@ data class NFTAsset (
 
 @Serializable
 data class NFTCollection (
-	val id: String,
+	val id: NFTCollectionId,
 	val name: String,
 	val description: String? = null,
 	val chain: Chain,

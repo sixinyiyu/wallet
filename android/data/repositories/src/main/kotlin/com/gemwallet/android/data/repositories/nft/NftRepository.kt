@@ -11,9 +11,10 @@ import com.gemwallet.android.data.service.store.database.entities.DbNFTAssociati
 import com.gemwallet.android.data.service.store.database.entities.DbNFTCollection
 import com.gemwallet.android.data.services.gemapi.GemDeviceApiClient
 import com.gemwallet.android.ext.toIdentifier
-import com.wallet.core.primitives.AssetId
 import com.wallet.core.primitives.NFTAsset
+import com.wallet.core.primitives.NFTAssetId
 import com.wallet.core.primitives.NFTCollection
+import com.wallet.core.primitives.NFTCollectionId
 import com.wallet.core.primitives.NFTData
 import com.wallet.core.primitives.NFTImages
 import com.wallet.core.primitives.NFTResource
@@ -26,7 +27,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
 import okio.IOException
 
 class NftRepository(
@@ -37,54 +37,14 @@ class NftRepository(
     @Throws(HttpException::class, IOException::class)
     override suspend fun sync(walletId: WalletId) {
         val nftData = gemDeviceApiClient.getNFTs(walletId = walletId.id).orEmpty()
-        val collections = nftData.map {
-            DbNFTCollection(
-                id = it.collection.id,
-                name = it.collection.name,
-                description = it.collection.description,
-                chain = it.collection.chain,
-                contractAddress = it.collection.contractAddress,
-                imageUrl = it.collection.images.preview.url,
-                previewImageUrl = it.collection.images.preview.url,
-                originalSourceUrl = it.collection.images.preview.url,
-                status = it.collection.status,
-                links = it.collection.links,
-            )
-        }
-        val assets = nftData.flatMap { item ->
-            item.assets.map { asset ->
-                DbNFTAsset(
-                    id = asset.id,
-                    collectionId = item.collection.id,
-                    name = asset.name,
-                    tokenId = asset.tokenId,
-                    tokenType = asset.tokenType,
-                    contractAddress = asset.contractAddress,
-                    chain = asset.chain,
-                    description = asset.description,
-                    imageUrl = asset.images.preview.url,
-                    previewImageUrl = asset.images.preview.url,
-                    originalSourceUrl = asset.images.preview.url,
-                    attributes = asset.attributes,
-                )
-            }
-        }
-        val associations = assets.map {
-            DbNFTAssociation(
-                walletId = walletId.id,
-                assetId = it.id,
-            )
-        }
-        nftDao.updateNft(
-            walletId.id,
-            collections,
-            assets,
-            associations,
-        )
+        val collections = nftData.map { it.collection.toDb() }
+        val assets = nftData.flatMap { item -> item.assets.map { it.toDb(item.collection.id) } }
+        val associations = assets.map { DbNFTAssociation(walletId = walletId.id, assetId = it.id) }
+        nftDao.updateNft(walletId.id, collections, assets, associations)
     }
 
     @Throws(HttpException::class, IOException::class)
-    override suspend fun refreshNftAsset(wallet: Wallet, assetId: AssetId) {
+    override suspend fun refreshNftAsset(wallet: Wallet, assetId: NFTAssetId) {
         gemDeviceApiClient.refreshNftAsset(wallet.id.id, assetId.toIdentifier())
     }
 
@@ -95,44 +55,66 @@ class NftRepository(
         ) { collectionEntities, assetEntities ->
             val assets = assetEntities.toAssetModels().groupBy { it.collectionId }
             val collections = collectionEntities.toCollectionModels()
-            collections.map { NFTData(it, assets[it.id] ?: emptyList()) }
-                .filter { collectionId == null || it.collection.id == collectionId }
+            collections.map { collection -> NFTData(collection, assets[collection.id] ?: emptyList()) }
+                .filter { collectionId == null || it.collection.id.toIdentifier() == collectionId }
         }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    override fun getAssetNft(assetId: AssetId): Flow<NFTData> {
-        val nftAssetId = assetId.toIdentifier()
-        return cachedAssetData(nftAssetId).flatMapLatest { data ->
-            data?.let(::flowOf) ?: getRemoteAssetNft(nftAssetId)
-        }
-    }
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    private fun cachedAssetData(assetId: String): Flow<NFTData?> {
+    override fun getAssetNft(walletId: WalletId, assetId: NFTAssetId): Flow<NFTData> {
         return nftDao.getAsset(assetId).flatMapLatest { asset ->
-            if (asset == null) {
-                flowOf(null)
-            } else {
-                nftDao.getCollection(asset.collectionId).map { collection ->
-                    collection?.let(asset::toNftData)
-                }
+            if (asset == null) return@flatMapLatest fetchAndCacheNftAsset(walletId, assetId)
+
+            nftDao.getCollection(asset.collectionId).flatMapLatest { collection ->
+                collection
+                    ?.let { flowOf(asset.toNftData(it)) }
+                    ?: fetchAndCacheNftAsset(walletId, assetId)
             }
         }
     }
 
-    private fun getRemoteAssetNft(assetId: String): Flow<NFTData> {
+    private fun fetchAndCacheNftAsset(walletId: WalletId, assetId: NFTAssetId): Flow<NFTData> {
         return flow {
-            val assetData = gemDeviceApiClient.getNFT(assetId)
-            emit(
-                NFTData(
-                    collection = assetData.collection,
-                    assets = listOf(assetData.asset),
-                )
-            )
+            val assetData = gemDeviceApiClient.getNFT(assetId.toIdentifier())
+            cacheNftAsset(walletId, assetData.collection, assetData.asset)
+            emit(NFTData(collection = assetData.collection, assets = listOf(assetData.asset)))
         }
     }
+
+    private suspend fun cacheNftAsset(walletId: WalletId, collection: NFTCollection, asset: NFTAsset) {
+        nftDao.insertCollections(listOf(collection.toDb()))
+        nftDao.insertAssets(listOf(asset.toDb(collection.id)))
+        nftDao.associateWithWallet(listOf(DbNFTAssociation(walletId = walletId.id, assetId = asset.id)))
+    }
 }
+
+private fun NFTCollection.toDb() = DbNFTCollection(
+    id = id,
+    name = name,
+    description = description,
+    chain = chain,
+    contractAddress = contractAddress,
+    imageUrl = images.preview.url,
+    previewImageUrl = images.preview.url,
+    originalSourceUrl = images.preview.url,
+    status = status,
+    links = links,
+)
+
+private fun NFTAsset.toDb(collectionId: NFTCollectionId) = DbNFTAsset(
+    id = id,
+    collectionId = collectionId,
+    name = name,
+    tokenId = tokenId,
+    tokenType = tokenType,
+    contractAddress = contractAddress,
+    chain = chain,
+    description = description,
+    imageUrl = images.preview.url,
+    previewImageUrl = images.preview.url,
+    originalSourceUrl = images.preview.url,
+    attributes = attributes,
+)
 
 private fun DbNFTAsset.toNftData(collection: DbNFTCollection) = NFTData(
     collection = collection.toCollectionModel(),
@@ -142,28 +124,28 @@ private fun DbNFTAsset.toNftData(collection: DbNFTCollection) = NFTData(
 private fun List<DbNFTCollection>.toCollectionModels() = map { it.toCollectionModel() }
 
 private fun DbNFTCollection.toCollectionModel() = NFTCollection(
-    id = this.id,
-    name = this.name,
-    description = this.description,
-    chain = this.chain,
-    contractAddress = this.contractAddress,
-    images = NFTImages(NFTResource(this.imageUrl, "")),
-    status = this.status ?: VerificationStatus.Verified,
-    links = this.links ?: emptyList(),
+    id = id,
+    name = name,
+    description = description,
+    chain = chain,
+    contractAddress = contractAddress,
+    images = NFTImages(NFTResource(imageUrl, "")),
+    status = status ?: VerificationStatus.Verified,
+    links = links ?: emptyList(),
 )
 
 private fun List<DbNFTAsset>.toAssetModels(): List<NFTAsset> = map { it.toAssetModel() }
 
 private fun DbNFTAsset.toAssetModel() = NFTAsset(
-    id = this.id,
-    collectionId = this.collectionId,
-    tokenId = this.tokenId,
-    tokenType = this.tokenType,
-    contractAddress = this.contractAddress,
-    name = this.name,
-    description = this.description,
-    chain = this.chain,
-    resource = NFTResource("", ""), // TODO: Handle resources
-    images = NFTImages(NFTResource(this.imageUrl, "")),
-    attributes = this.attributes ?: emptyList(),
+    id = id,
+    collectionId = collectionId,
+    tokenId = tokenId,
+    tokenType = tokenType,
+    contractAddress = contractAddress,
+    name = name,
+    description = description,
+    chain = chain,
+    resource = NFTResource("", ""),
+    images = NFTImages(NFTResource(imageUrl, "")),
+    attributes = attributes ?: emptyList(),
 )

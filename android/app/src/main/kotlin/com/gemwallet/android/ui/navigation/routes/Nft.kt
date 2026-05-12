@@ -12,6 +12,7 @@ import com.gemwallet.android.ui.models.actions.NftCollectionIdAction
 import com.gemwallet.android.ui.models.navigation.RouteArgument
 import com.gemwallet.android.ui.navigation.routeArguments
 import com.wallet.core.primitives.AssetId
+import com.wallet.core.primitives.NFTAssetId
 import kotlinx.serialization.Serializable
 
 const val nftRoute = "nft"
@@ -27,7 +28,7 @@ data class NftAssetRoute(val nftAssetId: String) : NavKey
 
 fun EntryProviderScope<NavKey>.nftCollection(
     cancelAction: CancelAction,
-    onRecipient: (AssetId, String) -> Unit,
+    onRecipient: (AssetId, NFTAssetId) -> Unit,
     onReceive: () -> Unit,
     collectionIdAction: NftCollectionIdAction,
     assetIdAction: NftAssetIdAction,

@@ -3,8 +3,10 @@
 import Assets
 import AssetsService
 import Components
+import Localization
 import NFT
 import Primitives
+import PrimitivesComponents
 import Store
 import Style
 import SwiftUI
@@ -70,6 +72,7 @@ struct TransactionsNavigationStack: View {
                         ),
                     )
                 }
+                .toast(message: $model.isPresentingToastMessage)
                 .sheet(item: $model.isPresentingSheet) { type in
                     switch type {
                     case .filter:
@@ -106,10 +109,10 @@ extension TransactionsNavigationStack {
         case let .nft(assetId):
             Task {
                 do {
-                    let assetData = try await nftService.assetData(assetId: assetId)
+                    let assetData = try await nftService.getOrFetchAssetData(assetId: assetId)
                     navigationState.activity.append(Scenes.Collectible(assetData: assetData))
                 } catch {
-                    debugLog("Open NFT details error: \(error)")
+                    model.isPresentingToastMessage = .error(Localized.Errors.errorOccured)
                 }
             }
         }

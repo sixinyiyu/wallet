@@ -4,7 +4,7 @@ import Foundation
 
 extension NFTData: Identifiable {
     public var id: String {
-        collection.id
+        collection.id.identifier
     }
 }
 

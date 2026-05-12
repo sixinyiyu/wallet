@@ -4,21 +4,21 @@ import com.gemwallet.android.data.service.store.database.NftDao
 import com.gemwallet.android.data.service.store.database.entities.DbNFTAsset
 import com.gemwallet.android.data.service.store.database.entities.DbNFTCollection
 import com.gemwallet.android.data.services.gemapi.GemDeviceApiClient
+import com.gemwallet.android.ext.toIdentifier
+import com.gemwallet.android.testkit.mockNftAsset
+import com.gemwallet.android.testkit.mockNftAssetData
+import com.gemwallet.android.testkit.mockNftAssetId
+import com.gemwallet.android.testkit.mockNftCollection
+import com.gemwallet.android.testkit.mockNftCollectionId
 import com.gemwallet.android.testkit.mockWalletId
-import com.wallet.core.primitives.AssetId
-import com.wallet.core.primitives.Chain
-import com.wallet.core.primitives.NFTAsset
-import com.wallet.core.primitives.NFTAssetData
-import com.wallet.core.primitives.NFTCollection
-import com.wallet.core.primitives.NFTImages
-import com.wallet.core.primitives.NFTResource
+import com.wallet.core.primitives.NFTAssetId
+import com.wallet.core.primitives.NFTCollectionId
 import com.wallet.core.primitives.NFTType
 import com.wallet.core.primitives.VerificationStatus
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -31,110 +31,101 @@ class NftRepositoryTest {
     private val nftDao = mockk<NftDao>()
     private val subject = NftRepository(gemDeviceApiClient, nftDao)
 
+    private val collectionId = mockNftCollectionId()
+    private val otherCollectionId = mockNftCollectionId(contractAddress = "0xother")
+    private val assetId = mockNftAssetId()
+
     @Test
     fun getListNftReadsRequestedWallet() = runTest {
-        every { nftDao.getCollections("wallet-1") } returns flowOf(listOf(dbCollection("collection-1")))
-        every { nftDao.getAssets("wallet-1") } returns flowOf(listOf(dbAsset("asset-1", "collection-1")))
+        every { nftDao.getCollections("wallet-1") } returns flowOf(listOf(dbCollection(collectionId)))
+        every { nftDao.getAssets("wallet-1") } returns flowOf(listOf(dbAsset(assetId, collectionId)))
 
         val result = subject.getListNft(mockWalletId("wallet-1")).first()
 
-        assertEquals(listOf("collection-1"), result.map { it.collection.id })
-        assertEquals(listOf("asset-1"), result.flatMap { it.assets }.map { it.id })
-        verify { nftDao.getCollections("wallet-1") }
-        verify { nftDao.getAssets("wallet-1") }
+        assertEquals(listOf(collectionId), result.map { it.collection.id })
+        assertEquals(listOf(assetId), result.flatMap { it.assets }.map { it.id })
     }
 
     @Test
-    fun getAssetNftReadsCachedAssetWithoutWalletAssociation() = runTest {
-        val assetId = AssetId(Chain.Ethereum, "asset-1")
-        every { nftDao.getAsset("ethereum_asset-1") } returns flowOf(dbAsset("ethereum_asset-1", "collection-2"))
-        every { nftDao.getCollection("collection-2") } returns flowOf(dbCollection("collection-2"))
+    fun getAssetNftReadsWalletScopedCache() = runTest {
+        val walletId = mockWalletId("wallet-2")
+        every { nftDao.getAsset(assetId) } returns flowOf(dbAsset(assetId, collectionId))
+        every { nftDao.getCollection(collectionId) } returns flowOf(dbCollection(collectionId))
 
-        val result = subject.getAssetNft(assetId).first()
+        val result = subject.getAssetNft(walletId, assetId).first()
 
-        assertEquals("collection-2", result.collection.id)
-        assertEquals("ethereum_asset-1", result.assets.single().id)
-        verify { nftDao.getAsset("ethereum_asset-1") }
-        coVerify(exactly = 0) { gemDeviceApiClient.getNFT("ethereum_asset-1") }
-        verify { nftDao.getCollection("collection-2") }
+        assertEquals(collectionId, result.collection.id)
+        assertEquals(assetId, result.assets.single().id)
+        coVerify(exactly = 0) { gemDeviceApiClient.getNFT(any()) }
     }
 
     @Test
-    fun getAssetNftFallsBackToApi() = runTest {
-        val assetId = AssetId(Chain.Ethereum, "asset-1")
-        every { nftDao.getAsset("ethereum_asset-1") } returns flowOf(null)
-        coEvery { gemDeviceApiClient.getNFT("ethereum_asset-1") } returns nftAssetData("ethereum_asset-1", "collection-2")
+    fun getAssetNftFallsBackToApiAndCachesResult() = runTest {
+        val walletId = mockWalletId("wallet-2")
+        every { nftDao.getAsset(assetId) } returns flowOf(null)
+        coEvery { gemDeviceApiClient.getNFT(assetId.toIdentifier()) } returns mockNftAssetData(
+            collection = mockNftCollection(id = collectionId),
+            asset = mockNftAsset(id = assetId, collectionId = collectionId),
+        )
+        coEvery { nftDao.insertCollections(any()) } returns Unit
+        coEvery { nftDao.insertAssets(any()) } returns Unit
+        coEvery { nftDao.associateWithWallet(any()) } returns Unit
 
-        val result = subject.getAssetNft(assetId).first()
+        val result = subject.getAssetNft(walletId, assetId).first()
 
-        assertEquals("collection-2", result.collection.id)
-        assertEquals("ethereum_asset-1", result.assets.single().id)
-        verify { nftDao.getAsset("ethereum_asset-1") }
-        coVerify { gemDeviceApiClient.getNFT("ethereum_asset-1") }
+        assertEquals(collectionId, result.collection.id)
+        assertEquals(assetId, result.assets.single().id)
+        coVerify { gemDeviceApiClient.getNFT(assetId.toIdentifier()) }
+        coVerify { nftDao.insertCollections(match { it.single().id == collectionId }) }
+        coVerify { nftDao.insertAssets(match { it.single().id == assetId }) }
+        coVerify {
+            nftDao.associateWithWallet(
+                match { it.single().walletId == "wallet-2" && it.single().assetId == assetId }
+            )
+        }
     }
 
     @Test
     fun getAssetNftFallsBackToApiWhenCollectionIsMissing() = runTest {
-        val assetId = AssetId(Chain.Ethereum, "asset-1")
-        every { nftDao.getAsset("ethereum_asset-1") } returns flowOf(dbAsset("ethereum_asset-1", "collection-2"))
-        every { nftDao.getCollection("collection-2") } returns flowOf(null)
-        coEvery { gemDeviceApiClient.getNFT("ethereum_asset-1") } returns nftAssetData("ethereum_asset-1", "collection-3")
+        val walletId = mockWalletId("wallet-2")
+        every { nftDao.getAsset(assetId) } returns flowOf(dbAsset(assetId, collectionId))
+        every { nftDao.getCollection(collectionId) } returns flowOf(null)
+        coEvery { gemDeviceApiClient.getNFT(assetId.toIdentifier()) } returns mockNftAssetData(
+            collection = mockNftCollection(id = otherCollectionId),
+            asset = mockNftAsset(id = assetId, collectionId = otherCollectionId),
+        )
+        coEvery { nftDao.insertCollections(any()) } returns Unit
+        coEvery { nftDao.insertAssets(any()) } returns Unit
+        coEvery { nftDao.associateWithWallet(any()) } returns Unit
 
-        val result = subject.getAssetNft(assetId).first()
+        val result = subject.getAssetNft(walletId, assetId).first()
 
-        assertEquals("collection-3", result.collection.id)
-        assertEquals("ethereum_asset-1", result.assets.single().id)
-        verify { nftDao.getCollection("collection-2") }
-        coVerify { gemDeviceApiClient.getNFT("ethereum_asset-1") }
+        assertEquals(otherCollectionId, result.collection.id)
+        assertEquals(assetId, result.assets.single().id)
+        coVerify { gemDeviceApiClient.getNFT(assetId.toIdentifier()) }
     }
 }
 
-private fun dbCollection(id: String) = DbNFTCollection(
+private fun dbCollection(id: NFTCollectionId) = DbNFTCollection(
     id = id,
-    name = id,
-    chain = Chain.Ethereum,
-    contractAddress = "0xcollection",
-    imageUrl = "https://example.com/$id.png",
-    previewImageUrl = "https://example.com/$id.png",
-    originalSourceUrl = "https://example.com/$id.png",
+    name = id.toIdentifier(),
+    chain = id.chain,
+    contractAddress = id.contractAddress,
+    imageUrl = "",
+    previewImageUrl = "",
+    originalSourceUrl = "",
     status = VerificationStatus.Verified,
 )
 
-private fun dbAsset(id: String, collectionId: String) = DbNFTAsset(
+private fun dbAsset(id: NFTAssetId, collectionId: NFTCollectionId) = DbNFTAsset(
     id = id,
     collectionId = collectionId,
-    tokenId = "1",
+    tokenId = id.tokenId,
     tokenType = NFTType.ERC721,
-    name = id,
-    chain = Chain.Ethereum,
-    contractAddress = "0xasset",
-    imageUrl = "https://example.com/$id.png",
-    previewImageUrl = "https://example.com/$id.png",
-    originalSourceUrl = "https://example.com/$id.png",
-)
-
-private fun nftAssetData(assetId: String, collectionId: String) = NFTAssetData(
-    collection = NFTCollection(
-        id = collectionId,
-        name = collectionId,
-        description = null,
-        chain = Chain.Ethereum,
-        contractAddress = "0xcollection",
-        images = NFTImages(NFTResource("https://example.com/$collectionId.png", "")),
-        status = VerificationStatus.Verified,
-        links = emptyList(),
-    ),
-    asset = NFTAsset(
-        id = assetId,
-        collectionId = collectionId,
-        contractAddress = "0xasset",
-        tokenId = "1",
-        tokenType = NFTType.ERC721,
-        name = assetId,
-        description = null,
-        chain = Chain.Ethereum,
-        resource = NFTResource("", ""),
-        images = NFTImages(NFTResource("https://example.com/$assetId.png", "")),
-        attributes = emptyList(),
-    ),
+    name = id.toIdentifier(),
+    chain = id.chain,
+    contractAddress = id.contractAddress,
+    imageUrl = "",
+    previewImageUrl = "",
+    originalSourceUrl = "",
 )

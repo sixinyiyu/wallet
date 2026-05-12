@@ -38,7 +38,7 @@ struct TransactionSceneViewModelTests {
 
     @Test
     func nftHeaderAction() {
-        let assetId = "ethereum_0xasset::1"
+        let assetId = NFTAssetId(chain: .ethereum, contractAddress: "0xasset", tokenId: "1")
         var selectedAction: TransactionHeaderAction?
         let model = TransactionSceneViewModel(
             transaction: TransactionExtended.mock(
@@ -65,7 +65,7 @@ struct TransactionSceneViewModelTests {
             transaction: TransactionExtended.mock(
                 transaction: Transaction.mock(
                     type: .transferNFT,
-                    metadata: .encode(TransactionNFTTransferMetadata(assetId: "ethereum_0xasset::1", name: "NFT")),
+                    metadata: .encode(TransactionNFTTransferMetadata(assetId: .mock(), name: "NFT")),
                 ),
             ),
             walletId: .mock(),
