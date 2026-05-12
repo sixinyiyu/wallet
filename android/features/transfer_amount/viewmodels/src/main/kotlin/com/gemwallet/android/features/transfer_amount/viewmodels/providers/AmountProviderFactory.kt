@@ -1,11 +1,11 @@
 package com.gemwallet.android.features.transfer_amount.viewmodels.providers
 
+import com.gemwallet.android.application.assets.coordinators.GetAssetInfo
 import com.gemwallet.android.application.perpetual.coordinators.GetPerpetual
 import com.gemwallet.android.application.perpetual.coordinators.GetPerpetualBalance
 import com.gemwallet.android.data.repositories.assets.AssetsRepository
-import com.gemwallet.android.data.repositories.session.SessionRepository
+import com.gemwallet.android.data.repositories.config.UserConfig
 import com.gemwallet.android.data.repositories.stake.StakeRepository
-import com.gemwallet.android.data.repositories.tokens.TokensRepository
 import com.gemwallet.android.data.repositories.transactions.TransactionBalanceService
 import com.gemwallet.android.model.AmountParams
 import kotlinx.coroutines.CoroutineScope
@@ -15,10 +15,10 @@ class AmountProviderFactory @Inject constructor(
     private val assetsRepository: AssetsRepository,
     private val stakeRepository: StakeRepository,
     private val transactionBalanceService: TransactionBalanceService,
+    private val getAssetInfo: GetAssetInfo,
     private val getPerpetual: GetPerpetual,
     private val getPerpetualBalance: GetPerpetualBalance,
-    private val sessionRepository: SessionRepository,
-    private val tokenRepository: TokensRepository,
+    private val userConfig: UserConfig,
 ) {
     fun create(params: AmountParams, scope: CoroutineScope): AmountDataProvider = when (params) {
         is AmountParams.Transfer -> AmountTransferProvider(
@@ -42,9 +42,8 @@ class AmountProviderFactory @Inject constructor(
         )
         is AmountParams.Perpetual -> AmountPerpetualProvider(
             params = params,
-            assetsRepository = assetsRepository,
-            tokenRepository = tokenRepository,
-            sessionRepository = sessionRepository,
+            userConfig = userConfig,
+            getAssetInfo = getAssetInfo,
             getPerpetual = getPerpetual,
             getPerpetualBalance = getPerpetualBalance,
             scope = scope,
