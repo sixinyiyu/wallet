@@ -5,6 +5,7 @@ import AssetsService
 import Components
 import InfoSheet
 import MarketInsight
+import NFT
 import Perpetuals
 import PriceAlerts
 import PriceService
@@ -33,6 +34,9 @@ struct WalletNavigationStack: View {
     @Environment(\.activityService) private var activityService
     @Environment(\.walletSearchService) private var walletSearchService
     @Environment(\.assetSearchService) private var assetSearchService
+    @Environment(\.avatarService) private var avatarService
+    @Environment(\.nftService) private var nftService
+    @Environment(\.openURL) private var openURL
     @Environment(\.observablePreferences) private var preferences
 
     @State private var model: WalletSceneViewModel
@@ -110,7 +114,19 @@ struct WalletNavigationStack: View {
                 TransactionNavigationView(
                     model: TransactionSceneViewModel(
                         transaction: $0.transaction,
-                        walletId: model.wallet.walletId,
+                        walletId: model.wallet.id,
+                        onHeaderAction: onSelectTransactionHeaderAction,
+                    ),
+                )
+            }
+            .navigationDestination(for: Scenes.Collectible.self) {
+                CollectibleScene(
+                    model: CollectibleViewModel(
+                        wallet: model.wallet,
+                        assetData: $0.assetData,
+                        avatarService: avatarService,
+                        nftService: nftService,
+                        isPresentingSelectedAssetInput: model.isPresentingSelectedAssetInput,
                     ),
                 )
             }
@@ -120,7 +136,7 @@ struct WalletNavigationStack: View {
                         priceService: priceService,
                         assetModel: AssetViewModel(asset: $0.asset),
                         priceAlertService: priceAlertService,
-                        walletId: model.wallet.walletId,
+                        walletId: model.wallet.id,
                         onSetPriceAlert: model.presentPriceAlert,
                     ),
                 )
@@ -144,7 +160,7 @@ struct WalletNavigationStack: View {
                         balanceService: balanceService,
                         preferences: preferences.preferences,
                         request: WalletSearchRequest(
-                            walletId: model.wallet.walletId,
+                            walletId: model.wallet.id,
                             searchBy: destination.searchQuery,
                             tag: destination.tag,
                             limit: AssetsResultsSceneViewModel.defaultLimit,
@@ -167,7 +183,7 @@ struct WalletNavigationStack: View {
                 AssetPriceAlertsScene(
                     model: AssetPriceAlertsViewModel(
                         priceAlertService: priceAlertService,
-                        walletId: model.wallet.walletId,
+                        walletId: model.wallet.id,
                         asset: $0.asset,
                     ),
                 )
@@ -204,7 +220,7 @@ struct WalletNavigationStack: View {
                 case let .setPriceAlert(asset):
                     SetPriceAlertNavigationStack(
                         model: SetPriceAlertViewModel(
-                            walletId: model.wallet.walletId,
+                            walletId: model.wallet.id,
                             asset: asset,
                             priceAlertService: priceAlertService,
                         ) { model.onSetPriceAlertComplete(message: $0) },
@@ -236,6 +252,26 @@ struct WalletNavigationStack: View {
             navigationState.wallet.append(Scenes.Perpetual(asset))
         } else {
             navigationState.wallet.append(Scenes.Asset(asset: asset))
+        }
+    }
+}
+
+// MARK: - Actions
+
+extension WalletNavigationStack {
+    private func onSelectTransactionHeaderAction(_ action: TransactionHeaderAction) {
+        switch action {
+        case let .url(url):
+            openURL(url)
+        case let .nft(assetId):
+            Task {
+                do {
+                    let assetData = try await nftService.assetData(assetId: assetId)
+                    navigationState.wallet.append(Scenes.Collectible(assetData: assetData))
+                } catch {
+                    debugLog("Open NFT details error: \(error)")
+                }
+            }
         }
     }
 }

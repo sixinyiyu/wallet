@@ -5,20 +5,23 @@ import androidx.navigation3.runtime.NavKey
 import com.gemwallet.android.model.AmountParams
 import com.gemwallet.android.features.perpetual.views.market.PerpetualMarketNavScreen
 import com.gemwallet.android.features.perpetual.views.position.PerpetualPositionNavScreen
-import com.gemwallet.android.ui.models.navigation.RouteArgument
+import com.gemwallet.android.ui.navigation.assetIdArgument
 import com.gemwallet.android.ui.navigation.routeArguments
+import com.wallet.core.primitives.AssetId
+import com.wallet.core.primitives.TransactionId
 import kotlinx.serialization.Serializable
 
 @Serializable
 data object PerpetualRoute : NavKey
 
 @Serializable
-data class PerpetualPositionRoute(val perpetualId: String) : NavKey
+data class PerpetualPositionRoute(val assetId: AssetId) : NavKey
 
 fun EntryProviderScope<NavKey>.perpetualScreen(
     onCancel: () -> Unit,
-    onOpenPerpetualDetails: (String) -> Unit,
+    onOpenPerpetualDetails: (AssetId) -> Unit,
     onOpenPerpetualPosition: (AmountParams) -> Unit,
+    onTransaction: (TransactionId) -> Unit,
 ) {
     entry<PerpetualRoute> {
         PerpetualMarketNavScreen(
@@ -28,11 +31,12 @@ fun EntryProviderScope<NavKey>.perpetualScreen(
     }
 
     entry<PerpetualPositionRoute>(
-        metadata = { key -> routeArguments(RouteArgument.PerpetualId to key.perpetualId) },
+        metadata = { key -> routeArguments(assetIdArgument(key.assetId)) },
     ) {
         PerpetualPositionNavScreen(
             onOpenPosition = onOpenPerpetualPosition,
-            onClose = onCancel
+            onClose = onCancel,
+            onTransaction = onTransaction,
         )
     }
 }

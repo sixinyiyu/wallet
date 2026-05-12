@@ -174,7 +174,10 @@ fun WalletNavGraph(
                 onFinish = navigator::resetToWallet,
             )
 
-            transactionDetailsScreen(onCancel = onCancel)
+            transactionDetailsScreen(
+                onCancel = onCancel,
+                onNft = navigator::openNftAsset,
+            )
 
             bridgesScreen(
                 onConnection = navigator::openBridgeConnectionDetails,
@@ -217,7 +220,7 @@ fun WalletNavGraph(
                 onCancel = onCancel,
                 onImported = { result ->
                     when (result) {
-                        is WalletImportResult.New -> navigator.openSetupWallet(WalletId(result.wallet.id))
+                        is WalletImportResult.New -> navigator.openSetupWallet(result.wallet.id)
                         is WalletImportResult.Existing -> navigator.resetToWallet()
                     }
                 },
@@ -229,7 +232,8 @@ fun WalletNavGraph(
             perpetualScreen(
                 onOpenPerpetualDetails = navigator::openPerpetualDetails,
                 onOpenPerpetualPosition = navigator::openAmount,
-                onCancel = onCancel
+                onCancel = onCancel,
+                onTransaction = navigator::openTransaction,
             )
 
             referral(onClose = onCancel)
