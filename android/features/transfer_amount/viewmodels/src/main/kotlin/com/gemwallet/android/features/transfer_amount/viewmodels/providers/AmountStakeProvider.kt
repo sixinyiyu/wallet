@@ -85,7 +85,13 @@ class AmountStakeProvider(
             .flowOn(Dispatchers.IO)
             .stateIn(scope, SharingStarted.Eagerly, null)
 
-    private val selectedValidatorId = MutableStateFlow(initialValidatorId(params))
+    private val selectedValidatorId = MutableStateFlow<String?>(
+        when (params) {
+            is AmountParams.Stake.Delegate -> params.validatorId
+            is AmountParams.Stake.Redelegate -> params.validatorId
+            else -> null
+        }
+    )
 
     private val delegation: StateFlow<Delegation?> = run {
         val source = when (params) {
@@ -192,9 +198,4 @@ class AmountStakeProvider(
         }
     }
 
-    private fun initialValidatorId(params: AmountParams.Stake): String? = when (params) {
-        is AmountParams.Stake.Delegate -> params.validatorId
-        is AmountParams.Stake.Redelegate -> params.validatorId
-        else -> null
-    }
 }
