@@ -1,10 +1,10 @@
 package com.gemwallet.android.features.transfer_amount.viewmodels.providers
 
+import com.gemwallet.android.application.assets.coordinators.GetAssetInfo
 import com.gemwallet.android.application.perpetual.coordinators.GetPerpetual
 import com.gemwallet.android.application.perpetual.coordinators.GetPerpetualBalance
-import com.gemwallet.android.data.repositories.assets.AssetsRepository
-import com.gemwallet.android.data.repositories.session.SessionRepository
-import com.gemwallet.android.data.repositories.tokens.TokensRepository
+import com.gemwallet.android.data.repositories.config.UserConfig
+import com.gemwallet.android.domains.perpetual.aggregates.PerpetualDetailsDataAggregate
 import com.gemwallet.android.features.transfer_amount.viewmodels.AmountTitle
 import com.gemwallet.android.model.AmountParams
 import com.gemwallet.android.testkit.mockAssetCosmos
@@ -14,7 +14,6 @@ import io.mockk.mockk
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -37,24 +36,25 @@ class AmountPerpetualProviderTest {
 
     private fun makeProvider(direction: PerpetualDirection = PerpetualDirection.Long): AmountPerpetualProvider {
         val asset = mockAssetCosmos()
-        val assetsRepository = mockk<AssetsRepository>(relaxed = true) {
-            every { getAssetInfo(any()) } returns flowOf(null)
+        val getAssetInfo = mockk<GetAssetInfo>(relaxed = true) {
+            every { this@mockk.invoke(any()) } returns flowOf(null)
         }
-        val sessionRepository = mockk<SessionRepository>(relaxed = true) {
-            every { session() } returns MutableStateFlow(null)
+        val userConfig = mockk<UserConfig>(relaxed = true) {
+            every { perpetualLeverage() } returns flowOf(5)
         }
-        val tokenRepository = mockk<TokensRepository>(relaxed = true)
+        val perpetualAggregate = mockk<PerpetualDetailsDataAggregate>(relaxed = true) {
+            every { maxLeverage } returns 50
+        }
         val getPerpetual = mockk<GetPerpetual>(relaxed = true) {
-            every { getPerpetual(any()) } returns flowOf(null)
+            every { getPerpetual(any()) } returns flowOf(perpetualAggregate)
         }
         val getPerpetualBalance = mockk<GetPerpetualBalance>(relaxed = true) {
-            every { getBalance(any()) } returns flowOf(null)
+            every { getBalance() } returns flowOf(null)
         }
         return AmountPerpetualProvider(
             params = AmountParams.Perpetual(asset.id, "BTC-PERP", direction),
-            assetsRepository = assetsRepository,
-            tokenRepository = tokenRepository,
-            sessionRepository = sessionRepository,
+            userConfig = userConfig,
+            getAssetInfo = getAssetInfo,
             getPerpetual = getPerpetual,
             getPerpetualBalance = getPerpetualBalance,
             scope = CoroutineScope(Dispatchers.Unconfined + SupervisorJob()),
