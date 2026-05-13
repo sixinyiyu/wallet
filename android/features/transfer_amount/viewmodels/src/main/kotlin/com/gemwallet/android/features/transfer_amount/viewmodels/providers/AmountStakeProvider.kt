@@ -8,6 +8,7 @@ import com.gemwallet.android.application.stake.coordinators.GetStakeValidator
 import com.gemwallet.android.data.repositories.transactions.TransactionBalanceService
 import com.gemwallet.android.domains.stake.hasRewards
 import com.gemwallet.android.ext.byChain
+import com.gemwallet.android.ext.changeAmountOnUnstake
 import com.gemwallet.android.ext.freezed
 import com.gemwallet.android.features.transfer_amount.models.AmountError
 import com.gemwallet.android.features.transfer_amount.models.ValidatorsSource
@@ -58,9 +59,9 @@ class AmountStakeProvider(
     override val canChangeValue: Boolean = when (params) {
         is AmountParams.Stake.Delegate,
         is AmountParams.Stake.Redelegate,
-        is AmountParams.Stake.Undelegate,
         is AmountParams.Stake.Freeze,
         is AmountParams.Stake.Unfreeze -> true
+        is AmountParams.Stake.Undelegate -> params.assetId.chain.changeAmountOnUnstake
         is AmountParams.Stake.Withdraw,
         is AmountParams.Stake.Rewards -> false
     }
