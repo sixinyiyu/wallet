@@ -107,8 +107,9 @@ class TransactionsRepositoryImpl(
     }
 
     private suspend fun updateTransaction(transactions: List<DbTransactionExtended>) = withContext(Dispatchers.IO) {
-        val data = transactions.mapNotNull { it.toDTO()?.transaction?.toRecord(it.transaction.walletId) }
-        transactionsDao.insert(data)
+        val dtoPairs = transactions.mapNotNull { db -> db.toDTO()?.transaction?.let { it to db.transaction.walletId } }
+        transactionsDao.insert(dtoPairs.map { (tx, walletId) -> tx.toRecord(walletId) })
+        addSwapMetadata(dtoPairs.map { it.first })
     }
 
     override suspend fun clearPending() {
