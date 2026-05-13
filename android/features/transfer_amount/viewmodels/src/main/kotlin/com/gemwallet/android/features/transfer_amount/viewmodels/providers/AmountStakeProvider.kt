@@ -15,6 +15,7 @@ import com.gemwallet.android.model.ConfirmParams
 import com.gemwallet.android.model.Crypto
 import com.wallet.core.primitives.Delegation
 import com.wallet.core.primitives.DelegationValidator
+import com.wallet.core.primitives.Resource
 import com.wallet.core.primitives.StakeChain
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +23,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
@@ -35,7 +37,7 @@ import java.math.BigInteger
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class AmountStakeProvider(
-    private val params: AmountParams.Stake,
+    val params: AmountParams.Stake,
     assetsRepository: AssetsRepository,
     private val stakeRepository: StakeRepository,
     private val transactionBalanceService: TransactionBalanceService,
@@ -45,10 +47,14 @@ class AmountStakeProvider(
     override val title: AmountTitle = AmountTitle.Stake(params)
     override val canSwitchInputType: Boolean = false
 
+    private val stakeConfig by lazy { Config().getStakeConfig(params.assetId.chain.string) }
+
     override val canChangeValue: Boolean = when (params) {
         is AmountParams.Stake.Delegate,
         is AmountParams.Stake.Redelegate,
-        is AmountParams.Stake.Undelegate -> true
+        is AmountParams.Stake.Undelegate,
+        is AmountParams.Stake.Freeze,
+        is AmountParams.Stake.Unfreeze -> true
         is AmountParams.Stake.Withdraw,
         is AmountParams.Stake.Rewards -> false
     }
@@ -61,23 +67,28 @@ class AmountStakeProvider(
     override val minimumValue: BigInteger
         get() = when (params) {
             is AmountParams.Stake.Delegate,
-            is AmountParams.Stake.Redelegate ->
-                BigInteger.valueOf(Config().getStakeConfig(params.assetId.chain.string).minAmount.toLong())
+            is AmountParams.Stake.Redelegate,
+            is AmountParams.Stake.Freeze ->
+                BigInteger.valueOf(stakeConfig.minAmount.toLong())
             is AmountParams.Stake.Undelegate,
             is AmountParams.Stake.Withdraw,
-            is AmountParams.Stake.Rewards -> BigInteger.ZERO
+            is AmountParams.Stake.Rewards,
+            is AmountParams.Stake.Unfreeze -> BigInteger.ZERO
         }
 
     override val reserveForFee: BigInteger
         get() = when (params) {
             is AmountParams.Stake.Delegate -> when (StakeChain.byChain(params.assetId.chain)?.freezed()) {
                 true -> BigInteger.ZERO
-                else -> BigInteger.valueOf(Config().getStakeConfig(params.assetId.chain.string).reservedForFees.toLong())
+                else -> BigInteger.valueOf(stakeConfig.reservedForFees.toLong())
             }
+            is AmountParams.Stake.Freeze ->
+                BigInteger.valueOf(stakeConfig.reservedForFees.toLong())
             is AmountParams.Stake.Undelegate,
             is AmountParams.Stake.Redelegate,
             is AmountParams.Stake.Withdraw,
-            is AmountParams.Stake.Rewards -> BigInteger.ZERO
+            is AmountParams.Stake.Rewards,
+            is AmountParams.Stake.Unfreeze -> BigInteger.ZERO
         }
 
     override val assetInfo: StateFlow<AssetInfo?> =
@@ -92,6 +103,19 @@ class AmountStakeProvider(
             else -> null
         }
     )
+
+    private val selectedResource = MutableStateFlow(
+        when (params) {
+            is AmountParams.Stake.Freeze -> params.resource
+            is AmountParams.Stake.Unfreeze -> params.resource
+            else -> Resource.Bandwidth
+        }
+    )
+    val resource: StateFlow<Resource> = selectedResource.asStateFlow()
+
+    fun setResource(value: Resource) {
+        selectedResource.update { value }
+    }
 
     private val delegation: StateFlow<Delegation?> = run {
         val source = when (params) {
@@ -138,7 +162,11 @@ class AmountStakeProvider(
         when (params) {
             is AmountParams.Stake.Rewards ->
                 current?.owner?.address?.let { ValidatorsSource.Rewards(params.assetId, it) }
-            else -> ValidatorsSource.ChainValidators(chain = params.assetId.chain)
+            is AmountParams.Stake.Freeze, is AmountParams.Stake.Unfreeze -> null
+            is AmountParams.Stake.Delegate,
+            is AmountParams.Stake.Redelegate,
+            is AmountParams.Stake.Undelegate,
+            is AmountParams.Stake.Withdraw -> ValidatorsSource.ChainValidators(chain = params.assetId.chain)
         }
     }.stateIn(scope, SharingStarted.Eagerly, null)
 
@@ -147,7 +175,9 @@ class AmountStakeProvider(
         is AmountParams.Stake.Redelegate,
         is AmountParams.Stake.Rewards -> true
         is AmountParams.Stake.Undelegate,
-        is AmountParams.Stake.Withdraw -> false
+        is AmountParams.Stake.Withdraw,
+        is AmountParams.Stake.Freeze,
+        is AmountParams.Stake.Unfreeze -> false
     }
 
     fun selectValidator(id: String?) {
@@ -155,18 +185,21 @@ class AmountStakeProvider(
     }
 
     override val availableBalance: StateFlow<BigInteger> =
-        combine(assetInfo.filterNotNull(), delegation) { current, currentDelegation -> current to currentDelegation }
-            .mapLatest { (current, currentDelegation) ->
-                transactionBalanceService.getBalance(current, params, delegation = currentDelegation)
-            }
+        combine(assetInfo.filterNotNull(), delegation, selectedResource) { current, currentDelegation, currentResource ->
+            transactionBalanceService.getBalance(current, params, delegation = currentDelegation, resource = currentResource)
+        }
             .flowOn(Dispatchers.IO)
             .stateIn(scope, SharingStarted.Eagerly, BigInteger.ZERO)
 
     override fun shouldReserveFee(isMaxAmount: Boolean): Boolean {
         if (!isMaxAmount || reserveForFee.signum() == 0) return false
-        if (params !is AmountParams.Stake.Delegate) return false
-        val maxAfterFee = (availableBalance.value - reserveForFee).max(BigInteger.ZERO)
-        return maxAfterFee > minimumValue
+        return when (params) {
+            is AmountParams.Stake.Delegate, is AmountParams.Stake.Freeze -> {
+                val maxAfterFee = (availableBalance.value - reserveForFee).max(BigInteger.ZERO)
+                maxAfterFee > minimumValue
+            }
+            else -> false
+        }
     }
 
     override suspend fun buildConfirmParams(amount: Crypto, isMax: Boolean): ConfirmParams {
@@ -174,28 +207,20 @@ class AmountStakeProvider(
         val owner = current.owner ?: error("owner missing")
         val builder = ConfirmParams.Builder(current.asset, owner, amount.atomicValue, isMax)
         return when (params) {
-            is AmountParams.Stake.Delegate -> {
-                val validator = validatorState.value ?: throw AmountError.NoValidatorSelected
-                builder.delegate(validator)
-            }
-            is AmountParams.Stake.Redelegate -> {
-                val validator = validatorState.value ?: throw AmountError.NoValidatorSelected
-                val currentDelegation = delegation.value ?: throw AmountError.NoDelegationSelected
-                builder.redelegate(validator, currentDelegation)
-            }
-            is AmountParams.Stake.Undelegate -> {
-                val currentDelegation = delegation.value ?: throw AmountError.NoDelegationSelected
-                builder.undelegate(currentDelegation)
-            }
-            is AmountParams.Stake.Withdraw -> {
-                val currentDelegation = delegation.value ?: throw AmountError.NoDelegationSelected
-                builder.withdraw(currentDelegation)
-            }
-            is AmountParams.Stake.Rewards -> {
-                val validator = validatorState.value ?: throw AmountError.NoValidatorSelected
-                builder.rewards(listOf(validator))
-            }
+            is AmountParams.Stake.Delegate -> builder.delegate(currentValidator)
+            is AmountParams.Stake.Redelegate -> builder.redelegate(currentValidator, currentDelegation)
+            is AmountParams.Stake.Undelegate -> builder.undelegate(currentDelegation)
+            is AmountParams.Stake.Withdraw -> builder.withdraw(currentDelegation)
+            is AmountParams.Stake.Rewards -> builder.rewards(listOf(currentValidator))
+            is AmountParams.Stake.Freeze -> builder.freeze(selectedResource.value)
+            is AmountParams.Stake.Unfreeze -> builder.unfreeze(selectedResource.value)
         }
     }
+
+    private val currentValidator: DelegationValidator
+        get() = validatorState.value ?: throw AmountError.NoValidatorSelected
+
+    private val currentDelegation: Delegation
+        get() = delegation.value ?: throw AmountError.NoDelegationSelected
 
 }

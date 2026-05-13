@@ -11,6 +11,7 @@ import com.gemwallet.android.testkit.mockAssetCosmos
 import com.gemwallet.android.testkit.mockAssetInfo
 import com.gemwallet.android.testkit.mockDelegation
 import com.gemwallet.android.testkit.mockDelegationValidator
+import com.wallet.core.primitives.Resource
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -130,5 +131,49 @@ class AmountStakeProviderTest {
         assertEquals(true, makeProvider(AmountParams.Stake.Rewards(asset.id)).canSelectValidator)
         assertEquals(false, makeProvider(AmountParams.Stake.Undelegate(asset.id, "v", "d")).canSelectValidator)
         assertEquals(false, makeProvider(AmountParams.Stake.Withdraw(asset.id, "v", "d")).canSelectValidator)
+        assertEquals(false, makeProvider(AmountParams.Stake.Freeze(asset.id, Resource.Bandwidth)).canSelectValidator)
+        assertEquals(false, makeProvider(AmountParams.Stake.Unfreeze(asset.id, Resource.Bandwidth)).canSelectValidator)
+    }
+
+    @Test
+    fun `freeze builds Stake Freeze ConfirmParams with selected resource`() = runBlocking {
+        val provider = makeProvider(AmountParams.Stake.Freeze(asset.id, Resource.Bandwidth))
+        provider.assetInfo.filterNotNull().first()
+        provider.setResource(Resource.Bandwidth)
+        val confirm = provider.buildConfirmParams(Crypto(BigInteger.ONE), isMax = false)
+        assertTrue(confirm is ConfirmParams.Stake.Freeze)
+        assertEquals(Resource.Bandwidth, (confirm as ConfirmParams.Stake.Freeze).resource)
+    }
+
+    @Test
+    fun `unfreeze builds Stake Unfreeze ConfirmParams`() = runBlocking {
+        val provider = makeProvider(AmountParams.Stake.Unfreeze(asset.id, Resource.Energy))
+        provider.assetInfo.filterNotNull().first()
+        provider.setResource(Resource.Energy)
+        val confirm = provider.buildConfirmParams(Crypto(BigInteger.ONE), isMax = false)
+        assertTrue(confirm is ConfirmParams.Stake.Unfreeze)
+    }
+
+    @Test
+    fun `unfreeze has zero minimum and zero reserve`() {
+        val provider = makeProvider(AmountParams.Stake.Unfreeze(asset.id, Resource.Bandwidth))
+        assertEquals(BigInteger.ZERO, provider.minimumValue)
+        assertEquals(BigInteger.ZERO, provider.reserveForFee)
+    }
+
+    @Test
+    fun `unfreeze availableBalance reflects live resource selection`() = runBlocking {
+        coEvery {
+            balanceService.getBalance(any(), any<AmountParams>(), any(), resource = Resource.Bandwidth)
+        } returns BigInteger("2000")
+        coEvery {
+            balanceService.getBalance(any(), any<AmountParams>(), any(), resource = Resource.Energy)
+        } returns BigInteger("3000")
+
+        val provider = makeProvider(AmountParams.Stake.Unfreeze(asset.id, Resource.Bandwidth))
+        assertEquals(BigInteger("2000"), provider.availableBalance.filterNotNull().first { it != BigInteger.ZERO })
+
+        provider.setResource(Resource.Energy)
+        assertEquals(BigInteger("3000"), provider.availableBalance.filterNotNull().first { it == BigInteger("3000") })
     }
 }

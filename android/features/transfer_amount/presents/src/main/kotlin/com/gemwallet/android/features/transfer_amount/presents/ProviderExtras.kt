@@ -12,10 +12,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.gemwallet.android.features.transfer_amount.presents.dialogs.SelectLeverageDialog
 import com.gemwallet.android.features.transfer_amount.viewmodels.providers.AmountDataProvider
-import com.gemwallet.android.features.transfer_amount.viewmodels.providers.AmountFreezeProvider
 import com.gemwallet.android.features.transfer_amount.viewmodels.providers.AmountPerpetualProvider
 import com.gemwallet.android.features.transfer_amount.viewmodels.providers.AmountStakeProvider
 import com.gemwallet.android.features.transfer_amount.viewmodels.providers.AmountTransferProvider
+import com.gemwallet.android.model.AmountParams
 import com.gemwallet.android.ui.R
 import com.gemwallet.android.ui.components.TabsBar
 import com.gemwallet.android.ui.components.clickable
@@ -35,11 +35,22 @@ fun ProviderExtras(
 ) {
     Column {
         when (provider) {
-            is AmountStakeProvider -> StakeValidatorSection(provider, onPickValidator)
-            is AmountFreezeProvider -> FreezeResourceSection(provider)
+            is AmountStakeProvider -> StakeProviderSection(provider, onPickValidator)
             is AmountPerpetualProvider -> PerpetualLeverageSection(provider)
             is AmountTransferProvider -> Unit
         }
+    }
+}
+
+@Composable
+private fun StakeProviderSection(provider: AmountStakeProvider, onPickValidator: () -> Unit) {
+    when (provider.params) {
+        is AmountParams.Stake.Freeze, is AmountParams.Stake.Unfreeze -> StakeResourceSection(provider)
+        is AmountParams.Stake.Delegate,
+        is AmountParams.Stake.Undelegate,
+        is AmountParams.Stake.Redelegate,
+        is AmountParams.Stake.Withdraw,
+        is AmountParams.Stake.Rewards -> StakeValidatorSection(provider, onPickValidator)
     }
 }
 
@@ -57,7 +68,7 @@ private fun StakeValidatorSection(provider: AmountStakeProvider, onPickValidator
 }
 
 @Composable
-private fun FreezeResourceSection(provider: AmountFreezeProvider) {
+private fun StakeResourceSection(provider: AmountStakeProvider) {
     val resource by provider.resource.collectAsStateWithLifecycle()
     TabsBar(
         tabs = listOf(Resource.Bandwidth, Resource.Energy),

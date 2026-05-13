@@ -34,12 +34,6 @@ class AmountProviderFactory @Inject constructor(
             transactionBalanceService = transactionBalanceService,
             scope = scope,
         )
-        is AmountParams.Freeze -> AmountFreezeProvider(
-            params = params,
-            assetsRepository = assetsRepository,
-            transactionBalanceService = transactionBalanceService,
-            scope = scope,
-        )
         is AmountParams.Perpetual -> AmountPerpetualProvider(
             params = params,
             userConfig = userConfig,

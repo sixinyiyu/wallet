@@ -16,10 +16,8 @@ fun AmountTitle.asString(): String = when (this) {
         is AmountParams.Stake.Redelegate -> R.string.transfer_redelegate_title
         is AmountParams.Stake.Withdraw -> R.string.transfer_withdraw_title
         is AmountParams.Stake.Rewards -> R.string.transfer_rewards_title
-    })
-    is AmountTitle.Freeze -> stringResource(when (direction) {
-        AmountParams.Freeze.Direction.Freeze -> R.string.transfer_freeze_title
-        AmountParams.Freeze.Direction.Unfreeze -> R.string.transfer_unfreeze_title
+        is AmountParams.Stake.Freeze -> R.string.transfer_freeze_title
+        is AmountParams.Stake.Unfreeze -> R.string.transfer_unfreeze_title
     })
     is AmountTitle.Perpetual -> stringResource(when (direction) {
         PerpetualDirection.Short -> R.string.perpetual_short

@@ -5,6 +5,7 @@ import com.gemwallet.android.ext.urlEncode
 import com.gemwallet.android.serializer.jsonEncoder
 import com.wallet.core.primitives.AssetId
 import com.wallet.core.primitives.PerpetualDirection
+import com.wallet.core.primitives.Resource
 import com.wallet.core.primitives.TransactionType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -74,20 +75,21 @@ sealed interface AmountParams {
         ) : Stake {
             override val transactionType: TransactionType get() = TransactionType.StakeRewards
         }
-    }
 
-    @Serializable
-    @SerialName("freeze")
-    data class Freeze(
-        override val assetId: AssetId,
-        val direction: Direction,
-    ) : AmountParams {
-        @Serializable
-        enum class Direction { Freeze, Unfreeze }
+        @Serializable @SerialName("stake.freeze")
+        data class Freeze(
+            override val assetId: AssetId,
+            val resource: Resource,
+        ) : Stake {
+            override val transactionType: TransactionType get() = TransactionType.StakeFreeze
+        }
 
-        override val transactionType: TransactionType get() = when (direction) {
-            Direction.Freeze -> TransactionType.StakeFreeze
-            Direction.Unfreeze -> TransactionType.StakeUnfreeze
+        @Serializable @SerialName("stake.unfreeze")
+        data class Unfreeze(
+            override val assetId: AssetId,
+            val resource: Resource,
+        ) : Stake {
+            override val transactionType: TransactionType get() = TransactionType.StakeUnfreeze
         }
     }
 

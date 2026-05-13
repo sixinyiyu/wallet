@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.ui.Modifier
 import com.gemwallet.android.model.AmountParams
 import com.gemwallet.android.ui.R
+import com.wallet.core.primitives.Resource
 import com.gemwallet.android.ui.components.list_item.SubheaderItem
 import com.gemwallet.android.ui.components.list_item.property.DataBadgeChevron
 import com.gemwallet.android.ui.components.list_item.property.PropertyDataText
@@ -40,10 +41,10 @@ internal fun LazyListScope.stakeActions(
                 { amountAction(AmountParams.Stake.Delegate(assetId)) }
             }
             StakeAction.Freeze -> {
-                { amountAction(AmountParams.Freeze(assetId, AmountParams.Freeze.Direction.Freeze)) }
+                { amountAction(AmountParams.Stake.Freeze(assetId, Resource.Bandwidth)) }
             }
             StakeAction.Unfreeze -> {
-                { amountAction(AmountParams.Freeze(assetId, AmountParams.Freeze.Direction.Unfreeze)) }
+                { amountAction(AmountParams.Stake.Unfreeze(assetId, Resource.Bandwidth)) }
             }
             is StakeAction.Rewards -> onRewards
         }
