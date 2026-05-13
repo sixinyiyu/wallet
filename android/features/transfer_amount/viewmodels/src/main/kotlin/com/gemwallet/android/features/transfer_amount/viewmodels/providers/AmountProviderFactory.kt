@@ -3,7 +3,6 @@ package com.gemwallet.android.features.transfer_amount.viewmodels.providers
 import com.gemwallet.android.application.assets.coordinators.GetAssetInfo
 import com.gemwallet.android.application.perpetual.coordinators.GetPerpetual
 import com.gemwallet.android.application.perpetual.coordinators.GetPerpetualBalance
-import com.gemwallet.android.data.repositories.assets.AssetsRepository
 import com.gemwallet.android.data.repositories.config.UserConfig
 import com.gemwallet.android.data.repositories.stake.StakeRepository
 import com.gemwallet.android.data.repositories.transactions.TransactionBalanceService
@@ -12,7 +11,6 @@ import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
 
 class AmountProviderFactory @Inject constructor(
-    private val assetsRepository: AssetsRepository,
     private val stakeRepository: StakeRepository,
     private val transactionBalanceService: TransactionBalanceService,
     private val getAssetInfo: GetAssetInfo,
@@ -23,13 +21,13 @@ class AmountProviderFactory @Inject constructor(
     fun create(params: AmountParams, scope: CoroutineScope): AmountDataProvider = when (params) {
         is AmountParams.Transfer -> AmountTransferProvider(
             params = params,
-            assetsRepository = assetsRepository,
+            getAssetInfo = getAssetInfo,
             transactionBalanceService = transactionBalanceService,
             scope = scope,
         )
         is AmountParams.Stake -> AmountStakeProvider(
             params = params,
-            assetsRepository = assetsRepository,
+            getAssetInfo = getAssetInfo,
             stakeRepository = stakeRepository,
             transactionBalanceService = transactionBalanceService,
             scope = scope,

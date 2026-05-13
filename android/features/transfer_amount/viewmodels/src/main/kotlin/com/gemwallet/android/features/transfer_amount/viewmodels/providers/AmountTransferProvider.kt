@@ -1,6 +1,6 @@
 package com.gemwallet.android.features.transfer_amount.viewmodels.providers
 
-import com.gemwallet.android.data.repositories.assets.AssetsRepository
+import com.gemwallet.android.application.assets.coordinators.GetAssetInfo
 import com.gemwallet.android.data.repositories.transactions.TransactionBalanceService
 import com.gemwallet.android.features.transfer_amount.viewmodels.AmountTitle
 import com.gemwallet.android.model.AmountParams
@@ -21,7 +21,7 @@ import java.math.BigInteger
 @OptIn(ExperimentalCoroutinesApi::class)
 class AmountTransferProvider(
     private val params: AmountParams.Transfer,
-    assetsRepository: AssetsRepository,
+    getAssetInfo: GetAssetInfo,
     private val transactionBalanceService: TransactionBalanceService,
     scope: CoroutineScope,
 ) : AmountDataProvider {
@@ -33,7 +33,7 @@ class AmountTransferProvider(
     override val reserveForFee: BigInteger = BigInteger.ZERO
 
     override val assetInfo: StateFlow<AssetInfo?> =
-        assetsRepository.getAssetInfo(params.assetId)
+        getAssetInfo(params.assetId)
             .flowOn(Dispatchers.IO)
             .stateIn(scope, SharingStarted.Eagerly, null)
 
