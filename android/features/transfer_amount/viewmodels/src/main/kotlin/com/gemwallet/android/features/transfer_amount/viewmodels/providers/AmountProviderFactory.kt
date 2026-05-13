@@ -3,17 +3,23 @@ package com.gemwallet.android.features.transfer_amount.viewmodels.providers
 import com.gemwallet.android.application.assets.coordinators.GetAssetInfo
 import com.gemwallet.android.application.perpetual.coordinators.GetPerpetual
 import com.gemwallet.android.application.perpetual.coordinators.GetPerpetualBalance
+import com.gemwallet.android.application.stake.coordinators.GetDelegation
+import com.gemwallet.android.application.stake.coordinators.GetDelegations
+import com.gemwallet.android.application.stake.coordinators.GetRecommendedValidator
+import com.gemwallet.android.application.stake.coordinators.GetStakeValidator
 import com.gemwallet.android.data.repositories.config.UserConfig
-import com.gemwallet.android.data.repositories.stake.StakeRepository
 import com.gemwallet.android.data.repositories.transactions.TransactionBalanceService
 import com.gemwallet.android.model.AmountParams
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
 
 class AmountProviderFactory @Inject constructor(
-    private val stakeRepository: StakeRepository,
     private val transactionBalanceService: TransactionBalanceService,
     private val getAssetInfo: GetAssetInfo,
+    private val getDelegation: GetDelegation,
+    private val getDelegations: GetDelegations,
+    private val getRecommendedValidator: GetRecommendedValidator,
+    private val getStakeValidator: GetStakeValidator,
     private val getPerpetual: GetPerpetual,
     private val getPerpetualBalance: GetPerpetualBalance,
     private val userConfig: UserConfig,
@@ -28,7 +34,10 @@ class AmountProviderFactory @Inject constructor(
         is AmountParams.Stake -> AmountStakeProvider(
             params = params,
             getAssetInfo = getAssetInfo,
-            stakeRepository = stakeRepository,
+            getDelegation = getDelegation,
+            getDelegations = getDelegations,
+            getRecommendedValidator = getRecommendedValidator,
+            getStakeValidator = getStakeValidator,
             transactionBalanceService = transactionBalanceService,
             scope = scope,
         )

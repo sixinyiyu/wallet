@@ -1,7 +1,10 @@
 package com.gemwallet.android.features.transfer_amount.viewmodels.providers
 
-import com.gemwallet.android.data.repositories.assets.AssetsRepository
-import com.gemwallet.android.data.repositories.stake.StakeRepository
+import com.gemwallet.android.application.assets.coordinators.GetAssetInfo
+import com.gemwallet.android.application.stake.coordinators.GetDelegation
+import com.gemwallet.android.application.stake.coordinators.GetDelegations
+import com.gemwallet.android.application.stake.coordinators.GetRecommendedValidator
+import com.gemwallet.android.application.stake.coordinators.GetStakeValidator
 import com.gemwallet.android.data.repositories.transactions.TransactionBalanceService
 import com.gemwallet.android.features.transfer_amount.models.AmountError
 import com.gemwallet.android.model.AmountParams
@@ -41,14 +44,20 @@ class AmountStakeProviderTest {
         delegationId = "d1",
     )
 
-    private val assetsRepository = mockk<AssetsRepository> {
-        every { getAssetInfo(asset.id) } returns flowOf(assetInfo)
+    private val getAssetInfo = mockk<GetAssetInfo> {
+        every { this@mockk.invoke(asset.id) } returns flowOf(assetInfo)
     }
-    private val stakeRepository = mockk<StakeRepository> {
-        every { getDelegation(any(), any()) } returns flowOf(delegation)
-        coEvery { getStakeValidator(asset.id, "v1") } returns validator
-        every { getDelegations(any(), any()) } returns flowOf(listOf(delegation))
-        every { getRecommended(any()) } returns flowOf(null)
+    private val getDelegation = mockk<GetDelegation> {
+        every { this@mockk.invoke(any(), any()) } returns flowOf(delegation)
+    }
+    private val getDelegations = mockk<GetDelegations> {
+        every { this@mockk.invoke(any(), any()) } returns flowOf(listOf(delegation))
+    }
+    private val getRecommendedValidator = mockk<GetRecommendedValidator> {
+        every { this@mockk.invoke(any()) } returns flowOf(null)
+    }
+    private val getStakeValidator = mockk<GetStakeValidator> {
+        coEvery { this@mockk.invoke(asset.id, "v1") } returns validator
     }
     private val balanceService = mockk<TransactionBalanceService> {
         coEvery { getBalance(any(), any<AmountParams>(), any(), any()) } returns BigInteger("100")
@@ -57,8 +66,11 @@ class AmountStakeProviderTest {
 
     private fun makeProvider(params: AmountParams.Stake) = AmountStakeProvider(
         params = params,
-        assetsRepository = assetsRepository,
-        stakeRepository = stakeRepository,
+        getAssetInfo = getAssetInfo,
+        getDelegation = getDelegation,
+        getDelegations = getDelegations,
+        getRecommendedValidator = getRecommendedValidator,
+        getStakeValidator = getStakeValidator,
         transactionBalanceService = balanceService,
         scope = scope,
     )
@@ -73,8 +85,8 @@ class AmountStakeProviderTest {
 
     @Test
     fun `delegate without validator throws NoValidatorSelected`() = runBlocking {
-        coEvery { stakeRepository.getStakeValidator(any(), any()) } returns null
-        every { stakeRepository.getDelegation(any(), any()) } returns flowOf(null)
+        coEvery { getStakeValidator(any(), any()) } returns null
+        every { getDelegation(any(), any()) } returns flowOf(null)
         val provider = makeProvider(AmountParams.Stake.Delegate(asset.id, validatorId = null))
         provider.assetInfo.filterNotNull().first()
         assertThrows(AmountError.NoValidatorSelected::class.java) {

@@ -1,7 +1,10 @@
 package com.gemwallet.android.features.transfer_amount.viewmodels.providers
 
 import com.gemwallet.android.application.assets.coordinators.GetAssetInfo
-import com.gemwallet.android.data.repositories.stake.StakeRepository
+import com.gemwallet.android.application.stake.coordinators.GetDelegation
+import com.gemwallet.android.application.stake.coordinators.GetDelegations
+import com.gemwallet.android.application.stake.coordinators.GetRecommendedValidator
+import com.gemwallet.android.application.stake.coordinators.GetStakeValidator
 import com.gemwallet.android.data.repositories.transactions.TransactionBalanceService
 import com.gemwallet.android.domains.stake.hasRewards
 import com.gemwallet.android.ext.byChain
@@ -39,7 +42,10 @@ import java.math.BigInteger
 class AmountStakeProvider(
     val params: AmountParams.Stake,
     getAssetInfo: GetAssetInfo,
-    private val stakeRepository: StakeRepository,
+    private val getDelegation: GetDelegation,
+    private val getDelegations: GetDelegations,
+    private val getRecommendedValidator: GetRecommendedValidator,
+    private val getStakeValidator: GetStakeValidator,
     private val transactionBalanceService: TransactionBalanceService,
     scope: CoroutineScope,
 ) : AmountDataProvider {
@@ -120,15 +126,15 @@ class AmountStakeProvider(
     private val delegation: StateFlow<Delegation?> = run {
         val source = when (params) {
             is AmountParams.Stake.Undelegate ->
-                stakeRepository.getDelegation(validatorId = params.validatorId, delegationId = params.delegationId)
+                getDelegation(validatorId = params.validatorId, delegationId = params.delegationId)
             is AmountParams.Stake.Redelegate ->
-                stakeRepository.getDelegation(validatorId = params.validatorId, delegationId = params.delegationId)
+                getDelegation(validatorId = params.validatorId, delegationId = params.delegationId)
             is AmountParams.Stake.Withdraw ->
-                stakeRepository.getDelegation(validatorId = params.validatorId, delegationId = params.delegationId)
+                getDelegation(validatorId = params.validatorId, delegationId = params.delegationId)
             is AmountParams.Stake.Rewards -> {
                 val rewardsList = assetInfo.filterNotNull().flatMapLatest { current ->
                     val owner = current.owner?.address ?: return@flatMapLatest flowOf<List<Delegation>>(emptyList())
-                    stakeRepository.getDelegations(current.asset.id, owner)
+                    getDelegations(current.asset.id, owner)
                 }
                 combine(rewardsList, selectedValidatorId) { delegations, pickedId ->
                     val withRewards = delegations.filter { it.hasRewards() }
@@ -142,7 +148,7 @@ class AmountStakeProvider(
 
     private val recommendedValidator: StateFlow<DelegationValidator?> = when (params) {
         is AmountParams.Stake.Delegate,
-        is AmountParams.Stake.Redelegate -> stakeRepository.getRecommended(params.assetId.chain)
+        is AmountParams.Stake.Redelegate -> getRecommendedValidator(params.assetId.chain)
             .flowOn(Dispatchers.IO)
             .stateIn(scope, SharingStarted.Eagerly, null)
         else -> MutableStateFlow(null)
@@ -151,7 +157,7 @@ class AmountStakeProvider(
     val validatorState: StateFlow<DelegationValidator?> =
         combine(assetInfo, delegation, selectedValidatorId, recommendedValidator) { current, currentDelegation, pickedId, recommended ->
             val byId = if (current != null && pickedId != null) {
-                stakeRepository.getStakeValidator(current.asset.id, pickedId)
+                getStakeValidator(current.asset.id, pickedId)
             } else {
                 null
             }

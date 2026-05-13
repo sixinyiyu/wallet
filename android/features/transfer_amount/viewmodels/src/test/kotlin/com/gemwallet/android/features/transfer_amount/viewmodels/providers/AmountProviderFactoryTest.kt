@@ -3,10 +3,11 @@ package com.gemwallet.android.features.transfer_amount.viewmodels.providers
 import com.gemwallet.android.application.assets.coordinators.GetAssetInfo
 import com.gemwallet.android.application.perpetual.coordinators.GetPerpetual
 import com.gemwallet.android.application.perpetual.coordinators.GetPerpetualBalance
-import com.gemwallet.android.data.repositories.assets.AssetsRepository
+import com.gemwallet.android.application.stake.coordinators.GetDelegation
+import com.gemwallet.android.application.stake.coordinators.GetDelegations
+import com.gemwallet.android.application.stake.coordinators.GetRecommendedValidator
+import com.gemwallet.android.application.stake.coordinators.GetStakeValidator
 import com.gemwallet.android.data.repositories.config.UserConfig
-import com.gemwallet.android.data.repositories.stake.StakeRepository
-import com.gemwallet.android.data.repositories.transactions.TransactionBalanceService
 import com.gemwallet.android.model.AmountParams
 import com.gemwallet.android.model.DestinationAddress
 import com.gemwallet.android.testkit.mockAssetCosmos
@@ -25,14 +26,20 @@ class AmountProviderFactoryTest {
 
     private val asset = mockAssetCosmos()
     private val factory = AmountProviderFactory(
-        assetsRepository = mockk<AssetsRepository>(relaxed = true) {
-            every { getAssetInfo(any()) } returns flowOf(null)
-        },
-        stakeRepository = mockk(relaxed = true),
         transactionBalanceService = mockk(relaxed = true),
         getAssetInfo = mockk<GetAssetInfo>(relaxed = true) {
             every { this@mockk.invoke(any()) } returns flowOf(null)
         },
+        getDelegation = mockk<GetDelegation>(relaxed = true) {
+            every { this@mockk.invoke(any(), any()) } returns flowOf(null)
+        },
+        getDelegations = mockk<GetDelegations>(relaxed = true) {
+            every { this@mockk.invoke(any(), any()) } returns flowOf(emptyList())
+        },
+        getRecommendedValidator = mockk<GetRecommendedValidator>(relaxed = true) {
+            every { this@mockk.invoke(any()) } returns flowOf(null)
+        },
+        getStakeValidator = mockk(relaxed = true),
         getPerpetual = mockk<GetPerpetual>(relaxed = true) {
             every { getPerpetual(any()) } returns flowOf(null)
         },

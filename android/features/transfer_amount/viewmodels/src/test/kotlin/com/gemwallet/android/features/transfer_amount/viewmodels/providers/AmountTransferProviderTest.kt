@@ -1,6 +1,6 @@
 package com.gemwallet.android.features.transfer_amount.viewmodels.providers
 
-import com.gemwallet.android.data.repositories.assets.AssetsRepository
+import com.gemwallet.android.application.assets.coordinators.GetAssetInfo
 import com.gemwallet.android.data.repositories.transactions.TransactionBalanceService
 import com.gemwallet.android.features.transfer_amount.viewmodels.AmountTitle
 import com.gemwallet.android.model.AmountParams
@@ -28,8 +28,8 @@ class AmountTransferProviderTest {
 
     private val asset = mockAssetCosmos()
     private val assetInfo = mockAssetInfo(asset = asset)
-    private val assetsRepository = mockk<AssetsRepository> {
-        every { getAssetInfo(asset.id) } returns flowOf(assetInfo)
+    private val getAssetInfo = mockk<GetAssetInfo> {
+        every { this@mockk.invoke(asset.id) } returns flowOf(assetInfo)
     }
     private val balanceService = mockk<TransactionBalanceService> {
         coEvery { getBalance(any(), any<AmountParams>(), any(), any()) } returns BigInteger("1000000")
@@ -43,7 +43,7 @@ class AmountTransferProviderTest {
 
     private fun makeProvider() = AmountTransferProvider(
         params = params,
-        assetsRepository = assetsRepository,
+        getAssetInfo = getAssetInfo,
         transactionBalanceService = balanceService,
         scope = scope,
     )
