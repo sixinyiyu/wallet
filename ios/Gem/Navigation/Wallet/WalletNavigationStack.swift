@@ -23,6 +23,7 @@ struct WalletNavigationStack: View {
     @Environment(\.assetsEnabler) private var assetsEnabler
     @Environment(\.balanceService) private var balanceService
     @Environment(\.navigationState) private var navigationState
+    @Environment(\.navigationPresenter) private var presenter
     @Environment(\.priceService) private var priceService
     @Environment(\.portfolioService) private var portfolioService
     @Environment(\.priceAlertService) private var priceAlertService
@@ -37,7 +38,6 @@ struct WalletNavigationStack: View {
     @Environment(\.assetSearchService) private var assetSearchService
     @Environment(\.avatarService) private var avatarService
     @Environment(\.nftService) private var nftService
-    @Environment(\.openURL) private var openURL
     @Environment(\.observablePreferences) private var preferences
 
     @State private var model: WalletSceneViewModel
@@ -66,7 +66,7 @@ struct WalletNavigationStack: View {
                             balanceService: balanceService,
                             perpetualService: perpetualService,
                             onDismissSearch: model.onToggleSearch,
-                            onSelectAssetAction: onSelectAsset,
+                            onSelectAssetAction: navigationState.openAsset,
                             onAddToken: model.onSelectAddCustomToken,
                         ),
                     )
@@ -149,7 +149,7 @@ struct WalletNavigationStack: View {
                     observerService: hyperliquidObserverService,
                     activityService: activityService,
                     onSelectAssetType: { model.isPresentingSheet = .selectAsset($0) },
-                    onSelectAsset: { navigationState.wallet.append(Scenes.Perpetual($0)) },
+                    onSelectAsset: navigationState.openAsset,
                     onSelectPortfolio: { model.isPresentingSheet = .portfolio(.perpetuals) },
                 )
             }
@@ -166,7 +166,7 @@ struct WalletNavigationStack: View {
                             tag: destination.tag,
                             limit: AssetsResultsSceneViewModel.defaultLimit,
                         ),
-                        onSelectAsset: onSelectAsset,
+                        onSelectAsset: navigationState.openAsset,
                     ),
                 )
             }
@@ -247,31 +247,24 @@ struct WalletNavigationStack: View {
         }
         .toast(message: $model.isPresentingToastMessage)
     }
-
-    private func onSelectAsset(asset: Asset) {
-        if asset.type == .perpetual {
-            navigationState.wallet.append(Scenes.Perpetual(asset))
-        } else {
-            navigationState.wallet.append(Scenes.Asset(asset: asset))
-        }
-    }
 }
 
 // MARK: - Actions
 
 extension WalletNavigationStack {
     private func onSelectTransactionHeaderAction(_ action: TransactionHeaderAction) {
-        switch action {
-        case let .url(url):
-            openURL(url)
-        case let .nft(assetId):
-            Task {
-                do {
-                    let assetData = try await nftService.getOrFetchAssetData(assetId: assetId)
-                    navigationState.wallet.append(Scenes.Collectible(assetData: assetData))
-                } catch {
-                    model.isPresentingToastMessage = .error(Localized.Errors.errorOccured)
-                }
+        Task {
+            do {
+                try await presenter.handleTransactionHeaderAction(
+                    action,
+                    wallet: model.wallet,
+                    navigationState: navigationState,
+                    assetsService: assetsService,
+                    nftService: nftService,
+                    nftDestination: navigationState.wallet,
+                )
+            } catch {
+                model.isPresentingToastMessage = .error(Localized.Errors.errorOccured)
             }
         }
     }

@@ -1,11 +1,8 @@
 // Copyright (c). Gem Wallet. All rights reserved.
 
 import Components
-import Foundation
-import Localization
 import Primitives
 import PrimitivesComponents
-import SwiftUI
 
 struct TransactionHeaderViewModel {
     private let transaction: TransactionExtended
@@ -38,12 +35,6 @@ struct TransactionHeaderViewModel {
         }
     }
 
-    var headerLink: URL? {
-        guard let swapMetadata = transaction.transaction.metadata?.decode(TransactionSwapMetadata.self) else {
-            return nil
-        }
-        return DeepLink.swap(swapMetadata.fromAsset, swapMetadata.toAsset).localUrl
-    }
 }
 
 // MARK: - ItemModelProvidable

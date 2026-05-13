@@ -1,6 +1,7 @@
 // Copyright (c). Gem Wallet. All rights reserved.
 
 import Components
+import Primitives
 import SwiftUI
 
 @Observable
@@ -59,5 +60,15 @@ extension NavigationStateManager {
         for tabItem in TabItem.allCases {
             backToRoot(tab: tabItem)
         }
+    }
+
+    func openAsset(_ asset: Asset) {
+        if asset.type == .perpetual {
+            wallet.append(Scenes.Perpetual(asset))
+        } else {
+            wallet.append(Scenes.Asset(asset: asset))
+        }
+        selectedTab = .wallet
+        previousSelectedTab = .wallet
     }
 }

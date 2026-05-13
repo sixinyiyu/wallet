@@ -37,7 +37,7 @@ public struct TransactionScene: View {
         case let .header(model):
             TransactionHeaderListItemView(
                 model: model,
-                action: self.model.headerAction,
+                action: self.model.onTransactionHeaderTap,
             )
         case let .participant(model):
             AddressListItemView(model: model.addressViewModel)
@@ -67,7 +67,7 @@ public struct TransactionScene: View {
             let button = StateButton(
                 text: text,
                 type: .primary(.normal),
-                action: model.onSelectTransactionHeader,
+                action: model.onSelectSwapAgain,
             )
             .cleanListRow(topOffset: .zero)
             if #available(iOS 26, *) {

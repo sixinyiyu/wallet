@@ -142,7 +142,7 @@ struct TransactionInfoModelTests {
             direction: nil,
         )
 
-        let header = model.headerType(input: .nft(name: nftAsset.name, id: nftAsset.id))
+        let header = model.headerType(input: .nft(name: nftAsset.name, id: nftAsset.id.identifier))
         guard case let .nft(name, _) = header else {
             Issue.record("Expected header type .nft")
             return
@@ -185,6 +185,8 @@ struct TransactionInfoModelTests {
 
         #expect(fromField.amount.contains(asset.symbol))
         #expect(toField.amount.contains(feeAsset.symbol))
+        #expect(fromField.assetId == asset.id)
+        #expect(toField.assetId == feeAsset.id)
         #expect(fromField.amount == "1.00 BTC")
         #expect(toField.amount == "0.10 BTC")
     }

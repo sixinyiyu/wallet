@@ -18,6 +18,7 @@ import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.scene.Scene
 import androidx.navigation3.ui.NavDisplay
 import com.gemwallet.android.cases.wallet.WalletImportResult
+import com.gemwallet.android.features.activities.presents.details.TransactionDetailsAction
 import com.gemwallet.android.features.asset_select.presents.navigation.assetsManageScreen
 import com.gemwallet.android.features.create_wallet.navigation.createWalletScreen
 import com.gemwallet.android.features.import_wallet.navigation.importWalletScreen
@@ -175,8 +176,15 @@ fun WalletNavGraph(
             )
 
             transactionDetailsScreen(
-                onCancel = onCancel,
-                onNft = navigator::openNftAsset,
+                onAction = {
+                    when (it) {
+                        TransactionDetailsAction.Close -> onCancel()
+                        is TransactionDetailsAction.OpenAsset -> navigator.openAsset(it.assetId)
+                        is TransactionDetailsAction.OpenNft -> navigator.openNftAsset(it.assetId)
+                        is TransactionDetailsAction.OpenPerpetual -> navigator.openPerpetualDetails(it.assetId)
+                        is TransactionDetailsAction.OpenSwap -> navigator.openSwap(it.fromAssetId, it.toAssetId)
+                    }
+                },
             )
 
             bridgesScreen(

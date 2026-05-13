@@ -52,9 +52,9 @@ struct TransactionSceneViewModelTests {
             onHeaderAction: { selectedAction = $0 },
         )
 
-        #expect(model.headerAction != nil)
+        #expect(model.onTransactionHeaderTap != nil)
 
-        model.onSelectTransactionHeader()
+        model.onTransactionHeaderTap?(.header)
 
         #expect(selectedAction == .nft(assetId: assetId))
     }
@@ -72,7 +72,7 @@ struct TransactionSceneViewModelTests {
             preferences: Preferences.standard,
         )
 
-        #expect(model.headerAction == nil)
+        #expect(model.onTransactionHeaderTap == nil)
     }
 
     @Test

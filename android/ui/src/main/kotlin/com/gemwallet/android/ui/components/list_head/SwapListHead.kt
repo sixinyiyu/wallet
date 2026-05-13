@@ -1,5 +1,6 @@
 package com.gemwallet.android.ui.components.list_head
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,8 +25,9 @@ import com.gemwallet.android.ui.components.list_item.listItem
 import com.gemwallet.android.ui.models.ListPosition
 import com.gemwallet.android.ui.theme.Spacer16
 import com.gemwallet.android.ui.theme.compactIconSize
-import com.gemwallet.android.ui.theme.paddingDefault
 import com.gemwallet.android.ui.theme.listItemIconSize
+import com.gemwallet.android.ui.theme.paddingDefault
+import com.wallet.core.primitives.AssetId
 import com.wallet.core.primitives.Currency
 
 @Composable
@@ -35,6 +37,8 @@ fun SwapListHead(
     toAsset: AssetInfo?,
     toValue: String,
     currency: Currency? = null,
+    onSwapClick: (() -> Unit)? = null,
+    onAssetClick: ((AssetId) -> Unit)? = null,
 ) {
     if (fromAsset == null || toAsset == null) {
         return
@@ -47,7 +51,13 @@ fun SwapListHead(
                 .padding(horizontal = ListItemDefaults.contentSpacing, vertical = paddingDefault),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            SwapItem(assetInfo = fromAsset, value = fromValue, currency = currency)
+            SwapItem(
+                assetInfo = fromAsset,
+                value = fromValue,
+                currency = currency,
+                onSwapClick = onSwapClick,
+                onAssetClick = onAssetClick,
+            )
             Box(modifier = Modifier.fillMaxWidth()) {
                 Icon(
                     modifier = Modifier
@@ -58,19 +68,42 @@ fun SwapListHead(
                 )
             }
             Spacer16()
-            SwapItem(assetInfo = toAsset, value = toValue, currency = currency)
+            SwapItem(
+                assetInfo = toAsset,
+                value = toValue,
+                currency = currency,
+                onSwapClick = onSwapClick,
+                onAssetClick = onAssetClick,
+            )
         }
     }
 }
 
 @Composable
-private fun SwapItem(assetInfo: AssetInfo, value: String, currency: Currency?) {
+private fun SwapItem(
+    assetInfo: AssetInfo,
+    value: String,
+    currency: Currency?,
+    onSwapClick: (() -> Unit)?,
+    onAssetClick: ((AssetId) -> Unit)?,
+) {
     val asset = assetInfo.asset
     val decimals = asset.decimals
     Row(
+        modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Column(Modifier.weight(1f)) {
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .then(
+                    if (onSwapClick != null) {
+                        Modifier.clickable { onSwapClick() }
+                    } else {
+                        Modifier
+                    }
+                ),
+        ) {
             Text(
                 text = asset.format(Crypto(value), dynamicPlace = true),
                 style = MaterialTheme.typography.headlineMedium.copy(
@@ -89,6 +122,14 @@ private fun SwapItem(assetInfo: AssetInfo, value: String, currency: Currency?) {
                 )
             }
         }
-        HeaderIcon(asset, listItemIconSize)
+        Box(
+            modifier = if (onAssetClick != null) {
+                Modifier.clickable { onAssetClick(asset.id) }
+            } else {
+                Modifier
+            },
+        ) {
+            HeaderIcon(asset, listItemIconSize)
+        }
     }
 }

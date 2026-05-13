@@ -1,7 +1,12 @@
 // Copyright (c). Gem Wallet. All rights reserved.
 
+import AssetsService
+import Components
+import NFT
+import NFTService
 import Primitives
 import SwiftUI
+import Transactions
 
 @Observable
 final class NavigationPresenter: Sendable {
@@ -24,5 +29,53 @@ extension NavigationPresenter {
 
     var isPresentingSupport: Binding<Bool> {
         Binding(get: { self._isPresentingSupport }, set: { self._isPresentingSupport = $0 })
+    }
+
+    func presentAssetInput(type: SelectedAssetType, for asset: Asset, wallet: Wallet) throws {
+        let account = try wallet.account(for: asset.chain)
+        isPresentingAssetInput.wrappedValue = SelectedAssetInput(
+            type: type,
+            assetAddress: AssetAddress(asset: account.chain.asset, address: account.address),
+        )
+    }
+
+    func presentSwap(
+        from fromAssetId: AssetId,
+        to toAssetId: AssetId?,
+        wallet: Wallet,
+        assetsService: AssetsService,
+    ) async throws {
+        let fromAsset = try await assetsService.getOrFetchAsset(for: fromAssetId)
+        let toAsset: Asset? = if let toAssetId {
+            try await assetsService.getOrFetchAsset(for: toAssetId)
+        } else {
+            nil
+        }
+        try presentAssetInput(type: .swap(fromAsset, toAsset), for: fromAsset, wallet: wallet)
+    }
+
+    func handleTransactionHeaderAction(
+        _ action: TransactionHeaderAction,
+        wallet: Wallet,
+        navigationState: NavigationStateManager,
+        assetsService: AssetsService,
+        nftService: NFTService,
+        nftDestination: NavigationPathState,
+    ) async throws {
+        switch action {
+        case let .asset(assetId), let .perpetual(assetId):
+            let asset = try await assetsService.getOrFetchAsset(for: assetId)
+            navigationState.openAsset(asset)
+        case let .swap(fromAssetId, toAssetId):
+            try await presentSwap(
+                from: fromAssetId,
+                to: toAssetId,
+                wallet: wallet,
+                assetsService: assetsService,
+            )
+        case let .nft(assetId):
+            let assetData = try await nftService.getOrFetchAssetData(assetId: assetId)
+            nftDestination.append(Scenes.Collectible(assetData: assetData))
+        }
     }
 }

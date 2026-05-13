@@ -395,10 +395,11 @@ class AssetsRepository @Inject constructor(
     }
 
     suspend fun updateNativeAssetRanks() = withContext(Dispatchers.IO) {
-        for (chain in Chain.available()) {
-            val assetBasic = chain.asset().defaultBasic
-            runCatching { assetsDao.updateAssetRank(assetBasic.asset.id.toIdentifier(), assetBasic.score.rank) }
-                .onFailure { Log.e(TAG, "Failed to update native asset rank for ${assetBasic.asset.id}", it) }
+        val basics = Chain.available().map { it.asset().defaultBasic }
+        assetsDao.insert(basics.map { it.toRecord() })
+        for (basic in basics) {
+            runCatching { assetsDao.updateAssetRank(basic.asset.id.toIdentifier(), basic.score.rank) }
+                .onFailure { Log.e(TAG, "Failed to update native asset rank for ${basic.asset.id}", it) }
         }
     }
 

@@ -54,9 +54,11 @@ struct AssetDiscoveryServiceTests {
             metadata: nil,
             createdAt: .now,
         )
+        let collectionOneId = NFTCollectionId(chain: .ethereum, contractAddress: "collection-1")
+        let assetOneId = NFTAssetId(chain: .ethereum, contractAddress: "collection-1", tokenId: "nft-1")
         let initialNFT = NFTData(
-            collection: .mock(id: "collection-1", chain: .ethereum),
-            assets: [.mock(id: "nft-1", collectionId: "collection-1", chain: .ethereum)],
+            collection: .mock(id: collectionOneId, chain: .ethereum),
+            assets: [.mock(id: assetOneId, collectionId: collectionOneId, chain: .ethereum)],
         )
         let transactionProvider = GemAPITransactionServiceMock(
             walletTransactionsResponse: TransactionsResponse(transactions: [initialTransaction], addressNames: []),
@@ -110,9 +112,11 @@ struct AssetDiscoveryServiceTests {
             metadata: nil,
             createdAt: .now,
         )
+        let collectionTwoId = NFTCollectionId(chain: .ethereum, contractAddress: "collection-2")
+        let assetTwoId = NFTAssetId(chain: .ethereum, contractAddress: "collection-2", tokenId: "nft-2")
         let nextNFT = NFTData(
-            collection: .mock(id: "collection-2", chain: .ethereum),
-            assets: [.mock(id: "nft-2", collectionId: "collection-2", chain: .ethereum)],
+            collection: .mock(id: collectionTwoId, chain: .ethereum),
+            assets: [.mock(id: assetTwoId, collectionId: collectionTwoId, chain: .ethereum)],
         )
 
         transactionProvider.setWalletTransactionsResponse(
