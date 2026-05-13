@@ -73,9 +73,12 @@ class AmountStakeProvider(
     override val minimumValue: BigInteger
         get() = when (params) {
             is AmountParams.Stake.Delegate,
-            is AmountParams.Stake.Redelegate,
             is AmountParams.Stake.Freeze ->
                 BigInteger.valueOf(stakeConfig.minAmount.toLong())
+            is AmountParams.Stake.Redelegate -> when (StakeChain.byChain(params.assetId.chain)) {
+                StakeChain.SmartChain -> BigInteger.valueOf(stakeConfig.minAmount.toLong())
+                else -> BigInteger.ZERO
+            }
             is AmountParams.Stake.Undelegate,
             is AmountParams.Stake.Withdraw,
             is AmountParams.Stake.Rewards,
