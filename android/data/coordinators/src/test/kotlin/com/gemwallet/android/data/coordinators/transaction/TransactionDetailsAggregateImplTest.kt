@@ -6,6 +6,7 @@ import com.gemwallet.android.model.AssetInfo
 import com.wallet.core.primitives.Transaction
 import com.gemwallet.android.model.TransactionExtended
 import com.gemwallet.android.serializer.jsonEncoder
+import com.gemwallet.android.testkit.mockNftAssetId
 import com.wallet.core.primitives.Asset
 import com.wallet.core.primitives.AssetId
 import com.wallet.core.primitives.AssetType
@@ -270,8 +271,9 @@ class TransactionDetailsAggregateImplTest {
 
     @Test
     fun testAmountNFT_withMetadata() {
+        val assetId = mockNftAssetId()
         val metadata = TransactionNFTTransferMetadata(
-            assetId = "ethereum_0xcontract_123",
+            assetId = assetId,
             name = "NFT Name",
         )
         val nftMetadata = jsonEncoder.encodeToString(TransactionNFTTransferMetadata.serializer(), metadata)
@@ -288,7 +290,7 @@ class TransactionDetailsAggregateImplTest {
         Assert.assertTrue(amount is TransactionDetailsValue.Amount.NFT)
         val nftAmount = amount as TransactionDetailsValue.Amount.NFT
         Assert.assertEquals("NFT Name", nftAmount.metadata.name)
-        Assert.assertEquals("ethereum_0xcontract_123", nftAmount.metadata.assetId)
+        Assert.assertEquals(assetId, nftAmount.metadata.assetId)
     }
 
     @Test

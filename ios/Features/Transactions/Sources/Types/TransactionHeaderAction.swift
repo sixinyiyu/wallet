@@ -1,8 +1,10 @@
 // Copyright (c). Gem Wallet. All rights reserved.
 
-import Foundation
+import Primitives
 
 public enum TransactionHeaderAction: Equatable, Sendable {
-    case url(URL)
-    case nft(assetId: String)
+    case asset(assetId: AssetId)
+    case nft(assetId: NFTAssetId)
+    case perpetual(assetId: AssetId)
+    case swap(fromAssetId: AssetId, toAssetId: AssetId)
 }

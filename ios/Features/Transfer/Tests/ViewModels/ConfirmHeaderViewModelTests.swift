@@ -31,8 +31,18 @@ struct ConfirmHeaderViewModelTests {
     func swapHidesClearHeader() {
         let model = ConfirmHeaderViewModel(
             headerType: .swap(
-                from: SwapAmountField(assetImage: AssetImage(), amount: "1 ETH", fiatAmount: "$1"),
-                to: SwapAmountField(assetImage: AssetImage(), amount: "2 USDC", fiatAmount: "$2"),
+                from: SwapAmountField(
+                    assetId: .mockEthereum(),
+                    assetImage: AssetImage(),
+                    amount: "1 ETH",
+                    fiatAmount: "$1",
+                ),
+                to: SwapAmountField(
+                    assetId: Asset.mockEthereumUSDT().id,
+                    assetImage: AssetImage(),
+                    amount: "2 USDC",
+                    fiatAmount: "$2",
+                ),
             ),
         )
 

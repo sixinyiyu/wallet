@@ -49,8 +49,8 @@ public struct NFTAttribute: Codable, Equatable, Hashable, Sendable {
 }
 
 public struct NFTAsset: Codable, Equatable, Hashable, Identifiable, Sendable {
-	public let id: String
-	public let collectionId: String
+	public let id: NFTAssetId
+	public let collectionId: NFTCollectionId
 	public let contractAddress: String?
 	public let tokenId: String
 	public let tokenType: NFTType
@@ -61,7 +61,7 @@ public struct NFTAsset: Codable, Equatable, Hashable, Identifiable, Sendable {
 	public let images: NFTImages
 	public let attributes: [NFTAttribute]
 
-	public init(id: String, collectionId: String, contractAddress: String?, tokenId: String, tokenType: NFTType, name: String, description: String?, chain: Chain, resource: NFTResource, images: NFTImages, attributes: [NFTAttribute]) {
+	public init(id: NFTAssetId, collectionId: NFTCollectionId, contractAddress: String?, tokenId: String, tokenType: NFTType, name: String, description: String?, chain: Chain, resource: NFTResource, images: NFTImages, attributes: [NFTAttribute]) {
 		self.id = id
 		self.collectionId = collectionId
 		self.contractAddress = contractAddress
@@ -77,7 +77,7 @@ public struct NFTAsset: Codable, Equatable, Hashable, Identifiable, Sendable {
 }
 
 public struct NFTCollection: Codable, Equatable, Hashable, Identifiable, Sendable {
-	public let id: String
+	public let id: NFTCollectionId
 	public let name: String
 	public let description: String?
 	public let chain: Chain
@@ -86,7 +86,7 @@ public struct NFTCollection: Codable, Equatable, Hashable, Identifiable, Sendabl
 	public let status: VerificationStatus
 	public let links: [AssetLink]
 
-	public init(id: String, name: String, description: String?, chain: Chain, contractAddress: String, images: NFTImages, status: VerificationStatus, links: [AssetLink]) {
+	public init(id: NFTCollectionId, name: String, description: String?, chain: Chain, contractAddress: String, images: NFTImages, status: VerificationStatus, links: [AssetLink]) {
 		self.id = id
 		self.name = name
 		self.description = description

@@ -24,20 +24,26 @@ public struct NFTService: Sendable {
         return nfts.count
     }
 
-    public func report(collectionId: String, assetId: String?, reason: String?) async throws {
+    public func report(collectionId: NFTCollectionId, assetId: NFTAssetId?, reason: String?) async throws {
         let report = ReportNft(
-            collectionId: collectionId,
-            assetId: assetId,
+            collectionId: collectionId.identifier,
+            assetId: assetId?.identifier,
             reason: reason,
         )
         try await apiService.reportNft(report: report)
     }
 
-    public func refreshAsset(wallet: Wallet, assetId: String) async throws {
+    public func refreshAsset(wallet: Wallet, assetId: NFTAssetId) async throws {
         try await apiService.refreshNftAsset(walletId: wallet.id, assetId: assetId)
     }
 
-    public func assetData(assetId: String) async throws -> NFTAssetData {
-        try await apiService.getDeviceNFTAsset(assetId: assetId)
+    public func getOrFetchAssetData(assetId: NFTAssetId) async throws -> NFTAssetData {
+        if let asset = try nftStore.getAsset(assetId: assetId),
+           let collection = try nftStore.getCollection(collectionId: asset.collectionId) {
+            return NFTAssetData(collection: collection, asset: asset)
+        }
+        let assetData = try await apiService.getDeviceNFTAsset(assetId: assetId)
+        try nftStore.add(asset: assetData.asset, collection: assetData.collection)
+        return assetData
     }
 }

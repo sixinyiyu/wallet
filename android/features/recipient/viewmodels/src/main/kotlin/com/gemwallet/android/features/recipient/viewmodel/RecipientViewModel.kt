@@ -23,7 +23,7 @@ import com.gemwallet.android.model.DestinationAddress
 import com.gemwallet.android.ui.models.actions.AmountTransactionAction
 import com.gemwallet.android.ui.models.actions.ConfirmTransactionAction
 import com.gemwallet.android.ui.models.navigation.RouteArgument
-import com.gemwallet.android.ui.models.navigation.optionalAssetId
+import com.gemwallet.android.ui.models.navigation.optionalNftAssetId
 import com.gemwallet.android.ui.models.navigation.requireAssetId
 import com.wallet.core.primitives.AssetId
 import com.wallet.core.primitives.Chain
@@ -72,12 +72,13 @@ class RecipientViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
     private val assetId = savedStateHandle.requireAssetId(RouteArgument.AssetId)
-    private val nftAssetId = savedStateHandle.optionalAssetId(RouteArgument.NftAssetId)
+    private val nftAssetId = savedStateHandle.optionalNftAssetId(RouteArgument.NftAssetId)
 
     private val nftAsset: Deferred<NFTAsset?> = viewModelScope.async(Dispatchers.IO, CoroutineStart.LAZY) {
         val id = nftAssetId ?: return@async null
+        val wallet = session.filterNotNull().first().wallet
         runCatching {
-            getAssetNft.getAssetNft(id).first().assets.firstOrNull()
+            getAssetNft.getAssetNft(wallet.id, id).first().assets.firstOrNull()
         }.getOrNull()
     }
 

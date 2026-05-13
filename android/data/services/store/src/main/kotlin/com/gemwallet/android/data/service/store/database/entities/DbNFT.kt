@@ -7,7 +7,9 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.wallet.core.primitives.AssetLink
 import com.wallet.core.primitives.Chain
+import com.wallet.core.primitives.NFTAssetId
 import com.wallet.core.primitives.NFTAttribute
+import com.wallet.core.primitives.NFTCollectionId
 import com.wallet.core.primitives.NFTType
 import com.wallet.core.primitives.VerificationStatus
 
@@ -25,7 +27,7 @@ import com.wallet.core.primitives.VerificationStatus
     indices = [Index("chain")],
 )
 data class DbNFTCollection(
-    @PrimaryKey val id: String,
+    @PrimaryKey val id: NFTCollectionId,
     val name: String,
     val description: String? = null,
     val chain: Chain,
@@ -58,8 +60,8 @@ data class DbNFTCollection(
     indices = [Index("collection_id"), Index("chain")],
 )
 data class DbNFTAsset(
-    @PrimaryKey val id: String,
-    @ColumnInfo("collection_id") val collectionId: String,
+    @PrimaryKey val id: NFTAssetId,
+    @ColumnInfo("collection_id") val collectionId: NFTCollectionId,
     @ColumnInfo("token_id") val tokenId: String,
     @ColumnInfo("token_type") val tokenType: NFTType,
     val name: String,
@@ -95,5 +97,5 @@ data class DbNFTAsset(
 )
 data class DbNFTAssociation(
     @ColumnInfo("wallet_id") val walletId: String,
-    @ColumnInfo("asset_id") val assetId: String,
+    @ColumnInfo("asset_id") val assetId: NFTAssetId,
 )

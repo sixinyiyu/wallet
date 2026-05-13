@@ -23,8 +23,8 @@ struct NFTAssetRecord: Codable, FetchableRecord, PersistableRecord {
         static let previewImageMimeType = Column("previewImageMimeType")
     }
 
-    var id: String
-    var collectionId: String
+    var id: NFTAssetId
+    var collectionId: NFTCollectionId
     var contractAddress: String?
     var tokenId: String
     var tokenType: NFTType

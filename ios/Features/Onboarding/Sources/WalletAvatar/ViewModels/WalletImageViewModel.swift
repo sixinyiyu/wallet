@@ -70,7 +70,7 @@ public final class WalletImageViewModel: Sendable {
             .reduce([], +)
             .map {
                 NFTAssetImageItem(
-                    id: $0.id,
+                    id: $0.id.identifier,
                     assetImage: AssetImage(
                         type: $0.name,
                         imageURL: $0.images.preview.url.asURL,

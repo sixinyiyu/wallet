@@ -76,8 +76,8 @@ public protocol GemAPIPriceAlertService: Sendable {
 
 public protocol GemAPINFTService: Sendable {
     func getDeviceNFTAssets(walletId: WalletId) async throws -> [NFTData]
-    func getDeviceNFTAsset(assetId: String) async throws -> NFTAssetData
-    func refreshNftAsset(walletId: WalletId, assetId: String) async throws
+    func getDeviceNFTAsset(assetId: NFTAssetId) async throws -> NFTAssetData
+    func refreshNftAsset(walletId: WalletId, assetId: NFTAssetId) async throws
     func reportNft(report: ReportNft) async throws
 }
 
@@ -272,12 +272,12 @@ extension GemAPIService: GemAPINFTService {
             .mapResponse(as: [NFTData].self)
     }
 
-    public func getDeviceNFTAsset(assetId: String) async throws -> NFTAssetData {
+    public func getDeviceNFTAsset(assetId: NFTAssetId) async throws -> NFTAssetData {
         try await requestDevice(.getDeviceNFTAsset(assetId: assetId))
             .mapResponse(as: NFTAssetData.self)
     }
 
-    public func refreshNftAsset(walletId: WalletId, assetId: String) async throws {
+    public func refreshNftAsset(walletId: WalletId, assetId: NFTAssetId) async throws {
         _ = try await requestDevice(.refreshNftAsset(walletId: walletId, assetId: assetId))
             .mapResponse(as: Bool.self)
     }

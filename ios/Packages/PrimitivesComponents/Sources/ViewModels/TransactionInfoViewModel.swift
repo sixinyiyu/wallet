@@ -98,6 +98,7 @@ extension TransactionInfoViewModel {
         )
 
         return SwapAmountField(
+            assetId: input.asset.id,
             assetImage: AssetIdViewModel(assetId: input.asset.id).assetImage,
             amount: display.amount.text,
             fiatAmount: display.fiat?.text,

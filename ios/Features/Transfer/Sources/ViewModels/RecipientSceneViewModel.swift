@@ -85,7 +85,7 @@ public final class RecipientSceneViewModel {
     func nftAssetImage(for nftAsset: NFTAsset) -> AssetImage {
         AssetImage(
             type: "NFT",
-            imageURL: assetImageFormatter.getNFTUrl(for: nftAsset.id),
+            imageURL: assetImageFormatter.getNFTUrl(for: nftAsset.id.identifier),
             placeholder: .none,
             chainPlaceholder: .none,
         )
@@ -97,6 +97,10 @@ public final class RecipientSceneViewModel {
 
     var actionButtonState: ButtonState {
         addressInputModel.isValid ? .normal : .disabled
+    }
+
+    public var isNextEnabled: Bool {
+        actionButtonState == .normal
     }
 
     var showMemo: Bool {

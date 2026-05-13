@@ -14,40 +14,46 @@ import com.gemwallet.android.ui.components.screen.LoadingScene
 
 @Composable
 fun TransactionDetailsNavScreen(
-    onCancel: () -> Unit,
-    onNft: (String) -> Unit,
+    onAction: (TransactionDetailsAction.Navigation) -> Unit,
     viewModel: TransactionDetailsViewModel = hiltViewModel(),
 ) {
-    val data by viewModel.data.collectAsStateWithLifecycle()
-    val model = data
+    val transaction by viewModel.data.collectAsStateWithLifecycle()
     var isShowFeeDetails by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
-    val onShare = fun () {
+    fun onShare(url: String, name: String) {
         val type = "text/plain"
-        val subject = model?.explorer?.url
 
         val intent = Intent(Intent.ACTION_SEND)
         intent.type = type
-        intent.putExtra(Intent.EXTRA_SUBJECT, subject)
-        intent.putExtra(Intent.EXTRA_TEXT, subject)
+        intent.putExtra(Intent.EXTRA_SUBJECT, url)
+        intent.putExtra(Intent.EXTRA_TEXT, url)
 
-        context.startActivity(Intent.createChooser(intent, model?.explorer?.name))
+        context.startActivity(Intent.createChooser(intent, name))
     }
 
+    val model = transaction
     if (model == null) {
-        LoadingScene(title = "", onCancel)
-    } else {
-        TransactionDetailsScene(
-            data = model,
-            onShare = onShare,
-            onFeeDetails =  { isShowFeeDetails = true },
-            onNft = onNft,
-            onCancel = onCancel,
+        LoadingScene(
+            title = "",
+            onCancel = { onAction(TransactionDetailsAction.Close) },
         )
+        return
     }
+
+    TransactionDetailsScene(
+        data = model,
+        onAction = {
+            when (it) {
+                TransactionDetailsAction.Share -> onShare(model.explorer.url, model.explorer.name)
+                TransactionDetailsAction.ShowFeeDetails -> isShowFeeDetails = true
+                is TransactionDetailsAction.Navigation -> onAction(it)
+            }
+        },
+    )
+
     FeeDetailsDialog(
         isVisible = isShowFeeDetails,
-        model = model?.fee,
+        model = model.fee,
     ) { isShowFeeDetails = false }
 }

@@ -46,11 +46,9 @@ public final class TransactionSceneViewModel {
         explorerViewModel.url
     }
 
-    var headerAction: VoidAction {
-        guard onHeaderAction != nil, headerActionType != nil else {
-            return nil
-        }
-        return onSelectTransactionHeader
+    var onTransactionHeaderTap: TransactionHeaderActionHandler? {
+        guard onHeaderAction != nil, headerAction != nil else { return nil }
+        return { [weak self] tap in self?.handleHeaderTap(tap) }
     }
 }
 
@@ -88,11 +86,21 @@ extension TransactionSceneViewModel: ListSectionProvideable {
 // MARK: - Actions
 
 extension TransactionSceneViewModel {
-    func onSelectTransactionHeader() {
-        guard let onHeaderAction, let headerActionType else {
+    private func handleHeaderTap(_ tap: TransactionHeaderTap) {
+        guard let onHeaderAction, let headerAction else { return }
+        switch tap {
+        case .header:
+            onHeaderAction(headerAction)
+        case let .asset(assetId):
+            onHeaderAction(.asset(assetId: assetId))
+        }
+    }
+
+    func onSelectSwapAgain() {
+        guard let onHeaderAction, case let .swap(fromAssetId, toAssetId) = headerAction else {
             return
         }
-        onHeaderAction(headerActionType)
+        onHeaderAction(.swap(fromAssetId: fromAssetId, toAssetId: toAssetId))
     }
 
     func onSelectShare() {
@@ -143,23 +151,36 @@ extension TransactionSceneViewModel {
         )
     }
 
-    private var nftAssetId: String? {
-        guard transactionExtended.transaction.type == .transferNFT else {
-            return nil
+    private var headerAction: TransactionHeaderAction? {
+        switch transactionExtended.transaction.type {
+        case .transfer,
+             .tokenApproval,
+             .stakeDelegate,
+             .stakeUndelegate,
+             .stakeRewards,
+             .stakeRedelegate,
+             .stakeWithdraw,
+             .stakeFreeze,
+             .stakeUnfreeze:
+            .asset(assetId: transactionExtended.transaction.assetId)
+        case .transferNFT:
+            transactionExtended.transaction.metadata?
+                .decode(TransactionNFTTransferMetadata.self)
+                .map { .nft(assetId: $0.assetId) }
+        case .swap:
+            transactionExtended.transaction.metadata?
+                .decode(TransactionSwapMetadata.self)
+                .map { .swap(fromAssetId: $0.fromAsset, toAssetId: $0.toAsset) }
+        case .perpetualOpenPosition,
+             .perpetualClosePosition,
+             .perpetualModifyPosition:
+            .perpetual(assetId: transactionExtended.transaction.assetId)
+        case .smartContractCall,
+             .assetActivation,
+             .earnDeposit,
+             .earnWithdraw:
+            nil
         }
-        return transactionExtended.transaction.metadata?.decode(TransactionNFTTransferMetadata.self)?.assetId
-    }
-
-    private var headerActionType: TransactionHeaderAction? {
-        if let headerLink = headerViewModel.headerLink {
-            return .url(headerLink)
-        }
-
-        if let nftAssetId {
-            return .nft(assetId: nftAssetId)
-        }
-
-        return nil
     }
 
     var feeDetailsViewModel: NetworkFeeSceneViewModel {

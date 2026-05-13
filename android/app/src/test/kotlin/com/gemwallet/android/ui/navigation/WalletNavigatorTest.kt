@@ -41,6 +41,7 @@ import com.gemwallet.android.ui.navigation.routes.WalletDetailsRoute
 import com.gemwallet.android.ui.navigation.routes.WalletPhraseRoute
 import com.gemwallet.android.ui.navigation.routes.WalletSecurityReminderRoute
 import com.wallet.core.primitives.Chain
+import com.wallet.core.primitives.NFTAssetId
 import com.wallet.core.primitives.WalletType
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -229,14 +230,14 @@ class WalletNavigatorTest {
 
         navigator.openRecipient()
         navigator.openRecipient(assetId)
-        navigator.openNftRecipient(assetId, "nft-1")
+        navigator.openNftRecipient(assetId, NFTAssetId(Chain.Ethereum, "0xcollection", "1"))
 
         assertEquals(
             listOf(
                 WalletRootRoute,
                 SendSelectRoute,
                 RecipientInputRoute(assetId, nftAssetId = null),
-                RecipientInputRoute(assetId, nftAssetId = "nft-1"),
+                RecipientInputRoute(assetId, nftAssetId = "ethereum_0xcollection::1"),
             ),
             navigator.backStack.toList(),
         )
@@ -287,7 +288,7 @@ class WalletNavigatorTest {
         val navigator = navigatorWith(WalletRootRoute)
 
         navigator.openNftCollection("ethereum_0xcollection")
-        navigator.openNftAsset("ethereum_0xcollection::1")
+        navigator.openNftAsset(NFTAssetId(Chain.Ethereum, "0xcollection", "1"))
 
         assertEquals(
             listOf(

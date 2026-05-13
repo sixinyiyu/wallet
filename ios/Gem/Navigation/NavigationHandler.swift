@@ -136,7 +136,7 @@ extension NavigationHandler {
 
     private func navigateToAsset(_ assetId: AssetId) async throws {
         let asset = try await assetsService.getOrFetchAsset(for: assetId)
-        navigationState.wallet.append(Scenes.Asset(asset: asset))
+        navigationState.openAsset(asset)
     }
 
     private func navigateToAsset(walletId: WalletId, assetId: AssetId) async throws {
@@ -145,7 +145,7 @@ extension NavigationHandler {
         }
 
         await selectWalletIfNeeded(walletId)
-        navigationState.wallet.append(Scenes.Asset(asset: asset))
+        navigationState.openAsset(asset)
     }
 
     private func navigateToTransaction(walletId: WalletId, assetId: AssetId, transaction: Primitives.Transaction) async throws {
@@ -185,9 +185,8 @@ extension NavigationHandler {
     }
 
     private func presentSwap(from fromId: AssetId, to toId: AssetId?) async throws {
-        let fromAsset = try await assetsService.getOrFetchAsset(for: fromId)
-        let toAsset: Asset? = if let toId { try await assetsService.getOrFetchAsset(for: toId) } else { nil }
-        try presentAssetInput(type: .swap(fromAsset, toAsset), for: fromAsset)
+        guard let wallet else { return }
+        try await presenter.presentSwap(from: fromId, to: toId, wallet: wallet, assetsService: assetsService)
     }
 
     private func presentBuy(assetId: AssetId, amount: Int?) async throws {
@@ -207,11 +206,7 @@ extension NavigationHandler {
 
     private func presentAssetInput(type: SelectedAssetType, for asset: Asset) throws {
         guard let wallet else { return }
-        let account = try wallet.account(for: asset.chain)
-        presenter.isPresentingAssetInput.wrappedValue = SelectedAssetInput(
-            type: type,
-            assetAddress: AssetAddress(asset: account.chain.asset, address: account.address),
-        )
+        try presenter.presentAssetInput(type: type, for: asset, wallet: wallet)
     }
 
     func resetNavigation() {

@@ -55,13 +55,14 @@ import com.wallet.core.primitives.AssetId
 import com.wallet.core.primitives.AssetLink
 import com.wallet.core.primitives.Chain
 import com.wallet.core.primitives.LinkType
+import com.wallet.core.primitives.NFTAssetId
 import com.wallet.core.primitives.NFTAttribute
 import kotlinx.coroutines.launch
 
 @Composable
 fun NFTDetailsScene(
     cancelAction: CancelAction,
-    onRecipient: (AssetId, String) -> Unit,
+    onRecipient: (AssetId, NFTAssetId) -> Unit,
 ) {
     val viewModel: NftDetailsViewModel = hiltViewModel()
     val assetData by viewModel.nftAsset.collectAsStateWithLifecycle()

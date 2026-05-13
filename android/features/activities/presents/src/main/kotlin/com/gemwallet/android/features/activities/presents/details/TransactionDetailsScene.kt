@@ -24,23 +24,22 @@ import com.gemwallet.android.ui.components.list_item.property.PropertyNetworkIte
 import com.gemwallet.android.ui.components.list_item.property.itemsPositioned
 import com.gemwallet.android.ui.components.list_item.transaction.getTitle
 import com.gemwallet.android.ui.components.screen.Scene
+import com.wallet.core.primitives.Asset
+import com.wallet.core.primitives.TransactionType
 
 @Composable
-fun TransactionDetailsScene(
+internal fun TransactionDetailsScene(
     data: TransactionDetailsAggregate,
-    onShare: () -> Unit,
-    onFeeDetails: () -> Unit,
-    onNft: (String) -> Unit,
-    onCancel: () -> Unit,
+    onAction: (TransactionDetailsAction) -> Unit,
 ) {
     Scene(
         title = data.getTitle(),
         actions = {
-            IconButton(onShare) {
+            IconButton(onClick = { onAction(TransactionDetailsAction.Share) }) {
                 Icon(Icons.Default.Share, "")
             }
         },
-        onClose = onCancel,
+        onClose = { onAction(TransactionDetailsAction.Close) },
     ) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             data.valueGroups.forEach { group ->
@@ -48,20 +47,32 @@ fun TransactionDetailsScene(
                     when (item) {
                         is TransactionDetailsValue.Amount.NFT -> NftHead(
                             metadata = item.metadata,
-                            onClick = { onNft(item.metadata.assetId) },
+                            onClick = {
+                                onAction(TransactionDetailsAction.OpenNft(item.metadata.assetId))
+                            },
                         )
                         TransactionDetailsValue.Amount.None -> {}
                         is TransactionDetailsValue.Amount.Plain -> AmountListHead(
                             icon = item.asset,
                             amount = item.value,
                             equivalent = item.equivalent,
+                            onClick = data.amountAction(item.asset)?.let { action -> { onAction(action) } },
                         )
                         is TransactionDetailsValue.Amount.Swap -> SwapListHead(
                             fromAsset = item.fromAsset,
                             fromValue = item.fromValue,
                             toAsset = item.toAsset,
                             toValue = item.toValue,
-                            currency = item.currency
+                            currency = item.currency,
+                            onSwapClick = {
+                                onAction(
+                                    TransactionDetailsAction.OpenSwap(
+                                        fromAssetId = item.fromAsset.id(),
+                                        toAssetId = item.toAsset.id(),
+                                    )
+                                )
+                            },
+                            onAssetClick = { onAction(TransactionDetailsAction.OpenAsset(it)) },
                         )
                         is TransactionDetailsValue.Date -> PropertyItem(R.string.transaction_date, item.data, listPosition = position)
                         is TransactionDetailsValue.Destination -> DestinationPropertyItem(item, position)
@@ -75,7 +86,7 @@ fun TransactionDetailsScene(
                             feeCrypto = item.value,
                             feeFiat = item.equivalent,
                             variantsAvailable = true,
-                            onClick = onFeeDetails,
+                            onClick = { onAction(TransactionDetailsAction.ShowFeeDetails) },
                         )
                         is TransactionDetailsValue.Memo -> PropertyItem(R.string.transfer_memo, item.data, listPosition = position)
                         is TransactionDetailsValue.Network -> PropertyNetworkItem(item.data.chain, listPosition = position)
@@ -84,5 +95,28 @@ fun TransactionDetailsScene(
                 }
             }
         }
+    }
+}
+
+private fun TransactionDetailsAggregate.amountAction(asset: Asset): TransactionDetailsAction.Navigation? {
+    return when (type) {
+        TransactionType.Transfer,
+        TransactionType.TokenApproval,
+        TransactionType.StakeDelegate,
+        TransactionType.StakeUndelegate,
+        TransactionType.StakeRewards,
+        TransactionType.StakeRedelegate,
+        TransactionType.StakeWithdraw,
+        TransactionType.StakeFreeze,
+        TransactionType.StakeUnfreeze -> TransactionDetailsAction.OpenAsset(asset.id)
+        TransactionType.PerpetualOpenPosition,
+        TransactionType.PerpetualClosePosition,
+        TransactionType.PerpetualModifyPosition -> TransactionDetailsAction.OpenPerpetual(asset.id)
+        TransactionType.Swap,
+        TransactionType.TransferNFT,
+        TransactionType.AssetActivation,
+        TransactionType.SmartContractCall,
+        TransactionType.EarnDeposit,
+        TransactionType.EarnWithdraw -> null
     }
 }

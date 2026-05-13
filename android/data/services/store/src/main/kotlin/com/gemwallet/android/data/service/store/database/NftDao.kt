@@ -9,6 +9,8 @@ import androidx.room.Upsert
 import com.gemwallet.android.data.service.store.database.entities.DbNFTAsset
 import com.gemwallet.android.data.service.store.database.entities.DbNFTAssociation
 import com.gemwallet.android.data.service.store.database.entities.DbNFTCollection
+import com.wallet.core.primitives.NFTAssetId
+import com.wallet.core.primitives.NFTCollectionId
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -23,10 +25,10 @@ interface NftDao {
     suspend fun associateWithWallet(relations: List<DbNFTAssociation>)
 
     @Query("SELECT asset_id FROM nft_assets_associations WHERE wallet_id = :walletId")
-    suspend fun getWalletAssetIds(walletId: String): List<String>
+    suspend fun getWalletAssetIds(walletId: String): List<NFTAssetId>
 
     @Query("DELETE FROM nft_assets_associations WHERE wallet_id = :walletId AND asset_id IN (:assetIds)")
-    suspend fun deleteAssociations(walletId: String, assetIds: List<String>)
+    suspend fun deleteAssociations(walletId: String, assetIds: List<NFTAssetId>)
 
     @Transaction
     suspend fun updateNft(
@@ -55,17 +57,8 @@ interface NftDao {
     """)
     fun getCollections(walletId: String): Flow<List<DbNFTCollection>>
 
-    @Query("""
-        SELECT DISTINCT nft_collections.* FROM nft_collections
-        JOIN nft_assets ON nft_collections.id = nft_assets.collection_id
-        JOIN nft_assets_associations ON nft_assets.id = nft_assets_associations.asset_id
-            AND nft_assets_associations.wallet_id = :walletId
-        WHERE nft_collections.id = :id
-    """)
-    fun getCollection(walletId: String, id: String): Flow<DbNFTCollection?>
-
     @Query("SELECT * FROM nft_collections WHERE id = :id")
-    fun getCollection(id: String): Flow<DbNFTCollection?>
+    fun getCollection(id: NFTCollectionId): Flow<DbNFTCollection?>
 
     @Query("""
         SELECT DISTINCT nft_assets.* FROM nft_assets
@@ -74,14 +67,6 @@ interface NftDao {
     """)
     fun getAssets(walletId: String): Flow<List<DbNFTAsset>>
 
-    @Query("""
-        SELECT DISTINCT nft_assets.* FROM nft_assets
-        JOIN nft_assets_associations ON nft_assets.id = nft_assets_associations.asset_id
-            AND nft_assets_associations.wallet_id = :walletId
-        WHERE nft_assets.id = :id
-    """)
-    fun getAsset(walletId: String, id: String): Flow<DbNFTAsset?>
-
     @Query("SELECT * FROM nft_assets WHERE id = :id")
-    fun getAsset(id: String): Flow<DbNFTAsset?>
+    fun getAsset(id: NFTAssetId): Flow<DbNFTAsset?>
 }

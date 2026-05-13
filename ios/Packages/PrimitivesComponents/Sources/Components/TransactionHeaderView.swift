@@ -15,9 +15,14 @@ public enum TransactionHeaderType {
 
 public struct TransactionHeaderView: View {
     public let type: TransactionHeaderType
+    private let action: TransactionHeaderActionHandler?
 
-    public init(type: TransactionHeaderType) {
+    public init(
+        type: TransactionHeaderType,
+        action: TransactionHeaderActionHandler? = nil,
+    ) {
         self.type = type
+        self.action = action
     }
 
     public var body: some View {
@@ -32,7 +37,7 @@ public struct TransactionHeaderView: View {
                     onInfoAction: nil,
                 )
             case let .swap(from, to):
-                SwapAmountView(from: from, to: to)
+                SwapAmountView(from: from, to: to, action: action)
             case let .nft(name, image):
                 NftPreviewView(assetImage: image, name: name, size: .image.large)
             case let .asset(image):

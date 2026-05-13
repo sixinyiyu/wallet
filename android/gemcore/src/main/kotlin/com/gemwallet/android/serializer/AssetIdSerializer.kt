@@ -23,7 +23,7 @@ object AssetIdSerializer : KSerializer<AssetId> {
 
     override fun serialize(encoder: Encoder, value: AssetId) = when (encoder) {
         is JsonEncoder -> encoder.encodeJsonElement(JsonPrimitive(value.toIdentifier()))
-        else -> encoder.encodeString(value.toString())
+        else -> encoder.encodeString(value.toIdentifier())
     }
 
     override fun deserialize(decoder: Decoder): AssetId = when (decoder) {

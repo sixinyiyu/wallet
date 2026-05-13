@@ -3,10 +3,14 @@ package com.gemwallet.android.data.service.store.database
 import androidx.room.TypeConverter
 import com.gemwallet.android.ext.toAssetId
 import com.gemwallet.android.ext.toIdentifier
+import com.gemwallet.android.ext.toNftAssetId
+import com.gemwallet.android.ext.toNftCollectionId
 import com.gemwallet.android.serializer.jsonEncoder
 import com.wallet.core.primitives.AssetId
 import com.wallet.core.primitives.AssetLink
+import com.wallet.core.primitives.NFTAssetId
 import com.wallet.core.primitives.NFTAttribute
+import com.wallet.core.primitives.NFTCollectionId
 import com.wallet.core.primitives.TransactionId
 import com.wallet.core.primitives.WalletId
 import kotlinx.serialization.builtins.ListSerializer
@@ -23,6 +27,22 @@ class StoreConverters {
     @TypeConverter
     fun toAssetId(value: String): AssetId = requireNotNull(value.toAssetId()) {
         "Invalid AssetId in database: $value"
+    }
+
+    @TypeConverter
+    fun fromNftAssetId(value: NFTAssetId): String = value.toIdentifier()
+
+    @TypeConverter
+    fun toNftAssetId(value: String): NFTAssetId = requireNotNull(value.toNftAssetId()) {
+        "Invalid NFTAssetId in database: $value"
+    }
+
+    @TypeConverter
+    fun fromNftCollectionId(value: NFTCollectionId): String = value.toIdentifier()
+
+    @TypeConverter
+    fun toNftCollectionId(value: String): NFTCollectionId = requireNotNull(value.toNftCollectionId()) {
+        "Invalid NFTCollectionId in database: $value"
     }
 
     @TypeConverter

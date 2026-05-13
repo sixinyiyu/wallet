@@ -3,8 +3,10 @@
 import Assets
 import AssetsService
 import Components
+import Localization
 import NFT
 import Primitives
+import PrimitivesComponents
 import Store
 import Style
 import SwiftUI
@@ -13,13 +15,13 @@ import Transactions
 struct TransactionsNavigationStack: View {
     @Environment(\.navigationState) private var navigationState
     @Environment(\.assetsEnabler) private var assetsEnabler
+    @Environment(\.assetsService) private var assetsService
     @Environment(\.priceAlertService) private var priceAlertService
     @Environment(\.activityService) private var activityService
     @Environment(\.assetSearchService) private var assetSearchService
     @Environment(\.avatarService) private var avatarService
     @Environment(\.navigationPresenter) private var presenter
     @Environment(\.nftService) private var nftService
-    @Environment(\.openURL) private var openURL
 
     @State private var model: TransactionsViewModel
 
@@ -70,6 +72,7 @@ struct TransactionsNavigationStack: View {
                         ),
                     )
                 }
+                .toast(message: $model.isPresentingToastMessage)
                 .sheet(item: $model.isPresentingSheet) { type in
                     switch type {
                     case .filter:
@@ -100,17 +103,18 @@ struct TransactionsNavigationStack: View {
 
 extension TransactionsNavigationStack {
     private func onSelectTransactionHeaderAction(_ action: TransactionHeaderAction) {
-        switch action {
-        case let .url(url):
-            openURL(url)
-        case let .nft(assetId):
-            Task {
-                do {
-                    let assetData = try await nftService.assetData(assetId: assetId)
-                    navigationState.activity.append(Scenes.Collectible(assetData: assetData))
-                } catch {
-                    debugLog("Open NFT details error: \(error)")
-                }
+        Task {
+            do {
+                try await presenter.handleTransactionHeaderAction(
+                    action,
+                    wallet: model.wallet,
+                    navigationState: navigationState,
+                    assetsService: assetsService,
+                    nftService: nftService,
+                    nftDestination: navigationState.activity,
+                )
+            } catch {
+                model.isPresentingToastMessage = .error(Localized.Errors.errorOccured)
             }
         }
     }

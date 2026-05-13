@@ -83,8 +83,8 @@ public extension NFTAttribute {
 public extension GemNftAsset {
     func map() throws -> NFTAsset {
         try NFTAsset(
-            id: id,
-            collectionId: collectionId,
+            id: NFTAssetId.from(id: id),
+            collectionId: NFTCollectionId.from(id: collectionId),
             contractAddress: contractAddress,
             tokenId: tokenId,
             tokenType: tokenType.map(),
@@ -101,8 +101,8 @@ public extension GemNftAsset {
 public extension NFTAsset {
     func map() -> GemNftAsset {
         GemNftAsset(
-            id: id,
-            collectionId: collectionId,
+            id: id.identifier,
+            collectionId: collectionId.identifier,
             contractAddress: contractAddress,
             tokenId: tokenId,
             tokenType: tokenType.map(),

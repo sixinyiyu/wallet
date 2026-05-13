@@ -11,6 +11,31 @@ public struct NFTStore: Sendable {
 
     // MARK: - Public methods
 
+    public func getAsset(assetId: NFTAssetId) throws -> NFTAsset? {
+        try db.read { db in
+            try NFTAssetRecord
+                .filter(NFTAssetRecord.Columns.id == assetId.identifier)
+                .fetchOne(db)?
+                .mapToAsset()
+        }
+    }
+
+    public func getCollection(collectionId: NFTCollectionId) throws -> NFTCollection? {
+        try db.read { db in
+            try NFTCollectionRecord
+                .filter(NFTCollectionRecord.Columns.id == collectionId.identifier)
+                .fetchOne(db)?
+                .mapToCollection()
+        }
+    }
+
+    public func add(asset: NFTAsset, collection: NFTCollection) throws {
+        try db.write { db in
+            try collection.record().upsert(db)
+            try asset.record().upsert(db)
+        }
+    }
+
     public func save(_ data: [NFTData], for walletId: WalletId) throws {
         try db.write { db in
             let assetsAssociationsRequest = NFTAssetAssociationRecord
@@ -34,7 +59,6 @@ public struct NFTStore: Sendable {
                 }
             }
 
-            // delete outdated
             let deletIds = existingIds.asSet().subtracting(newIds.asSet()).asArray()
             try assetsAssociationsRequest
                 .filter(deletIds.contains(NFTAssetAssociationRecord.Columns.id))
