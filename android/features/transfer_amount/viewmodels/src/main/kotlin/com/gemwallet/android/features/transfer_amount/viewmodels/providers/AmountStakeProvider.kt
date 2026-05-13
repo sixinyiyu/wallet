@@ -33,6 +33,7 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -56,20 +57,22 @@ class AmountStakeProvider(
 
     private val stakeConfig by lazy { Config().getStakeConfig(params.assetId.chain.string) }
 
-    override val canChangeValue: Boolean = when (params) {
-        is AmountParams.Stake.Delegate,
-        is AmountParams.Stake.Redelegate,
-        is AmountParams.Stake.Freeze,
-        is AmountParams.Stake.Unfreeze -> true
-        is AmountParams.Stake.Undelegate -> params.assetId.chain.changeAmountOnUnstake
-        is AmountParams.Stake.Withdraw,
-        is AmountParams.Stake.Rewards -> false
-    }
+    override val canChangeValue: Boolean
+        get() = when (params) {
+            is AmountParams.Stake.Delegate,
+            is AmountParams.Stake.Redelegate,
+            is AmountParams.Stake.Freeze,
+            is AmountParams.Stake.Unfreeze -> true
+            is AmountParams.Stake.Undelegate -> params.assetId.chain.changeAmountOnUnstake
+            is AmountParams.Stake.Withdraw,
+            is AmountParams.Stake.Rewards -> false
+        }
 
-    override val showsAssetBalance: Boolean = when (params) {
-        is AmountParams.Stake.Rewards -> true
-        else -> canChangeValue
-    }
+    override val showsAssetBalance: Boolean
+        get() = when (params) {
+            is AmountParams.Stake.Rewards -> true
+            else -> canChangeValue
+        }
 
     override val minimumValue: BigInteger
         get() = when (params) {
@@ -127,6 +130,14 @@ class AmountStakeProvider(
         selectedResource.update { value }
     }
 
+    private val rewardsDelegations: StateFlow<List<Delegation>> = when (params) {
+        is AmountParams.Stake.Rewards -> assetInfo.filterNotNull().flatMapLatest { current ->
+            val owner = current.owner?.address ?: return@flatMapLatest flowOf(emptyList())
+            getDelegations(current.asset.id, owner).map { list -> list.filter { it.hasRewards() } }
+        }.flowOn(Dispatchers.IO).stateIn(scope, SharingStarted.Eagerly, emptyList())
+        else -> MutableStateFlow(emptyList())
+    }
+
     private val delegation: StateFlow<Delegation?> = run {
         val source = when (params) {
             is AmountParams.Stake.Undelegate ->
@@ -135,16 +146,10 @@ class AmountStakeProvider(
                 getDelegation(validatorId = params.validatorId, delegationId = params.delegationId)
             is AmountParams.Stake.Withdraw ->
                 getDelegation(validatorId = params.validatorId, delegationId = params.delegationId)
-            is AmountParams.Stake.Rewards -> {
-                val rewardsList = assetInfo.filterNotNull().flatMapLatest { current ->
-                    val owner = current.owner?.address ?: return@flatMapLatest flowOf<List<Delegation>>(emptyList())
-                    getDelegations(current.asset.id, owner)
-                }
-                combine(rewardsList, selectedValidatorId) { delegations, pickedId ->
-                    val withRewards = delegations.filter { it.hasRewards() }
+            is AmountParams.Stake.Rewards ->
+                combine(rewardsDelegations, selectedValidatorId) { withRewards, pickedId ->
                     withRewards.firstOrNull { it.validator.id == pickedId } ?: withRewards.firstOrNull()
                 }
-            }
             else -> flowOf(null)
         }
         source.flowOn(Dispatchers.IO).stateIn(scope, SharingStarted.Eagerly, null)
@@ -180,14 +185,16 @@ class AmountStakeProvider(
         }
     }.stateIn(scope, SharingStarted.Eagerly, null)
 
-    val canSelectValidator: Boolean = when (params) {
+    val canSelectValidator: StateFlow<Boolean> = when (params) {
         is AmountParams.Stake.Delegate,
-        is AmountParams.Stake.Redelegate,
-        is AmountParams.Stake.Rewards -> true
+        is AmountParams.Stake.Redelegate -> MutableStateFlow(true).asStateFlow()
+        is AmountParams.Stake.Rewards -> rewardsDelegations
+            .map { it.size > 1 }
+            .stateIn(scope, SharingStarted.Eagerly, false)
         is AmountParams.Stake.Undelegate,
         is AmountParams.Stake.Withdraw,
         is AmountParams.Stake.Freeze,
-        is AmountParams.Stake.Unfreeze -> false
+        is AmountParams.Stake.Unfreeze -> MutableStateFlow(false).asStateFlow()
     }
 
     fun selectValidator(id: String?) {

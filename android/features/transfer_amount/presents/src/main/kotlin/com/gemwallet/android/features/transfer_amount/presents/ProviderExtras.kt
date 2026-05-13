@@ -57,12 +57,13 @@ private fun StakeProviderSection(provider: AmountStakeProvider, onPickValidator:
 @Composable
 private fun StakeValidatorSection(provider: AmountStakeProvider, onPickValidator: () -> Unit) {
     val validator by provider.validatorState.collectAsStateWithLifecycle()
+    val canSelectValidator by provider.canSelectValidator.collectAsStateWithLifecycle()
     validator?.let { current ->
         SubheaderItem(R.string.stake_validator)
         PropertyValidatorItem(
             validator = current,
             listPosition = ListPosition.Single,
-            onClick = if (provider.canSelectValidator) onPickValidator else null,
+            onClick = if (canSelectValidator) onPickValidator else null,
         )
     }
 }

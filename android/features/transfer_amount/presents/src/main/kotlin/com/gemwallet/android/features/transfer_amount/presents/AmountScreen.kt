@@ -29,7 +29,8 @@ fun AmountScreen(
     }
 
     var isSelectValidator by remember { mutableStateOf(false) }
-    val canPickValidator = provider is AmountStakeProvider && provider.canSelectValidator
+    val canPickValidator = provider is AmountStakeProvider &&
+        provider.canSelectValidator.collectAsStateWithLifecycle().value
     BackHandler(isSelectValidator && canPickValidator) { isSelectValidator = false }
 
     val amountInputType by viewModel.amountInputType.collectAsStateWithLifecycle()

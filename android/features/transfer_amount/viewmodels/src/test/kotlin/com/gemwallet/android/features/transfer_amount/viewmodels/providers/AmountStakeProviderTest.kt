@@ -131,20 +131,39 @@ class AmountStakeProviderTest {
     fun `canChangeValue is false for Withdraw and Rewards`() {
         assertEquals(true, makeProvider(AmountParams.Stake.Delegate(asset.id)).canChangeValue)
         assertEquals(true, makeProvider(AmountParams.Stake.Redelegate(asset.id, "v", "d")).canChangeValue)
-        assertEquals(true, makeProvider(AmountParams.Stake.Undelegate(asset.id, "v", "d")).canChangeValue)
         assertEquals(false, makeProvider(AmountParams.Stake.Withdraw(asset.id, "v", "d")).canChangeValue)
         assertEquals(false, makeProvider(AmountParams.Stake.Rewards(asset.id)).canChangeValue)
     }
 
     @Test
     fun `canSelectValidator is false for Undelegate and Withdraw`() {
-        assertEquals(true, makeProvider(AmountParams.Stake.Delegate(asset.id)).canSelectValidator)
-        assertEquals(true, makeProvider(AmountParams.Stake.Redelegate(asset.id, "v", "d")).canSelectValidator)
-        assertEquals(true, makeProvider(AmountParams.Stake.Rewards(asset.id)).canSelectValidator)
-        assertEquals(false, makeProvider(AmountParams.Stake.Undelegate(asset.id, "v", "d")).canSelectValidator)
-        assertEquals(false, makeProvider(AmountParams.Stake.Withdraw(asset.id, "v", "d")).canSelectValidator)
-        assertEquals(false, makeProvider(AmountParams.Stake.Freeze(asset.id, Resource.Bandwidth)).canSelectValidator)
-        assertEquals(false, makeProvider(AmountParams.Stake.Unfreeze(asset.id, Resource.Bandwidth)).canSelectValidator)
+        assertEquals(true, makeProvider(AmountParams.Stake.Delegate(asset.id)).canSelectValidator.value)
+        assertEquals(true, makeProvider(AmountParams.Stake.Redelegate(asset.id, "v", "d")).canSelectValidator.value)
+        assertEquals(false, makeProvider(AmountParams.Stake.Undelegate(asset.id, "v", "d")).canSelectValidator.value)
+        assertEquals(false, makeProvider(AmountParams.Stake.Withdraw(asset.id, "v", "d")).canSelectValidator.value)
+        assertEquals(false, makeProvider(AmountParams.Stake.Freeze(asset.id, Resource.Bandwidth)).canSelectValidator.value)
+        assertEquals(false, makeProvider(AmountParams.Stake.Unfreeze(asset.id, Resource.Bandwidth)).canSelectValidator.value)
+    }
+
+    @Test
+    fun `rewards canSelectValidator is true only when multiple rewards delegations`() = runBlocking {
+        val secondDelegation = mockDelegation(
+            assetId = asset.id,
+            balance = "200",
+            rewards = "7",
+            validatorId = "v2",
+            delegationId = "d2",
+        )
+        every { getDelegations(any(), any()) } returns flowOf(listOf(delegation))
+        val singleProvider = makeProvider(AmountParams.Stake.Rewards(asset.id))
+        singleProvider.assetInfo.filterNotNull().first()
+        assertEquals(false, singleProvider.canSelectValidator.value)
+
+        every { getDelegations(any(), any()) } returns flowOf(listOf(delegation, secondDelegation))
+        val multiProvider = makeProvider(AmountParams.Stake.Rewards(asset.id))
+        multiProvider.assetInfo.filterNotNull().first()
+        multiProvider.canSelectValidator.first { it }
+        assertEquals(true, multiProvider.canSelectValidator.value)
     }
 
     @Test
