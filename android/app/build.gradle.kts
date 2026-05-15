@@ -18,7 +18,7 @@ repositories {
 
 android {
     namespace = "com.gemwallet.android"
-    compileSdk = 36
+    compileSdk = 37
     ndkVersion = "28.1.13356709"
 
     val channelDimension by extra("channel")
