@@ -320,7 +320,8 @@ class SignService : SignClient {
             ChainType.Cosmos,
             ChainType.Ton,
             ChainType.Polkadot,
-            ChainType.Xrp -> true
+            ChainType.Xrp,
+            ChainType.Cardano -> true
             else -> false
         }
     }
