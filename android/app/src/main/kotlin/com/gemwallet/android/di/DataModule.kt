@@ -4,7 +4,6 @@ import com.gemwallet.android.application.fiat.coordinators.SyncFiatAssets
 import com.gemwallet.android.blockchain.clients.bitcoin.BitcoinSignClient
 import com.gemwallet.android.blockchain.clients.solana.SolanaSignClient
 import com.gemwallet.android.blockchain.clients.sui.SuiSignClient
-import com.gemwallet.android.blockchain.clients.tron.TronSignClient
 import com.gemwallet.android.blockchain.services.BroadcastService
 import com.gemwallet.android.blockchain.services.NodeStatusService
 import com.gemwallet.android.blockchain.services.SignClientProxy
@@ -55,7 +54,6 @@ object DataModule {
             when (it.toChainType()) {
                 ChainType.Bitcoin -> BitcoinSignClient(it)
                 ChainType.Solana -> SolanaSignClient(it, assetsRepository)
-                ChainType.Tron -> TronSignClient(it)
 
                 ChainType.Ethereum,
                 ChainType.Aptos,
@@ -68,7 +66,8 @@ object DataModule {
                 ChainType.Ton,
                 ChainType.Polkadot,
                 ChainType.Xrp,
-                ChainType.Cardano -> return@mapNotNull null
+                ChainType.Cardano,
+                ChainType.Tron -> return@mapNotNull null
             }
         } + listOf(SignService()),
     )
