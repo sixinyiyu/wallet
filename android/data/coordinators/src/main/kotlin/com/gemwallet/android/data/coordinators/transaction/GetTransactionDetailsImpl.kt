@@ -268,9 +268,11 @@ class TransactionDetailsAggregateImpl(
 
             val metadata = swapMetadata ?: return null
             val provider = swapProvider?.takeIf { it.mode.isCrossChain } ?: return null
-            val fromAsset = associatedAssets.firstOrNull { it.id() == metadata.fromAsset }?.asset ?: return null
-            val toAsset = associatedAssets.firstOrNull { it.id() == metadata.toAsset }?.asset ?: return null
-            if (fromAsset.id.chain == toAsset.id.chain) return null
+
+            val fromAsset = data.assets.firstOrNull { it.id == metadata.fromAsset }
+                ?: associatedAssets.firstOrNull { it.id() == metadata.fromAsset }?.asset
+                ?: data.asset.takeIf { it.id == metadata.fromAsset }
+                ?: return null
 
             return TransactionDetailsValue.SwapProgress(
                 fromAsset = fromAsset,
