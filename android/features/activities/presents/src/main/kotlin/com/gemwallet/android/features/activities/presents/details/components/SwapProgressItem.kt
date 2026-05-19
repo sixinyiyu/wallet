@@ -1,6 +1,5 @@
 package com.gemwallet.android.features.activities.presents.details.components
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -28,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import com.gemwallet.android.domains.asset.chain
 import com.gemwallet.android.domains.transaction.values.TransactionDetailsValue
 import com.gemwallet.android.ext.asset
@@ -41,8 +41,8 @@ import com.gemwallet.android.ui.theme.alpha10
 import com.gemwallet.android.ui.theme.compactIconSize
 import com.gemwallet.android.ui.theme.iconSize
 import com.gemwallet.android.ui.theme.paddingDefault
-import com.gemwallet.android.ui.theme.pendingColor
 import com.gemwallet.android.ui.theme.space2
+import com.gemwallet.android.ui.theme.space4
 import com.gemwallet.android.ui.theme.space6
 import com.gemwallet.android.ui.theme.space8
 import com.gemwallet.android.ui.theme.space24
@@ -53,7 +53,28 @@ internal fun SwapProgressItem(progress: TransactionDetailsValue.SwapProgress) {
     val chainName = progress.fromAsset.chain.asset().name
     val transferValue = ValueFormatter(style = ValueFormatter.Style.Auto)
         .string(progress.fromValue.toBigInteger(), progress.fromAsset)
-    val swapStatus = progress.state.swapProgressStatus()
+
+    val transferStatus: SwapProgressStatus
+    val swapStatus: SwapProgressStatus
+    when (progress.state) {
+        TransactionState.Pending -> {
+            transferStatus = SwapProgressStatus.Pending
+            swapStatus = SwapProgressStatus.Waiting
+        }
+        TransactionState.InTransit -> {
+            transferStatus = SwapProgressStatus.Completed
+            swapStatus = SwapProgressStatus.Pending
+        }
+        TransactionState.Confirmed -> {
+            transferStatus = SwapProgressStatus.Completed
+            swapStatus = SwapProgressStatus.Completed
+        }
+        TransactionState.Failed,
+        TransactionState.Reverted -> {
+            transferStatus = SwapProgressStatus.Completed
+            swapStatus = SwapProgressStatus.Failed
+        }
+    }
 
     Row(
         modifier = Modifier
@@ -64,17 +85,17 @@ internal fun SwapProgressItem(progress: TransactionDetailsValue.SwapProgress) {
         verticalAlignment = Alignment.Top,
     ) {
         Timeline(
-            transferStatus = SwapProgressStatus.Completed,
+            transferStatus = transferStatus,
             swapStatus = swapStatus,
         )
         Column(
             modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(space6),
+            verticalArrangement = Arrangement.spacedBy(space8),
         ) {
             ProgressStep(
                 title = stringResource(R.string.transfer_title),
                 subtitle = "$transferValue ($chainName)",
-                status = SwapProgressStatus.Completed,
+                status = transferStatus,
             )
             ProgressStep(
                 title = stringResource(R.string.wallet_swap),
@@ -130,8 +151,15 @@ private fun Timeline(
         modifier = Modifier.width(iconSize),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        val connectorColor = when (transferStatus) {
+            SwapProgressStatus.Completed -> MaterialTheme.colorScheme.tertiary
+            SwapProgressStatus.Pending,
+            SwapProgressStatus.Waiting,
+            SwapProgressStatus.Failed -> MaterialTheme.colorScheme.outlineVariant
+        }
+
         ProgressMarker(transferStatus)
-        Connector(color = transferStatus.connectorColor())
+        Connector(color = connectorColor)
         ProgressMarker(swapStatus)
     }
 }
@@ -140,7 +168,7 @@ private fun Timeline(
 private fun Connector(color: Color) {
     Box(
         modifier = Modifier
-            .width(DividerDefaults.Thickness)
+            .width(1.5.dp)
             .height(space24)
             .background(color),
     )
@@ -151,7 +179,14 @@ private fun ProgressMarker(status: SwapProgressStatus) {
     val color = status.color()
     val markerModifier = Modifier
         .size(iconSize)
-        .then(if (status.isFilled) Modifier.background(color.copy(alpha = alpha10), CircleShape) else Modifier)
+        .then(
+            when (status) {
+                SwapProgressStatus.Completed,
+                SwapProgressStatus.Failed -> Modifier.background(color.copy(alpha = alpha10), CircleShape)
+                SwapProgressStatus.Pending,
+                SwapProgressStatus.Waiting -> Modifier
+            }
+        )
         .border(DividerDefaults.Thickness, color, CircleShape)
 
     Box(
@@ -166,6 +201,18 @@ private fun ProgressMarker(status: SwapProgressStatus) {
                 tint = color,
             )
             SwapProgressStatus.Pending -> CircularProgressIndicator16(color = color)
+            SwapProgressStatus.Waiting -> Row(
+                horizontalArrangement = Arrangement.spacedBy(space2),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                repeat(3) {
+                    Box(
+                        modifier = Modifier
+                            .size(space4)
+                            .background(color, CircleShape),
+                    )
+                }
+            }
             SwapProgressStatus.Failed -> Icon(
                 modifier = Modifier.size(compactIconSize),
                 imageVector = Icons.Default.Close,
@@ -178,12 +225,18 @@ private fun ProgressMarker(status: SwapProgressStatus) {
 
 @Composable
 private fun StatusTag(status: SwapProgressStatus) {
+    val labelRes = when (status) {
+        SwapProgressStatus.Completed -> R.string.transaction_status_completed
+        SwapProgressStatus.Pending -> R.string.transaction_status_inprogress
+        SwapProgressStatus.Waiting -> return
+        SwapProgressStatus.Failed -> R.string.transaction_status_failed
+    }
     val color = status.color()
     Text(
         modifier = Modifier
             .background(color = color.copy(alpha = alpha10), shape = RoundedCornerShape(space6))
             .padding(horizontal = space8, vertical = space2),
-        text = stringResource(status.labelRes()),
+        text = stringResource(labelRes),
         color = color,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
@@ -194,45 +247,16 @@ private fun StatusTag(status: SwapProgressStatus) {
 private enum class SwapProgressStatus {
     Completed,
     Pending,
+    Waiting,
     Failed,
-}
-
-private fun TransactionState.swapProgressStatus(): SwapProgressStatus {
-    return when (this) {
-        TransactionState.Confirmed -> SwapProgressStatus.Completed
-        TransactionState.InTransit,
-        TransactionState.Pending -> SwapProgressStatus.Pending
-        TransactionState.Failed,
-        TransactionState.Reverted -> SwapProgressStatus.Failed
-    }
 }
 
 @Composable
 private fun SwapProgressStatus.color(): Color {
     return when (this) {
         SwapProgressStatus.Completed -> MaterialTheme.colorScheme.tertiary
-        SwapProgressStatus.Pending -> pendingColor
+        SwapProgressStatus.Pending -> MaterialTheme.colorScheme.primary
+        SwapProgressStatus.Waiting -> MaterialTheme.colorScheme.outlineVariant
         SwapProgressStatus.Failed -> MaterialTheme.colorScheme.error
-    }
-}
-
-private val SwapProgressStatus.isFilled: Boolean
-    get() = this != SwapProgressStatus.Pending
-
-@StringRes
-private fun SwapProgressStatus.labelRes(): Int {
-    return when (this) {
-        SwapProgressStatus.Completed -> R.string.transaction_status_completed
-        SwapProgressStatus.Pending -> R.string.transaction_status_pending
-        SwapProgressStatus.Failed -> R.string.transaction_status_failed
-    }
-}
-
-@Composable
-private fun SwapProgressStatus.connectorColor(): Color {
-    return when (this) {
-        SwapProgressStatus.Completed -> MaterialTheme.colorScheme.tertiary
-        SwapProgressStatus.Pending,
-        SwapProgressStatus.Failed -> MaterialTheme.colorScheme.outlineVariant
     }
 }

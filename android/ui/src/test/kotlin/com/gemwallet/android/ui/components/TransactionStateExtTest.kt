@@ -9,7 +9,17 @@ import org.junit.Test
 
 class TransactionStateExtTest {
     @Test
-    fun inTransit_usesPendingBadgeWithoutSpinner() {
+    fun pending_usesPendingBadgeWithSpinner() {
+        val state = TransactionState.Pending
+
+        assertEquals(R.string.transaction_status_pending, state.statusLabelRes())
+        assertEquals(TransactionStateTone.Pending, state.statusTone())
+        assertTrue(state.showsStatusBadge())
+        assertTrue(state.showsStatusProgress())
+    }
+
+    @Test
+    fun inTransit_usesPendingBadgeWithSpinner() {
         val state = TransactionState.InTransit
 
         assertEquals(R.string.transaction_status_pending, state.statusLabelRes())
@@ -17,7 +27,7 @@ class TransactionStateExtTest {
         assertEquals(R.drawable.transaction_state_pending, state.statusBadgeIconRes())
         assertEquals(TransactionStateTone.Pending, state.statusTone())
         assertTrue(state.showsStatusBadge())
-        assertFalse(state.showsStatusProgress())
+        assertTrue(state.showsStatusProgress())
     }
 
     @Test

@@ -132,9 +132,9 @@ struct TransactionSceneViewModelTests {
         let inTransitModel = TransactionSceneViewModel.mock(state: TransactionState.inTransit)
         if case let .listItem(item) = inTransitModel.item(for: TransactionItem.status) {
             #expect(item.subtitle == Localized.Transaction.Status.pending)
-            if case .none = item.subtitleTagType {
+            if case .progressView = item.subtitleTagType {
             } else {
-                Issue.record("Expected no progress indicator for in-transit status")
+                Issue.record("Expected progress indicator for in-transit status")
             }
             #expect(item.subtitleStyle.color == Colors.orange)
         } else {
@@ -153,7 +153,8 @@ struct TransactionSceneViewModelTests {
         )
 
         if case let .swapProgress(progress) = model.item(for: TransactionItem.swapProgress) {
-            #expect(progress.swap.status == .pending)
+            #expect(progress.transfer.status == .pending)
+            #expect(progress.swap.status == .waiting)
         } else {
             Issue.record("Expected swap progress for pending cross-chain swap")
         }

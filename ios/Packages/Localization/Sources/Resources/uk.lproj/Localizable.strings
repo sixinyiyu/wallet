@@ -568,3 +568,4 @@
 "perpetual.margin.cross" = "Cross";
 "perpetual.margin.isolated" = "Isolated";
 "transaction.status.completed" = "Завершено";
+"transaction.status.inprogress" = "У процесі";

@@ -264,8 +264,6 @@ class TransactionDetailsAggregateImpl(
     override val swapProgress: TransactionDetailsValue.SwapProgress?
         get() {
             if (data.transaction.type != TransactionType.Swap) return null
-            val state = data.transaction.state
-            if (!state.showsCrossChainSwapProgress) return null
 
             val metadata = swapMetadata ?: return null
             val provider = swapProvider?.takeIf { it.mode.isCrossChain } ?: return null
@@ -277,7 +275,7 @@ class TransactionDetailsAggregateImpl(
                 fromAsset = fromAsset,
                 fromValue = metadata.fromValue,
                 providerName = provider.name,
-                state = state,
+                state = data.transaction.state,
             )
         }
 
@@ -308,15 +306,6 @@ class TransactionDetailsAggregateImpl(
         .takeIf { it.isNotEmpty() }
         ?.let { build(it, participantAddressName, participantExplorerLink) }
 }
-
-private val TransactionState.showsCrossChainSwapProgress: Boolean
-    get() = when (this) {
-        TransactionState.Pending -> false
-        TransactionState.InTransit,
-        TransactionState.Confirmed,
-        TransactionState.Failed,
-        TransactionState.Reverted -> true
-    }
 
 private val SwapperProviderMode.isCrossChain: Boolean
     get() = when (this) {

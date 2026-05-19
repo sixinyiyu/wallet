@@ -52,7 +52,7 @@ fun TransactionState.statusTone(): TransactionStateTone = when (this) {
 
 fun TransactionState.showsStatusBadge(): Boolean = this != TransactionState.Confirmed
 
-fun TransactionState.showsStatusProgress(): Boolean = this == TransactionState.Pending
+fun TransactionState.showsStatusProgress(): Boolean = statusTone() == TransactionStateTone.Pending
 
 @Composable
 fun TransactionState.statusColor(): Color = when (statusTone()) {

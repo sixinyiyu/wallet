@@ -33,7 +33,7 @@ extension TransactionStatusViewModel: ItemModelProvidable {
             title: Localized.Transaction.status,
             subtitle: stateViewModel.title,
             subtitleStyle: TextStyle(font: .callout, color: stateViewModel.color),
-            subtitleTagType: state == .pending ? .progressView() : .none,
+            subtitleTagType: stateViewModel.showsProgress ? .progressView() : .none,
             infoAction: onInfoAction,
         ))
     }

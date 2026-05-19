@@ -10,7 +10,7 @@ struct TransactionSwapProgressView: View {
     var body: some View {
         HStack(alignment: .top, spacing: .space12) {
             timelineView
-            VStack(alignment: .leading, spacing: .space6) {
+            VStack(alignment: .leading, spacing: .space8) {
                 stepContent(model.transfer)
                 stepContent(model.swap)
             }
@@ -55,7 +55,7 @@ struct TransactionSwapProgressView: View {
     private func connector(color: Color) -> some View {
         Rectangle()
             .fill(color)
-            .frame(width: .space1, height: Sizing.list.settings)
+            .frame(width: 1.5, height: Sizing.list.settings)
     }
 
     private func marker(for status: TransactionSwapProgressItemModel.Step.Status) -> some View {
@@ -71,7 +71,12 @@ struct TransactionSwapProgressView: View {
                     .fontWeight(.semibold)
                     .foregroundStyle(status.color)
             case .pending:
-                LoadingView(size: .small, tint: Colors.orange)
+                LoadingView(size: .small, tint: status.color)
+            case .waiting:
+                Images.System.ellipsis
+                    .font(.app.footnote)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(status.color)
             case .failed:
                 Images.System.xmark
                     .font(.app.footnote)
@@ -82,15 +87,18 @@ struct TransactionSwapProgressView: View {
         .frame(width: Sizing.list.settings, height: Sizing.list.settings)
     }
 
+    @ViewBuilder
     private func statusTag(for status: TransactionSwapProgressItemModel.Step.Status) -> some View {
-        Text(status.label)
-            .font(.app.footnote)
-            .foregroundStyle(status.color)
-            .lineLimit(1)
-            .minimumScaleFactor(0.8)
-            .padding(.horizontal, .small)
-            .padding(.vertical, .extraSmall)
-            .background(status.background)
-            .cornerRadius(.space6)
+        if let tagTitle = status.tagTitle {
+            Text(tagTitle)
+                .font(.app.footnote)
+                .foregroundStyle(status.color)
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+                .padding(.horizontal, .small)
+                .padding(.vertical, .extraSmall)
+                .background(status.background)
+                .cornerRadius(.space6)
+        }
     }
 }

@@ -46,31 +46,34 @@ extension TransactionSwapProgressViewModel {
             return nil
         }
 
+        let transferTitle = Localized.Transfer.title
         let chainName = Asset(fromAsset.id.chain).name
         let amount = ValueFormatter.auto.string(BigInt.fromString(metadata.fromValue), asset: fromAsset)
+        let transferSubtitle = "\(amount) (\(chainName))"
+        let swapTitle = Localized.Wallet.swap
+        let swapSubtitle = provider.name
+
+        let transferStatus: TransactionSwapProgressItemModel.Step.Status
+        let swapStatus: TransactionSwapProgressItemModel.Step.Status
+        switch transaction.transaction.state {
+        case .pending:
+            transferStatus = .pending
+            swapStatus = .waiting
+        case .inTransit:
+            transferStatus = .completed
+            swapStatus = .pending
+        case .confirmed:
+            transferStatus = .completed
+            swapStatus = .completed
+        case .failed, .reverted:
+            transferStatus = .completed
+            swapStatus = .failed
+        }
 
         return TransactionSwapProgressItemModel(
-            transfer: TransactionSwapProgressItemModel.Step(
-                title: Localized.Transfer.title,
-                subtitle: "\(amount) (\(chainName))",
-                status: .completed,
-            ),
-            swap: TransactionSwapProgressItemModel.Step(
-                title: Localized.Wallet.swap,
-                subtitle: provider.name,
-                status: transaction.transaction.state.swapProgressStatus,
-            ),
+            transfer: .init(title: transferTitle, subtitle: transferSubtitle, status: transferStatus),
+            swap: .init(title: swapTitle, subtitle: swapSubtitle, status: swapStatus),
         )
-    }
-}
-
-private extension Primitives.TransactionState {
-    var swapProgressStatus: TransactionSwapProgressItemModel.Step.Status {
-        switch self {
-        case .pending, .inTransit: .pending
-        case .confirmed: .completed
-        case .failed, .reverted: .failed
-        }
     }
 }
 

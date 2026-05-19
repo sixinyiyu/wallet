@@ -287,7 +287,7 @@ class TransactionDetailsAggregateImplTest {
     }
 
     @Test
-    fun testSwapProgress_pendingCrossChainHidden() {
+    fun testSwapProgress_pendingCrossChain() {
         val swapMetadata = TransactionSwapMetadata(
             fromAsset = ethAsset.id,
             toAsset = btcAsset.id,
@@ -310,8 +310,13 @@ class TransactionDetailsAggregateImplTest {
         )
 
         val progress = aggregate.swapProgress
-        Assert.assertNull(progress)
-        Assert.assertEquals(4, aggregate.valueGroups.size)
+        Assert.assertNotNull(progress)
+        Assert.assertEquals(ethAsset, progress?.fromAsset)
+        Assert.assertEquals("1000000000000000000", progress?.fromValue)
+        Assert.assertEquals("NEAR Intents", progress?.providerName)
+        Assert.assertEquals(TransactionState.Pending, progress?.state)
+        Assert.assertEquals(5, aggregate.valueGroups.size)
+        Assert.assertTrue(aggregate.valueGroups[1].items.single() is TransactionDetailsValue.SwapProgress)
     }
 
     @Test
@@ -423,7 +428,6 @@ class TransactionDetailsAggregateImplTest {
         val sameChainMetadata = crossChainMetadata.copy(toAsset = usdtAsset.id)
 
         val unsupportedCases = listOf(
-            Triple(TransactionState.Pending, crossChainMetadata, createSwapProvider()),
             Triple(TransactionState.InTransit, sameChainMetadata, createSwapProvider()),
             Triple(TransactionState.InTransit, crossChainMetadata, null),
             Triple(
