@@ -573,6 +573,12 @@ public enum Localized {
       /// Fully Diluted Valuation
       public static let title = Localized.tr("Localizable", "info.fully_diluted_valuation.title", fallback: "Fully Diluted Valuation")
     }
+    public enum FundingApr {
+      /// The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.
+      public static let description = Localized.tr("Localizable", "info.funding_apr.description", fallback: "The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.")
+      /// Funding APR
+      public static let title = Localized.tr("Localizable", "info.funding_apr.title", fallback: "Funding APR")
+    }
     public enum FundingPayments {
       /// Funding payments are periodic payments between traders to keep the perpetual contract price close to the underlying asset's spot price. Positive funding means long positions pay short positions, while negative funding means short positions pay long positions.
       public static let description = Localized.tr("Localizable", "info.funding_payments.description", fallback: "Funding payments are periodic payments between traders to keep the perpetual contract price close to the underlying asset's spot price. Positive funding means long positions pay short positions, while negative funding means short positions pay long positions.")
