@@ -214,7 +214,7 @@ extension AmountSceneViewModel {
         }
         return { [weak self] in
             guard let self else { return }
-            isPresentingSheet = .infoAction(.stakeMinimumAmount(asset, required: required, action: onSelectBuy))
+            isPresentingSheet = .infoAction(.minimumAmount(asset, required: required, action: onSelectBuy))
         }
     }
 }

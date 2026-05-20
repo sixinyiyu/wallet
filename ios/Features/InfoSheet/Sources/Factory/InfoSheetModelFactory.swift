@@ -112,12 +112,13 @@ public enum InfoSheetModelFactory {
                 image: .image(Images.Logo.logo),
                 button: .url(AppUrl.docs(.accountMinimalBalance)),
             )
-        case let .stakeMinimumAmount(asset, required, action):
+        case let .minimumAmount(asset, required, action):
             let formatter = ValueFormatter(style: .full)
-            let amount = formatter.string(required, asset: asset)
+            let chain = asset.chain.asset.name.boldMarkdown()
+            let amount = formatter.string(required, asset: asset).boldMarkdown()
             return InfoSheetModel(
-                title: Localized.Info.StakeMinimumAmount.title,
-                description: Localized.Info.StakeMinimumAmount.description(asset.name.boldMarkdown(), amount.boldMarkdown()),
+                title: Localized.Info.MinimumAmount.title,
+                description: Localized.Info.MinimumAmount.description(chain, amount),
                 image: .image(Images.Logo.logo),
                 button: .action(title: Localized.Asset.buyAsset(asset.feeAsset.symbol), action: action),
             )
