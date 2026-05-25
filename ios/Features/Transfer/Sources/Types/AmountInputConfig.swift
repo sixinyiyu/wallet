@@ -33,7 +33,11 @@ struct AmountInputConfig: CurrencyInputConfigurable {
     var currencyPosition: CurrencyTextField.CurrencyPosition {
         switch inputType {
         case .asset: .trailing
-        case .fiat: .leading
+        case .fiat:
+            switch currencyFormatter.symbolPosition {
+            case .leading: .leading
+            case .trailing: .trailing
+            }
         }
     }
 
@@ -54,7 +58,7 @@ struct AmountInputConfig: CurrencyInputConfigurable {
         }
     }
 
-    var sanitizer: ((String) -> String)? {
-        { numberSanitizer.sanitize($0) }
+    func sanitize(_ raw: String) -> String {
+        numberSanitizer.sanitize(raw)
     }
 }

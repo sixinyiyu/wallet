@@ -130,7 +130,7 @@ public final class FiatSceneViewModel {
     }
 
     var currencyInputConfig: any CurrencyInputConfigurable {
-        FiatCurrencyInputConfig(secondaryText: currentViewModel.cryptoAmountValue, currencySymbol: currencyFormatter.symbol)
+        FiatCurrencyInputConfig(secondaryText: currentViewModel.cryptoAmountValue, currencyFormatter: currencyFormatter)
     }
 
     var actionButtonTitle: String {

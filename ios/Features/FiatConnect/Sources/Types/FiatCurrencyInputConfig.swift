@@ -1,15 +1,23 @@
 // Copyright (c). Gem Wallet. All rights reserved.
 
 import Components
+import Formatters
 import Primitives
 import SwiftUI
 
 struct FiatCurrencyInputConfig: CurrencyInputConfigurable {
     var secondaryText: String
-    var currencySymbol: String
+    let currencyFormatter: CurrencyFormatter
+
+    var currencySymbol: String {
+        currencyFormatter.symbol
+    }
 
     var currencyPosition: CurrencyTextField.CurrencyPosition {
-        .leading
+        switch currencyFormatter.symbolPosition {
+        case .leading: .leading
+        case .trailing: .trailing
+        }
     }
 
     var placeholder: String {
@@ -20,14 +28,12 @@ struct FiatCurrencyInputConfig: CurrencyInputConfigurable {
         .decimalPad
     }
 
-    var sanitizer: ((String) -> String)? {
-        { input in
-            var filtered = input.filter { "0123456789".contains($0) }
-            while filtered.first == "0", filtered.count == 1 {
-                filtered.removeFirst()
-            }
-            return filtered
+    func sanitize(_ raw: String) -> String {
+        var filtered = raw.filter { "0123456789".contains($0) }
+        while filtered.first == "0", filtered.count == 1 {
+            filtered.removeFirst()
         }
+        return filtered
     }
 
     var actionStyle: CurrencyInputActionStyle?

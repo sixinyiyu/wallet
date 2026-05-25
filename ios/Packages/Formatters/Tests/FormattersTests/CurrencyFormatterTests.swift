@@ -50,6 +50,15 @@ final class CurrencyFormatterTests {
     }
 
     @Test
+    func symbolPosition() {
+        #expect(CurrencyFormatter(locale: .US, currencyCode: Currency.usd.rawValue).symbolPosition == .leading)
+        #expect(CurrencyFormatter(locale: .UK, currencyCode: Currency.gbp.rawValue).symbolPosition == .leading)
+        #expect(CurrencyFormatter(locale: Locale(identifier: "fr_FR"), currencyCode: "EUR").symbolPosition == .trailing)
+        #expect(CurrencyFormatter(locale: Locale(identifier: "de_DE"), currencyCode: "EUR").symbolPosition == .trailing)
+        #expect(CurrencyFormatter(locale: Locale(identifier: "ja_JP"), currencyCode: "JPY").symbolPosition == .leading)
+    }
+
+    @Test
     func testAbbreviated() {
         #expect(abbreviatedFormatterUS.string(0) == "$0.00")
         #expect(abbreviatedFormatterUS.string(12) == "$12.00")

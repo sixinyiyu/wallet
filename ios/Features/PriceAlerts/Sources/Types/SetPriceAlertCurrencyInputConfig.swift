@@ -15,7 +15,6 @@ struct SetPriceAlertCurrencyInputConfig: CurrencyInputConfigurable {
     let assetData: AssetData
     let formatter: CurrencyFormatter
     let onTapActionButton: VoidAction
-    let sanitizer: ((String) -> String)? = nil
 
     var placeholder: String {
         switch type {
@@ -33,7 +32,11 @@ struct SetPriceAlertCurrencyInputConfig: CurrencyInputConfigurable {
 
     var currencyPosition: Components.CurrencyTextField.CurrencyPosition {
         switch type {
-        case .price: .leading
+        case .price:
+            switch formatter.symbolPosition {
+            case .leading: .leading
+            case .trailing: .trailing
+            }
         case .percentage: .trailing
         }
     }

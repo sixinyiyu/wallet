@@ -9,6 +9,11 @@ public enum CurrencyFormatterType: Sendable, Hashable {
     case abbreviated
 }
 
+public enum CurrencySymbolPosition: Sendable, Hashable {
+    case leading
+    case trailing
+}
+
 public struct CurrencyFormatter: Sendable, Hashable {
     private let locale: Locale
     private let type: CurrencyFormatterType
@@ -30,6 +35,14 @@ public struct CurrencyFormatter: Sendable, Hashable {
         formatter.numberStyle = .currency
         formatter.currencyCode = currencyCode
         return formatter.currencySymbol
+    }
+
+    public var symbolPosition: CurrencySymbolPosition {
+        let formatter = NumberFormatter()
+        formatter.locale = locale
+        formatter.numberStyle = .currency
+        formatter.currencyCode = currencyCode
+        return formatter.positivePrefix.contains(formatter.currencySymbol) ? .leading : .trailing
     }
 
     public func string(_ value: Double) -> String {
