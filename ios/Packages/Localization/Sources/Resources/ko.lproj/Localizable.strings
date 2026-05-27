@@ -385,8 +385,6 @@
 "info.account_minimum_balance.title" = "최소 잔액";
 "asset.buy_asset" = "%@ 구매";
 "wallet.import_address_warning" = "이 주소에 대한 잔액과 거래 내역은 볼 수 있지만, **자금을 보내거나 판매할 수는 없습니다**.";
-"info.stake_minimum_amount.title" = "최소 금액";
-"info.stake_minimum_amount.description" = "위에 %@ 네트워크에서 최소 스테이킹 요구 사항은 다음과 같습니다. %@.";
 "asset.add_to_wallet" = "지갑에 추가";
 "asset.hide_from_wallet" = "지갑에서 숨기기";
 "common.details" = "세부";
@@ -572,6 +570,6 @@
 "info.funding_apr.title" = "Funding APR";
 "info.funding_apr.description" = "The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.";
 "info.minimum_amount.title" = "Minimum Amount";
-"info.minimum_amount.stake_description" = "On the %@ network, the minimum staking requirement is %@.";
-"info.minimum_amount.perpetual_description" = "On the %@ network, the minimum perpetual order is %@.";
+"info.minimum_amount.description" = "On the %@ network, the minimum amount for this transaction is %@.";
 "transaction.status.refunded" = "환불됨";
+"errors.dust_change_short" = "이체 후 남는 잔액은 거의 없을 겁니다. 최대 금액을 보내보세요.";

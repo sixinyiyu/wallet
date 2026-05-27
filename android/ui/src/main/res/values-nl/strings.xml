@@ -406,8 +406,6 @@
   <string name="info.account_minimum_balance.title">Minimumsaldo</string>
   <string name="asset.buy_asset">Koop %s</string>
   <string name="wallet.import_address_warning">U kunt het saldo en de transacties voor dit adres bekijken, maar u kunt geen geld verzenden of verkopen.</string>
-  <string name="info.stake_minimum_amount.title">Minimumbedrag</string>
-  <string name="info.stake_minimum_amount.description" formatted="false">Op de %s netwerk, de minimale inzetvereiste is %s.</string>
   <string name="asset.add_to_wallet">Toevoegen aan portemonnee</string>
   <string name="asset.hide_from_wallet">Verbergen voor portemonnee</string>
   <string name="common.details">Details</string>
@@ -595,7 +593,7 @@
   <string name="info.funding_apr.title">Funding APR</string>
   <string name="info.funding_apr.description">The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.</string>
   <string name="info.minimum_amount.title">Minimum Amount</string>
-  <string name="info.minimum_amount.stake_description" formatted="false">On the %s network, the minimum staking requirement is %s.</string>
-  <string name="info.minimum_amount.perpetual_description" formatted="false">On the %s network, the minimum perpetual order is %s.</string>
+  <string name="info.minimum_amount.description" formatted="false">On the %s network, the minimum amount for this transaction is %s.</string>
   <string name="transaction.status.refunded">Terugbetaald</string>
+  <string name="errors.dust_change_short">Het resterende bedrag na deze overschrijving zou waardeloos zijn. Probeer het maximale bedrag over te maken.</string>
 </resources>

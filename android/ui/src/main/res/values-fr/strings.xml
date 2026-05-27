@@ -406,8 +406,6 @@
   <string name="info.account_minimum_balance.title">Solde minimum</string>
   <string name="asset.buy_asset">Achetez %s</string>
   <string name="wallet.import_address_warning">Vous pouvez consulter les soldes et les transactions pour cette adresse, mais **vous ne pouvez pas envoyer ou vendre des fonds**.</string>
-  <string name="info.stake_minimum_amount.title">Montant minimum</string>
-  <string name="info.stake_minimum_amount.description" formatted="false">Sur le %s sur le réseau, l\'exigence de mise minimale est %s.</string>
   <string name="asset.add_to_wallet">Ajouter au portefeuille</string>
   <string name="asset.hide_from_wallet">Se cacher du portefeuille</string>
   <string name="common.details">Détails</string>
@@ -595,7 +593,7 @@
   <string name="info.funding_apr.title">Funding APR</string>
   <string name="info.funding_apr.description">The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.</string>
   <string name="info.minimum_amount.title">Minimum Amount</string>
-  <string name="info.minimum_amount.stake_description" formatted="false">On the %s network, the minimum staking requirement is %s.</string>
-  <string name="info.minimum_amount.perpetual_description" formatted="false">On the %s network, the minimum perpetual order is %s.</string>
+  <string name="info.minimum_amount.description" formatted="false">On the %s network, the minimum amount for this transaction is %s.</string>
   <string name="transaction.status.refunded">Remboursé</string>
+  <string name="errors.dust_change_short">Le solde restant après ce virement sera inutilisable. Essayez d\'envoyer le montant maximum.</string>
 </resources>

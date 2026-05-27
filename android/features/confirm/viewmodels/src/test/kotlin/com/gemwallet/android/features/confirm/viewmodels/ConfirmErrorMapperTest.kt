@@ -30,6 +30,14 @@ class ConfirmErrorMapperTest {
     }
 
     @Test
+    fun preloadMapsDustChangeError() {
+        val error = GatewayException.PlatformException(GemPlatformErrors.DustChange.message)
+            .toPreloadConfirmError(Chain.Bitcoin)
+
+        assertTrue(error is ConfirmError.DustChange)
+    }
+
+    @Test
     fun broadcastMapsGatewayNetworkExceptionToNetworkError() {
         val error = GatewayException.NetworkException("Network error: offline")
             .toBroadcastConfirmError()

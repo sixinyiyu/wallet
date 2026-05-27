@@ -406,8 +406,6 @@
   <string name="info.account_minimum_balance.title">न्यूनतम शेष</string>
   <string name="asset.buy_asset">%s खरीदें</string>
   <string name="wallet.import_address_warning">आप इस पते के लिए शेष राशि और लेनदेन देख सकते हैं, लेकिन **धन भेज या बेच नहीं सकते**।</string>
-  <string name="info.stake_minimum_amount.title">न्यूनतम राशि</string>
-  <string name="info.stake_minimum_amount.description" formatted="false">पर %s नेटवर्क के लिए, न्यूनतम स्टेकिंग आवश्यकता है %s.</string>
   <string name="asset.add_to_wallet">वॉलेट में जोड़ें</string>
   <string name="asset.hide_from_wallet">बटुए से छिपाएँ</string>
   <string name="common.details">विवरण</string>
@@ -595,7 +593,7 @@
   <string name="info.funding_apr.title">Funding APR</string>
   <string name="info.funding_apr.description">The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.</string>
   <string name="info.minimum_amount.title">Minimum Amount</string>
-  <string name="info.minimum_amount.stake_description" formatted="false">On the %s network, the minimum staking requirement is %s.</string>
-  <string name="info.minimum_amount.perpetual_description" formatted="false">On the %s network, the minimum perpetual order is %s.</string>
+  <string name="info.minimum_amount.description" formatted="false">On the %s network, the minimum amount for this transaction is %s.</string>
   <string name="transaction.status.refunded">वापसी की गई है</string>
+  <string name="errors.dust_change_short">इस हस्तांतरण के बाद बची हुई राशि नगण्य हो जाएगी। अधिकतम राशि भेजने का प्रयास करें।</string>
 </resources>

@@ -385,8 +385,6 @@
 "info.account_minimum_balance.title" = "Minimalne saldo";
 "asset.buy_asset" = "Kup %@";
 "wallet.import_address_warning" = "Możesz przeglądać salda i transakcje dla tego adresu, ale **nie możesz wysyłać ani sprzedawać środków**.";
-"info.stake_minimum_amount.title" = "Minimalna kwota";
-"info.stake_minimum_amount.description" = "Na %@ sieć, minimalne wymagania dotyczące stakowania to %@.";
 "asset.add_to_wallet" = "Dodaj do portfela";
 "asset.hide_from_wallet" = "Ukryj w portfelu";
 "common.details" = "Bliższe dane";
@@ -572,6 +570,6 @@
 "info.funding_apr.title" = "Funding APR";
 "info.funding_apr.description" = "The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.";
 "info.minimum_amount.title" = "Minimum Amount";
-"info.minimum_amount.stake_description" = "On the %@ network, the minimum staking requirement is %@.";
-"info.minimum_amount.perpetual_description" = "On the %@ network, the minimum perpetual order is %@.";
+"info.minimum_amount.description" = "On the %@ network, the minimum amount for this transaction is %@.";
 "transaction.status.refunded" = "Zwrócono";
+"errors.dust_change_short" = "Saldo pozostałe po tym przelewie będzie równe kurzowi. Spróbuj wysłać maksymalną kwotę.";

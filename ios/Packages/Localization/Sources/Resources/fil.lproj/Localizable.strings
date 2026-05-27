@@ -385,8 +385,6 @@
 "info.account_minimum_balance.title" = "Minimum na balanse";
 "asset.buy_asset" = "Bumili ng %@";
 "wallet.import_address_warning" = "Maaari mong tingnan ang mga balanse at transaksyon para sa address na ito, ngunit **hindi maaaring magpadala o magbenta ng mga pondo**.";
-"info.stake_minimum_amount.title" = "Minimum na halaga";
-"info.stake_minimum_amount.description" = "Sa %@ network, ang minimum na kinakailangan sa staking ay %@.";
 "asset.add_to_wallet" = "Idagdag sa wallet";
 "asset.hide_from_wallet" = "Itago sa wallet";
 "common.details" = "Mga Detalye";
@@ -572,6 +570,6 @@
 "info.funding_apr.title" = "Funding APR";
 "info.funding_apr.description" = "The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.";
 "info.minimum_amount.title" = "Minimum Amount";
-"info.minimum_amount.stake_description" = "On the %@ network, the minimum staking requirement is %@.";
-"info.minimum_amount.perpetual_description" = "On the %@ network, the minimum perpetual order is %@.";
-"transaction.status.refunded" = "Refunded";
+"info.minimum_amount.description" = "On the %@ network, the minimum amount for this transaction is %@.";
+"transaction.status.refunded" = "Na-refund";
+"errors.dust_change_short" = "Ang natitirang balanse pagkatapos ng paglilipat na ito ay magiging alikabok lamang. Subukang ipadala ang pinakamataas na halaga.";

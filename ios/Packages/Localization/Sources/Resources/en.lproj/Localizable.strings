@@ -572,3 +572,4 @@
 "info.minimum_amount.title" = "Minimum Amount";
 "info.minimum_amount.description" = "On the %@ network, the minimum amount for this transaction is %@.";
 "transaction.status.refunded" = "Refunded";
+"errors.dust_change_short" = "The remaining balance after this transfer would be dust. Try sending the maximum amount.";

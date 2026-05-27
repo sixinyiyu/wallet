@@ -26,7 +26,7 @@ extension ConfirmErrorViewModel: ItemModelProvidable {
         return .error(
             title: Localized.Errors.errorOccured,
             error: ChainCoreError.fromError(error) ?? error,
-            onInfoAction: { onSelectListError(error) },
+            onInfoAction: infoAction(for: error),
         )
     }
 }
@@ -38,5 +38,12 @@ extension ConfirmErrorViewModel {
         if case let .error(error) = state { return error }
         if case let .failure(error) = state.value?.transferAmount { return error }
         return nil
+    }
+
+    private func infoAction(for error: Error) -> VoidAction {
+        switch ChainCoreError.fromError(error) {
+        case .dustChange: nil
+        case .dustThreshold, .feeRateMissed, .cantEstimateFee, .incorrectAmount, .none: { onSelectListError(error) }
+        }
     }
 }

@@ -385,8 +385,6 @@
 "info.account_minimum_balance.title" = "کم از کم بیلنس";
 "asset.buy_asset" = "خریدیں %@";
 "wallet.import_address_warning" = "آپ اس پتے کے بیلنس اور لین دین دیکھ سکتے ہیں، لیکن **فنڈز بھیج یا فروخت نہیں کر سکتے**۔";
-"info.stake_minimum_amount.title" = "کم از کم رقم";
-"info.stake_minimum_amount.description" = "پر %@ نیٹ ورک، اسٹیکنگ کی کم از کم ضرورت ہے۔ %@.";
 "asset.add_to_wallet" = "بٹوے میں شامل کریں۔";
 "asset.hide_from_wallet" = "بٹوے سے چھپائیں۔";
 "common.details" = "تفصیلات";
@@ -572,6 +570,6 @@
 "info.funding_apr.title" = "Funding APR";
 "info.funding_apr.description" = "The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.";
 "info.minimum_amount.title" = "Minimum Amount";
-"info.minimum_amount.stake_description" = "On the %@ network, the minimum staking requirement is %@.";
-"info.minimum_amount.perpetual_description" = "On the %@ network, the minimum perpetual order is %@.";
+"info.minimum_amount.description" = "On the %@ network, the minimum amount for this transaction is %@.";
 "transaction.status.refunded" = "رقم کی واپسی";
+"errors.dust_change_short" = "اس منتقلی کے بعد باقی ماندہ رقم خاک ہو گی۔ زیادہ سے زیادہ رقم بھیجنے کی کوشش کریں۔";

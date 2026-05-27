@@ -406,8 +406,6 @@
   <string name="info.account_minimum_balance.title">Kiwango cha chini cha usawa</string>
   <string name="asset.buy_asset">Nunua %s</string>
   <string name="wallet.import_address_warning">Unaweza kuangalia salio na miamala ya anwani hii, lakini **haiwezi kutuma au kuuza fedha**.</string>
-  <string name="info.stake_minimum_amount.title">Kiasi cha chini</string>
-  <string name="info.stake_minimum_amount.description" formatted="false">Juu ya %s mtandao, sharti la chini kabisa la kuweka dau ni %s.</string>
   <string name="asset.add_to_wallet">Ongeza kwenye mkoba</string>
   <string name="asset.hide_from_wallet">Ficha kutoka kwa mkoba</string>
   <string name="common.details">Maelezo</string>
@@ -595,7 +593,7 @@
   <string name="info.funding_apr.title">Funding APR</string>
   <string name="info.funding_apr.description">The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.</string>
   <string name="info.minimum_amount.title">Minimum Amount</string>
-  <string name="info.minimum_amount.stake_description" formatted="false">On the %s network, the minimum staking requirement is %s.</string>
-  <string name="info.minimum_amount.perpetual_description" formatted="false">On the %s network, the minimum perpetual order is %s.</string>
+  <string name="info.minimum_amount.description" formatted="false">On the %s network, the minimum amount for this transaction is %s.</string>
   <string name="transaction.status.refunded">Imerejeshwa</string>
+  <string name="errors.dust_change_short">Salio lililobaki baada ya uhamisho huu litakuwa vumbi. Jaribu kutuma kiasi cha juu zaidi.</string>
 </resources>

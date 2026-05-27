@@ -236,6 +236,15 @@ sealed class ConfirmParams() {
         ) : TransferParams() {
             override fun toDto(): GemTransactionInputType = GemTransactionInputType.Transfer(asset.toGem())
 
+            fun withAmount(amount: BigInteger, useMaxAmount: Boolean = this.useMaxAmount) = Native(
+                asset = asset,
+                from = from,
+                amount = amount,
+                destination = destination,
+                memo = memo,
+                inputType = inputType,
+                useMaxAmount = useMaxAmount,
+            )
         }
 
         @Serializable

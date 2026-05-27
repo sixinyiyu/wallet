@@ -406,8 +406,6 @@
   <string name="info.account_minimum_balance.title">יתרה מינימלית</string>
   <string name="asset.buy_asset">קנה %s</string>
   <string name="wallet.import_address_warning">ניתן לצפות ביתרות ועסקאות עבור כתובת זו, אך **לא ניתן לשלוח או למכור כספים**.</string>
-  <string name="info.stake_minimum_amount.title">סכום מינימלי</string>
-  <string name="info.stake_minimum_amount.description" formatted="false">על ה %s רשת, דרישת ההימור המינימלית היא %s.</string>
   <string name="asset.add_to_wallet">הוסף לארנק</string>
   <string name="asset.hide_from_wallet">הסתר מהארנק</string>
   <string name="common.details">פרטים</string>
@@ -595,7 +593,7 @@
   <string name="info.funding_apr.title">Funding APR</string>
   <string name="info.funding_apr.description">The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.</string>
   <string name="info.minimum_amount.title">Minimum Amount</string>
-  <string name="info.minimum_amount.stake_description" formatted="false">On the %s network, the minimum staking requirement is %s.</string>
-  <string name="info.minimum_amount.perpetual_description" formatted="false">On the %s network, the minimum perpetual order is %s.</string>
+  <string name="info.minimum_amount.description" formatted="false">On the %s network, the minimum amount for this transaction is %s.</string>
   <string name="transaction.status.refunded">החזר כספי</string>
+  <string name="errors.dust_change_short">היתרה שנותרה לאחר העברה זו תהיה אבק. נסה לשלוח את הסכום המקסימלי.</string>
 </resources>

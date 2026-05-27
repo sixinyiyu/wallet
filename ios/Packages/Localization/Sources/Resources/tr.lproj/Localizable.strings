@@ -385,8 +385,6 @@
 "info.account_minimum_balance.title" = "Minimum bakiye";
 "asset.buy_asset" = "%@ satın al";
 "wallet.import_address_warning" = "Bu adrese ait bakiyeleri ve işlemleri görüntüleyebilirsiniz, ancak **para gönderemez veya satamazsınız**.";
-"info.stake_minimum_amount.title" = "Asgari tutar";
-"info.stake_minimum_amount.description" = "Üzerinde %@ Ağda, minimum staking gereksinimi şöyledir: %@.";
 "asset.add_to_wallet" = "Cüzdana ekle";
 "asset.hide_from_wallet" = "Cüzdandan gizle";
 "common.details" = "Detaylar";
@@ -572,6 +570,6 @@
 "info.funding_apr.title" = "Funding APR";
 "info.funding_apr.description" = "The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.";
 "info.minimum_amount.title" = "Minimum Amount";
-"info.minimum_amount.stake_description" = "On the %@ network, the minimum staking requirement is %@.";
-"info.minimum_amount.perpetual_description" = "On the %@ network, the minimum perpetual order is %@.";
+"info.minimum_amount.description" = "On the %@ network, the minimum amount for this transaction is %@.";
 "transaction.status.refunded" = "Para iadesi yapıldı";
+"errors.dust_change_short" = "Bu transferden sonra kalan bakiye önemsiz olacaktır. Maksimum miktarı göndermeyi deneyin.";

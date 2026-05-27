@@ -385,8 +385,6 @@
 "info.account_minimum_balance.title" = "Sold minim";
 "asset.buy_asset" = "Cumpără %@";
 "wallet.import_address_warning" = "Puteți vizualiza soldurile și tranzacțiile pentru această adresă, dar **nu puteți trimite sau vinde fonduri**.";
-"info.stake_minimum_amount.title" = "Suma minimă";
-"info.stake_minimum_amount.description" = "Pe %@ rețea, cerința minimă de miză este %@.";
 "asset.add_to_wallet" = "Adaugă în portofel";
 "asset.hide_from_wallet" = "Ascunde din portofel";
 "common.details" = "Detalii";
@@ -572,6 +570,6 @@
 "info.funding_apr.title" = "Funding APR";
 "info.funding_apr.description" = "The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.";
 "info.minimum_amount.title" = "Minimum Amount";
-"info.minimum_amount.stake_description" = "On the %@ network, the minimum staking requirement is %@.";
-"info.minimum_amount.perpetual_description" = "On the %@ network, the minimum perpetual order is %@.";
+"info.minimum_amount.description" = "On the %@ network, the minimum amount for this transaction is %@.";
 "transaction.status.refunded" = "Rambursat";
+"errors.dust_change_short" = "Soldul rămas după acest transfer ar fi praf. Încercați să trimiteți suma maximă.";

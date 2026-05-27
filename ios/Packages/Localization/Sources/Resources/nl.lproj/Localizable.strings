@@ -385,8 +385,6 @@
 "info.account_minimum_balance.title" = "Minimumsaldo";
 "asset.buy_asset" = "Koop %@";
 "wallet.import_address_warning" = "U kunt het saldo en de transacties voor dit adres bekijken, maar u kunt geen geld verzenden of verkopen.";
-"info.stake_minimum_amount.title" = "Minimumbedrag";
-"info.stake_minimum_amount.description" = "Op de %@ netwerk, de minimale inzetvereiste is %@.";
 "asset.add_to_wallet" = "Toevoegen aan portemonnee";
 "asset.hide_from_wallet" = "Verbergen voor portemonnee";
 "common.details" = "Details";
@@ -572,6 +570,6 @@
 "info.funding_apr.title" = "Funding APR";
 "info.funding_apr.description" = "The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.";
 "info.minimum_amount.title" = "Minimum Amount";
-"info.minimum_amount.stake_description" = "On the %@ network, the minimum staking requirement is %@.";
-"info.minimum_amount.perpetual_description" = "On the %@ network, the minimum perpetual order is %@.";
+"info.minimum_amount.description" = "On the %@ network, the minimum amount for this transaction is %@.";
 "transaction.status.refunded" = "Terugbetaald";
+"errors.dust_change_short" = "Het resterende bedrag na deze overschrijving zou waardeloos zijn. Probeer het maximale bedrag over te maken.";

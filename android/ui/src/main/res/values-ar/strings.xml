@@ -406,8 +406,6 @@
   <string name="info.account_minimum_balance.title">الحد الأدنى للرصيد</string>
   <string name="asset.buy_asset">شراء %s</string>
   <string name="wallet.import_address_warning">يمكنك عرض الأرصدة والمعاملات لهذا العنوان، ولكن **لا يمكنك إرسال أو بيع الأموال**.</string>
-  <string name="info.stake_minimum_amount.title">الحد الأدنى للمبلغ</string>
-  <string name="info.stake_minimum_amount.description" formatted="false">في %s في الشبكة، الحد الأدنى لمتطلبات التخزين هو %s.</string>
   <string name="asset.add_to_wallet">أضف إلى المحفظة</string>
   <string name="asset.hide_from_wallet">إخفاء من المحفظة</string>
   <string name="common.details">تفاصيل</string>
@@ -595,7 +593,7 @@
   <string name="info.funding_apr.title">Funding APR</string>
   <string name="info.funding_apr.description">The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.</string>
   <string name="info.minimum_amount.title">Minimum Amount</string>
-  <string name="info.minimum_amount.stake_description" formatted="false">On the %s network, the minimum staking requirement is %s.</string>
-  <string name="info.minimum_amount.perpetual_description" formatted="false">On the %s network, the minimum perpetual order is %s.</string>
+  <string name="info.minimum_amount.description" formatted="false">On the %s network, the minimum amount for this transaction is %s.</string>
   <string name="transaction.status.refunded">تم استرداد المبلغ</string>
+  <string name="errors.dust_change_short">الرصيد المتبقي بعد هذا التحويل سيكون ضئيلاً جداً (غبار). حاول إرسال الحد الأقصى للمبلغ.</string>
 </resources>

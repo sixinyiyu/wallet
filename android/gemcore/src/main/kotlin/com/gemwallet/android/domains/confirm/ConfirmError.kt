@@ -17,4 +17,5 @@ sealed class ConfirmError : Exception() {
     class BroadcastError(val details: String) : ConfirmError()
     class NetworkError(val error: GemNetworkError) : ConfirmError()
     class DustThreshold(val chain: Chain) : ConfirmError()
+    class DustChange(val chain: Chain) : ConfirmError()
 }

@@ -595,4 +595,5 @@
   <string name="info.minimum_amount.title">Minimum Amount</string>
   <string name="info.minimum_amount.description" formatted="false">On the %s network, the minimum amount for this transaction is %s.</string>
   <string name="transaction.status.refunded">Refunded</string>
+  <string name="errors.dust_change_short">The remaining balance after this transfer would be dust. Try sending the maximum amount.</string>
 </resources>

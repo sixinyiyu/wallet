@@ -385,8 +385,6 @@
 "info.account_minimum_balance.title" = "Мінімальний баланс";
 "asset.buy_asset" = "Купити %@";
 "wallet.import_address_warning" = "Ви можете переглядати баланси та транзакції для цієї адреси, але **не можете надсилати або продавати кошти**.";
-"info.stake_minimum_amount.title" = "Мінімальна сума";
-"info.stake_minimum_amount.description" = "На %@ мережі, мінімальна вимога до стейкінгу становить %@.";
 "asset.add_to_wallet" = "Додати до гаманця";
 "asset.hide_from_wallet" = "Приховати від гаманця";
 "common.details" = "Деталі";
@@ -572,6 +570,6 @@
 "info.funding_apr.title" = "Funding APR";
 "info.funding_apr.description" = "The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.";
 "info.minimum_amount.title" = "Minimum Amount";
-"info.minimum_amount.stake_description" = "On the %@ network, the minimum staking requirement is %@.";
-"info.minimum_amount.perpetual_description" = "On the %@ network, the minimum perpetual order is %@.";
+"info.minimum_amount.description" = "On the %@ network, the minimum amount for this transaction is %@.";
 "transaction.status.refunded" = "Повернено кошти";
+"errors.dust_change_short" = "Залишок після цього переказу перетвориться на пил. Спробуйте надіслати максимальну суму.";

@@ -406,8 +406,6 @@
   <string name="info.account_minimum_balance.title">ยอดคงเหลือขั้นต่ำ</string>
   <string name="asset.buy_asset">ซื้อ %s</string>
   <string name="wallet.import_address_warning">คุณสามารถดูยอดคงเหลือและธุรกรรมสำหรับที่อยู่นี้ แต่ **ไม่สามารถส่งหรือขายเงินได้**</string>
-  <string name="info.stake_minimum_amount.title">จำนวนเงินขั้นต่ำ</string>
-  <string name="info.stake_minimum_amount.description" formatted="false">บน %s เครือข่ายนี้ ข้อกำหนดการวางเดิมพันขั้นต่ำคือ %s-</string>
   <string name="asset.add_to_wallet">เพิ่มลงในกระเป๋าสตางค์</string>
   <string name="asset.hide_from_wallet">ซ่อนจากกระเป๋าสตางค์</string>
   <string name="common.details">รายละเอียด</string>
@@ -595,7 +593,7 @@
   <string name="info.funding_apr.title">Funding APR</string>
   <string name="info.funding_apr.description">The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.</string>
   <string name="info.minimum_amount.title">Minimum Amount</string>
-  <string name="info.minimum_amount.stake_description" formatted="false">On the %s network, the minimum staking requirement is %s.</string>
-  <string name="info.minimum_amount.perpetual_description" formatted="false">On the %s network, the minimum perpetual order is %s.</string>
+  <string name="info.minimum_amount.description" formatted="false">On the %s network, the minimum amount for this transaction is %s.</string>
   <string name="transaction.status.refunded">ได้รับเงินคืน</string>
+  <string name="errors.dust_change_short">ยอดเงินคงเหลือหลังจากโอนครั้งนี้จะไม่มีค่าอะไรเลย ลองโอนเงินจำนวนสูงสุดดู</string>
 </resources>

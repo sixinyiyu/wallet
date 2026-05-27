@@ -406,8 +406,6 @@
   <string name="info.account_minimum_balance.title">Minimum na balanse</string>
   <string name="asset.buy_asset">Bumili ng %s</string>
   <string name="wallet.import_address_warning">Maaari mong tingnan ang mga balanse at transaksyon para sa address na ito, ngunit **hindi maaaring magpadala o magbenta ng mga pondo**.</string>
-  <string name="info.stake_minimum_amount.title">Minimum na halaga</string>
-  <string name="info.stake_minimum_amount.description" formatted="false">Sa %s network, ang minimum na kinakailangan sa staking ay %s.</string>
   <string name="asset.add_to_wallet">Idagdag sa wallet</string>
   <string name="asset.hide_from_wallet">Itago sa wallet</string>
   <string name="common.details">Mga Detalye</string>
@@ -595,7 +593,7 @@
   <string name="info.funding_apr.title">Funding APR</string>
   <string name="info.funding_apr.description">The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.</string>
   <string name="info.minimum_amount.title">Minimum Amount</string>
-  <string name="info.minimum_amount.stake_description" formatted="false">On the %s network, the minimum staking requirement is %s.</string>
-  <string name="info.minimum_amount.perpetual_description" formatted="false">On the %s network, the minimum perpetual order is %s.</string>
+  <string name="info.minimum_amount.description" formatted="false">On the %s network, the minimum amount for this transaction is %s.</string>
   <string name="transaction.status.refunded">Na-refund</string>
+  <string name="errors.dust_change_short">Ang natitirang balanse pagkatapos ng paglilipat na ito ay magiging alikabok lamang. Subukang ipadala ang pinakamataas na halaga.</string>
 </resources>

@@ -385,8 +385,6 @@
 "info.account_minimum_balance.title" = "Minimální zůstatek";
 "asset.buy_asset" = "Koupit %@";
 "wallet.import_address_warning" = "Pro tuto adresu si můžete prohlížet zůstatky a transakce, ale **nemůžete posílat ani prodávat finanční prostředky**.";
-"info.stake_minimum_amount.title" = "Minimální částka";
-"info.stake_minimum_amount.description" = "Na %@ síť, minimální požadavek na staking je %@.";
 "asset.add_to_wallet" = "Přidat do peněženky";
 "asset.hide_from_wallet" = "Skrýt z peněženky";
 "common.details" = "Podrobnosti";
@@ -572,6 +570,6 @@
 "info.funding_apr.title" = "Funding APR";
 "info.funding_apr.description" = "The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.";
 "info.minimum_amount.title" = "Minimum Amount";
-"info.minimum_amount.stake_description" = "On the %@ network, the minimum staking requirement is %@.";
-"info.minimum_amount.perpetual_description" = "On the %@ network, the minimum perpetual order is %@.";
-"transaction.status.refunded" = "Refunded";
+"info.minimum_amount.description" = "On the %@ network, the minimum amount for this transaction is %@.";
+"transaction.status.refunded" = "Vráceno";
+"errors.dust_change_short" = "Zbývající zůstatek po tomto převodu by byl prach. Zkuste poslat maximální částku.";

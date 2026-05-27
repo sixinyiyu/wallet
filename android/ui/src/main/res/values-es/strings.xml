@@ -406,8 +406,6 @@
   <string name="info.account_minimum_balance.title">Saldo mínimo</string>
   <string name="asset.buy_asset">Comprar %s</string>
   <string name="wallet.import_address_warning">Puede ver los saldos y las transacciones de esta dirección, pero **no puede enviar ni vender fondos**.</string>
-  <string name="info.stake_minimum_amount.title">Cantidad mínima</string>
-  <string name="info.stake_minimum_amount.description" formatted="false">En el %s red, el requisito mínimo de participación es %s.</string>
   <string name="asset.add_to_wallet">Añadir a la billetera</string>
   <string name="asset.hide_from_wallet">Ocultar de la billetera</string>
   <string name="common.details">Detalles</string>
@@ -595,7 +593,7 @@
   <string name="info.funding_apr.title">Funding APR</string>
   <string name="info.funding_apr.description">The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.</string>
   <string name="info.minimum_amount.title">Minimum Amount</string>
-  <string name="info.minimum_amount.stake_description" formatted="false">On the %s network, the minimum staking requirement is %s.</string>
-  <string name="info.minimum_amount.perpetual_description" formatted="false">On the %s network, the minimum perpetual order is %s.</string>
+  <string name="info.minimum_amount.description" formatted="false">On the %s network, the minimum amount for this transaction is %s.</string>
   <string name="transaction.status.refunded">Reintegrado</string>
+  <string name="errors.dust_change_short">El saldo restante tras esta transferencia sería insignificante. Intenta enviar la cantidad máxima.</string>
 </resources>

@@ -406,8 +406,6 @@
   <string name="info.account_minimum_balance.title">کم از کم بیلنس</string>
   <string name="asset.buy_asset">خریدیں %s</string>
   <string name="wallet.import_address_warning">آپ اس پتے کے بیلنس اور لین دین دیکھ سکتے ہیں، لیکن **فنڈز بھیج یا فروخت نہیں کر سکتے**۔</string>
-  <string name="info.stake_minimum_amount.title">کم از کم رقم</string>
-  <string name="info.stake_minimum_amount.description" formatted="false">پر %s نیٹ ورک، اسٹیکنگ کی کم از کم ضرورت ہے۔ %s.</string>
   <string name="asset.add_to_wallet">بٹوے میں شامل کریں۔</string>
   <string name="asset.hide_from_wallet">بٹوے سے چھپائیں۔</string>
   <string name="common.details">تفصیلات</string>
@@ -595,7 +593,7 @@
   <string name="info.funding_apr.title">Funding APR</string>
   <string name="info.funding_apr.description">The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.</string>
   <string name="info.minimum_amount.title">Minimum Amount</string>
-  <string name="info.minimum_amount.stake_description" formatted="false">On the %s network, the minimum staking requirement is %s.</string>
-  <string name="info.minimum_amount.perpetual_description" formatted="false">On the %s network, the minimum perpetual order is %s.</string>
+  <string name="info.minimum_amount.description" formatted="false">On the %s network, the minimum amount for this transaction is %s.</string>
   <string name="transaction.status.refunded">رقم کی واپسی</string>
+  <string name="errors.dust_change_short">اس منتقلی کے بعد باقی ماندہ رقم خاک ہو گی۔ زیادہ سے زیادہ رقم بھیجنے کی کوشش کریں۔</string>
 </resources>

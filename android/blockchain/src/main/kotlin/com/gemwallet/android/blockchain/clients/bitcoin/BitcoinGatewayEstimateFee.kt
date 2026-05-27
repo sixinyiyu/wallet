@@ -92,9 +92,8 @@ class BitcoinGatewayEstimateFee : GemGatewayEstimateFee {
         val plan = AnySigner.plan(input, coinType, Bitcoin.TransactionPlan.parser())
         when (plan.error) {
             Common.SigningError.OK -> { /* continue */ }
-            Common.SigningError.Error_not_enough_utxos,
-            Common.SigningError.Error_dust_amount_requested,
-            Common.SigningError.Error_missing_input_utxos -> throw GatewayException.PlatformException(GemPlatformErrors.Dust.message)
+            Common.SigningError.Error_dust_amount_requested -> throw GatewayException.PlatformException(GemPlatformErrors.Dust.message)
+            Common.SigningError.Error_not_enough_utxos -> throw GatewayException.PlatformException(GemPlatformErrors.DustChange.message)
             else -> throw GatewayException.PlatformException(plan.error.name)
         }
 

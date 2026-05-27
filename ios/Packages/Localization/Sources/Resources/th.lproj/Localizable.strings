@@ -385,8 +385,6 @@
 "info.account_minimum_balance.title" = "ยอดคงเหลือขั้นต่ำ";
 "asset.buy_asset" = "ซื้อ %@";
 "wallet.import_address_warning" = "คุณสามารถดูยอดคงเหลือและธุรกรรมสำหรับที่อยู่นี้ แต่ **ไม่สามารถส่งหรือขายเงินได้**";
-"info.stake_minimum_amount.title" = "จำนวนเงินขั้นต่ำ";
-"info.stake_minimum_amount.description" = "บน %@ เครือข่ายนี้ ข้อกำหนดการวางเดิมพันขั้นต่ำคือ %@-";
 "asset.add_to_wallet" = "เพิ่มลงในกระเป๋าสตางค์";
 "asset.hide_from_wallet" = "ซ่อนจากกระเป๋าสตางค์";
 "common.details" = "รายละเอียด";
@@ -572,6 +570,6 @@
 "info.funding_apr.title" = "Funding APR";
 "info.funding_apr.description" = "The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.";
 "info.minimum_amount.title" = "Minimum Amount";
-"info.minimum_amount.stake_description" = "On the %@ network, the minimum staking requirement is %@.";
-"info.minimum_amount.perpetual_description" = "On the %@ network, the minimum perpetual order is %@.";
+"info.minimum_amount.description" = "On the %@ network, the minimum amount for this transaction is %@.";
 "transaction.status.refunded" = "ได้รับเงินคืน";
+"errors.dust_change_short" = "ยอดเงินคงเหลือหลังจากโอนครั้งนี้จะไม่มีค่าอะไรเลย ลองโอนเงินจำนวนสูงสุดดู";

@@ -385,8 +385,6 @@
 "info.account_minimum_balance.title" = "יתרה מינימלית";
 "asset.buy_asset" = "קנה %@";
 "wallet.import_address_warning" = "ניתן לצפות ביתרות ועסקאות עבור כתובת זו, אך **לא ניתן לשלוח או למכור כספים**.";
-"info.stake_minimum_amount.title" = "סכום מינימלי";
-"info.stake_minimum_amount.description" = "על ה %@ רשת, דרישת ההימור המינימלית היא %@.";
 "asset.add_to_wallet" = "הוסף לארנק";
 "asset.hide_from_wallet" = "הסתר מהארנק";
 "common.details" = "פרטים";
@@ -572,6 +570,6 @@
 "info.funding_apr.title" = "Funding APR";
 "info.funding_apr.description" = "The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.";
 "info.minimum_amount.title" = "Minimum Amount";
-"info.minimum_amount.stake_description" = "On the %@ network, the minimum staking requirement is %@.";
-"info.minimum_amount.perpetual_description" = "On the %@ network, the minimum perpetual order is %@.";
+"info.minimum_amount.description" = "On the %@ network, the minimum amount for this transaction is %@.";
 "transaction.status.refunded" = "החזר כספי";
+"errors.dust_change_short" = "היתרה שנותרה לאחר העברה זו תהיה אבק. נסה לשלוח את הסכום המקסימלי.";

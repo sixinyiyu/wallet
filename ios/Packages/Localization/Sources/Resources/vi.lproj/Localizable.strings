@@ -385,8 +385,6 @@
 "info.account_minimum_balance.title" = "Số dư tối thiểu";
 "asset.buy_asset" = "Mua %@";
 "wallet.import_address_warning" = "Bạn có thể xem số dư và giao dịch của địa chỉ này, nhưng **không thể gửi hoặc bán tiền**.";
-"info.stake_minimum_amount.title" = "Số tiền tối thiểu";
-"info.stake_minimum_amount.description" = "Trên %@ mạng lưới, yêu cầu đặt cọc tối thiểu là %@.";
 "asset.add_to_wallet" = "Thêm vào ví";
 "asset.hide_from_wallet" = "Ẩn khỏi ví";
 "common.details" = "Chi tiết";
@@ -572,6 +570,6 @@
 "info.funding_apr.title" = "Funding APR";
 "info.funding_apr.description" = "The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.";
 "info.minimum_amount.title" = "Minimum Amount";
-"info.minimum_amount.stake_description" = "On the %@ network, the minimum staking requirement is %@.";
-"info.minimum_amount.perpetual_description" = "On the %@ network, the minimum perpetual order is %@.";
+"info.minimum_amount.description" = "On the %@ network, the minimum amount for this transaction is %@.";
 "transaction.status.refunded" = "Đã hoàn tiền";
+"errors.dust_change_short" = "Số dư còn lại sau lần chuyển khoản này sẽ chẳng đáng là bao. Hãy thử chuyển số tiền tối đa.";

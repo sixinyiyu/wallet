@@ -347,8 +347,11 @@ private fun ConfirmDetailElementBottomSheet(
 @Composable
 fun ConfirmState.buttonLabel(): String {
     return when (this) {
-        is ConfirmState.BroadcastError,
-        is ConfirmState.Error -> stringResource(R.string.common_try_again)
+        is ConfirmState.Error -> when (message) {
+            is ConfirmError.DustChange -> stringResource(R.string.transfer_max)
+            else -> stringResource(R.string.common_try_again)
+        }
+        is ConfirmState.BroadcastError -> stringResource(R.string.common_try_again)
         is ConfirmState.FatalError -> message
         ConfirmState.Prepare,
         ConfirmState.Ready,
@@ -369,6 +372,7 @@ fun ConfirmError.toLabel() = when (this) {
     is ConfirmError.SignFail -> stringResource(R.string.errors_transfer_error)
     is ConfirmError.RecipientEmpty -> "${stringResource(R.string.errors_transfer_error)}: recipient can't be empty"
     is ConfirmError.DustThreshold -> stringResource(id = R.string.errors_dust_threshold_short)
+    is ConfirmError.DustChange -> stringResource(id = R.string.errors_dust_change_short)
     is ConfirmError.None -> stringResource(id = R.string.transfer_confirm)
     is ConfirmError.MinimumAccountBalanceTooLow -> stringResource(R.string.transfer_minimum_account_balance, asset.symbol)
 }

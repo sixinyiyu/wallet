@@ -9,26 +9,18 @@ import TransferTestKit
 
 struct ConfirmButtonViewModelTests {
     @Test
-    func loaded() {
-        let model = ConfirmButtonViewModel(state: .data(TransactionInputViewModel.mock()), icon: nil, onAction: {})
-        #expect(model.title == Localized.Transfer.confirm)
+    func titles() {
+        let confirm = ConfirmButtonViewModel(state: .data(TransactionInputViewModel.mock()), icon: nil, onAction: { _ in })
+        let tryAgain = ConfirmButtonViewModel(state: .error(AnyError("test")), icon: nil, onAction: { _ in })
+        #expect(confirm.title == Localized.Transfer.confirm)
+        #expect(tryAgain.title == Localized.Common.tryAgain)
     }
 
     @Test
-    func error() {
-        let model = ConfirmButtonViewModel(state: .error(AnyError("test")), icon: nil, onAction: {})
-        #expect(model.title == Localized.Common.tryAgain)
-    }
-
-    @Test
-    func disabledWhenForceDisabled() {
-        let model = ConfirmButtonViewModel(state: .data(TransactionInputViewModel.mock()), icon: nil, isDisabled: true, onAction: {})
-        #expect(model.type.isDisabled)
-    }
-
-    @Test
-    func enabledWhenNotForceDisabled() {
-        let model = ConfirmButtonViewModel(state: .data(TransactionInputViewModel.mock()), icon: nil, isDisabled: false, onAction: {})
-        #expect(!model.type.isDisabled)
+    func disabled() {
+        let forced = ConfirmButtonViewModel(state: .data(TransactionInputViewModel.mock()), icon: nil, isDisabled: true, onAction: { _ in })
+        let enabled = ConfirmButtonViewModel(state: .data(TransactionInputViewModel.mock()), icon: nil, isDisabled: false, onAction: { _ in })
+        #expect(forced.type.isDisabled)
+        #expect(!enabled.type.isDisabled)
     }
 }

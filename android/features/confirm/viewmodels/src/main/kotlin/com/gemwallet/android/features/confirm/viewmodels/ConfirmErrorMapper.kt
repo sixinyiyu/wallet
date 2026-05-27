@@ -7,8 +7,11 @@ import com.wallet.core.primitives.Chain
 import uniffi.gemstone.GatewayException
 
 internal fun Throwable.toPreloadConfirmError(chain: Chain): ConfirmError {
-    if (this is GatewayException.PlatformException && msg == GemPlatformErrors.Dust.message) {
-        return ConfirmError.DustThreshold(chain)
+    if (this is GatewayException.PlatformException) {
+        when (msg) {
+            GemPlatformErrors.Dust.message -> return ConfirmError.DustThreshold(chain)
+            GemPlatformErrors.DustChange.message -> return ConfirmError.DustChange(chain)
+        }
     }
     return toGemNetworkError()
         ?.let { ConfirmError.NetworkError(it) }

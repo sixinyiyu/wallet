@@ -271,8 +271,12 @@ class ConfirmViewModel @Inject constructor(
     }
 
     fun send(finishAction: FinishConfirmAction) = viewModelScope.launch(Dispatchers.IO) {
-        if (state.value is ConfirmState.Error) {
-            restart.update { !it }
+        val currentState = state.value
+        if (currentState is ConfirmState.Error) {
+            when (currentState.message) {
+                is ConfirmError.DustChange -> applySendMax()
+                else -> restart.update { !it }
+            }
             return@launch
         }
         state.update { ConfirmState.Sending }
@@ -304,6 +308,15 @@ class ConfirmViewModel @Inject constructor(
 
     private suspend fun getBalance(assetInfo: AssetInfo, params: ConfirmParams): BigInteger {
         return transactionBalanceService.getBalance(assetInfo, params)
+    }
+
+    private suspend fun applySendMax() {
+        val params = request.value as? ConfirmParams.TransferParams.Native ?: return
+        val assetInfo = assetsInfo.value?.getByAssetId(params.assetId) ?: return
+        state.update { ConfirmState.Prepare }
+        val balance = getBalance(assetInfo, params)
+        savedStateHandle[RouteArgument.Params.key] = params.withAmount(balance, useMaxAmount = true).pack()
+        restart.update { !it }
     }
 
     private fun List<AssetInfo>.getByAssetId(assetId: AssetId): AssetInfo? {

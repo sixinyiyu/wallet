@@ -406,8 +406,6 @@
   <string name="info.account_minimum_balance.title">Saldo minimo</string>
   <string name="asset.buy_asset">Acquista %s</string>
   <string name="wallet.import_address_warning">Puoi visualizzare i saldi e le transazioni per questo indirizzo, ma **non puoi inviare o vendere fondi**.</string>
-  <string name="info.stake_minimum_amount.title">Importo minimo</string>
-  <string name="info.stake_minimum_amount.description" formatted="false">Sul %s rete, il requisito minimo di staking è %s.</string>
   <string name="asset.add_to_wallet">Aggiungi al portafoglio</string>
   <string name="asset.hide_from_wallet">Nascondi dal portafoglio</string>
   <string name="common.details">Dettagli</string>
@@ -595,7 +593,7 @@
   <string name="info.funding_apr.title">Funding APR</string>
   <string name="info.funding_apr.description">The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.</string>
   <string name="info.minimum_amount.title">Minimum Amount</string>
-  <string name="info.minimum_amount.stake_description" formatted="false">On the %s network, the minimum staking requirement is %s.</string>
-  <string name="info.minimum_amount.perpetual_description" formatted="false">On the %s network, the minimum perpetual order is %s.</string>
+  <string name="info.minimum_amount.description" formatted="false">On the %s network, the minimum amount for this transaction is %s.</string>
   <string name="transaction.status.refunded">Rimborso effettuato</string>
+  <string name="errors.dust_change_short">Il saldo rimanente dopo questo trasferimento andrebbe perso. Prova a inviare l\'importo massimo.</string>
 </resources>

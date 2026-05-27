@@ -385,8 +385,6 @@
 "info.account_minimum_balance.title" = "Kiwango cha chini cha usawa";
 "asset.buy_asset" = "Nunua %@";
 "wallet.import_address_warning" = "Unaweza kuangalia salio na miamala ya anwani hii, lakini **haiwezi kutuma au kuuza fedha**.";
-"info.stake_minimum_amount.title" = "Kiasi cha chini";
-"info.stake_minimum_amount.description" = "Juu ya %@ mtandao, sharti la chini kabisa la kuweka dau ni %@.";
 "asset.add_to_wallet" = "Ongeza kwenye mkoba";
 "asset.hide_from_wallet" = "Ficha kutoka kwa mkoba";
 "common.details" = "Maelezo";
@@ -572,6 +570,6 @@
 "info.funding_apr.title" = "Funding APR";
 "info.funding_apr.description" = "The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.";
 "info.minimum_amount.title" = "Minimum Amount";
-"info.minimum_amount.stake_description" = "On the %@ network, the minimum staking requirement is %@.";
-"info.minimum_amount.perpetual_description" = "On the %@ network, the minimum perpetual order is %@.";
+"info.minimum_amount.description" = "On the %@ network, the minimum amount for this transaction is %@.";
 "transaction.status.refunded" = "Imerejeshwa";
+"errors.dust_change_short" = "Salio lililobaki baada ya uhamisho huu litakuwa vumbi. Jaribu kutuma kiasi cha juu zaidi.";

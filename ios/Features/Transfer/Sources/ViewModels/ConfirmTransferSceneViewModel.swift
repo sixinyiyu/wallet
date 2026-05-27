@@ -54,7 +54,7 @@ public final class ConfirmTransferSceneViewModel {
     private let simulation: SimulationResult?
     private var simulationState: ConfirmSimulationState
 
-    private let transferData: TransferData
+    private var transferData: TransferData
     private var metadata: TransferDataMetadata?
 
     public init(
@@ -150,12 +150,12 @@ public final class ConfirmTransferSceneViewModel {
             state: state,
             icon: confirmButtonIcon,
             isDisabled: isButtonDisabled,
-            onAction: { [weak self] in
+            onAction: { [weak self] mode in
                 guard let self else { return }
-                if case let .data(data) = state, data.isReady {
-                    onSelectConfirmTransfer()
-                } else {
-                    fetch()
+                switch mode {
+                case .confirm: onSelectConfirmTransfer()
+                case .sendMax: onSelectSendMax()
+                case .tryAgain: fetch()
                 }
             },
         )
@@ -290,7 +290,7 @@ extension ConfirmTransferSceneViewModel {
                 case .dustThreshold:
                     let asset = dataModel.asset
                     isPresentingSheet = .info(.dustThreshold(asset.chain, image: AssetViewModel(asset: asset).assetImage))
-                case .feeRateMissed, .cantEstimateFee, .incorrectAmount:
+                case .dustChange, .feeRateMissed, .cantEstimateFee, .incorrectAmount:
                     break
                 }
             }
@@ -357,7 +357,14 @@ extension ConfirmTransferSceneViewModel {
             await fetchData()
         }
     }
+
+    func onSelectSendMax() {
+        guard let available = metadata?.assetBalance.available else { return }
+        transferData = transferData.withValue(available)
+        fetch()
+    }
 }
+
 
 // MARK: - Private
 

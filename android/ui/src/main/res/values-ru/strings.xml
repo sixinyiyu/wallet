@@ -406,8 +406,6 @@
   <string name="info.account_minimum_balance.title">Минимальный баланс</string>
   <string name="asset.buy_asset">Купить %s</string>
   <string name="wallet.import_address_warning">Вы можете просматривать балансы и транзакции для этого адреса, но **не можете отправлять или продавать средства**.</string>
-  <string name="info.stake_minimum_amount.title">Минимальная сумма</string>
-  <string name="info.stake_minimum_amount.description" formatted="false">На %s в сети минимальные требования к стейкингу составляют %s.</string>
   <string name="asset.add_to_wallet">Добавить в кошелек</string>
   <string name="asset.hide_from_wallet">Скрыть из кошелька</string>
   <string name="common.details">Детали</string>
@@ -595,7 +593,7 @@
   <string name="info.funding_apr.title">Funding APR</string>
   <string name="info.funding_apr.description">The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.</string>
   <string name="info.minimum_amount.title">Minimum Amount</string>
-  <string name="info.minimum_amount.stake_description" formatted="false">On the %s network, the minimum staking requirement is %s.</string>
-  <string name="info.minimum_amount.perpetual_description" formatted="false">On the %s network, the minimum perpetual order is %s.</string>
+  <string name="info.minimum_amount.description" formatted="false">On the %s network, the minimum amount for this transaction is %s.</string>
   <string name="transaction.status.refunded">Возврат средств</string>
+  <string name="errors.dust_change_short">Остаток после этого перевода будет слишком мал (пыль). Попробуйте отправить максимальную сумму.</string>
 </resources>

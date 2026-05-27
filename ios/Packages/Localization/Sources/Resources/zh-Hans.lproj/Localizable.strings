@@ -385,8 +385,6 @@
 "info.account_minimum_balance.title" = "最低余额";
 "asset.buy_asset" = "购买%@";
 "wallet.import_address_warning" = "您可以查看此地址的余额和交易，但**不能发送或出售资金**。";
-"info.stake_minimum_amount.title" = "最低金额";
-"info.stake_minimum_amount.description" = "在 %@ 在网络中，最低质押要求是 %@。";
 "asset.add_to_wallet" = "添加到钱包";
 "asset.hide_from_wallet" = "隐藏钱包";
 "common.details" = "详情";
@@ -572,6 +570,6 @@
 "info.funding_apr.title" = "Funding APR";
 "info.funding_apr.description" = "The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.";
 "info.minimum_amount.title" = "Minimum Amount";
-"info.minimum_amount.stake_description" = "On the %@ network, the minimum staking requirement is %@.";
-"info.minimum_amount.perpetual_description" = "On the %@ network, the minimum perpetual order is %@.";
+"info.minimum_amount.description" = "On the %@ network, the minimum amount for this transaction is %@.";
 "transaction.status.refunded" = "已退款";
+"errors.dust_change_short" = "转账后的剩余余额将过小（被视为粉尘）。请尝试发送最大金额。";

@@ -385,8 +385,6 @@
 "info.account_minimum_balance.title" = "न्यूनतम शेष";
 "asset.buy_asset" = "%@ खरीदें";
 "wallet.import_address_warning" = "आप इस पते के लिए शेष राशि और लेनदेन देख सकते हैं, लेकिन **धन भेज या बेच नहीं सकते**।";
-"info.stake_minimum_amount.title" = "न्यूनतम राशि";
-"info.stake_minimum_amount.description" = "पर %@ नेटवर्क के लिए, न्यूनतम स्टेकिंग आवश्यकता है %@.";
 "asset.add_to_wallet" = "वॉलेट में जोड़ें";
 "asset.hide_from_wallet" = "बटुए से छिपाएँ";
 "common.details" = "विवरण";
@@ -572,6 +570,6 @@
 "info.funding_apr.title" = "Funding APR";
 "info.funding_apr.description" = "The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.";
 "info.minimum_amount.title" = "Minimum Amount";
-"info.minimum_amount.stake_description" = "On the %@ network, the minimum staking requirement is %@.";
-"info.minimum_amount.perpetual_description" = "On the %@ network, the minimum perpetual order is %@.";
-"transaction.status.refunded" = "Refunded";
+"info.minimum_amount.description" = "On the %@ network, the minimum amount for this transaction is %@.";
+"transaction.status.refunded" = "वापसी की गई है";
+"errors.dust_change_short" = "इस हस्तांतरण के बाद बची हुई राशि नगण्य हो जाएगी। अधिकतम राशि भेजने का प्रयास करें।";

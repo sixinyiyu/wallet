@@ -406,8 +406,6 @@
   <string name="info.account_minimum_balance.title">Mindestguthaben</string>
   <string name="asset.buy_asset">Kaufen %s</string>
   <string name="wallet.import_address_warning">Sie können Guthaben und Transaktionen für diese Adresse anzeigen, aber **kein Geld senden oder verkaufen**.</string>
-  <string name="info.stake_minimum_amount.title">Mindestbetrag</string>
-  <string name="info.stake_minimum_amount.description" formatted="false">Auf dem %s Im Netzwerk beträgt die Mindesteinsatzanforderung %sDie</string>
   <string name="asset.add_to_wallet">Zum Wallet hinzufügen</string>
   <string name="asset.hide_from_wallet">Vor der Brieftasche verstecken</string>
   <string name="common.details">Details</string>
@@ -595,7 +593,7 @@
   <string name="info.funding_apr.title">Funding APR</string>
   <string name="info.funding_apr.description">The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.</string>
   <string name="info.minimum_amount.title">Minimum Amount</string>
-  <string name="info.minimum_amount.stake_description" formatted="false">On the %s network, the minimum staking requirement is %s.</string>
-  <string name="info.minimum_amount.perpetual_description" formatted="false">On the %s network, the minimum perpetual order is %s.</string>
+  <string name="info.minimum_amount.description" formatted="false">On the %s network, the minimum amount for this transaction is %s.</string>
   <string name="transaction.status.refunded">Rückerstattung</string>
+  <string name="errors.dust_change_short">Der Restbetrag nach dieser Überweisung wäre wertlos. Versuchen Sie, den Höchstbetrag zu senden.</string>
 </resources>

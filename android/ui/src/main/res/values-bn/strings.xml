@@ -406,8 +406,6 @@
   <string name="info.account_minimum_balance.title">ন্যূনতম ব্যালেন্স</string>
   <string name="asset.buy_asset">%s কিনুন</string>
   <string name="wallet.import_address_warning">আপনি এই ঠিকানার ব্যালেন্স এবং লেনদেন দেখতে পারবেন, কিন্তু **তহবিল পাঠাতে বা বিক্রি করতে পারবেন না**।</string>
-  <string name="info.stake_minimum_amount.title">সর্বনিম্ন পরিমাণ</string>
-  <string name="info.stake_minimum_amount.description" formatted="false">উপরে %s নেটওয়ার্ক, ন্যূনতম স্টেকিং প্রয়োজনীয়তা হল %s.</string>
   <string name="asset.add_to_wallet">ওয়ালেটে যোগ করুন</string>
   <string name="asset.hide_from_wallet">মানিব্যাগ থেকে লুকান</string>
   <string name="common.details">বিস্তারিত</string>
@@ -595,7 +593,7 @@
   <string name="info.funding_apr.title">Funding APR</string>
   <string name="info.funding_apr.description">The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.</string>
   <string name="info.minimum_amount.title">Minimum Amount</string>
-  <string name="info.minimum_amount.stake_description" formatted="false">On the %s network, the minimum staking requirement is %s.</string>
-  <string name="info.minimum_amount.perpetual_description" formatted="false">On the %s network, the minimum perpetual order is %s.</string>
+  <string name="info.minimum_amount.description" formatted="false">On the %s network, the minimum amount for this transaction is %s.</string>
   <string name="transaction.status.refunded">ফেরত দেওয়া হয়েছে</string>
+  <string name="errors.dust_change_short">এই ট্রান্সফারের পর অবশিষ্ট ব্যালেন্স নষ্ট হয়ে যাবে। সর্বোচ্চ পরিমাণ পাঠানোর চেষ্টা করুন।</string>
 </resources>

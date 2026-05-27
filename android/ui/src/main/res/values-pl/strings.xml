@@ -406,8 +406,6 @@
   <string name="info.account_minimum_balance.title">Minimalne saldo</string>
   <string name="asset.buy_asset">Kup %s</string>
   <string name="wallet.import_address_warning">Możesz przeglądać salda i transakcje dla tego adresu, ale **nie możesz wysyłać ani sprzedawać środków**.</string>
-  <string name="info.stake_minimum_amount.title">Minimalna kwota</string>
-  <string name="info.stake_minimum_amount.description" formatted="false">Na %s sieć, minimalne wymagania dotyczące stakowania to %s.</string>
   <string name="asset.add_to_wallet">Dodaj do portfela</string>
   <string name="asset.hide_from_wallet">Ukryj w portfelu</string>
   <string name="common.details">Bliższe dane</string>
@@ -595,7 +593,7 @@
   <string name="info.funding_apr.title">Funding APR</string>
   <string name="info.funding_apr.description">The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.</string>
   <string name="info.minimum_amount.title">Minimum Amount</string>
-  <string name="info.minimum_amount.stake_description" formatted="false">On the %s network, the minimum staking requirement is %s.</string>
-  <string name="info.minimum_amount.perpetual_description" formatted="false">On the %s network, the minimum perpetual order is %s.</string>
+  <string name="info.minimum_amount.description" formatted="false">On the %s network, the minimum amount for this transaction is %s.</string>
   <string name="transaction.status.refunded">Zwrócono</string>
+  <string name="errors.dust_change_short">Saldo pozostałe po tym przelewie będzie równe kurzowi. Spróbuj wysłać maksymalną kwotę.</string>
 </resources>

@@ -28,4 +28,13 @@ public struct TransferData: Identifiable, Sendable, Hashable {
     public var chain: Chain {
         type.chain
     }
+
+    public func withValue(_ value: BigInt) -> TransferData {
+        TransferData(
+            type: type,
+            recipientData: recipientData,
+            value: value,
+            canChangeValue: canChangeValue,
+        )
+    }
 }
