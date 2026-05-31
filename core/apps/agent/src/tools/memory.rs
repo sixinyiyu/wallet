@@ -86,11 +86,9 @@ impl Tool for SaveMemoryTool {
     async fn definition(&self, _prompt: String) -> ToolDefinition {
         ToolDefinition {
             name: Self::NAME.to_string(),
-            description: "Persist a durable fact into long-term memory (sqlite vector store). \
-                Pick a stable kebab-case `id` like `legal-contact` or `release-process`. \
-                The `content` should be 1-3 sentences stating the fact, no fluff. \
-                Same `id` overwrites the previous entry. ADMIN-ONLY — only call when the \
-                request comes from an admin per `context/team.md`."
+            description: "Persist a durable note into long-term memory (sqlite vector store). \
+                Pick a stable kebab-case `id`; reusing an `id` overwrites the previous entry. \
+                `content` is the text to remember, formatted as Markdown."
                 .to_string(),
             parameters: json!({
                 "type": "object",
