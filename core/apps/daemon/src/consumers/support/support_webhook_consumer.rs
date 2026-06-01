@@ -42,14 +42,14 @@ impl MessageConsumer<SupportWebhookPayload, bool> for SupportWebhookConsumer {
             return Ok(true);
         };
 
-        match self.support_client.handle_webhook(&device, &webhook).await {
-            Ok(result) => {
+        match self.support_client.process_webhook(&device, &webhook).await {
+            Ok((notifications, stream_events)) => {
                 info_with_fields!(
                     "support webhook processed",
                     device_id = device_id,
                     event = webhook.event,
-                    notifications = result.notifications,
-                    stream_events = result.stream_events
+                    notifications = notifications,
+                    stream_events = stream_events
                 );
                 Ok(true)
             }

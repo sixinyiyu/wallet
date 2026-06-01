@@ -9,16 +9,12 @@ use std::io;
 
 use crate::{
     ChatwootConfigResponse, ChatwootContactResponse, ChatwootContactUpdate, ChatwootConversationResponse, ChatwootMessageInput, ChatwootMessagesResponse, ChatwootSession,
-    ChatwootTypingInput, Message, support_messages,
+    ChatwootTypingInput, Message,
+    constants::{
+        PATH_CONFIG, PATH_CONTACT_SET_USER, PATH_CONVERSATIONS, PATH_MESSAGES, PATH_TOGGLE_TYPING, PATH_UPDATE_LAST_SEEN, QUERY_CHATWOOT_AFTER, QUERY_WIDGET_PUBLIC_TOKEN,
+    },
+    support_messages,
 };
-
-const QUERY_WIDGET_PUBLIC_TOKEN: &str = "website_token";
-const PATH_CONFIG: &str = "config";
-const PATH_CONTACT_SET_USER: &str = "contact/set_user";
-const PATH_CONVERSATIONS: &str = "conversations";
-const PATH_MESSAGES: &str = "messages";
-const PATH_TOGGLE_TYPING: &str = "conversations/toggle_typing";
-const PATH_UPDATE_LAST_SEEN: &str = "conversations/update_last_seen";
 
 #[derive(Clone)]
 pub struct ChatwootClient {
@@ -79,7 +75,7 @@ impl ChatwootClient {
     pub async fn messages(&self, session: &ChatwootSession, from_timestamp: Option<u64>) -> Result<Vec<SupportMessage>, Box<dyn Error + Send + Sync>> {
         let mut request = self.authenticated(self.client.get(self.widget_url(PATH_MESSAGES)), &session.auth_token)?;
         if let Some(from_timestamp) = from_timestamp {
-            request = request.query(&[("after", from_timestamp)]);
+            request = request.query(&[(QUERY_CHATWOOT_AFTER, from_timestamp)]);
         }
 
         let response: ChatwootMessagesResponse = self.json(request.send().await?).await?;

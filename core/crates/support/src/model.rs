@@ -6,15 +6,10 @@ use primitives::{
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
-pub const EVENT_MESSAGE_CREATED: &str = "message_created";
-pub const EVENT_CONVERSATION_STATUS_CHANGED: &str = "conversation_status_changed";
-pub const EVENT_CONVERSATION_UPDATED: &str = "conversation_updated";
-const CHATWOOT_CONTENT_TYPE_TEXT: &str = "text";
-const CHATWOOT_STATUS_RESOLVED: &str = "resolved";
-const CHATWOOT_DELIVERY_STATUS_SENT: &str = "sent";
-const CHATWOOT_DELIVERY_STATUS_DELIVERED: &str = "delivered";
-const CHATWOOT_DELIVERY_STATUS_READ: &str = "read";
-const CHATWOOT_FILE_TYPE_IMAGE: &str = "image";
+use crate::constants::{
+    CHATWOOT_CONTENT_TYPE_TEXT, CHATWOOT_DELIVERY_STATUS_DELIVERED, CHATWOOT_DELIVERY_STATUS_READ, CHATWOOT_DELIVERY_STATUS_SENT, CHATWOOT_FILE_TYPE_IMAGE,
+    CHATWOOT_STATUS_RESOLVED,
+};
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(from = "i32", into = "i32")]
@@ -200,7 +195,7 @@ impl ChatwootWebhookPayload {
 }
 
 impl Conversation {
-    pub fn support_conversation(&self) -> Option<SupportConversation> {
+    fn support_conversation(&self) -> Option<SupportConversation> {
         map_support_conversation(
             self.id?,
             self.status.as_deref(),
@@ -213,7 +208,7 @@ impl Conversation {
 }
 
 impl Message {
-    pub fn support_message(&self) -> Option<SupportMessage> {
+    pub(crate) fn support_message(&self) -> Option<SupportMessage> {
         let sender = match &self.message_type {
             MessageType::Incoming => SupportMessageSender::User,
             MessageType::Outgoing => SupportMessageSender::Agent(self.sender.as_ref()?.support_agent()?),
@@ -252,7 +247,7 @@ impl Attachment {
 }
 
 impl Sender {
-    pub fn support_agent(&self) -> Option<SupportAgent> {
+    fn support_agent(&self) -> Option<SupportAgent> {
         let name = self.name.clone()?;
         Some(SupportAgent {
             name,
@@ -302,7 +297,7 @@ pub(crate) struct ChatwootContactUpdate {
 }
 
 impl ChatwootContactUpdate {
-    pub fn new(device: &Device) -> Self {
+    pub(crate) fn new(device: &Device) -> Self {
         Self {
             identifier: device.id.clone(),
             name: device.model.clone(),
@@ -340,7 +335,7 @@ pub(crate) struct ChatwootMessageInput {
 }
 
 impl ChatwootMessageInput {
-    pub fn new(content: String) -> Self {
+    pub(crate) fn new(content: String) -> Self {
         Self {
             message: ChatwootMessageData { content },
         }
@@ -358,7 +353,7 @@ pub(crate) struct ChatwootTypingInput {
 }
 
 impl ChatwootTypingInput {
-    pub fn new(status: SupportTypingStatus) -> Self {
+    pub(crate) fn new(status: SupportTypingStatus) -> Self {
         let typing_status = match status {
             SupportTypingStatus::On => "on",
             SupportTypingStatus::Off => "off",
@@ -456,7 +451,7 @@ fn support_conversation(
     })
 }
 
-pub(crate) fn support_conversation_status(status: Option<&str>) -> SupportConversationStatus {
+fn support_conversation_status(status: Option<&str>) -> SupportConversationStatus {
     match status {
         Some(CHATWOOT_STATUS_RESOLVED) => SupportConversationStatus::Resolved,
         _ => SupportConversationStatus::Open,
@@ -470,7 +465,7 @@ fn support_delivery_status(status: Option<&str>) -> SupportMessageDeliveryStatus
     }
 }
 
-pub(crate) fn unread_count(messages: &[SupportMessage], contact_last_seen_at: Option<i64>) -> i32 {
+fn unread_count(messages: &[SupportMessage], contact_last_seen_at: Option<i64>) -> i32 {
     let Some(contact_last_seen_at) = contact_last_seen_at else {
         return 0;
     };
@@ -480,6 +475,6 @@ pub(crate) fn unread_count(messages: &[SupportMessage], contact_last_seen_at: Op
         .count() as i32
 }
 
-pub(crate) fn datetime_from_unix_timestamp(value: i64) -> Option<DateTime<Utc>> {
+fn datetime_from_unix_timestamp(value: i64) -> Option<DateTime<Utc>> {
     DateTime::<Utc>::from_timestamp(value, 0)
 }
