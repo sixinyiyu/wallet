@@ -90,6 +90,15 @@ pub fn map_transaction_state_order_action(fills: Vec<UserFill>, nonce: u64, requ
     update
 }
 
+pub fn map_transaction_state_hash(fills: Vec<UserFill>, hash: &str, request_id: String) -> TransactionUpdate {
+    let Some(fill) = fills.iter().filter(|fill| fill.hash == hash).max_by_key(|fill| fill.time) else {
+        return TransactionUpdate::new_state(TransactionState::Pending);
+    };
+    let oid = fill.oid;
+
+    map_transaction_state_order(fills, oid, request_id)
+}
+
 pub(crate) fn order_action_fill(fills: &[UserFill], nonce: u64) -> Option<&UserFill> {
     fills
         .iter()
@@ -326,6 +335,20 @@ mod tests {
                 }]
             )
         );
+    }
+
+    #[test]
+    fn test_map_transaction_state_hash_maps_perpetual_fee() {
+        let fills: Vec<UserFill> = serde_json::from_str(include_str!("../../testdata/user_fills_hype_close_long.json")).unwrap();
+        let hash = "0x90b78c255efa55459231043c9626c40201cb000af9fd7417348037781dfe2f30";
+        let update = map_transaction_state_hash(fills, hash, hash.to_string());
+
+        assert_eq!(update.state, TransactionState::Confirmed);
+        let network_fee = update
+            .changes
+            .iter()
+            .find_map(|change| if let TransactionChange::NetworkFee(fee) = change { Some(fee) } else { None });
+        assert_eq!(network_fee, Some(&BigInt::from(1_335_937)));
     }
 
     #[test]

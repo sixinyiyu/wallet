@@ -3,7 +3,7 @@ use std::error::Error;
 
 use chrono::{DateTime, Utc};
 use number_formatter::BigNumberFormatter;
-use primitives::{AssetId, Chain, SwapProvider, Transaction, TransactionState, TransactionSwapMetadata, TransactionType, asset_constants::HYPERCORE_SPOT_USDC_ASSET_ID};
+use primitives::{AssetId, Chain, SwapProvider, Transaction, TransactionState, TransactionSwapMetadata, TransactionType, asset_constants::HYPERCORE_PERPETUAL_USDC_ASSET_ID};
 
 use crate::models::order::{FillDirection, UserFill};
 use crate::models::response::{BroadcastResult, TransactionBroadcastResponse};
@@ -74,7 +74,7 @@ fn map_perpetual_fill_group(address: &str, fills: Vec<UserFill>, last_fill: &Use
         create_perpetual_asset_id(&last_fill.coin),
         transaction_type,
         usdc_value(fee),
-        HYPERCORE_SPOT_USDC_ASSET_ID.clone(),
+        HYPERCORE_PERPETUAL_USDC_ASSET_ID.clone(),
         usdc_value(value),
         metadata,
     )
@@ -168,7 +168,10 @@ mod tests {
     use crate::models::action::ExchangeRequest;
     use crate::models::spot::SpotMeta;
     use crate::provider::testkit::{TEST_TRANSACTION_ID, TEST_TRANSACTION_ORDER_ID};
-    use primitives::{PerpetualDirection, TransactionPerpetualMetadata, TransactionType, asset_constants::HYPERCORE_SPOT_HYPE_ASSET_ID};
+    use primitives::{
+        PerpetualDirection, TransactionPerpetualMetadata, TransactionType,
+        asset_constants::{HYPERCORE_PERPETUAL_USDC_ASSET_ID, HYPERCORE_SPOT_HYPE_ASSET_ID, HYPERCORE_SPOT_USDC_ASSET_ID},
+    };
 
     fn action_id(data: &str) -> Option<HyperCoreActionId> {
         serde_json::from_str::<ExchangeRequest>(data).ok().map(HyperCoreActionId::from)
@@ -243,7 +246,7 @@ mod tests {
         assert_eq!(transaction.transaction_type, TransactionType::PerpetualOpenPosition);
         assert_eq!(by_order_id.hash, TEST_TRANSACTION_ID);
         assert_eq!(transaction.asset_id.to_string(), "hypercore_perpetual::HYPE");
-        assert_eq!(transaction.fee_asset_id, HYPERCORE_SPOT_USDC_ASSET_ID.clone());
+        assert_eq!(transaction.fee_asset_id, HYPERCORE_PERPETUAL_USDC_ASSET_ID.clone());
         assert_eq!(transaction.fee, "666786");
         assert_eq!(transaction.from, "0xabc");
         assert_eq!(transaction.to, "0xabc");
