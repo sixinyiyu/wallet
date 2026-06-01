@@ -190,7 +190,7 @@ fn transaction_update_from_hash(hash: Option<String>, request_id: String) -> Tra
 
 fn perpetual_fill_changes(matching_fills: &[&UserFill], last_fill: &UserFill) -> Option<Vec<TransactionChange>> {
     let (_, metadata) = prepare_perpetual_fill(matching_fills, last_fill)?;
-    let fee: f64 = matching_fills.iter().map(|fill| fill.fee + fill.builder_fee.unwrap_or(0.0)).sum();
+    let fee: f64 = matching_fills.iter().map(|fill| fill.fee).sum();
     let network_fee = usdc_value(fee).parse().ok()?;
 
     Some(vec![
@@ -234,7 +234,7 @@ mod tests {
             .changes
             .iter()
             .find_map(|change| if let TransactionChange::NetworkFee(fee) = change { Some(fee) } else { None });
-        assert_eq!(network_fee_change, Some(&BigInt::from(666786)));
+        assert_eq!(network_fee_change, Some(&BigInt::from(441520)));
 
         let hash_change = update.changes.iter().find_map(|change| {
             if let TransactionChange::HashChange { old, new } = change {
@@ -266,7 +266,6 @@ mod tests {
             sz: "1".to_string(),
             closed_pnl: 0.0,
             fee: 0.0,
-            builder_fee: None,
             fee_token: None,
             px: 42.0,
             dir: FillDirection::Other(String::new()),
@@ -316,7 +315,7 @@ mod tests {
             .changes
             .iter()
             .find_map(|change| if let TransactionChange::NetworkFee(fee) = change { Some(fee) } else { None });
-        assert_eq!(network_fee_change, Some(&BigInt::from(666786)));
+        assert_eq!(network_fee_change, Some(&BigInt::from(441520)));
     }
 
     #[test]
@@ -348,7 +347,7 @@ mod tests {
             .changes
             .iter()
             .find_map(|change| if let TransactionChange::NetworkFee(fee) = change { Some(fee) } else { None });
-        assert_eq!(network_fee, Some(&BigInt::from(1_335_937)));
+        assert_eq!(network_fee, Some(&BigInt::from(884_607)));
     }
 
     #[test]
@@ -530,7 +529,6 @@ mod tests {
             sz: "1".to_string(),
             closed_pnl: 0.0,
             fee: 0.0,
-            builder_fee: None,
             fee_token: None,
             px: 42.0,
             dir: FillDirection::Other("Unsupported".to_string()),

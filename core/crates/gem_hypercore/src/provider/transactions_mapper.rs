@@ -64,7 +64,7 @@ fn map_fill_group(address: &str, fills: Vec<UserFill>, spot_meta: Option<&SpotMe
 fn map_perpetual_fill_group(address: &str, fills: Vec<UserFill>, last_fill: &UserFill) -> Option<Transaction> {
     let fill_refs = fills.iter().collect::<Vec<_>>();
     let (transaction_type, metadata) = prepare_perpetual_fill(&fill_refs, last_fill)?;
-    let fee: f64 = fills.iter().map(|fill| fill.fee + fill.builder_fee.unwrap_or(0.0)).sum();
+    let fee: f64 = fills.iter().map(|fill| fill.fee).sum();
     let value = fills.iter().try_fold(0.0, |sum, fill| Some(sum + fill.px * fill.sz.parse::<f64>().ok()?))?;
     let metadata = serde_json::to_value(metadata).ok()?;
 
@@ -116,7 +116,7 @@ fn map_spot_fill_group(address: &str, fills: Vec<UserFill>, last_fill: &UserFill
 }
 
 fn map_spot_fee(fills: &[UserFill], base_token: &SpotToken, quote_token: &SpotToken) -> Option<(String, primitives::AssetId)> {
-    let fee_amount: f64 = fills.iter().map(|fill| fill.fee + fill.builder_fee.unwrap_or(0.0)).sum();
+    let fee_amount: f64 = fills.iter().map(|fill| fill.fee).sum();
     let fee_token = fills.iter().rev().find_map(|fill| fill.fee_token.as_deref()).unwrap_or(quote_token.name.as_str());
     let fee_token = if fee_token == base_token.name { base_token } else { quote_token };
 
@@ -247,7 +247,7 @@ mod tests {
         assert_eq!(by_order_id.hash, TEST_TRANSACTION_ID);
         assert_eq!(transaction.asset_id.to_string(), "hypercore_perpetual::HYPE");
         assert_eq!(transaction.fee_asset_id, HYPERCORE_PERPETUAL_USDC_ASSET_ID.clone());
-        assert_eq!(transaction.fee, "666786");
+        assert_eq!(transaction.fee, "441520");
         assert_eq!(transaction.from, "0xabc");
         assert_eq!(transaction.to, "0xabc");
 
@@ -265,7 +265,6 @@ mod tests {
             sz: "1".to_string(),
             closed_pnl: 0.0,
             fee: 0.1,
-            builder_fee: None,
             fee_token: None,
             px: 42.0,
             dir: FillDirection::Other("Unknown".to_string()),
@@ -312,7 +311,7 @@ mod tests {
         assert_eq!(transactions[0].transaction_type, TransactionType::Swap);
         assert_eq!(transactions[0].hash, "0xd16518b18533f577d2de043763f8ad020482009720371449752dc4044437cf62");
         assert_eq!(transactions[0].asset_id, HYPERCORE_SPOT_HYPE_ASSET_ID.clone());
-        assert_eq!(transactions[0].fee, "1858810");
+        assert_eq!(transactions[0].fee, "1326708");
         assert_eq!(transactions[0].fee_asset_id, HYPERCORE_SPOT_USDC_ASSET_ID.clone());
         assert!(transactions[0].asset_ids().contains(&HYPERCORE_SPOT_USDC_ASSET_ID.clone()));
         assert!(transactions[0].asset_ids().contains(&HYPERCORE_SPOT_HYPE_ASSET_ID.clone()));
