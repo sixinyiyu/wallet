@@ -100,12 +100,17 @@ where
 
 fn map_tron_quote_data(response: &TronVaultSwapResponse) -> Option<SwapperQuoteData> {
     let address = response.source_token_address.as_deref().unwrap_or(&response.to);
+    let data = if response.calldata.eq_ignore_ascii_case("0x") {
+        String::new()
+    } else {
+        response.calldata.clone()
+    };
 
     Some(SwapperQuoteData {
-        to: TronAddress::from_hex(address).map(|address| address.to_string())?,
+        to: TronAddress::from_hex_or_base58(address).map(|address| address.to_string())?,
         data_type: Contract,
         value: response.value.to_string(),
-        data: response.calldata.clone(),
+        data,
         memo: Some(response.note.clone()),
         approval: None,
         gas_limit: None,
@@ -375,6 +380,19 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
+    use primitives::swap::SwapQuoteDataType::Transfer;
+
+    #[cfg(feature = "swap_integration_tests")]
+    use crate::NativeProvider;
+    #[cfg(feature = "swap_integration_tests")]
+    use primitives::swap::SwapStatus;
+
+    fn assert_contract_quote_data(data_type: primitives::swap::SwapQuoteDataType) {
+        match data_type {
+            Contract => {}
+            Transfer => panic!("expected contract quote data"),
+        }
+    }
 
     #[test]
     fn test_chainflip_min_amount_error() {
@@ -439,7 +457,7 @@ mod tests {
     }
 
     #[test]
-    fn test_tron_quote_data_maps_contract_call_fields() {
+    fn test_tron_quote_data_maps_trc20_contract_call_fields() {
         let note = "0x0300";
         let data = map_tron_quote_data(&TronVaultSwapResponse {
             calldata: "0xa9059cbb".to_string(),
@@ -450,19 +468,44 @@ mod tests {
         })
         .unwrap();
 
-        assert!(matches!(data.data_type, Contract));
+        assert_contract_quote_data(data.data_type);
         assert_eq!(data.to, "TXYZopYRdj2D9XRtbG411XZZ3kM5VkAeBf");
         assert_eq!(data.memo, Some(note.to_string()));
         assert_eq!(data.value, "0");
         assert_eq!(data.data, "0xa9059cbb");
+
+        let data = map_tron_quote_data(&TronVaultSwapResponse {
+            calldata: "0xa9059cbb".to_string(),
+            value: BigUint::from(0u32),
+            to: "TDMakP1fbWc7XXoSWZpujpjRAuePPEn4oi".to_string(),
+            note: note.to_string(),
+            source_token_address: Some("TXYZopYRdj2D9XRtbG411XZZ3kM5VkAeBf".to_string()),
+        })
+        .unwrap();
+
+        assert_eq!(data.to, "TXYZopYRdj2D9XRtbG411XZZ3kM5VkAeBf");
+    }
+
+    #[test]
+    fn test_tron_quote_data_maps_native_contract_transfer_fields() {
+        let note = "0x0300";
+        let data = map_tron_quote_data(&TronVaultSwapResponse {
+            calldata: "0x".to_string(),
+            value: BigUint::from(50_000_000u32),
+            to: "TDMakP1fbWc7XXoSWZpujpjRAuePPEn4oi".to_string(),
+            note: note.to_string(),
+            source_token_address: None,
+        })
+        .unwrap();
+
+        assert_eq!(data.to, "TDMakP1fbWc7XXoSWZpujpjRAuePPEn4oi");
+        assert_eq!(data.value, "50000000");
+        assert_eq!(data.data, "");
     }
 
     #[tokio::test]
     #[cfg(feature = "swap_integration_tests")]
     async fn test_get_swap_result() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
-        use crate::alien::reqwest_provider::NativeProvider;
-        use primitives::swap::SwapStatus;
-
         let network_provider = Arc::new(NativeProvider::default());
         let swap_provider = ChainflipProvider::new(network_provider.clone());
 
