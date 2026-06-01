@@ -1,13 +1,17 @@
 use alloy_primitives::{U256, hex};
 use async_trait::async_trait;
 use gem_client::Client;
+use gem_tron::address::TronAddress;
 use num_bigint::BigUint;
 use num_traits::ToPrimitive;
 use std::{fmt::Debug, sync::Arc};
 
 use super::{
     ChainflipRouteData,
-    broker::{BrokerClient, ChainflipAsset, DcaParameters, RefundParameters, VaultSwapBtcExtras, VaultSwapEvmExtras, VaultSwapExtras, VaultSwapResponse, VaultSwapSolanaExtras},
+    broker::{
+        BrokerClient, ChainflipAsset, DcaParameters, RefundParameters, TronVaultSwapResponse, VaultSwapBtcExtras, VaultSwapChainExtras, VaultSwapExtras, VaultSwapResponse,
+        VaultSwapSolanaExtras,
+    },
     capitalize::capitalize_first_letter,
     client::{CHAINFLIP_SUPPORTED_ASSETS, ChainflipClient, QuoteRequest as ChainflipQuoteRequest, QuoteResponse, map_swap_result},
     price::{apply_slippage, price_to_hex_price},
@@ -23,7 +27,11 @@ use crate::{
     fees::{DEFAULT_CHAINFLIP_FEE_BPS, apply_slippage_in_bp, quote_value_after_reserve_by_chain},
     solana::DEFAULT_SWAP_GAS_LIMIT,
 };
-use primitives::{ChainType, chain::Chain, swap::QuoteAsset};
+use primitives::{
+    ChainType,
+    chain::Chain,
+    swap::{QuoteAsset, SwapQuoteDataType::Contract},
+};
 
 const DEFAULT_SWAP_ERC20_GAS_LIMIT: u64 = 100_000;
 
@@ -88,6 +96,20 @@ where
             _ => Ok(value),
         }
     }
+}
+
+fn map_tron_quote_data(response: &TronVaultSwapResponse) -> Option<SwapperQuoteData> {
+    let address = response.source_token_address.as_deref().unwrap_or(&response.to);
+
+    Some(SwapperQuoteData {
+        to: TronAddress::from_hex(address).map(|address| address.to_string())?,
+        data_type: Contract,
+        value: response.value.to_string(),
+        data: response.calldata.clone(),
+        memo: Some(response.note.clone()),
+        approval: None,
+        gas_limit: None,
+    })
 }
 
 fn get_best_quote(mut quotes: Vec<QuoteResponse>, fee_bps: u32) -> (BigUint, u32, u32, ChainflipRouteData) {
@@ -234,11 +256,21 @@ where
         let base_asset_decimals = quote.request.from_asset.decimals;
         let min_price = price_to_hex_price(price_slippage, quote_asset_decimals, base_asset_decimals).map_err(SwapperError::TransactionError)?;
         let extra_params = if from_asset.chain.chain_type() == ChainType::Ethereum {
-            VaultSwapExtras::Evm(VaultSwapEvmExtras {
+            VaultSwapExtras::Evm(VaultSwapChainExtras {
                 chain,
                 input_amount: input_amount.clone(),
                 refund_parameters: RefundParameters {
                     retry_duration: 150,
+                    refund_address: quote.request.wallet_address.clone(),
+                    min_price,
+                },
+            })
+        } else if from_asset.chain.chain_type() == ChainType::Tron {
+            VaultSwapExtras::Tron(VaultSwapChainExtras {
+                chain,
+                input_amount: input_amount.clone(),
+                refund_parameters: RefundParameters {
+                    retry_duration: 10,
                     refund_address: quote.request.wallet_address.clone(),
                     min_price,
                 },
@@ -302,6 +334,10 @@ where
                 let gas_limit = get_swap_gas_limit_with_approval(&approval, None, DEFAULT_SWAP_ERC20_GAS_LIMIT);
 
                 Ok(SwapperQuoteData::new_contract(response.to, value, response.calldata, approval, gas_limit))
+            }
+            VaultSwapResponse::Tron(response) => {
+                let address = response.source_token_address.as_deref().unwrap_or(&response.to);
+                map_tron_quote_data(&response).ok_or_else(|| SwapperError::TransactionError(format!("invalid Tron address: {address}")))
             }
             VaultSwapResponse::Bitcoin(response) => Ok(SwapperQuoteData::new_contract(
                 response.deposit_address,
@@ -400,6 +436,25 @@ mod tests {
                 }),
             }
         );
+    }
+
+    #[test]
+    fn test_tron_quote_data_maps_contract_call_fields() {
+        let note = "0x0300";
+        let data = map_tron_quote_data(&TronVaultSwapResponse {
+            calldata: "0xa9059cbb".to_string(),
+            value: BigUint::from(0u32),
+            to: "0x2523ae929fecd9d665f472f59b99a8ce6b179510".to_string(),
+            note: note.to_string(),
+            source_token_address: Some("0xeca9bc828a3005b9a3b909f2cc5c2a54794de05f".to_string()),
+        })
+        .unwrap();
+
+        assert!(matches!(data.data_type, Contract));
+        assert_eq!(data.to, "TXYZopYRdj2D9XRtbG411XZZ3kM5VkAeBf");
+        assert_eq!(data.memo, Some(note.to_string()));
+        assert_eq!(data.value, "0");
+        assert_eq!(data.data, "0xa9059cbb");
     }
 
     #[tokio::test]
