@@ -13,38 +13,37 @@ use crate::{
     testkit::address_mock::address_for_hash,
 };
 
-pub use primitives::testkit::signer_mock::TEST_PRIVATE_KEY;
+pub use primitives::testkit::{mock_zcash::TEST_ZCASH_BRANCH_ID, signer_mock::TEST_PRIVATE_KEY};
 
 pub const TEST_UTXO_TXID: &str = "0000000000000000000000000000000000000000000000000000000000000001";
-pub const TEST_ZCASH_BRANCH_ID: &str = "4dec4df0";
 
-pub fn public_key() -> PublicKey {
+pub fn mock_public_key() -> PublicKey {
     let secp = Secp256k1::new();
     let secret_key = SecretKey::from_slice(&TEST_PRIVATE_KEY).unwrap();
     PublicKey::new(Secp256k1PublicKey::from_secret_key(&secp, &secret_key))
 }
 
-pub fn sender_address(chain: BitcoinChain) -> String {
-    let public_key = public_key();
+pub fn mock_sender_address(chain: BitcoinChain) -> String {
+    let public_key = mock_public_key();
     address_for_hash(chain, public_key_hash(&public_key.to_bytes()))
 }
 
-pub fn destination_address(chain: BitcoinChain) -> String {
+pub fn mock_destination_address(chain: BitcoinChain) -> String {
     let hash = match chain {
-        BitcoinChain::Bitcoin => public_key_hash(&public_key().to_bytes()),
+        BitcoinChain::Bitcoin => public_key_hash(&mock_public_key().to_bytes()),
         BitcoinChain::BitcoinCash | BitcoinChain::Litecoin | BitcoinChain::Doge => [2u8; 20],
         BitcoinChain::Zcash => [3u8; 20],
     };
     address_for_hash(chain, hash)
 }
 
-pub fn transfer_input(chain: BitcoinChain) -> SignerInput {
-    let sender_address = sender_address(chain);
-    let destination_address = destination_address(chain);
-    transfer_input_with_utxos(chain, &sender_address, &destination_address, "10000", vec![utxo_with_address(&sender_address)])
+pub fn mock_transfer_input(chain: BitcoinChain) -> SignerInput {
+    let sender_address = mock_sender_address(chain);
+    let destination_address = mock_destination_address(chain);
+    mock_transfer_input_with_utxos(chain, &sender_address, &destination_address, "10000", vec![mock_utxo_with_address(&sender_address)])
 }
 
-pub fn transfer_input_with_utxos(chain: BitcoinChain, sender_address: &str, destination_address: &str, value: &str, utxos: Vec<UTXO>) -> SignerInput {
+pub fn mock_transfer_input_with_utxos(chain: BitcoinChain, sender_address: &str, destination_address: &str, value: &str, utxos: Vec<UTXO>) -> SignerInput {
     let metadata = match chain {
         BitcoinChain::Zcash => TransactionLoadMetadata::Zcash {
             branch_id: TEST_ZCASH_BRANCH_ID.to_string(),
@@ -69,18 +68,24 @@ pub fn transfer_input_with_utxos(chain: BitcoinChain, sender_address: &str, dest
 }
 
 fn p2wpkh_address() -> String {
-    let hash = public_key_hash(&public_key().to_bytes());
+    let hash = public_key_hash(&mock_public_key().to_bytes());
     let script_pubkey = script_for_public_key_hash(UnlockingScript::P2wpkh, hash);
     bitcoin::Address::from_script(&script_pubkey, bitcoin::Network::Bitcoin).unwrap().to_string()
 }
 
-pub fn p2wpkh_transfer_input() -> SignerInput {
+pub fn mock_p2wpkh_transfer_input() -> SignerInput {
     let address = p2wpkh_address();
-    transfer_input_with_utxos(BitcoinChain::Bitcoin, &address, &address, "10000", vec![utxo_with(TEST_UTXO_TXID, 0, "50000", &address)])
+    mock_transfer_input_with_utxos(
+        BitcoinChain::Bitcoin,
+        &address,
+        &address,
+        "10000",
+        vec![mock_utxo_with(TEST_UTXO_TXID, 0, "50000", &address)],
+    )
 }
 
-pub fn funded_transfer_input(chain: BitcoinChain) -> SignerInput {
-    let mut input = transfer_input(chain);
+pub fn mock_funded_transfer_input(chain: BitcoinChain) -> SignerInput {
+    let mut input = mock_transfer_input(chain);
     match &mut input.input.metadata {
         TransactionLoadMetadata::Bitcoin { utxos } | TransactionLoadMetadata::Zcash { utxos, .. } => {
             utxos[0].value = "100000000".to_string();
@@ -90,24 +95,24 @@ pub fn funded_transfer_input(chain: BitcoinChain) -> SignerInput {
     input
 }
 
-pub fn transfer_swap_input(chain: BitcoinChain, memo: &str) -> SignerInput {
+pub fn mock_transfer_swap_input(chain: BitcoinChain, memo: &str) -> SignerInput {
     swap_input(chain, SwapProvider::Thorchain, Some(false), |destination_address, value| {
         SwapQuoteData::new_tranfer(destination_address, value, Some(memo.to_string()))
     })
 }
 
-pub fn contract_swap_input(chain: BitcoinChain, nulldata_hex: &str, use_max_amount: bool) -> SignerInput {
-    contract_swap_input_with_provider(chain, nulldata_hex, use_max_amount, SwapProvider::Chainflip)
+pub fn mock_contract_swap_input(chain: BitcoinChain, nulldata_hex: &str, use_max_amount: bool) -> SignerInput {
+    mock_contract_swap_input_with_provider(chain, nulldata_hex, use_max_amount, SwapProvider::Chainflip)
 }
 
-pub fn contract_swap_input_with_provider(chain: BitcoinChain, nulldata_hex: &str, use_max_amount: bool, provider: SwapProvider) -> SignerInput {
+pub fn mock_contract_swap_input_with_provider(chain: BitcoinChain, nulldata_hex: &str, use_max_amount: bool, provider: SwapProvider) -> SignerInput {
     swap_input(chain, provider, Some(use_max_amount), |destination_address, value| {
         SwapQuoteData::new_contract(destination_address, value, nulldata_hex.to_string(), None, None)
     })
 }
 
 fn swap_input(chain: BitcoinChain, provider: SwapProvider, use_max_amount: Option<bool>, quote_data: impl FnOnce(String, String) -> SwapQuoteData) -> SignerInput {
-    let mut input = funded_transfer_input(chain);
+    let mut input = mock_funded_transfer_input(chain);
     let sender_address = input.sender_address.clone();
     let destination_address = input.destination_address.clone();
     let value = input.value.clone();
@@ -137,9 +142,9 @@ fn swap_input(chain: BitcoinChain, provider: SwapProvider, use_max_amount: Optio
     input
 }
 
-pub fn p2wpkh_contract_swap_input(nulldata_hex: &str, use_max_amount: bool) -> SignerInput {
+pub fn mock_p2wpkh_contract_swap_input(nulldata_hex: &str, use_max_amount: bool) -> SignerInput {
     let p2wpkh_sender = p2wpkh_address();
-    let mut input = contract_swap_input(BitcoinChain::Bitcoin, nulldata_hex, use_max_amount);
+    let mut input = mock_contract_swap_input(BitcoinChain::Bitcoin, nulldata_hex, use_max_amount);
     input.input.sender_address = p2wpkh_sender.clone();
     let TransactionLoadMetadata::Bitcoin { utxos } = &mut input.input.metadata else {
         unreachable!()
@@ -152,7 +157,7 @@ pub fn p2wpkh_contract_swap_input(nulldata_hex: &str, use_max_amount: bool) -> S
     input
 }
 
-pub(crate) fn utxo_with(transaction_id: &str, vout: i32, value: &str, address: &str) -> UTXO {
+pub(crate) fn mock_utxo_with(transaction_id: &str, vout: i32, value: &str, address: &str) -> UTXO {
     UTXO {
         transaction_id: transaction_id.to_string(),
         vout,
@@ -161,6 +166,6 @@ pub(crate) fn utxo_with(transaction_id: &str, vout: i32, value: &str, address: &
     }
 }
 
-pub(crate) fn utxo_with_address(address: &str) -> UTXO {
-    utxo_with(TEST_UTXO_TXID, 0, "50000", address)
+pub(crate) fn mock_utxo_with_address(address: &str) -> UTXO {
+    mock_utxo_with(TEST_UTXO_TXID, 0, "50000", address)
 }

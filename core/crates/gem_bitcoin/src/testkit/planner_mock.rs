@@ -10,7 +10,7 @@ use crate::{
     signer::{PlanInput, address::UnlockingScript},
     testkit::{
         address_mock::TEST_BITCOIN_P2WPKH_ADDRESS,
-        signer_mock::{TEST_UTXO_TXID, transfer_input_with_utxos, utxo_with},
+        signer_mock::{TEST_UTXO_TXID, mock_transfer_input_with_utxos, mock_utxo_with},
     },
 };
 
@@ -33,7 +33,7 @@ pub(crate) fn spend_signer_input(value: &str, is_max: bool) -> SignerInput {
 }
 
 pub(crate) fn spend_signer_input_with(value: &str, is_max: bool, memo: Option<String>, utxos: Vec<UTXO>) -> SignerInput {
-    let mut input = transfer_input_with_utxos(BitcoinChain::Bitcoin, TEST_BITCOIN_P2WPKH_ADDRESS, TEST_SPEND_RECIPIENT, value, utxos);
+    let mut input = mock_transfer_input_with_utxos(BitcoinChain::Bitcoin, TEST_BITCOIN_P2WPKH_ADDRESS, TEST_SPEND_RECIPIENT, value, utxos);
     input.input.gas_price = GasPriceType::regular(BigInt::from(2u64));
     input.input.memo = memo;
     input.input.is_max_value = is_max;
@@ -43,8 +43,8 @@ pub(crate) fn spend_signer_input_with(value: &str, is_max: bool, memo: Option<St
 
 pub(crate) fn spend_utxos() -> Vec<UTXO> {
     vec![
-        utxo_with(TEST_UTXO_TXID, 0, "10000", TEST_BITCOIN_P2WPKH_ADDRESS),
-        utxo_with("0000000000000000000000000000000000000000000000000000000000000002", 1, "20000", TEST_BITCOIN_P2WPKH_ADDRESS),
+        mock_utxo_with(TEST_UTXO_TXID, 0, "10000", TEST_BITCOIN_P2WPKH_ADDRESS),
+        mock_utxo_with("0000000000000000000000000000000000000000000000000000000000000002", 1, "20000", TEST_BITCOIN_P2WPKH_ADDRESS),
     ]
 }
 
@@ -57,12 +57,4 @@ pub(crate) fn sum_inputs(inputs: &[PlanInput]) -> Result<u64, SignerError> {
     inputs.iter().try_fold(0u64, |sum, input| {
         sum.checked_add(input.value.to_sat()).ok_or_else(|| SignerError::invalid_input("Bitcoin amount overflow"))
     })
-}
-
-pub(crate) fn assert_invalid_input<T>(result: Result<T, SignerError>, expected: &str) {
-    match result {
-        Err(SignerError::InvalidInput(message)) => assert_eq!(message, expected),
-        Err(other) => panic!("expected invalid input error, got: {other:?}"),
-        Ok(_) => panic!("expected invalid input error"),
-    }
 }

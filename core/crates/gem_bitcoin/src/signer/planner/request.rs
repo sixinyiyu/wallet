@@ -1,4 +1,4 @@
-use primitives::{Asset, BitcoinChain, SignerError, SignerInput, SwapProvider, TransactionInputType, TransactionLoadMetadata, UTXO, decode_hex, swap::SwapQuoteDataType};
+use primitives::{Asset, BitcoinChain, SignerError, SignerInput, SwapProvider, TransactionInputType, UTXO, decode_hex, swap::SwapQuoteDataType};
 
 #[derive(Debug, Clone)]
 pub(crate) struct SpendRequest {
@@ -32,7 +32,7 @@ impl SpendRequest {
             force_change_output: false,
             fee_rate: spend_fee_rate(chain, input)?,
             memo: input.get_memo().map(|memo| memo.as_bytes().to_vec()),
-            utxos: metadata_utxos(chain, &input.metadata)?,
+            utxos: input.metadata.get_utxos()?,
         })
     }
 
@@ -71,17 +71,8 @@ impl SpendRequest {
             force_change_output,
             fee_rate: spend_fee_rate(chain, input)?,
             memo,
-            utxos: metadata_utxos(chain, &input.metadata)?,
+            utxos: input.metadata.get_utxos()?,
         })
-    }
-}
-
-fn metadata_utxos(chain: BitcoinChain, metadata: &TransactionLoadMetadata) -> Result<Vec<UTXO>, SignerError> {
-    match (chain, metadata) {
-        (BitcoinChain::Zcash, TransactionLoadMetadata::Zcash { utxos, .. }) => Ok(utxos.clone()),
-        (BitcoinChain::Zcash, _) => SignerError::invalid_input_err("missing Zcash transaction metadata"),
-        (_, TransactionLoadMetadata::Bitcoin { utxos }) => Ok(utxos.clone()),
-        _ => SignerError::invalid_input_err("missing Bitcoin transaction metadata"),
     }
 }
 

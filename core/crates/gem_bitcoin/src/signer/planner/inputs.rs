@@ -58,8 +58,7 @@ mod tests {
         signer::address::UnlockingScript,
         testkit::{
             address_mock::{TEST_BITCOIN_P2WPKH_ADDRESS, TEST_BITCOIN_P2WPKH_HASH, prefixed_address},
-            planner_mock::assert_invalid_input,
-            signer_mock::utxo_with_address,
+            signer_mock::mock_utxo_with_address,
         },
     };
 
@@ -73,7 +72,7 @@ mod tests {
         let inputs = spendable_inputs(
             BitcoinChain::Bitcoin,
             TEST_BITCOIN_P2WPKH_ADDRESS,
-            vec![utxo_with_address(&legacy_address), utxo_with_address(TEST_BITCOIN_P2WPKH_ADDRESS)],
+            vec![mock_utxo_with_address(&legacy_address), mock_utxo_with_address(TEST_BITCOIN_P2WPKH_ADDRESS)],
             false,
         )
         .unwrap();
@@ -81,22 +80,23 @@ mod tests {
         assert_eq!(inputs[1].unlocking_script, UnlockingScript::P2wpkh);
 
         let different_legacy_address = prefixed_address(&[0], [9u8; 20]);
-        assert_invalid_input(
+        assert_eq!(
             spendable_inputs(
                 BitcoinChain::Bitcoin,
                 TEST_BITCOIN_P2WPKH_ADDRESS,
-                vec![utxo_with_address(&different_legacy_address)],
+                vec![mock_utxo_with_address(&different_legacy_address)],
                 false,
-            ),
-            "bitcoin UTXO address does not match sender address",
+            )
+            .err(),
+            Some(SignerError::invalid_input("bitcoin UTXO address does not match sender address")),
         );
-        assert_invalid_input(
-            spendable_inputs(BitcoinChain::Bitcoin, TEST_BITCOIN_P2WPKH_ADDRESS, vec![utxo_with_address(TAPROOT_ADDRESS)], false),
-            "bitcoin UTXO address type is unsupported",
+        assert_eq!(
+            spendable_inputs(BitcoinChain::Bitcoin, TEST_BITCOIN_P2WPKH_ADDRESS, vec![mock_utxo_with_address(TAPROOT_ADDRESS)], false).err(),
+            Some(SignerError::invalid_input("bitcoin UTXO address type is unsupported")),
         );
-        assert_invalid_input(
-            spendable_inputs(BitcoinChain::Bitcoin, TAPROOT_ADDRESS, vec![utxo_with_address(TEST_BITCOIN_P2WPKH_ADDRESS)], false),
-            "bitcoin sender address type is unsupported",
+        assert_eq!(
+            spendable_inputs(BitcoinChain::Bitcoin, TAPROOT_ADDRESS, vec![mock_utxo_with_address(TEST_BITCOIN_P2WPKH_ADDRESS)], false).err(),
+            Some(SignerError::invalid_input("bitcoin sender address type is unsupported")),
         );
     }
 }

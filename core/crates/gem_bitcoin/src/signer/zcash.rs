@@ -5,7 +5,7 @@ use bitcoin::{
     secp256k1::{Message, Secp256k1, SecretKey, Signing},
 };
 use gem_hash::blake2::blake2b_256_personal;
-use primitives::{SignerError, TransactionLoadMetadata, decode_hex};
+use primitives::SignerError;
 
 use crate::signer::{
     encoding::encode_varint,
@@ -123,17 +123,6 @@ pub(crate) fn sign_transparent<C: Signing>(plan: &SpendPlan, branch_id: u32, sec
     Ok(hex::encode(tx.encode()))
 }
 
-pub(crate) fn branch_id_from_metadata(metadata: &TransactionLoadMetadata) -> Result<u32, SignerError> {
-    let branch_id = metadata.get_branch_id().map_err(SignerError::from_display)?;
-    let bytes: [u8; 4] = decode_hex(&branch_id)
-        .map_err(SignerError::from)?
-        .try_into()
-        .map_err(|_| SignerError::invalid_input("invalid Zcash branch id"))?;
-    // Blockbook reports consensus.chaintip in big-endian display order; Zcash
-    // transaction encoding and personalization use the u32 in little-endian.
-    Ok(u32::from_be_bytes(bytes))
-}
-
 fn signature_digest(branch_id: u32, digests: &ZcashSignatureDigests, plan: &SpendPlan, input_index: usize) -> Result<[u8; 32], SignerError> {
     let transparent_sig_digest = transparent_sig_digest(digests, plan, input_index)?;
 
@@ -200,20 +189,20 @@ mod tests {
         signer::planner::{SpendRequest, UtxoPlanner},
         testkit::{
             address_mock::zcash_address,
-            signer_mock::{TEST_PRIVATE_KEY, public_key, sender_address as test_sender_address},
+            signer_mock::{TEST_PRIVATE_KEY, mock_public_key, mock_sender_address as test_sender_address},
         },
     };
 
     #[test]
     fn test_sign_transparent() {
-        let public_key = public_key();
+        let public_key = mock_public_key();
         let sender_address = test_sender_address(BitcoinChain::Zcash);
         let destination_address = zcash_address([2u8; 20]);
         let input = mock_zcash::signer_input(sender_address, destination_address);
         let request = SpendRequest::transfer(BitcoinChain::Zcash, &input, false).unwrap();
         let plan = UtxoPlanner::plan(request).unwrap();
 
-        let branch_id = branch_id_from_metadata(&input.metadata).unwrap();
+        let branch_id = input.metadata.get_zcash_branch_id().unwrap();
         let tx = ZcashTransparentTransaction::unsigned(&plan, branch_id);
         let digests = ZcashSignatureDigests::new(&tx, &plan).unwrap();
         assert_eq!(

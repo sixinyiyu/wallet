@@ -178,8 +178,8 @@ mod tests {
     use super::*;
     use crate::testkit::{
         address_mock::TEST_BITCOIN_P2WPKH_ADDRESS,
-        planner_mock::{assert_invalid_input, spend_signer_input, spend_signer_input_with, spend_utxos, sum_inputs},
-        signer_mock::{TEST_UTXO_TXID, utxo_with},
+        planner_mock::{spend_signer_input, spend_signer_input_with, spend_utxos, sum_inputs},
+        signer_mock::{TEST_UTXO_TXID, mock_utxo_with},
     };
 
     #[test]
@@ -213,12 +213,12 @@ mod tests {
         let request = SpendRequest::transfer(BitcoinChain::Bitcoin, &spend_signer_input("545", false), false).unwrap();
         assert_eq!(UtxoPlanner::plan(request).unwrap_err(), SignerError::DustThreshold);
 
-        let dust_max_utxos = vec![utxo_with(TEST_UTXO_TXID, 0, "600", TEST_BITCOIN_P2WPKH_ADDRESS)];
+        let dust_max_utxos = vec![mock_utxo_with(TEST_UTXO_TXID, 0, "600", TEST_BITCOIN_P2WPKH_ADDRESS)];
         let request = SpendRequest::transfer(BitcoinChain::Bitcoin, &spend_signer_input_with("0", true, None, dust_max_utxos), false).unwrap();
         assert_eq!(UtxoPlanner::plan(request).unwrap_err(), SignerError::InsufficientFunds);
 
         let request = SpendRequest::transfer(BitcoinChain::Bitcoin, &spend_signer_input_with("1000", false, Some("a".repeat(81)), spend_utxos()), false).unwrap();
-        assert_invalid_input(UtxoPlanner::plan(request), "Bitcoin memo is too large");
+        assert_eq!(UtxoPlanner::plan(request).unwrap_err(), SignerError::invalid_input("Bitcoin memo is too large"));
 
         let request = SpendRequest::transfer(BitcoinChain::Bitcoin, &spend_signer_input("0", true), false).unwrap();
         let plan = UtxoPlanner::plan(request).unwrap();

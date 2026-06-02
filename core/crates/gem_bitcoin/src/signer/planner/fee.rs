@@ -4,18 +4,25 @@ use super::{PlanInput, PlanOutput};
 use crate::signer::{address::UnlockingScript, encoding::varint_len};
 
 const WITNESS_SCALE_FACTOR: u64 = 4;
-const TX_FIXED_BYTES: u64 = 8;
+const TRANSACTION_FIXED_BYTES: u64 = 8;
 const SEGWIT_MARKER_FLAG_WEIGHT: u64 = 2;
 const P2PKH_INPUT_BYTES: u64 = 148;
 const P2WPKH_INPUT_BASE_BYTES: u64 = 41;
 const P2WPKH_INPUT_WITNESS_BYTES: u64 = 108;
 
+const ZCASH_MARGINAL_FEE: u64 = 5_000;
+const ZCASH_GRACE_ACTIONS: u64 = 2;
+const ZCASH_P2PKH_INPUT_SIZE: u64 = 150;
+const ZCASH_P2PKH_OUTPUT_SIZE: u64 = 34;
+
 pub(super) fn estimate_fee(chain: BitcoinChain, inputs: &[PlanInput], outputs: &[PlanOutput], fee_rate: u64) -> Result<u64, SignerError> {
     match chain {
-        BitcoinChain::Zcash => return estimate_zcash_fee(inputs, outputs),
-        BitcoinChain::Bitcoin | BitcoinChain::BitcoinCash | BitcoinChain::Litecoin | BitcoinChain::Doge => {}
+        BitcoinChain::Zcash => estimate_zcash_fee(inputs, outputs),
+        BitcoinChain::Bitcoin | BitcoinChain::BitcoinCash | BitcoinChain::Litecoin | BitcoinChain::Doge => estimate_bitcoin_fee(inputs, outputs, fee_rate),
     }
+}
 
+fn estimate_bitcoin_fee(inputs: &[PlanInput], outputs: &[PlanOutput], fee_rate: u64) -> Result<u64, SignerError> {
     let has_witness = inputs.iter().any(|input| match input.unlocking_script {
         UnlockingScript::P2wpkh => true,
         UnlockingScript::P2pkh => false,
@@ -36,7 +43,7 @@ pub(super) fn estimate_fee(chain: BitcoinChain, inputs: &[PlanInput], outputs: &
 }
 
 fn transaction_base_weight(input_count: usize, output_count: usize, has_witness: bool) -> Result<u64, SignerError> {
-    let base_bytes = TX_FIXED_BYTES
+    let base_bytes = TRANSACTION_FIXED_BYTES
         .checked_add(varint_len(input_count) as u64)
         .and_then(|value| value.checked_add(varint_len(output_count) as u64))
         .ok_or_else(|| SignerError::invalid_input("Bitcoin fee overflow"))?;
@@ -55,24 +62,19 @@ fn input_weight(input: &PlanInput) -> u64 {
 }
 
 fn estimate_zcash_fee(inputs: &[PlanInput], outputs: &[PlanOutput]) -> Result<u64, SignerError> {
-    const MARGINAL_FEE: u64 = 5_000;
-    const GRACE_ACTIONS: u64 = 2;
-    const P2PKH_STANDARD_INPUT_SIZE: u64 = 150;
-    const P2PKH_STANDARD_OUTPUT_SIZE: u64 = 34;
-
-    let tx_in_total_size = inputs
+    let input_total_size = inputs
         .len()
-        .checked_mul(P2PKH_STANDARD_INPUT_SIZE as usize)
+        .checked_mul(ZCASH_P2PKH_INPUT_SIZE as usize)
         .and_then(|value| u64::try_from(value).ok())
         .ok_or_else(|| SignerError::invalid_input("Zcash fee overflow"))?;
-    let tx_out_total_size = outputs.iter().try_fold(0u64, |sum, output| {
+    let output_total_size = outputs.iter().try_fold(0u64, |sum, output| {
         sum.checked_add(output.serialized_len()).ok_or_else(|| SignerError::invalid_input("Zcash fee overflow"))
     })?;
-    let input_actions = tx_in_total_size.div_ceil(P2PKH_STANDARD_INPUT_SIZE);
-    let output_actions = tx_out_total_size.div_ceil(P2PKH_STANDARD_OUTPUT_SIZE);
+    let input_actions = input_total_size.div_ceil(ZCASH_P2PKH_INPUT_SIZE);
+    let output_actions = output_total_size.div_ceil(ZCASH_P2PKH_OUTPUT_SIZE);
     let logical_actions = input_actions.max(output_actions);
-    MARGINAL_FEE
-        .checked_mul(GRACE_ACTIONS.max(logical_actions))
+    ZCASH_MARGINAL_FEE
+        .checked_mul(ZCASH_GRACE_ACTIONS.max(logical_actions))
         .ok_or_else(|| SignerError::invalid_input("Zcash fee overflow"))
 }
 

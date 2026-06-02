@@ -88,7 +88,7 @@ mod tests {
 
     use crate::{
         rpc::client::BitcoinClient,
-        testkit::signer_mock::{transfer_input, utxo_with},
+        testkit::signer_mock::{mock_transfer_input, mock_utxo_with},
     };
 
     #[test]
@@ -128,9 +128,9 @@ mod tests {
     #[tokio::test]
     async fn test_get_transaction_load_estimates_with_signer_planner() {
         let client = BitcoinClient::new(MockClient::new(), BitcoinChain::BitcoinCash);
-        let mut input = transfer_input(BitcoinChain::BitcoinCash).input;
+        let mut input = mock_transfer_input(BitcoinChain::BitcoinCash).input;
         input.metadata = TransactionLoadMetadata::Bitcoin {
-            utxos: vec![utxo_with(
+            utxos: vec![mock_utxo_with(
                 "0000000000000000000000000000000000000000000000000000000000000001",
                 0,
                 "50000",
@@ -143,7 +143,7 @@ mod tests {
         assert_eq!(load.fee.fee, BigInt::from(1130u64));
 
         let client = BitcoinClient::new(MockClient::new(), BitcoinChain::Zcash);
-        let input = transfer_input(BitcoinChain::Zcash).input;
+        let input = mock_transfer_input(BitcoinChain::Zcash).input;
         let load = client.get_transaction_load(input).await.unwrap();
 
         assert_eq!(load.fee.fee, BigInt::from(10000u64));

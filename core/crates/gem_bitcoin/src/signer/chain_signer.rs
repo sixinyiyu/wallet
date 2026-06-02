@@ -3,7 +3,6 @@ use primitives::{BitcoinChain, ChainSigner, SignerError, SignerInput};
 use crate::signer::{
     planner::{SpendPlan, SpendRequest, UtxoPlanner},
     transaction::sign_plan,
-    zcash::branch_id_from_metadata,
 };
 
 pub struct BitcoinChainSigner {
@@ -27,7 +26,7 @@ impl BitcoinChainSigner {
 
     fn zcash_branch_id(&self, input: &SignerInput) -> Result<Option<u32>, SignerError> {
         match self.chain {
-            BitcoinChain::Zcash => Ok(Some(branch_id_from_metadata(&input.metadata)?)),
+            BitcoinChain::Zcash => Ok(Some(input.metadata.get_zcash_branch_id()?)),
             BitcoinChain::Bitcoin | BitcoinChain::BitcoinCash | BitcoinChain::Litecoin | BitcoinChain::Doge => Ok(None),
         }
     }
