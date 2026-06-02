@@ -33,7 +33,7 @@ pub(crate) fn sign_plan(chain: BitcoinChain, plan: &SpendPlan, private_key: &[u8
     validate_public_key(chain, plan, &public_key)?;
     validate_plan_amounts(chain, plan)?;
 
-    let tx = match chain {
+    let transaction = match chain {
         BitcoinChain::BitcoinCash => sign_bitcoin_cash(plan, &secret_key.0, &public_key, &secp)?,
         BitcoinChain::Bitcoin | BitcoinChain::Litecoin | BitcoinChain::Doge => sign_standard(plan, &secret_key.0, &public_key, &secp)?,
         BitcoinChain::Zcash => {
@@ -42,7 +42,7 @@ pub(crate) fn sign_plan(chain: BitcoinChain, plan: &SpendPlan, private_key: &[u8
         }
     };
 
-    Ok(hex::encode(serialize(&tx)))
+    Ok(hex::encode(serialize(&transaction)))
 }
 
 pub(super) fn build_unsigned_transaction(plan: &SpendPlan) -> Transaction {
@@ -75,9 +75,9 @@ pub(super) fn build_unsigned_transaction(plan: &SpendPlan) -> Transaction {
 }
 
 fn sign_standard<C: Signing>(plan: &SpendPlan, secret_key: &SecretKey, public_key: &PublicKey, secp: &Secp256k1<C>) -> Result<Transaction, SignerError> {
-    let mut tx = build_unsigned_transaction(plan);
+    let mut transaction = build_unsigned_transaction(plan);
     let signed_inputs = {
-        let mut sighash_cache = SighashCache::new(&tx);
+        let mut sighash_cache = SighashCache::new(&transaction);
         let mut signed_inputs = Vec::with_capacity(plan.inputs.len());
 
         for (index, input) in plan.inputs.iter().enumerate() {
@@ -105,12 +105,12 @@ fn sign_standard<C: Signing>(plan: &SpendPlan, secret_key: &SecretKey, public_ke
         signed_inputs
     };
 
-    for (input, (script_sig, witness)) in tx.input.iter_mut().zip(signed_inputs) {
+    for (input, (script_sig, witness)) in transaction.input.iter_mut().zip(signed_inputs) {
         input.script_sig = script_sig;
         input.witness = witness;
     }
 
-    Ok(tx)
+    Ok(transaction)
 }
 
 fn validate_chain_input_types(chain: BitcoinChain, plan: &SpendPlan) -> Result<(), SignerError> {

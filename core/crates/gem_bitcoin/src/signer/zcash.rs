@@ -40,15 +40,15 @@ struct ZcashSignatureDigests {
 }
 
 impl ZcashSignatureDigests {
-    fn new(tx: &ZcashTransparentTransaction, plan: &SpendPlan) -> Result<Self, SignerError> {
+    fn new(transaction: &ZcashTransparentTransaction, plan: &SpendPlan) -> Result<Self, SignerError> {
         let prevouts = plan.inputs.iter().flat_map(|input| serialize(&input.previous_output)).collect::<Vec<_>>();
         let amounts = plan.inputs.iter().map(signed_value_bytes).collect::<Result<Vec<_>, _>>()?.concat();
         let script_pubkeys = plan.inputs.iter().flat_map(|input| serialize(input.script_pubkey.as_script())).collect::<Vec<_>>();
         let sequences = plan.inputs.iter().flat_map(|input| input.sequence.to_le_bytes()).collect::<Vec<_>>();
-        let outputs = tx.outputs.iter().flat_map(serialize).collect::<Vec<_>>();
+        let outputs = transaction.outputs.iter().flat_map(serialize).collect::<Vec<_>>();
 
         Ok(Self {
-            header: header_digest(tx.branch_id),
+            header: header_digest(transaction.branch_id),
             prevouts: blake2b_256_personal(&prevouts, b"ZTxIdPrevoutHash"),
             amounts: blake2b_256_personal(&amounts, ZCASH_TRANSPARENT_AMOUNTS_HASH_PERSONALIZATION),
             script_pubkeys: blake2b_256_personal(&script_pubkeys, ZCASH_TRANSPARENT_SCRIPTS_HASH_PERSONALIZATION),
@@ -111,16 +111,16 @@ impl ZcashTransparentTransaction {
 }
 
 pub(crate) fn sign_transparent<C: Signing>(plan: &SpendPlan, branch_id: u32, secret_key: &SecretKey, public_key: &PublicKey, secp: &Secp256k1<C>) -> Result<String, SignerError> {
-    let mut tx = ZcashTransparentTransaction::unsigned(plan, branch_id);
-    let digests = ZcashSignatureDigests::new(&tx, plan)?;
+    let mut transaction = ZcashTransparentTransaction::unsigned(plan, branch_id);
+    let digests = ZcashSignatureDigests::new(&transaction, plan)?;
 
     for (index, _) in plan.inputs.iter().enumerate() {
-        let sighash = signature_digest(tx.branch_id, &digests, plan, index)?;
+        let sighash = signature_digest(transaction.branch_id, &digests, plan, index)?;
         let signature = der_signature(secp, secret_key, Message::from_digest(sighash), SIGHASH_ALL);
-        tx.inputs[index].script_sig = Builder::new().push_slice(signature_push_bytes(signature)?).push_key(public_key).into_script();
+        transaction.inputs[index].script_sig = Builder::new().push_slice(signature_push_bytes(signature)?).push_key(public_key).into_script();
     }
 
-    Ok(hex::encode(tx.encode()))
+    Ok(hex::encode(transaction.encode()))
 }
 
 fn signature_digest(branch_id: u32, digests: &ZcashSignatureDigests, plan: &SpendPlan, input_index: usize) -> Result<[u8; 32], SignerError> {
@@ -203,8 +203,8 @@ mod tests {
         let plan = UtxoPlanner::plan(request).unwrap();
 
         let branch_id = input.metadata.get_zcash_branch_id().unwrap();
-        let tx = ZcashTransparentTransaction::unsigned(&plan, branch_id);
-        let digests = ZcashSignatureDigests::new(&tx, &plan).unwrap();
+        let transaction = ZcashTransparentTransaction::unsigned(&plan, branch_id);
+        let digests = ZcashSignatureDigests::new(&transaction, &plan).unwrap();
         assert_eq!(
             hex::encode(signature_digest(branch_id, &digests, &plan, 0).unwrap()),
             "0e9508ded3c1bbbf0a153622e1b5dee4303c33d45bcaa7fa1218cab57feeb065"
