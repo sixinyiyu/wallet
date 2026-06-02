@@ -31,5 +31,5 @@ pub(super) fn dust_threshold(script_pubkey: &ScriptBuf) -> u64 {
     if script_pubkey.is_op_return() {
         return 0;
     }
-    546
+    script_pubkey.minimal_non_dust().to_sat()
 }

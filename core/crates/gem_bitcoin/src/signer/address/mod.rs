@@ -146,6 +146,7 @@ mod tests {
             "0014b8a415b824d97a9c365787a581692d7cb7d7fde3",
             Some("b8a415b824d97a9c365787a581692d7cb7d7fde3"),
         );
+        assert!(script_for_address(BitcoinChain::Litecoin, "3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy").is_err());
     }
 
     #[test]

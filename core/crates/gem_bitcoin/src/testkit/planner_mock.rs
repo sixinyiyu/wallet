@@ -62,7 +62,7 @@ pub(crate) fn sum_inputs(inputs: &[PlanInput]) -> Result<u64, SignerError> {
 pub(crate) fn assert_invalid_input<T>(result: Result<T, SignerError>, expected: &str) {
     match result {
         Err(SignerError::InvalidInput(message)) => assert_eq!(message, expected),
-        Err(SignerError::SigningError(message)) => panic!("unexpected signing error: {message}"),
+        Err(other) => panic!("expected invalid input error, got: {other:?}"),
         Ok(_) => panic!("expected invalid input error"),
     }
 }

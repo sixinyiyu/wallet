@@ -10,6 +10,7 @@ public enum ChainCoreError: String, Error, Equatable {
     case cantEstimateFee
     case incorrectAmount
     case dustThreshold
+    case insufficientBalance
 
     static func fromWalletCore(_ error: CommonSigningError) throws {
         let chainError: ChainCoreError? = switch error {
@@ -26,8 +27,15 @@ public enum ChainCoreError: String, Error, Equatable {
     }
 
     public static func fromError(_ error: Error) -> ChainCoreError? {
-        for errorCase in [ChainCoreError.dustThreshold, .feeRateMissed, .cantEstimateFee, .incorrectAmount] {
-            if error.localizedDescription.contains(errorCase.rawValue) {
+        let description = error.localizedDescription
+        if description.contains("dust threshold") {
+            return .dustThreshold
+        }
+        if description.contains("insufficient balance") {
+            return .insufficientBalance
+        }
+        for errorCase in [ChainCoreError.dustThreshold, .feeRateMissed, .cantEstimateFee, .incorrectAmount, .insufficientBalance] {
+            if description.contains(errorCase.rawValue) {
                 return errorCase
             }
         }

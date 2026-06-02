@@ -16,20 +16,29 @@ use crate::signer::{
     zcash::sign_transparent,
 };
 
+/// Wipes the secp256k1 `SecretKey` on drop (it is not `ZeroizeOnDrop`), covering early-return paths.
+struct ZeroizedSecretKey(SecretKey);
+
+impl Drop for ZeroizedSecretKey {
+    fn drop(&mut self) {
+        self.0.non_secure_erase();
+    }
+}
+
 pub(crate) fn sign_plan(chain: BitcoinChain, plan: &SpendPlan, private_key: &[u8], zcash_branch_id: Option<u32>) -> Result<String, SignerError> {
-    let secret_key = SecretKey::from_slice(private_key).map_err(|_| SignerError::invalid_input(format!("invalid {} private key", chain.get_chain())))?;
+    let secret_key = ZeroizedSecretKey(SecretKey::from_slice(private_key).map_err(|_| SignerError::invalid_input(format!("invalid {} private key", chain.get_chain())))?);
     let secp = Secp256k1::signing_only();
-    let public_key = PublicKey::new(Secp256k1PublicKey::from_secret_key(&secp, &secret_key));
+    let public_key = PublicKey::new(Secp256k1PublicKey::from_secret_key(&secp, &secret_key.0));
     validate_chain_input_types(chain, plan)?;
     validate_public_key(chain, plan, &public_key)?;
     validate_plan_amounts(chain, plan)?;
 
     let tx = match chain {
-        BitcoinChain::BitcoinCash => sign_bitcoin_cash(plan, &secret_key, &public_key, &secp)?,
-        BitcoinChain::Bitcoin | BitcoinChain::Litecoin | BitcoinChain::Doge => sign_standard(plan, &secret_key, &public_key, &secp)?,
+        BitcoinChain::BitcoinCash => sign_bitcoin_cash(plan, &secret_key.0, &public_key, &secp)?,
+        BitcoinChain::Bitcoin | BitcoinChain::Litecoin | BitcoinChain::Doge => sign_standard(plan, &secret_key.0, &public_key, &secp)?,
         BitcoinChain::Zcash => {
             let branch_id = zcash_branch_id.ok_or_else(|| SignerError::invalid_input("missing Zcash branch id"))?;
-            return sign_transparent(plan, branch_id, &secret_key, &public_key, &secp);
+            return sign_transparent(plan, branch_id, &secret_key.0, &public_key, &secp);
         }
     };
 
