@@ -214,8 +214,7 @@ open class BaseAssetSelectViewModel(
     }
 
     fun updateRecent(assetId: AssetId, type: RecentType) = viewModelScope.launch(Dispatchers.IO) {
-        val walletId = session.value?.wallet?.id ?: return@launch
-        updateRecentAsset(assetId, walletId, type)
+        updateRecentAsset(assetId, type)
     }
 
     open val showRecents: Boolean get() = true
