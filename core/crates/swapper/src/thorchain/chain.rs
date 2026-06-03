@@ -1,6 +1,6 @@
 use super::THORChainNetwork;
 use gem_evm::address::ethereum_address_checksum;
-use primitives::{Asset, AssetId, Chain, known_assets::*};
+use primitives::{Asset, Chain, known_assets::*};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct ChainName {
@@ -51,11 +51,7 @@ impl ChainName {
         self.token_assets().into_iter().find(|asset| asset.id.token_id.as_ref().is_some_and(|id| id == token_id))
     }
 
-    pub fn token_asset_ids(&self) -> Vec<AssetId> {
-        self.token_assets().into_iter().map(|asset| asset.id).collect()
-    }
-
-    fn token_assets(&self) -> Vec<Asset> {
+    pub fn token_assets(&self) -> Vec<Asset> {
         match self.token_assets {
             ChainTokenAssets::None => vec![],
             ChainTokenAssets::Thorchain => vec![(*THORCHAIN_TCY).clone()],
