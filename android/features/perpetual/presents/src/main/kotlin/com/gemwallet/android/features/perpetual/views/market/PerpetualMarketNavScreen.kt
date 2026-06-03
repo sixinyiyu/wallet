@@ -11,12 +11,12 @@ import com.gemwallet.android.features.asset_select.presents.views.RecentsSheetHo
 import com.gemwallet.android.features.asset_select.viewmodels.RecentsSheetViewModel
 import com.gemwallet.android.features.perpetual.viewmodels.PerpetualMarketViewModel
 import com.gemwallet.android.model.RecentType
-import com.wallet.core.primitives.AssetId
+import com.gemwallet.android.ui.models.actions.AssetIdAction
 
 @Composable
 fun PerpetualMarketNavScreen(
     onCancel: () -> Unit,
-    onOpenPerpetualDetails: (AssetId) -> Unit,
+    onOpenPerpetualDetails: AssetIdAction,
     viewModel: PerpetualMarketViewModel = hiltViewModel(),
     recentsViewModel: RecentsSheetViewModel = hiltViewModel(),
 ) {
@@ -61,6 +61,6 @@ fun PerpetualMarketNavScreen(
 
     RecentsSheetHost(
         viewModel = recentsViewModel,
-        onSelect = onOpenPerpetualDetails,
+        onSelect = { onOpenPerpetualDetails(it) },
     )
 }
