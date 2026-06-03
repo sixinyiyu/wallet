@@ -44,6 +44,7 @@ private fun EmptyContentType.title(): String = when (this) {
     is EmptyContentType.SearchAssets -> stringResource(R.string.assets_no_assets_found)
     is EmptyContentType.SearchActivity -> stringResource(R.string.activity_state_empty_search_title)
     is EmptyContentType.SearchNetworks -> stringResource(R.string.networks_state_empty_search_title)
+    is EmptyContentType.SearchPerpetuals -> stringResource(R.string.perpetuals_empty_state_no_markets_found)
 }
 
 @Composable
@@ -63,12 +64,13 @@ private fun EmptyContentType.description(): String? = when (this) {
     }
     is EmptyContentType.SearchActivity -> stringResource(R.string.activity_state_empty_search_description)
     is EmptyContentType.SearchNetworks -> stringResource(R.string.search_state_empty_description)
+    is EmptyContentType.SearchPerpetuals -> stringResource(R.string.search_state_empty_description)
 }
 
 @Composable
 private fun EmptyContentType.icon() = when (this) {
     is EmptyContentType.SearchAssets, is EmptyContentType.SearchActivity,
-    is EmptyContentType.SearchNetworks -> null
+    is EmptyContentType.SearchNetworks, is EmptyContentType.SearchPerpetuals -> null
     is EmptyContentType.Nft -> painterResource(R.drawable.empty_nfts)
     is EmptyContentType.PriceAlerts -> painterResource(R.drawable.empty_notifications)
     is EmptyContentType.Asset, is EmptyContentType.Activity -> painterResource(R.drawable.empty_activity)
@@ -81,7 +83,7 @@ private fun EmptyContentType.icon() = when (this) {
 @Composable
 private fun EmptyContentType.iconVector(): ImageVector? = when (this) {
     is EmptyContentType.SearchAssets, is EmptyContentType.SearchActivity,
-    is EmptyContentType.SearchNetworks -> AppIcons.Search
+    is EmptyContentType.SearchNetworks, is EmptyContentType.SearchPerpetuals -> AppIcons.Search
     else -> null
 }
 

@@ -7,7 +7,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.gemwallet.android.features.asset_select.presents.views.RecentsSheetHost
+import com.gemwallet.android.features.asset_select.viewmodels.RecentsSheetViewModel
 import com.gemwallet.android.features.perpetual.viewmodels.PerpetualMarketViewModel
+import com.gemwallet.android.model.RecentType
 import com.wallet.core.primitives.AssetId
 
 @Composable
@@ -15,12 +18,14 @@ fun PerpetualMarketNavScreen(
     onCancel: () -> Unit,
     onOpenPerpetualDetails: (AssetId) -> Unit,
     viewModel: PerpetualMarketViewModel = hiltViewModel(),
+    recentsViewModel: RecentsSheetViewModel = hiltViewModel(),
 ) {
     val sceneState by viewModel.sceneState.collectAsStateWithLifecycle()
     val unpinnedPerpetuals by viewModel.unpinnedPerpetuals.collectAsStateWithLifecycle()
     val pinnedPerpetuals by viewModel.pinnedPerpetuals.collectAsStateWithLifecycle()
     val positions by viewModel.positions.collectAsStateWithLifecycle()
     val balance by viewModel.balance.collectAsStateWithLifecycle()
+    val recent by viewModel.recent.collectAsStateWithLifecycle()
     val query = rememberTextFieldState()
 
     LaunchedEffect(query) {
@@ -35,6 +40,7 @@ fun PerpetualMarketNavScreen(
         unpinnedPerpetuals = unpinnedPerpetuals,
         pinnedPerpetuals = pinnedPerpetuals,
         positions = positions,
+        recent = recent,
         query = query,
         onAction = { action ->
             when (action) {
@@ -43,8 +49,18 @@ fun PerpetualMarketNavScreen(
                 PerpetualMarketAction.Withdraw -> Unit
                 PerpetualMarketAction.Deposit -> Unit
                 is PerpetualMarketAction.TogglePin -> viewModel.onTogglePin(action.perpetualId)
-                is PerpetualMarketAction.OpenPerpetual -> onOpenPerpetualDetails(action.assetId)
+                is PerpetualMarketAction.OpenPerpetual -> {
+                    onOpenPerpetualDetails(action.assetId)
+                    viewModel.onOpenPerpetual(action.assetId)
+                }
+                is PerpetualMarketAction.OpenRecent -> onOpenPerpetualDetails(action.assetId)
+                PerpetualMarketAction.OpenRecentsSheet -> recentsViewModel.show(types = listOf(RecentType.Perpetual))
             }
         },
+    )
+
+    RecentsSheetHost(
+        viewModel = recentsViewModel,
+        onSelect = onOpenPerpetualDetails,
     )
 }

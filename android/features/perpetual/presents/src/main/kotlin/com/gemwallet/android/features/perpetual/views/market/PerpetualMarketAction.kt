@@ -10,4 +10,6 @@ internal sealed interface PerpetualMarketAction {
     data object Close : PerpetualMarketAction
     data class TogglePin(val perpetualId: PerpetualId) : PerpetualMarketAction
     data class OpenPerpetual(val assetId: AssetId) : PerpetualMarketAction
+    data class OpenRecent(val assetId: AssetId) : PerpetualMarketAction
+    data object OpenRecentsSheet : PerpetualMarketAction
 }

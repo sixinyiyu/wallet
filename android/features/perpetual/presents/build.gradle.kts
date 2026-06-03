@@ -54,6 +54,8 @@ android {
 dependencies {
     implementation(project(":ui"))
     implementation(project(":features:perpetual:viewmodels"))
+    implementation(project(":features:asset_select:viewmodels"))
+    implementation(project(":features:asset_select:presents"))
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
