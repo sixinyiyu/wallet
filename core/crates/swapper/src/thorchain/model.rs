@@ -72,13 +72,22 @@ impl TransactionCoin {
     }
 
     pub fn resolve_asset_id(&self, network: THORChainNetwork) -> Option<AssetId> {
-        let (chain_str, rest) = self.asset.split_once('.')?;
-        let chain_name = ChainName::from_symbol(network, chain_str)?;
+        let (chain_symbol, asset_symbol) = self.asset.split_once('.')?;
+        let chain_name = ChainName::from_symbol(network, chain_symbol)?;
         let chain = chain_name.chain();
-        let key = rest.split_once('-').map_or(rest, |(_, addr)| addr);
-        match THORChainAsset::from(chain_name, key).and_then(|a| a.token_id) {
+        let native_asset = Asset::from_chain(chain);
+        if asset_symbol == native_asset.symbol {
+            return Some(native_asset.id);
+        }
+
+        let Some((symbol, token_id)) = asset_symbol.split_once('-') else {
+            return chain_name.token_assets().into_iter().find(|asset| asset.symbol == asset_symbol).map(|asset| asset.id);
+        };
+        let token_id = chain_name.checksum_address(token_id);
+
+        match THORChainAsset::from(chain_name, &token_id).and_then(|a| a.token_id) {
             Some(token_id) => Some(AssetId::from_token(chain, &token_id)),
-            None if self.is_native_asset() => Some(AssetId::from_chain(chain)),
+            None if chain == Chain::Tron => chain_name.token_assets().into_iter().find(|asset| asset.symbol == symbol).map(|asset| asset.id),
             None => None,
         }
     }
