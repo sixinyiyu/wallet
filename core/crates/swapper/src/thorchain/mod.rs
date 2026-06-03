@@ -13,7 +13,7 @@ use std::sync::Arc;
 
 use crate::alien::RpcProvider;
 use asset::value_to;
-use chain::THORChainName;
+use chain::ChainName;
 use gem_client::Client;
 use strum::Display;
 
@@ -51,20 +51,15 @@ impl THORChainNetwork {
                 "0x8F66c4AE756BEbC49Ec8B81966DD8bba9f127549", // AvalancheC
                 "0x68208D99746b805a1Ae41421950A47b711E35681", // Base
             ],
-            Self::Mayachain => &["0xe3985E6b61b814F7Cdb188766562ba71b446B46d"],
+            Self::Mayachain => &[
+                "0xe3985E6b61b814F7Cdb188766562ba71b446B46d", // Ethereum
+                "0x700E97ef07219440487840Dc472E7120A7FF11F4", // Arbitrum
+            ],
         }
     }
 
     pub fn supported_chains(&self) -> Vec<Chain> {
-        let names: Vec<THORChainName> = match self {
-            Self::Thorchain => Chain::all()
-                .into_iter()
-                .filter_map(|chain| THORChainName::from_chain(&chain))
-                .filter(|name| *name != THORChainName::Mayachain)
-                .collect(),
-            Self::Mayachain => vec![THORChainName::Bitcoin, THORChainName::Ethereum, THORChainName::Zcash],
-        };
-        names.into_iter().map(|name| name.chain()).collect()
+        ChainName::supported(*self).iter().map(|name| name.chain()).collect()
     }
 }
 

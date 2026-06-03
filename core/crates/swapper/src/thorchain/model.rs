@@ -4,8 +4,9 @@ use serde::{Deserialize, Serialize};
 use serde_serializers::deserialize_bigint_from_str;
 
 use super::{
+    THORChainNetwork,
     asset::{THORChainAsset, value_to},
-    chain::THORChainName,
+    chain::ChainName,
     constants::{THORCHAIN_INBOUND_ADDRESS, ZERO_HASH},
 };
 use crate::SwapperError;
@@ -70,9 +71,9 @@ impl TransactionCoin {
         Some(value_to(&self.amount, decimals).to_string())
     }
 
-    pub fn resolve_asset_id(&self) -> Option<AssetId> {
+    pub fn resolve_asset_id(&self, network: THORChainNetwork) -> Option<AssetId> {
         let (chain_str, rest) = self.asset.split_once('.')?;
-        let chain_name = THORChainName::from_symbol(chain_str)?;
+        let chain_name = ChainName::from_symbol(network, chain_str)?;
         let chain = chain_name.chain();
         let key = rest.split_once('-').map_or(rest, |(_, addr)| addr);
         match THORChainAsset::from(chain_name, key).and_then(|a| a.token_id) {
@@ -159,8 +160,8 @@ pub struct RouteData {
 }
 
 impl RouteData {
-    pub fn get_inbound_address(from_asset: &THORChainAsset, quote_inbound_address: Option<String>) -> Result<String, SwapperError> {
-        if from_asset.chain == THORChainName::Thorchain {
+    pub fn get_inbound_address(network: THORChainNetwork, from_asset: &THORChainAsset, quote_inbound_address: Option<String>) -> Result<String, SwapperError> {
+        if network == THORChainNetwork::Thorchain && from_asset.chain.chain() == Chain::Thorchain {
             Ok(THORCHAIN_INBOUND_ADDRESS.to_string())
         } else {
             quote_inbound_address.ok_or(SwapperError::InvalidRoute)
@@ -184,16 +185,16 @@ pub struct AsgardVault {
 }
 
 impl AsgardVault {
-    pub fn all_addresses(vaults: &[AsgardVault]) -> Vec<String> {
+    pub fn all_addresses(network: THORChainNetwork, vaults: &[AsgardVault]) -> Vec<String> {
         vaults
             .iter()
             .flat_map(|vault| {
                 let addrs = vault.addresses.iter().filter_map(|a| {
-                    let chain = THORChainName::from_symbol(&a.chain)?;
+                    let chain = ChainName::from_symbol(network, &a.chain)?;
                     Some(chain.checksum_address(&a.address))
                 });
                 let routers = vault.routers.iter().filter_map(|r| {
-                    let chain = THORChainName::from_symbol(&r.chain)?;
+                    let chain = ChainName::from_symbol(network, &r.chain)?;
                     Some(chain.checksum_address(&r.router))
                 });
                 addrs.chain(routers)
@@ -271,8 +272,8 @@ mod tests {
 
     #[test]
     fn test_get_inbound_address_thorchain() {
-        let from_asset = THORChainAsset::from_asset_id("thorchain").unwrap();
-        let result = RouteData::get_inbound_address(&from_asset, None);
+        let from_asset = THORChainAsset::from_asset_id(THORChainNetwork::Thorchain, "thorchain").unwrap();
+        let result = RouteData::get_inbound_address(THORChainNetwork::Thorchain, &from_asset, None);
 
         assert!(result.is_ok());
         assert_eq!(result.unwrap(), THORCHAIN_INBOUND_ADDRESS);
@@ -280,9 +281,19 @@ mod tests {
 
     #[test]
     fn test_get_inbound_address_other_chain() {
-        let from_asset = THORChainAsset::from_asset_id("ethereum").unwrap();
+        let from_asset = THORChainAsset::from_asset_id(THORChainNetwork::Thorchain, "ethereum").unwrap();
         let quote_address = "0x1234567890abcdef".to_string();
-        let result = RouteData::get_inbound_address(&from_asset, Some(quote_address.clone()));
+        let result = RouteData::get_inbound_address(THORChainNetwork::Thorchain, &from_asset, Some(quote_address.clone()));
+
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap(), quote_address);
+    }
+
+    #[test]
+    fn test_get_inbound_address_mayachain_thorchain() {
+        let from_asset = THORChainAsset::from_asset_id(THORChainNetwork::Mayachain, "thorchain").unwrap();
+        let quote_address = "thor12qm45uyzg5kk3aw3s5jzew7gkelvg7pdsw9kzg".to_string();
+        let result = RouteData::get_inbound_address(THORChainNetwork::Mayachain, &from_asset, Some(quote_address.clone()));
 
         assert!(result.is_ok());
         assert_eq!(result.unwrap(), quote_address);
@@ -359,25 +370,35 @@ mod tests {
             }
         }
 
-        assert_eq!(coin("LTC.LTC").resolve_asset_id(), Some(Chain::Litecoin.as_asset_id()));
-        assert_eq!(coin("ETH.ETH").resolve_asset_id(), Some(Chain::Ethereum.as_asset_id()));
-        assert_eq!(coin("BTC.BTC").resolve_asset_id(), Some(Chain::Bitcoin.as_asset_id()));
-        assert_eq!(coin("THOR.RUNE").resolve_asset_id(), Some(Chain::Thorchain.as_asset_id()));
-        assert_eq!(coin("ZEC.ZEC").resolve_asset_id(), Some(Chain::Zcash.as_asset_id()));
+        assert_eq!(coin("LTC.LTC").resolve_asset_id(THORChainNetwork::Thorchain), Some(Chain::Litecoin.as_asset_id()));
+        assert_eq!(coin("ETH.ETH").resolve_asset_id(THORChainNetwork::Thorchain), Some(Chain::Ethereum.as_asset_id()));
+        assert_eq!(coin("BTC.BTC").resolve_asset_id(THORChainNetwork::Thorchain), Some(Chain::Bitcoin.as_asset_id()));
+        assert_eq!(coin("THOR.RUNE").resolve_asset_id(THORChainNetwork::Thorchain), Some(Chain::Thorchain.as_asset_id()));
+        assert_eq!(coin("ZEC.ZEC").resolve_asset_id(THORChainNetwork::Mayachain), Some(Chain::Zcash.as_asset_id()));
+        assert_eq!(coin("ARB.ETH").resolve_asset_id(THORChainNetwork::Mayachain), Some(Chain::Arbitrum.as_asset_id()));
+        assert_eq!(coin("ARB.ETH").resolve_asset_id(THORChainNetwork::Thorchain), None);
         assert_eq!(
-            coin("ETH.USDT-0XDAC17F958D2EE523A2206206994597C13D831EC7").resolve_asset_id(),
+            coin("ETH.USDT-0XDAC17F958D2EE523A2206206994597C13D831EC7").resolve_asset_id(THORChainNetwork::Thorchain),
             Some(ETHEREUM_USDT_ASSET_ID.clone())
         );
-        assert_eq!(coin(&format!("TRON.USDT-{TRON_USDT_TOKEN_ID}")).resolve_asset_id(), Some(TRON_USDT_ASSET_ID.clone()));
-        assert_eq!(coin("THOR.TCY").resolve_asset_id(), Some(THORCHAIN_TCY_ASSET_ID.clone()));
-        assert_eq!(coin("ETH.UNKNOWN-0x1234567890abcdef1234567890abcdef12345678").resolve_asset_id(), None);
-        assert_eq!(coin("INVALID").resolve_asset_id(), None);
+        assert_eq!(
+            coin(&format!("TRON.USDT-{TRON_USDT_TOKEN_ID}")).resolve_asset_id(THORChainNetwork::Thorchain),
+            Some(TRON_USDT_ASSET_ID.clone())
+        );
+        assert_eq!(coin("THOR.TCY").resolve_asset_id(THORChainNetwork::Thorchain), Some(THORCHAIN_TCY_ASSET_ID.clone()));
+        assert_eq!(
+            coin("ETH.UNKNOWN-0x1234567890abcdef1234567890abcdef12345678").resolve_asset_id(THORChainNetwork::Thorchain),
+            None
+        );
+        assert_eq!(coin("INVALID").resolve_asset_id(THORChainNetwork::Thorchain), None);
     }
 
     #[test]
     fn test_asgard_vaults_deserialization() {
         let vaults: Vec<AsgardVault> = serde_json::from_str(include_str!("testdata/asgard_vaults.json")).unwrap();
+        let addresses = AsgardVault::all_addresses(THORChainNetwork::Thorchain, &vaults);
         assert_eq!(vaults.len(), 2);
+        assert!(!addresses.is_empty());
         assert_eq!(vaults[0].addresses.len(), 12);
         assert_eq!(vaults[0].routers.len(), 4);
         assert_eq!(vaults[0].addresses[0].chain, "BTC");

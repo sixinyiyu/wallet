@@ -1,138 +1,68 @@
 use super::THORChainNetwork;
 use gem_evm::address::ethereum_address_checksum;
-use primitives::Chain;
-use strum::{EnumIter, IntoEnumIterator};
+use primitives::{Asset, Chain, known_assets::*};
 
-#[derive(Debug, Clone, PartialEq, Eq, EnumIter)]
-pub enum THORChainName {
-    Doge,
-    Thorchain,
-    Mayachain,
-    Ethereum,
-    Cosmos,
-    Bitcoin,
-    BitcoinCash,
-    Litecoin,
-    SmartChain,
-    AvalancheC,
-    Base,
-    Xrp,
-    Tron,
-    Solana,
-    Zcash,
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct ChainName {
+    chain: Chain,
+    long_name: &'static str,
+    short_name: &'static str,
+    token_assets: ChainTokenAssets,
 }
 
-impl THORChainName {
-    pub fn long_name(&self) -> &str {
-        match self {
-            THORChainName::Doge => "DOGE",
-            THORChainName::Thorchain => "THOR",
-            THORChainName::Mayachain => "MAYA",
-            THORChainName::Ethereum => "ETH",
-            THORChainName::Cosmos => "GAIA",
-            THORChainName::Bitcoin => "BTC",
-            THORChainName::BitcoinCash => "BCH",
-            THORChainName::Litecoin => "LTC",
-            THORChainName::SmartChain => "BSC",
-            THORChainName::AvalancheC => "AVAX",
-            THORChainName::Base => "BASE",
-            THORChainName::Xrp => "XRP",
-            THORChainName::Tron => "TRON",
-            THORChainName::Solana => "SOL",
-            THORChainName::Zcash => "ZEC",
+impl ChainName {
+    const fn new(chain: Chain, long_name: &'static str, short_name: &'static str, token_assets: ChainTokenAssets) -> Self {
+        Self {
+            chain,
+            long_name,
+            short_name,
+            token_assets,
         }
+    }
+
+    pub fn supported(network: THORChainNetwork) -> &'static [ChainName] {
+        match network {
+            THORChainNetwork::Thorchain => THORCHAIN_NAMES,
+            THORChainNetwork::Mayachain => MAYACHAIN_NAMES,
+        }
+    }
+
+    pub fn long_name(&self) -> &str {
+        self.long_name
     }
 
     pub fn chain(&self) -> Chain {
-        match self {
-            THORChainName::Doge => Chain::Doge,
-            THORChainName::Thorchain => Chain::Thorchain,
-            THORChainName::Mayachain => Chain::Mayachain,
-            THORChainName::Ethereum => Chain::Ethereum,
-            THORChainName::Cosmos => Chain::Cosmos,
-            THORChainName::Bitcoin => Chain::Bitcoin,
-            THORChainName::BitcoinCash => Chain::BitcoinCash,
-            THORChainName::Litecoin => Chain::Litecoin,
-            THORChainName::SmartChain => Chain::SmartChain,
-            THORChainName::AvalancheC => Chain::AvalancheC,
-            THORChainName::Base => Chain::Base,
-            THORChainName::Xrp => Chain::Xrp,
-            THORChainName::Tron => Chain::Tron,
-            THORChainName::Solana => Chain::Solana,
-            THORChainName::Zcash => Chain::Zcash,
-        }
+        self.chain
     }
 
-    pub fn from_chain(chain: &Chain) -> Option<THORChainName> {
-        match chain {
-            Chain::Thorchain => Some(THORChainName::Thorchain),
-            Chain::Mayachain => Some(THORChainName::Mayachain),
-            Chain::Doge => Some(THORChainName::Doge),
-            Chain::Cosmos => Some(THORChainName::Cosmos),
-            Chain::Bitcoin => Some(THORChainName::Bitcoin),
-            Chain::Litecoin => Some(THORChainName::Litecoin),
-            Chain::SmartChain => Some(THORChainName::SmartChain),
-            Chain::Ethereum => Some(THORChainName::Ethereum),
-            Chain::AvalancheC => Some(THORChainName::AvalancheC),
-            Chain::BitcoinCash => Some(THORChainName::BitcoinCash),
-            Chain::Base => Some(THORChainName::Base),
-            Chain::Xrp => Some(THORChainName::Xrp),
-            Chain::Tron => Some(THORChainName::Tron),
-            Chain::Solana => Some(THORChainName::Solana),
-            Chain::Zcash => Some(THORChainName::Zcash),
-            _ => None,
+    pub fn from_chain(network: THORChainNetwork, chain: Chain) -> Option<ChainName> {
+        Self::supported(network).iter().find(|name| name.chain == chain).copied()
+    }
+
+    pub fn from_symbol(network: THORChainNetwork, symbol: &str) -> Option<ChainName> {
+        Self::supported(network).iter().find(|name| name.long_name == symbol || name.short_name == symbol).copied()
+    }
+
+    pub fn short_name(&self) -> &str {
+        self.short_name
+    }
+
+    pub fn token_assets(&self) -> Vec<Asset> {
+        match self.token_assets {
+            ChainTokenAssets::None => vec![],
+            ChainTokenAssets::Thorchain => vec![(*THORCHAIN_TCY).clone()],
+            ChainTokenAssets::ThorchainEthereum => vec![(*ETHEREUM_USDT).clone(), (*ETHEREUM_USDC).clone(), (*ETHEREUM_DAI).clone(), (*ETHEREUM_WBTC).clone()],
+            ChainTokenAssets::MayachainEthereum => vec![(*ETHEREUM_USDT).clone(), (*ETHEREUM_USDC).clone()],
+            ChainTokenAssets::SmartChain => vec![(*SMARTCHAIN_USDT).clone(), (*SMARTCHAIN_USDC).clone()],
+            ChainTokenAssets::Avalanche => vec![(*AVALANCHE_USDT).clone(), (*AVALANCHE_USDC).clone()],
+            ChainTokenAssets::Base => vec![(*BASE_USDC).clone(), (*BASE_CBBTC).clone()],
+            ChainTokenAssets::Tron => vec![(*TRON_USDT).clone()],
+            ChainTokenAssets::Arbitrum => vec![(*ARBITRUM_USDC).clone(), (*ARBITRUM_USDT).clone()],
         }
     }
 
     pub fn is_evm_chain(&self) -> bool {
-        match self {
-            THORChainName::Ethereum | THORChainName::SmartChain | THORChainName::AvalancheC | THORChainName::Base => true,
-            THORChainName::Doge
-            | THORChainName::Thorchain
-            | THORChainName::Mayachain
-            | THORChainName::Cosmos
-            | THORChainName::Bitcoin
-            | THORChainName::BitcoinCash
-            | THORChainName::Litecoin
-            | THORChainName::Xrp
-            | THORChainName::Tron
-            | THORChainName::Solana
-            | THORChainName::Zcash => false,
-        }
-    }
-
-    pub(super) fn memo_symbol(&self, network: THORChainNetwork) -> Option<&str> {
-        match network {
-            THORChainNetwork::Thorchain => match self {
-                THORChainName::Doge => Some("d"),
-                THORChainName::Thorchain => Some("r"),
-                THORChainName::Ethereum => Some("e"),
-                THORChainName::Cosmos => Some("g"),
-                THORChainName::Bitcoin => Some("b"),
-                THORChainName::BitcoinCash => Some("c"),
-                THORChainName::Litecoin => Some("l"),
-                THORChainName::SmartChain => Some("s"),
-                THORChainName::AvalancheC => Some("a"),
-                THORChainName::Base => Some("f"),
-                THORChainName::Xrp => Some("x"),
-                THORChainName::Tron => Some("tr"),
-                THORChainName::Solana => Some("o"),
-                THORChainName::Zcash => Some("z"),
-                THORChainName::Mayachain => None,
-            },
-            THORChainNetwork::Mayachain => match self {
-                THORChainName::Bitcoin => Some("b"),
-                THORChainName::Ethereum => Some("e"),
-                THORChainName::Zcash => Some("z"),
-                _ => None,
-            },
-        }
-    }
-
-    pub fn from_symbol(symbol: &str) -> Option<THORChainName> {
-        THORChainName::iter()
-            .find(|variant| variant.long_name() == symbol)
-            .or_else(|| THORChainName::iter().find(|variant| variant.memo_symbol(THORChainNetwork::Thorchain) == Some(symbol)))
+        matches!(self.chain, Chain::Ethereum | Chain::SmartChain | Chain::AvalancheC | Chain::Base | Chain::Arbitrum)
     }
 
     pub fn checksum_address(&self, address: &str) -> String {
@@ -145,40 +75,74 @@ impl THORChainName {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum ChainTokenAssets {
+    None,
+    Thorchain,
+    ThorchainEthereum,
+    MayachainEthereum,
+    SmartChain,
+    Avalanche,
+    Base,
+    Tron,
+    Arbitrum,
+}
+
+const THORCHAIN_NAMES: &[ChainName] = &[
+    ChainName::new(Chain::Doge, "DOGE", "d", ChainTokenAssets::None),
+    ChainName::new(Chain::Thorchain, "THOR", "r", ChainTokenAssets::Thorchain),
+    ChainName::new(Chain::Ethereum, "ETH", "e", ChainTokenAssets::ThorchainEthereum),
+    ChainName::new(Chain::Cosmos, "GAIA", "g", ChainTokenAssets::None),
+    ChainName::new(Chain::Bitcoin, "BTC", "b", ChainTokenAssets::None),
+    ChainName::new(Chain::BitcoinCash, "BCH", "c", ChainTokenAssets::None),
+    ChainName::new(Chain::Litecoin, "LTC", "l", ChainTokenAssets::None),
+    ChainName::new(Chain::SmartChain, "BSC", "s", ChainTokenAssets::SmartChain),
+    ChainName::new(Chain::AvalancheC, "AVAX", "a", ChainTokenAssets::Avalanche),
+    ChainName::new(Chain::Base, "BASE", "f", ChainTokenAssets::Base),
+    ChainName::new(Chain::Xrp, "XRP", "x", ChainTokenAssets::None),
+    ChainName::new(Chain::Tron, "TRON", "tr", ChainTokenAssets::Tron),
+    ChainName::new(Chain::Solana, "SOL", "o", ChainTokenAssets::None),
+    ChainName::new(Chain::Zcash, "ZEC", "z", ChainTokenAssets::None),
+];
+
+const MAYACHAIN_NAMES: &[ChainName] = &[
+    ChainName::new(Chain::Thorchain, "THOR", "r", ChainTokenAssets::None),
+    ChainName::new(Chain::Bitcoin, "BTC", "b", ChainTokenAssets::None),
+    ChainName::new(Chain::Ethereum, "ETH", "e", ChainTokenAssets::MayachainEthereum),
+    ChainName::new(Chain::Arbitrum, "ARB", "a", ChainTokenAssets::Arbitrum),
+    ChainName::new(Chain::Zcash, "ZEC", "z", ChainTokenAssets::None),
+];
+
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
-    fn test_from_symbol() {
-        // Ensure from_symbol works with all existing long/short names
-        for variant in THORChainName::iter() {
-            // Test that long names can be parsed back
-            assert_eq!(
-                THORChainName::from_symbol(variant.long_name()),
-                Some(variant.clone()),
-                "Failed to parse long name: {}",
-                variant.long_name()
-            );
+    fn test_thorchain_symbols() {
+        for name in ChainName::supported(THORChainNetwork::Thorchain) {
+            assert_eq!(ChainName::from_symbol(THORChainNetwork::Thorchain, name.long_name()), Some(*name));
         }
 
-        assert_eq!(THORChainName::from_symbol("e"), Some(THORChainName::Ethereum));
-        assert_eq!(THORChainName::from_symbol("c"), Some(THORChainName::BitcoinCash));
-        assert_eq!(THORChainName::from_symbol("m"), None);
+        assert_eq!(ChainName::from_symbol(THORChainNetwork::Thorchain, "a").map(|name| name.chain()), Some(Chain::AvalancheC));
+        assert_eq!(ChainName::from_chain(THORChainNetwork::Thorchain, Chain::Arbitrum), None);
+        assert_eq!(ChainName::from_symbol(THORChainNetwork::Thorchain, "ARB"), None);
     }
 
     #[test]
-    fn test_zcash_mapping() {
-        assert_eq!(THORChainName::Zcash.long_name(), "ZEC");
-        assert_eq!(THORChainName::Zcash.chain(), Chain::Zcash);
-        assert_eq!(THORChainName::from_chain(&Chain::Zcash), Some(THORChainName::Zcash));
-        assert_eq!(THORChainName::from_symbol("ZEC"), Some(THORChainName::Zcash));
-        assert_eq!(THORChainName::from_symbol("z"), Some(THORChainName::Zcash));
+    fn test_mayachain_symbols() {
+        for name in ChainName::supported(THORChainNetwork::Mayachain) {
+            assert_eq!(ChainName::from_symbol(THORChainNetwork::Mayachain, name.long_name()), Some(*name));
+        }
+
+        assert_eq!(ChainName::from_symbol(THORChainNetwork::Mayachain, "a").map(|name| name.chain()), Some(Chain::Arbitrum));
+        assert_eq!(ChainName::from_symbol(THORChainNetwork::Mayachain, "r").map(|name| name.chain()), Some(Chain::Thorchain));
+        assert_eq!(ChainName::from_chain(THORChainNetwork::Mayachain, Chain::Arbitrum).unwrap().long_name(), "ARB");
     }
 
     #[test]
     fn test_checksum_address_preserves_non_evm_case() {
         let zcash = "t1Ku2KLyndDPsR32jwnrTMd3yvi9tfFP8ML";
-        assert_eq!(THORChainName::Zcash.checksum_address(zcash), zcash);
+        let name = ChainName::from_chain(THORChainNetwork::Mayachain, Chain::Zcash).unwrap();
+        assert_eq!(name.checksum_address(zcash), zcash);
     }
 }

@@ -4,14 +4,14 @@ use std::sync::Arc;
 use alloy_primitives::U256;
 use async_trait::async_trait;
 use gem_client::Client;
-use primitives::{Chain, known_assets::*, swap::ApprovalData};
+use primitives::{Chain, swap::ApprovalData};
 
 use num_bigint::BigInt;
 
 use super::{
     DUST_THRESHOLD_MULTIPLIER, QUOTE_INTERVAL, QUOTE_MINIMUM, QUOTE_QUANTITY, THORChainNetwork, ThorChain,
     asset::{THORChainAsset, value_to},
-    chain::THORChainName,
+    chain::ChainName,
     model::{AsgardVault, RouteData},
     quote_data_mapper, swap_mapper,
 };
@@ -57,27 +57,15 @@ where
     }
 
     fn supported_assets(&self) -> Vec<SwapperChainAsset> {
-        self.network
-            .supported_chains()
-            .into_iter()
-            .map(|chain| match chain {
-                Chain::Ethereum => SwapperChainAsset::Assets(
-                    chain,
-                    vec![ETHEREUM_USDT.id.clone(), ETHEREUM_USDC.id.clone(), ETHEREUM_DAI.id.clone(), ETHEREUM_WBTC.id.clone()],
-                ),
-                Chain::Thorchain => SwapperChainAsset::Assets(chain, vec![THORCHAIN_TCY.id.clone()]),
-                Chain::SmartChain => SwapperChainAsset::Assets(chain, vec![SMARTCHAIN_USDT.id.clone(), SMARTCHAIN_USDC.id.clone()]),
-                Chain::AvalancheC => SwapperChainAsset::Assets(chain, vec![AVALANCHE_USDT.id.clone(), AVALANCHE_USDC.id.clone()]),
-                Chain::Base => SwapperChainAsset::Assets(chain, vec![BASE_USDC.id.clone(), BASE_CBBTC.id.clone()]),
-                Chain::Tron => SwapperChainAsset::Assets(chain, vec![TRON_USDT.id.clone()]),
-                _ => SwapperChainAsset::Assets(chain, vec![]),
-            })
+        ChainName::supported(self.network)
+            .iter()
+            .map(|name| SwapperChainAsset::Assets(name.chain(), name.token_assets().into_iter().map(|asset| asset.id).collect()))
             .collect()
     }
 
     async fn get_vault_addresses(&self, _from_timestamp: Option<u64>) -> Result<VaultAddresses, SwapperError> {
         let vaults = self.client.get_asgard_vaults().await?;
-        let asgard_addresses: HashSet<String> = AsgardVault::all_addresses(&vaults).into_iter().collect();
+        let asgard_addresses: HashSet<String> = AsgardVault::all_addresses(self.network, &vaults).into_iter().collect();
         let router_addresses: HashSet<String> = self.network.router_addresses().iter().map(|address| address.to_string()).collect();
 
         let deposit: Vec<String> = asgard_addresses.union(&router_addresses).cloned().collect();
@@ -87,13 +75,13 @@ where
     }
 
     async fn get_quote(&self, request: &QuoteRequest) -> Result<Quote, SwapperError> {
-        let from_asset = THORChainAsset::from_asset_id(&request.from_asset.id).ok_or(SwapperError::NotSupportedAsset)?;
-        let to_asset = THORChainAsset::from_asset_id(&request.to_asset.id).ok_or(SwapperError::NotSupportedAsset)?;
+        let from_asset = THORChainAsset::from_asset_id(self.network, &request.from_asset.id).ok_or(SwapperError::NotSupportedAsset)?;
+        let to_asset = THORChainAsset::from_asset_id(self.network, &request.to_asset.id).ok_or(SwapperError::NotSupportedAsset)?;
 
         let from_value = quote_input_value(&from_asset, request)?;
         let value = super::asset::value_from(&from_value, from_asset.decimals as i32);
 
-        if from_asset.chain != THORChainName::Thorchain {
+        if !(self.network == THORChainNetwork::Thorchain && from_asset.chain.chain() == Chain::Thorchain) {
             let inbound_addresses = self.client.get_inbound_addresses().await?;
             let from_inbound_address = inbound_addresses
                 .iter()
@@ -124,7 +112,7 @@ where
             .map_err(|e| self.map_quote_error(e, from_asset.decimals as i32))?;
 
         let to_value = super::asset::value_to(&quote.expected_amount_out, to_asset.decimals as i32);
-        let inbound_address = RouteData::get_inbound_address(&from_asset, quote.inbound_address.clone())?;
+        let inbound_address = RouteData::get_inbound_address(self.network, &from_asset, quote.inbound_address.clone())?;
         let route_data = RouteData {
             router_address: quote.router.clone(),
             inbound_address,
@@ -152,12 +140,12 @@ where
 
     async fn get_quote_data(&self, quote: &Quote, _data: FetchQuoteData) -> Result<SwapperQuoteData, SwapperError> {
         let fee = default_referral_fees().thorchain;
-        let from_asset = THORChainAsset::from_asset_id(&quote.request.from_asset.id).ok_or(SwapperError::NotSupportedAsset)?;
-        let to_asset = THORChainAsset::from_asset_id(&quote.request.to_asset.id).ok_or(SwapperError::NotSupportedAsset)?;
+        let from_asset = THORChainAsset::from_asset_id(self.network, &quote.request.from_asset.id).ok_or(SwapperError::NotSupportedAsset)?;
+        let to_asset = THORChainAsset::from_asset_id(self.network, &quote.request.to_asset.id).ok_or(SwapperError::NotSupportedAsset)?;
         let memo_asset_name = if to_asset.is_token() {
             to_asset.quote_asset_name()
         } else {
-            to_asset.chain.memo_symbol(self.network).map(str::to_string).unwrap_or_else(|| to_asset.quote_asset_name())
+            to_asset.chain.short_name().to_string()
         };
 
         let memo = to_asset.swap_memo(
@@ -214,6 +202,7 @@ mod tests {
 
     use super::*;
     use crate::{Options, SwapperQuoteAsset, alien::mock::ProviderMock, testkit::mock_bitcoin_max_quote};
+    use primitives::asset_constants::{ARBITRUM_USDC_ASSET_ID, THORCHAIN_TCY_ASSET_ID};
 
     #[test]
     fn test_min_value() {
@@ -237,8 +226,30 @@ mod tests {
     }
 
     #[test]
+    fn test_mayachain_supported_assets() {
+        let provider = Arc::new(ProviderMock::new(String::new()));
+        let thorchain = ThorChain::new(provider.clone());
+        let mayachain = ThorChain::new_mayachain(provider);
+
+        assert!(!thorchain.supported_assets().iter().any(|asset| asset.get_chain() == Chain::Arbitrum));
+        assert!(mayachain.supported_assets().iter().any(|asset| asset.get_chain() == Chain::Arbitrum));
+        assert!(
+            mayachain
+                .supported_assets()
+                .iter()
+                .any(|asset| { matches!(asset, SwapperChainAsset::Assets(chain, assets) if *chain == Chain::Arbitrum && assets.contains(&ARBITRUM_USDC_ASSET_ID)) })
+        );
+        assert!(
+            mayachain
+                .supported_assets()
+                .iter()
+                .any(|asset| { matches!(asset, SwapperChainAsset::Assets(chain, assets) if *chain == Chain::Thorchain && !assets.contains(&THORCHAIN_TCY_ASSET_ID)) })
+        );
+    }
+
+    #[test]
     fn test_quote_input_value_bitcoin_max_passes_value_through() {
-        let from_asset = THORChainAsset::from_asset_id(Chain::Bitcoin.as_ref()).unwrap();
+        let from_asset = THORChainAsset::from_asset_id(THORChainNetwork::Thorchain, Chain::Bitcoin.as_ref()).unwrap();
         let request = mock_bitcoin_max_quote(SwapperQuoteAsset::from(Chain::Solana.as_asset_id()));
 
         assert_eq!(quote_input_value(&from_asset, &request).unwrap(), "89100");
