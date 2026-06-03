@@ -1,7 +1,7 @@
 use primitives::TransactionSwapMetadata;
 
 use super::THORChainNetwork;
-use super::chain::THORChainName;
+use super::chain::ChainName;
 use super::model::TransactionStatus;
 use crate::SwapResult;
 
@@ -12,16 +12,16 @@ pub fn map_swap_result(response: &TransactionStatus, network: THORChainNetwork) 
         return SwapResult { status, metadata: None };
     };
 
-    let Some(chain) = THORChainName::from_symbol(&tx.chain).map(|n| n.chain()) else {
+    let Some(chain) = ChainName::from_symbol(network, &tx.chain).map(|n| n.chain()) else {
         return SwapResult { status, metadata: None };
     };
 
     let from_coin = tx.coins.first();
-    let from_asset = from_coin.and_then(|c| c.resolve_asset_id());
+    let from_asset = from_coin.and_then(|c| c.resolve_asset_id(network));
     let from_value = from_coin.and_then(|c| c.native_value(chain));
 
     let out_coin = response.destination_coin();
-    let to_asset = out_coin.and_then(|c| c.resolve_asset_id());
+    let to_asset = out_coin.and_then(|c| c.resolve_asset_id(network));
     let to_value = out_coin.and_then(|c| to_asset.as_ref().and_then(|a| c.native_value(a.chain)));
 
     let metadata = match (from_asset, from_value, to_asset, to_value) {
