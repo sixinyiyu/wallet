@@ -6,7 +6,7 @@ import com.gemwallet.android.application.PasswordStore
 import com.gemwallet.android.blockchain.operators.LoadPrivateKeyOperator
 import com.gemwallet.android.cases.nodes.GetCurrentBlockExplorer
 import com.gemwallet.android.data.repositories.bridge.BridgesRepository
-import com.gemwallet.android.data.repositories.bridge.getNamespace
+import com.gemwallet.android.data.repositories.bridge.fromWalletConnectChainId
 import com.gemwallet.android.data.repositories.wallets.WalletsRepository
 import com.gemwallet.android.ext.getAccount
 import com.gemwallet.android.features.bridge.viewmodels.model.BridgeRequestError
@@ -102,7 +102,7 @@ class WCRequestViewModel @Inject constructor(
                     rejectRequest(sessionRequest)
                     return@launch
                 }
-                val chain = Chain.getNamespace(chainId)
+                val chain = Chain.fromWalletConnectChainId(chainId)
                     ?: throw BridgeRequestError.ChainUnsupported
 
                 validateChain(chain, connection.session)

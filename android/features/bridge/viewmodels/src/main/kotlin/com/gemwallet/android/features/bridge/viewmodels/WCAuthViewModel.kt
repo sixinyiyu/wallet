@@ -7,7 +7,7 @@ import com.gemwallet.android.blockchain.gemstone.toPrimitives
 import com.gemwallet.android.blockchain.operators.LoadPrivateKeyOperator
 import com.gemwallet.android.data.repositories.bridge.BridgesRepository
 import com.gemwallet.android.data.repositories.bridge.ChainNamespace
-import com.gemwallet.android.data.repositories.bridge.getNamespace
+import com.gemwallet.android.data.repositories.bridge.fromWalletConnectChainId
 import com.gemwallet.android.data.repositories.session.SessionRepository
 import com.gemwallet.android.data.repositories.wallets.WalletsRepository
 import com.gemwallet.android.ext.getAccount
@@ -256,7 +256,7 @@ class WCAuthViewModel @Inject constructor(
         val payloadParams = WalletKit.generateAuthPayloadParams(
             payloadParams = request.payloadParams,
             supportedChains = supportedChains,
-            supportedMethods = ChainNamespace.Eip155.methods.map { it.string },
+            supportedMethods = ChainNamespace.Eip155.methodIds,
         )
         val issuer = selectedAccount.issuer
         val message = WalletKit.formatAuthMessage(
@@ -288,7 +288,7 @@ class WCAuthViewModel @Inject constructor(
         }
 
         return requestedChains.mapNotNull { chainId ->
-            val chain = Chain.getNamespace(chainId) ?: return@mapNotNull null
+            val chain = Chain.fromWalletConnectChainId(chainId) ?: return@mapNotNull null
             if (chain.toChainType() != ChainType.Ethereum) {
                 return@mapNotNull null
             }

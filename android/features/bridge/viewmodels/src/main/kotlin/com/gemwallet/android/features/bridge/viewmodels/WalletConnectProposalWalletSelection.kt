@@ -1,7 +1,7 @@
 package com.gemwallet.android.features.bridge.viewmodels
 
-import com.gemwallet.android.data.repositories.bridge.getNameSpace
-import com.gemwallet.android.data.repositories.bridge.getNamespace
+import com.gemwallet.android.data.repositories.bridge.fromWalletConnectChainId
+import com.gemwallet.android.data.repositories.bridge.walletConnectNamespace
 import com.reown.walletkit.client.Wallet
 import com.wallet.core.primitives.Chain
 import com.wallet.core.primitives.Wallet as GemWallet
@@ -14,13 +14,13 @@ internal data class WalletConnectProposalChains(
 
 internal fun Wallet.Model.SessionProposal.supportedWalletConnectProposalChains(): WalletConnectProposalChains? {
     val requiredValues = requiredNamespaces.values.flatMap { it.chains.orEmpty() }
-    val requiredChains = requiredValues.mapNotNull { Chain.getNamespace(it) }
+    val requiredChains = requiredValues.mapNotNull { Chain.fromWalletConnectChainId(it) }
     if (requiredChains.size != requiredValues.size) {
         return null
     }
     val optionalChains = optionalNamespaces.values
         .flatMap { it.chains.orEmpty() }
-        .mapNotNull { Chain.getNamespace(it) }
+        .mapNotNull { Chain.fromWalletConnectChainId(it) }
         .toSet()
 
     return WalletConnectProposalChains(
@@ -38,7 +38,7 @@ internal fun List<GemWallet>.walletsSupportingWalletConnectProposal(
 }
 
 private fun GemWallet.supports(chains: WalletConnectProposalChains): Boolean {
-    val walletChains = accounts.map { it.chain }.filter { it.getNameSpace() != null }.toSet()
+    val walletChains = accounts.map { it.chain }.filter { it.walletConnectNamespace() != null }.toSet()
     if (walletChains.isEmpty()) {
         return false
     }

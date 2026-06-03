@@ -37,8 +37,9 @@ import com.gemwallet.android.ui.theme.paddingSmall
 @Composable
 internal fun rememberWalletConnectOverlay(
     viewModel: WalletConnectViewModel,
-): @Composable (AssetIdAction) -> Unit = remember(viewModel) {
-    { onBuy -> WalletConnectOverlay(viewModel = viewModel, onBuy = onBuy) }
+    onError: (String) -> Unit,
+): @Composable (AssetIdAction) -> Unit = remember(viewModel, onError) {
+    { onBuy -> WalletConnectOverlay(viewModel = viewModel, onBuy = onBuy, onError = onError) }
 }
 
 @Composable
@@ -98,6 +99,7 @@ internal fun WalletConnectErrorDialog(
 private fun WalletConnectOverlay(
     viewModel: WalletConnectViewModel,
     onBuy: AssetIdAction,
+    onError: (String) -> Unit,
 ) {
     val context = LocalContext.current
     val walletConnect by viewModel.uiState.collectAsStateWithLifecycle()
@@ -148,6 +150,7 @@ private fun WalletConnectOverlay(
                         proposal = event.sessionProposal,
                         verifyContext = verifyContext,
                         onCancel = viewModel::onCancel,
+                        onError = onError,
                     )
                 }
             }

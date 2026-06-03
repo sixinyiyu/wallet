@@ -13,9 +13,8 @@ import com.reown.android.CoreClient
 import com.reown.android.relay.ConnectionType
 import com.reown.walletkit.client.Wallet
 import com.reown.walletkit.client.WalletKit
-import com.wallet.core.primitives.Chain
+import com.wallet.core.primitives.Account
 import com.wallet.core.primitives.WalletConnection
-import com.wallet.core.primitives.WalletConnectionEvents
 import com.wallet.core.primitives.Wallet as GemWallet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -381,21 +380,32 @@ class BridgesRepository(
 
     private fun getSupportedNamespaces(wallet: GemWallet): Map<String, Wallet.Model.Namespace.Session> {
         return wallet.accounts
-            .mapNotNull { WalletConnectSupportedAccount.create(it) }
+            .mapNotNull { it.toSupportedAccount() }
             .groupBy { it.namespace }
-            .mapValues { chain ->
-                Wallet.Model.Namespace.Session(
-                    chains = chain.value.map { "${it.namespace}:${it.reference}" },
-                    methods = chain.value.flatMap { it.methods }.distinct(),
-                    events = if (chain.key == Chain.Solana.string) emptyList() else listOf(
-                        WalletConnectionEvents.Connect.string,
-                        WalletConnectionEvents.Disconnect.string,
-                        WalletConnectionEvents.ChainChanged.string,
-                        WalletConnectionEvents.AccountsChanged.string
-                    ),
-                    accounts = chain.value.map { "${it.namespace}:${it.reference}:${it.address}" },
+            .map { (namespace, accounts) ->
+                namespace.string to Wallet.Model.Namespace.Session(
+                    chains = accounts.map { it.chainId },
+                    methods = namespace.methodIds,
+                    events = namespace.eventIds,
+                    accounts = accounts.map { it.accountId },
                 )
             }
+            .toMap()
     }
 
+}
+
+private data class SupportedAccount(
+    val account: Account,
+    val namespace: ChainNamespace,
+    val reference: String,
+) {
+    val chainId: String get() = "${namespace.string}:$reference"
+    val accountId: String get() = "$chainId:${account.address}"
+}
+
+private fun Account.toSupportedAccount(): SupportedAccount? {
+    val namespace = chain.walletConnectNamespace() ?: return null
+    val reference = chain.walletConnectReference() ?: return null
+    return SupportedAccount(this, namespace, reference)
 }

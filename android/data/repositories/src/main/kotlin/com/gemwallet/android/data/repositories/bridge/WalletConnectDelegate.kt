@@ -27,10 +27,10 @@ object WalletConnectDelegate : WalletKit.WalletDelegate, CoreClient.CoreDelegate
         WalletKit.setWalletDelegate(this)
     }
 
-    override val onSessionAuthenticate: ((Wallet.Model.SessionAuthenticate, Wallet.Model.VerifyContext) -> Unit) = { sessionAuth, verifyContext ->
-            log("onSessionAuthenticate id=${sessionAuth.id} verify=${verifyContext.validation}")
-            _walletEvents.tryEmit(WalletConnectEvent(sessionAuth, verifyContext))
-        }
+    override val onSessionAuthenticate: (Wallet.Model.SessionAuthenticate, Wallet.Model.VerifyContext) -> Unit = { sessionAuth, verifyContext ->
+        log("onSessionAuthenticate id=${sessionAuth.id} verify=${verifyContext.validation}")
+        _walletEvents.tryEmit(WalletConnectEvent(sessionAuth, verifyContext))
+    }
 
     override fun onConnectionStateChange(state: Wallet.Model.ConnectionState) {
         log("onConnectionStateChange available=${state.isAvailable}")

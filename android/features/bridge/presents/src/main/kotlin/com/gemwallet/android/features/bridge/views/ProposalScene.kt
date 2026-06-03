@@ -36,7 +36,6 @@ import com.gemwallet.android.ui.components.list_item.property.DataBadgeChevron
 import com.gemwallet.android.ui.components.list_item.property.PropertyDataText
 import com.gemwallet.android.ui.components.list_item.property.PropertyItem
 import com.gemwallet.android.ui.components.list_item.property.PropertyTitleText
-import com.gemwallet.android.ui.components.screen.FatalStateScene
 import com.gemwallet.android.ui.components.screen.LoadingScene
 import com.gemwallet.android.ui.components.screen.Scene
 import com.gemwallet.android.ui.icons.AppIcons
@@ -55,6 +54,7 @@ fun ProposalScene(
     proposal: Wallet.Model.SessionProposal,
     verifyContext: Wallet.Model.VerifyContext,
     onCancel: () -> Unit,
+    onError: (String) -> Unit,
 ) {
     val context = LocalContext.current
     val viewModel: ProposalSceneViewModel = hiltViewModel()
@@ -70,20 +70,29 @@ fun ProposalScene(
     val contentState = state as? ProposalSceneState.Content
 
     when {
-        state is ProposalSceneState.Canceled -> onCancel()
-        state is ProposalSceneState.ScamCanceled -> {
-            Toast.makeText(
-                context,
-                stringResource(R.string.errors_connections_malicious_origin),
-                Toast.LENGTH_LONG
-            ).show()
+        state is ProposalSceneState.Canceled -> LaunchedEffect(state) {
             onCancel()
         }
-        state is ProposalSceneState.Fail -> FatalStateScene(
-            title = stringResource(id = R.string.wallet_connect_connect_title),
-            message = (state as ProposalSceneState.Fail).message,
-            onCancel = onCancel,
-        )
+        state is ProposalSceneState.ScamCanceled -> {
+            val message = stringResource(R.string.errors_connections_malicious_origin)
+            LaunchedEffect(state) {
+                Toast.makeText(
+                    context,
+                    message,
+                    Toast.LENGTH_LONG
+                ).show()
+                onCancel()
+            }
+        }
+        state is ProposalSceneState.Fail -> {
+            val message = (state as ProposalSceneState.Fail).message.ifBlank {
+                stringResource(id = R.string.errors_unknown_try_again)
+            }
+            LaunchedEffect(message) {
+                onError(message)
+                onCancel()
+            }
+        }
         peer == null || contentState == null -> LoadingScene(
             title = stringResource(id = R.string.wallet_connect_connect_title),
             onCancel = onCancel,
