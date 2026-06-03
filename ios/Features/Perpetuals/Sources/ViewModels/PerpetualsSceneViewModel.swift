@@ -90,8 +90,8 @@ final class PerpetualsSceneViewModel {
         Localized.Common.pinned
     }
 
-    var noMarketsText: String? {
-        !isSearching ? Localized.Perpetuals.EmptyState.noMarkets : Localized.Perpetuals.EmptyState.noMarketsFound
+    var emptyContentModel: EmptyContentTypeViewModel {
+        EmptyContentTypeViewModel(type: .search(type: .perpetuals))
     }
 
     var pinImage: Image {
@@ -111,11 +111,15 @@ final class PerpetualsSceneViewModel {
     }
 
     var showMarkets: Bool {
-        !isSearching || sections.markets.isNotEmpty || positions.isEmpty
+        sections.markets.isNotEmpty
     }
 
     var showRecents: Bool {
-        isSearching && recents.isNotEmpty
+        isSearching && searchQuery.isEmpty && recents.isNotEmpty
+    }
+
+    var showSearchEmptyState: Bool {
+        isSearching && !showPositions && !showPinned && !showMarkets
     }
 
     var sections: PerpetualsSections {

@@ -130,7 +130,6 @@ struct PerpetualsScene: View {
                         perpetuals: model.sections.markets,
                         onPin: model.onPinPerpetual,
                         onSelect: model.onSelectPerpetual,
-                        emptyText: model.noMarketsText,
                     )
                 } header: {
                     Text(model.marketsSectionTitle)
@@ -140,6 +139,11 @@ struct PerpetualsScene: View {
         }
         .if(!model.isSearching) {
             $0.contentMargins([.top], .space12, for: .scrollContent)
+        }
+        .overlay {
+            if model.showSearchEmptyState {
+                EmptyContentView(model: model.emptyContentModel)
+            }
         }
     }
 }
