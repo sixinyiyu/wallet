@@ -8,6 +8,7 @@ Use this skill for shared localization flow and generated output locations.
   ```
 - Mobile app localization source of truth lives in `localization/app/*.ftl`
 - Use Fluent message IDs with underscores, for example `common_cancel`
+- Fluent comments are supported (`#`, `##`, `###`) and ignored by generation; put source context comments in English `en.ftl`
 - Add new keys in the matching prefix section (`common_*` under `# Common`, `wallet_*` under `# Wallet`, etc.)
 - Add each new app key to every language file, translated for the context where the string is used
 - iOS InfoPlist localization source lives in `localization/InfoPlist/*.ftl`

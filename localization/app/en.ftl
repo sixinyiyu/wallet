@@ -1,3 +1,5 @@
+### Mobile app strings. Fluent comments are supported and ignored by generation.
+
 # Common
 
 common_cancel = Cancel
@@ -14,9 +16,11 @@ common_back = Back
 common_try_again = Try Again
 common_paste = Paste
 common_delete = Delete
+# %@ is the item name shown in the delete confirmation.
 common_delete_confirmation = Are sure you want to delete %@?
 common_hide = Hide
 common_wallet = Wallet
+# %@ is the item or balance label being revealed.
 common_show = Show %@
 common_copied = Copied: %@
 common_recommended = Recommended
@@ -82,7 +86,9 @@ wallet_import_address_field = Address or Name
 wallet_manage_token_list = Manage Tokens
 wallet_scan_qr_code = Scan QR Code
 wallet_scan = Scan
+# %d is the generated wallet number.
 wallet_default_name = Wallet #%d
+# %@ is the chain name, %d is the generated wallet number.
 wallet_default_name_chain = %@ Wallet #%d
 wallet_copy_address = Copy Address
 wallet_watch_tooltip_title = You are watching this wallet.
@@ -110,6 +116,7 @@ wallets_watch = Watch
 # Receive
 
 receive_title = Receive %@
+# First %@ is the asset symbol, second %@ is the network name.
 receive_warning = This is your address — send only %@ on the %@ network.
 
 # Buy
@@ -185,9 +192,10 @@ settings_price_alerts_title = Price Alerts
 settings_hide_balance = Hide Balance
 settings_disable_value = Disable %@
 settings_preferences_title = Preferences
-settings_preferences_default_leverage = Default Leverage
-settings_preferences_default_take_profit = Default Take Profit
-settings_preferences_default_stop_loss = Default Stop Loss
+settings_preferences_perpetual_default_leverage = Default Leverage
+# Default order settings for perpetual positions.
+settings_preferences_perpetual_default_take_profit = Default Take Profit
+settings_preferences_perpetual_default_stop_loss = Default Stop Loss
 
 # Errors
 
@@ -235,6 +243,7 @@ errors_connections_malicious_origin = This connection comes from an untrusted so
 errors_no_data_available = No data available
 errors_dust_threshold_short = The network considers this amount dust - the fee is higher than the amount itself.
 errors_swap_minimum_amount = Minimum trade amount is %@. Please enter a higher amount.
+# Perpetual order validation when comparing trigger price against current market price.
 errors_perpetual_trigger_price_lower = Trigger price should be lower than market price
 errors_perpetual_trigger_price_higher = Trigger price should be higher than market price
 errors_token_unable_fetch_token_information = Unable to fetch token information: %@
@@ -318,10 +327,7 @@ charts_week = 1W
 charts_month = 1M
 charts_year = 1Y
 charts_all = All
-charts_take_profit = TP
-charts_stop_loss = SL
 charts_entry = Entry
-charts_liquidation = Liq
 charts_price_open = Open
 charts_price_close = Close
 charts_price_high = High
@@ -548,14 +554,14 @@ info_insufficient_network_fee_balance_description = This transaction requires %@
 info_insufficient_balance_title = Insufficient Balance
 info_insufficient_balance_description = You don't have enough %@ to complete this transaction. Please top up, receive, or swap in your wallet and try again.
 info_account_minimum_balance_title = Minimum balance
-info_funding_payments_title = Funding Payments
-info_funding_payments_description = Funding payments are periodic payments between traders to keep the perpetual contract price close to the underlying asset's spot price. Positive funding means long positions pay short positions, while negative funding means short positions pay long positions.
-info_funding_rate_title = Funding
-info_funding_rate_description = The funding rate determines the cost of holding a perpetual position. It is calculated hourly and helps maintain price equilibrium between the perpetual contract and the underlying asset's spot price.
-info_liquidation_price_title = Liquidation Price
-info_liquidation_price_description = The liquidation price is the price level at which your position will be automatically closed to prevent further losses. When the market price reaches this level, your position is liquidated and you lose your margin.
-info_open_interest_title = Open Interest
-info_open_interest_description = Open interest represents the total value of all outstanding perpetual contracts that have not been settled. It provides insight into market activity and liquidity.
+info_perpetual_funding_payments_title = Funding Payments
+info_perpetual_funding_payments_description = Funding payments are periodic payments between traders to keep the perpetual contract price close to the underlying asset's spot price. Positive funding means long positions pay short positions, while negative funding means short positions pay long positions.
+info_perpetual_funding_rate_title = Funding
+info_perpetual_funding_rate_description = The funding rate determines the cost of holding a perpetual position. It is calculated hourly and helps maintain price equilibrium between the perpetual contract and the underlying asset's spot price.
+info_perpetual_liquidation_price_title = Liquidation Price
+info_perpetual_liquidation_price_description = The liquidation price is the price level at which your position will be automatically closed to prevent further losses. When the market price reaches this level, your position is liquidated and you lose your margin.
+info_perpetual_open_interest_title = Open Interest
+info_perpetual_open_interest_description = Open interest represents the total value of all outstanding perpetual contracts that have not been settled. It provides insight into market activity and liquidity.
 info_no_quote_description = Unable to return a quote for the selected token pair, possibly due to low amount, lack of liquidity, or technical limitations.
 info_stake_reserved_title = Reserved for Network Fee
 info_stake_reserved_description = A small amount stays in your wallet to cover fees for operations like unstaking or claiming rewards.
@@ -567,9 +573,10 @@ info_circulating_supply_description = The number of coins currently available an
 info_total_supply_description = The total number of coins that exist, including locked or reserved coins.
 info_max_supply_title = Max Supply
 info_max_supply_description = The maximum number of coins that will ever exist.
-info_funding_apr_title = Funding APR
-info_funding_apr_description = The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.
+info_perpetual_funding_apr_title = Funding APR
+info_perpetual_funding_apr_description = The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.
 info_minimum_amount_title = Minimum Amount
+# First %@ is the network name, second %@ is the minimum amount.
 info_minimum_amount_description = On the %@ network, the minimum amount for this transaction is %@.
 
 # Input
@@ -652,6 +659,9 @@ perpetual_direction = Direction
 perpetual_auto_close = Auto Close
 perpetual_auto_close_take_profit = Take profit
 perpetual_market_price = Market Price
+perpetual_take_profit = TP
+perpetual_stop_loss = SL
+perpetual_liquidation = Liq
 perpetual_increase_direction = Increase %@
 perpetual_reduce_direction = Reduce %@
 perpetual_auto_close_expected_profit = Expected profit

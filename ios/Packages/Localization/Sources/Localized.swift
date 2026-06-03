@@ -205,14 +205,8 @@ public enum Localized {
     public static let entry = Localized.tr("Localizable", "charts.entry", fallback: "Entry")
     /// 1H
     public static let hour = Localized.tr("Localizable", "charts.hour", fallback: "1H")
-    /// Liq
-    public static let liquidation = Localized.tr("Localizable", "charts.liquidation", fallback: "Liq")
     /// 1M
     public static let month = Localized.tr("Localizable", "charts.month", fallback: "1M")
-    /// SL
-    public static let stopLoss = Localized.tr("Localizable", "charts.stop_loss", fallback: "SL")
-    /// TP
-    public static let takeProfit = Localized.tr("Localizable", "charts.take_profit", fallback: "TP")
     /// 1W
     public static let week = Localized.tr("Localizable", "charts.week", fallback: "1W")
     /// 1Y
@@ -581,24 +575,6 @@ public enum Localized {
       /// Fully Diluted Valuation
       public static let title = Localized.tr("Localizable", "info.fully_diluted_valuation.title", fallback: "Fully Diluted Valuation")
     }
-    public enum FundingApr {
-      /// The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.
-      public static let description = Localized.tr("Localizable", "info.funding_apr.description", fallback: "The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.")
-      /// Funding APR
-      public static let title = Localized.tr("Localizable", "info.funding_apr.title", fallback: "Funding APR")
-    }
-    public enum FundingPayments {
-      /// Funding payments are periodic payments between traders to keep the perpetual contract price close to the underlying asset's spot price. Positive funding means long positions pay short positions, while negative funding means short positions pay long positions.
-      public static let description = Localized.tr("Localizable", "info.funding_payments.description", fallback: "Funding payments are periodic payments between traders to keep the perpetual contract price close to the underlying asset's spot price. Positive funding means long positions pay short positions, while negative funding means short positions pay long positions.")
-      /// Funding Payments
-      public static let title = Localized.tr("Localizable", "info.funding_payments.title", fallback: "Funding Payments")
-    }
-    public enum FundingRate {
-      /// The funding rate determines the cost of holding a perpetual position. It is calculated hourly and helps maintain price equilibrium between the perpetual contract and the underlying asset's spot price.
-      public static let description = Localized.tr("Localizable", "info.funding_rate.description", fallback: "The funding rate determines the cost of holding a perpetual position. It is calculated hourly and helps maintain price equilibrium between the perpetual contract and the underlying asset's spot price.")
-      /// Funding
-      public static let title = Localized.tr("Localizable", "info.funding_rate.title", fallback: "Funding")
-    }
     public enum InsufficientBalance {
       /// You don't have enough %@ to complete this transaction. Please top up, receive, or swap in your wallet and try again.
       public static func description(_ p1: Any) -> String {
@@ -616,12 +592,6 @@ public enum Localized {
       public static func title(_ p1: Any) -> String {
         return Localized.tr("Localizable", "info.insufficient_network_fee_balance.title", String(describing: p1), fallback: "%@ required")
       }
-    }
-    public enum LiquidationPrice {
-      /// The liquidation price is the price level at which your position will be automatically closed to prevent further losses. When the market price reaches this level, your position is liquidated and you lose your margin.
-      public static let description = Localized.tr("Localizable", "info.liquidation_price.description", fallback: "The liquidation price is the price level at which your position will be automatically closed to prevent further losses. When the market price reaches this level, your position is liquidated and you lose your margin.")
-      /// Liquidation Price
-      public static let title = Localized.tr("Localizable", "info.liquidation_price.title", fallback: "Liquidation Price")
     }
     public enum LockTime {
       /// Lock time, also known as the unbonding or unfreezing period, is the duration during which staked assets are inaccessible after you decide to unstake them.
@@ -653,16 +623,40 @@ public enum Localized {
       /// Unable to return a quote for the selected token pair, possibly due to low amount, lack of liquidity, or technical limitations.
       public static let description = Localized.tr("Localizable", "info.no_quote.description", fallback: "Unable to return a quote for the selected token pair, possibly due to low amount, lack of liquidity, or technical limitations.")
     }
-    public enum OpenInterest {
-      /// Open interest represents the total value of all outstanding perpetual contracts that have not been settled. It provides insight into market activity and liquidity.
-      public static let description = Localized.tr("Localizable", "info.open_interest.description", fallback: "Open interest represents the total value of all outstanding perpetual contracts that have not been settled. It provides insight into market activity and liquidity.")
-      /// Open Interest
-      public static let title = Localized.tr("Localizable", "info.open_interest.title", fallback: "Open Interest")
-    }
     public enum Perpetual {
       public enum AutoClose {
         /// Automatically close your position at set price levels. Take Profit locks in gains, Stop Loss limits losses.
         public static let description = Localized.tr("Localizable", "info.perpetual.auto_close.description", fallback: "Automatically close your position at set price levels. Take Profit locks in gains, Stop Loss limits losses.")
+      }
+      public enum FundingApr {
+        /// The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.
+        public static let description = Localized.tr("Localizable", "info.perpetual.funding_apr.description", fallback: "The annualized rate at which longs pay shorts (if negative, shorts pay longs). There are no fees associated with funding, which is a peer-to-peer transfer between users to push prices towards the spot price.")
+        /// Funding APR
+        public static let title = Localized.tr("Localizable", "info.perpetual.funding_apr.title", fallback: "Funding APR")
+      }
+      public enum FundingPayments {
+        /// Funding payments are periodic payments between traders to keep the perpetual contract price close to the underlying asset's spot price. Positive funding means long positions pay short positions, while negative funding means short positions pay long positions.
+        public static let description = Localized.tr("Localizable", "info.perpetual.funding_payments.description", fallback: "Funding payments are periodic payments between traders to keep the perpetual contract price close to the underlying asset's spot price. Positive funding means long positions pay short positions, while negative funding means short positions pay long positions.")
+        /// Funding Payments
+        public static let title = Localized.tr("Localizable", "info.perpetual.funding_payments.title", fallback: "Funding Payments")
+      }
+      public enum FundingRate {
+        /// The funding rate determines the cost of holding a perpetual position. It is calculated hourly and helps maintain price equilibrium between the perpetual contract and the underlying asset's spot price.
+        public static let description = Localized.tr("Localizable", "info.perpetual.funding_rate.description", fallback: "The funding rate determines the cost of holding a perpetual position. It is calculated hourly and helps maintain price equilibrium between the perpetual contract and the underlying asset's spot price.")
+        /// Funding
+        public static let title = Localized.tr("Localizable", "info.perpetual.funding_rate.title", fallback: "Funding")
+      }
+      public enum LiquidationPrice {
+        /// The liquidation price is the price level at which your position will be automatically closed to prevent further losses. When the market price reaches this level, your position is liquidated and you lose your margin.
+        public static let description = Localized.tr("Localizable", "info.perpetual.liquidation_price.description", fallback: "The liquidation price is the price level at which your position will be automatically closed to prevent further losses. When the market price reaches this level, your position is liquidated and you lose your margin.")
+        /// Liquidation Price
+        public static let title = Localized.tr("Localizable", "info.perpetual.liquidation_price.title", fallback: "Liquidation Price")
+      }
+      public enum OpenInterest {
+        /// Open interest represents the total value of all outstanding perpetual contracts that have not been settled. It provides insight into market activity and liquidity.
+        public static let description = Localized.tr("Localizable", "info.perpetual.open_interest.description", fallback: "Open interest represents the total value of all outstanding perpetual contracts that have not been settled. It provides insight into market activity and liquidity.")
+        /// Open Interest
+        public static let title = Localized.tr("Localizable", "info.perpetual.open_interest.title", fallback: "Open Interest")
       }
     }
     public enum PriceImpact {
@@ -921,6 +915,8 @@ public enum Localized {
     public static let increasePosition = Localized.tr("Localizable", "perpetual.increase_position", fallback: "Increase Position")
     /// Leverage
     public static let leverage = Localized.tr("Localizable", "perpetual.leverage", fallback: "Leverage")
+    /// Liq
+    public static let liquidation = Localized.tr("Localizable", "perpetual.liquidation", fallback: "Liq")
     /// Long
     public static let long = Localized.tr("Localizable", "perpetual.long", fallback: "Long")
     /// Margin
@@ -953,6 +949,10 @@ public enum Localized {
     public static let short = Localized.tr("Localizable", "perpetual.short", fallback: "Short")
     /// Size
     public static let size = Localized.tr("Localizable", "perpetual.size", fallback: "Size")
+    /// SL
+    public static let stopLoss = Localized.tr("Localizable", "perpetual.stop_loss", fallback: "SL")
+    /// TP
+    public static let takeProfit = Localized.tr("Localizable", "perpetual.take_profit", fallback: "TP")
     /// Unrealized PnL
     public static let unrealizedPnl = Localized.tr("Localizable", "perpetual.unrealized_pnl", fallback: "Unrealized PnL")
     /// Value
@@ -1239,14 +1239,16 @@ public enum Localized {
       public static let title = Localized.tr("Localizable", "settings.notifications.title", fallback: "Notifications")
     }
     public enum Preferences {
-      /// Default Leverage
-      public static let defaultLeverage = Localized.tr("Localizable", "settings.preferences.default_leverage", fallback: "Default Leverage")
-      /// Default Stop Loss
-      public static let defaultStopLoss = Localized.tr("Localizable", "settings.preferences.default_stop_loss", fallback: "Default Stop Loss")
-      /// Default Take Profit
-      public static let defaultTakeProfit = Localized.tr("Localizable", "settings.preferences.default_take_profit", fallback: "Default Take Profit")
       /// Preferences
       public static let title = Localized.tr("Localizable", "settings.preferences.title", fallback: "Preferences")
+      public enum Perpetual {
+        /// Default Leverage
+        public static let defaultLeverage = Localized.tr("Localizable", "settings.preferences.perpetual.default_leverage", fallback: "Default Leverage")
+        /// Default Stop Loss
+        public static let defaultStopLoss = Localized.tr("Localizable", "settings.preferences.perpetual.default_stop_loss", fallback: "Default Stop Loss")
+        /// Default Take Profit
+        public static let defaultTakeProfit = Localized.tr("Localizable", "settings.preferences.perpetual.default_take_profit", fallback: "Default Take Profit")
+      }
     }
     public enum PriceAlerts {
       /// Price Alerts

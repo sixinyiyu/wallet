@@ -54,6 +54,7 @@ This is a crypto wallet. Treat security-sensitive changes as high risk by defaul
 ## Mobile Localization
 
 - Mobile app localization source of truth lives in `localization/app/*.ftl`, using Fluent message IDs with underscores, for example `common_cancel`
+- Fluent comments are supported in source files (`#`, `##`, `###`) and ignored by generation; use English comments in `en.ftl` for section or string context
 - Add new keys in the right section by prefix (`common_*` under `# Common`, `wallet_*` under `# Wallet`, etc.)
 - Add every new app key to every language file, translated for the context where the string is used; do not leave missing keys for generation to hide
 - iOS InfoPlist localization source lives in `localization/InfoPlist/*.ftl`

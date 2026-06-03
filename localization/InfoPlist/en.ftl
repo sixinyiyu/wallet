@@ -1,3 +1,5 @@
+### iOS InfoPlist strings. Fluent comments are supported and ignored by generation.
+
 # Permissions
 
 NSCameraUsageDescription = Gem Wallet needs access to your Camera to scan QR Codes.

@@ -1,3 +1,5 @@
+### iOS widget strings. Fluent comments are supported and ignored by generation.
+
 # Widget
 
 widget_small_name = Bitcoin Price
