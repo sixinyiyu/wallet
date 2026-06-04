@@ -15,4 +15,6 @@ enum class RecentType {
     Buy,
     @SerialName("Swap")
     Swap,
+    @SerialName("Perpetual")
+    Perpetual,
 }

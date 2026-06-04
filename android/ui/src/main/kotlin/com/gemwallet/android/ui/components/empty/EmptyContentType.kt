@@ -16,6 +16,7 @@ sealed interface EmptyContentType {
     data class SearchAssets(val onAddCustomToken: (() -> Unit)? = null) : EmptyContentType
     data class SearchActivity(val onClearFilters: (() -> Unit)? = null) : EmptyContentType
     data object SearchNetworks : EmptyContentType
+    data object SearchPerpetuals : EmptyContentType
 
     data class Stake(val symbol: String) : EmptyContentType
     data object PriceAlerts : EmptyContentType

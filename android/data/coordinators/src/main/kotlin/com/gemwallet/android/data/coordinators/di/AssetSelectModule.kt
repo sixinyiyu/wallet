@@ -61,8 +61,9 @@ object AssetSelectModule {
     @Provides
     @Singleton
     fun provideUpdateRecentAsset(
+        sessionRepository: SessionRepository,
         assetsRepository: AssetsRepository,
-    ): UpdateRecentAsset = UpdateRecentAssetImpl(assetsRepository)
+    ): UpdateRecentAsset = UpdateRecentAssetImpl(sessionRepository, assetsRepository)
 
     @Provides
     @Singleton
