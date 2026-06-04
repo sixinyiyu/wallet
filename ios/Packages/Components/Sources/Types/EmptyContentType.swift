@@ -7,6 +7,7 @@ public enum EmptyContentType {
         case assets
         case networks
         case activity
+        case perpetuals
     }
 
     case nfts(action: (() -> Void)? = nil)

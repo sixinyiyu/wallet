@@ -2,6 +2,8 @@ package com.gemwallet.android.features.perpetual.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.gemwallet.android.application.asset_select.coordinators.GetRecentAssets
+import com.gemwallet.android.application.asset_select.coordinators.UpdateRecentAsset
 import com.gemwallet.android.application.perpetual.coordinators.GetPerpetualBalances
 import com.gemwallet.android.application.perpetual.coordinators.GetPerpetualPositions
 import com.gemwallet.android.application.perpetual.coordinators.GetPerpetuals
@@ -11,6 +13,10 @@ import com.gemwallet.android.application.perpetual.coordinators.TogglePerpetualP
 import com.gemwallet.android.domains.perpetual.values.PerpetualBalance
 import com.gemwallet.android.features.perpetual.viewmodels.model.PerpetualMarketSceneState
 import com.gemwallet.android.model.CurrencyFormatter
+import com.gemwallet.android.model.RecentAssetsRequest
+import com.gemwallet.android.model.RecentType
+import com.wallet.core.primitives.Asset
+import com.wallet.core.primitives.AssetId
 import com.wallet.core.primitives.Currency
 import com.wallet.core.primitives.PerpetualId
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,6 +24,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -33,7 +40,9 @@ class PerpetualMarketViewModel @Inject constructor(
     private val getBalance: GetPerpetualBalances,
     private val syncPerpetuals: SyncPerpetuals,
     private val syncPerpetualPositions: SyncPerpetualPositions,
-    private val togglePin: TogglePerpetualPin
+    private val togglePin: TogglePerpetualPin,
+    private val getRecentAssets: GetRecentAssets,
+    private val updateRecentAsset: UpdateRecentAsset,
 ) : ViewModel() {
 
     val query = MutableStateFlow<String?>(null)
@@ -57,6 +66,10 @@ class PerpetualMarketViewModel @Inject constructor(
     }.stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
     val balance = getBalance.getPerpetualBalance()
         .stateIn(viewModelScope, SharingStarted.Eagerly, EmptyPerpetualBalance)
+    val recent: StateFlow<List<Asset>> =
+        getRecentAssets(RecentAssetsRequest(types = listOf(RecentType.Perpetual)))
+            .map { items -> items.map { it.asset } }
+            .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
     fun onRefresh() {
         sceneState.update { PerpetualMarketSceneState.Refreshing }
@@ -82,6 +95,12 @@ class PerpetualMarketViewModel @Inject constructor(
 
     fun onTogglePin(perpetualId: PerpetualId) {
         togglePin.togglePin(perpetualId)
+    }
+
+    fun onOpenPerpetual(assetId: AssetId) {
+        viewModelScope.launch(Dispatchers.IO) {
+            updateRecentAsset(assetId, RecentType.Perpetual)
+        }
     }
 }
 

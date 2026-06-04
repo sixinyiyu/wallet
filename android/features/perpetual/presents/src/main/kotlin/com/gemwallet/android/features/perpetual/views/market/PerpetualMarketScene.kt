@@ -1,7 +1,15 @@
 package com.gemwallet.android.features.perpetual.views.market
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.material3.Icon
@@ -15,9 +23,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,6 +40,9 @@ import com.gemwallet.android.domains.price.ValueDirection
 import com.gemwallet.android.domains.price.values.EquivalentValue
 import com.gemwallet.android.ui.R
 import com.gemwallet.android.ui.components.clickable
+import com.gemwallet.android.ui.components.empty.EmptyContentType
+import com.gemwallet.android.ui.components.empty.EmptyContentView
+import com.gemwallet.android.ui.components.image.AssetIcon
 import com.gemwallet.android.ui.components.list_head.AmountListHead
 import com.gemwallet.android.ui.components.list_item.PinnedAssetsHeaderItem
 import com.gemwallet.android.ui.components.list_item.SubheaderItem
@@ -39,6 +52,10 @@ import com.gemwallet.android.ui.icons.AppIcons
 import com.gemwallet.android.ui.models.AssetsGroupType
 import com.gemwallet.android.ui.theme.Spacer16
 import com.gemwallet.android.ui.theme.WalletTheme
+import com.gemwallet.android.ui.theme.paddingDefault
+import com.gemwallet.android.ui.theme.paddingHalfSmall
+import com.gemwallet.android.ui.theme.paddingSmall
+import com.gemwallet.android.ui.theme.smallIconSize
 import com.gemwallet.android.features.perpetual.viewmodels.model.PerpetualMarketSceneState
 import com.gemwallet.android.features.perpetual.views.components.MarketHeadActions
 import com.gemwallet.android.features.perpetual.views.components.PerpetualItem
@@ -59,12 +76,15 @@ internal fun PerpetualMarketScene(
     positions: List<PerpetualPositionDataAggregate>,
     unpinnedPerpetuals: List<PerpetualDataAggregate>,
     pinnedPerpetuals: List<PerpetualDataAggregate>,
+    recent: List<Asset> = emptyList(),
     query: TextFieldState,
     onAction: (PerpetualMarketAction) -> Unit,
 ) {
     val pullToRefreshState = rememberPullToRefreshState()
     val longPressedAsset = remember { mutableStateOf<PerpetualId?>(null) }
-    var isSearching by remember { mutableStateOf(false) }
+    var isSearching by rememberSaveable { mutableStateOf(false) }
+    val showRecents = isSearching && query.text.isEmpty() && recent.isNotEmpty()
+    val showMarkets = !isSearching || unpinnedPerpetuals.isNotEmpty() || positions.isEmpty()
 
     Scene(
         titleContent = {
@@ -109,6 +129,13 @@ internal fun PerpetualMarketScene(
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
             ) {
+                if (showRecents) {
+                    recentPerpetuals(
+                        items = recent,
+                        onSeeAll = { onAction(PerpetualMarketAction.OpenRecentsSheet) },
+                        onSelect = { assetId -> onAction(PerpetualMarketAction.OpenRecent(assetId)) },
+                    )
+                }
                 if (!isSearching) {
                     item {
                         AmountListHead(
@@ -150,17 +177,69 @@ internal fun PerpetualMarketScene(
                         )
                     }
                 }
-                item {
-                    SubheaderItem(R.string.markets_title)
+                if (showMarkets) {
+                    if (unpinnedPerpetuals.isEmpty()) {
+                        if (isSearching) {
+                            item {
+                                EmptyContentView(
+                                    type = EmptyContentType.SearchPerpetuals,
+                                    modifier = Modifier
+                                        .animateItem()
+                                        .fillParentMaxSize(),
+                                )
+                            }
+                        }
+                    } else {
+                        item {
+                            SubheaderItem(R.string.markets_title)
+                        }
+                        itemsPositioned(unpinnedPerpetuals) { position, item ->
+                            PerpetualItem(
+                                item = item,
+                                listPosition = position,
+                                longPressState = longPressedAsset,
+                                onTogglePin = { onAction(PerpetualMarketAction.TogglePin(it)) },
+                                onClick = { onAction(PerpetualMarketAction.OpenPerpetual(it)) },
+                            )
+                        }
+                    }
                 }
-                itemsPositioned(unpinnedPerpetuals) { position, item ->
-                    PerpetualItem(
-                        item = item,
-                        listPosition = position,
-                        longPressState = longPressedAsset,
-                        onTogglePin = { onAction(PerpetualMarketAction.TogglePin(it)) },
-                        onClick = { onAction(PerpetualMarketAction.OpenPerpetual(it)) },
-                    )
+            }
+        }
+    }
+}
+
+private fun LazyListScope.recentPerpetuals(
+    items: List<Asset>,
+    onSeeAll: () -> Unit,
+    onSelect: (AssetId) -> Unit,
+) {
+    if (items.isEmpty()) {
+        return
+    }
+    item { SubheaderItem(R.string.recent_activity_title, onClick = onSeeAll) }
+    item {
+        LazyRow(
+            modifier = Modifier.padding(
+                top = paddingHalfSmall,
+                start = paddingDefault,
+                bottom = paddingSmall,
+                end = paddingDefault,
+            ),
+            horizontalArrangement = Arrangement.spacedBy(paddingSmall),
+        ) {
+            items(items) { asset ->
+                Row(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(MaterialTheme.colorScheme.background)
+                        .clickable { onSelect(asset.id) }
+                        .padding(paddingSmall),
+                    horizontalArrangement = Arrangement.spacedBy(paddingSmall),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    AssetIcon(asset, size = smallIconSize)
+                    Text(asset.symbol)
                 }
             }
         }

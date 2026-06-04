@@ -38,6 +38,7 @@ public struct EmptyContentTypeViewModel: EmptyContentViewable {
             case .assets: Localized.Assets.noAssetsFound
             case .networks: Localized.Networks.State.Empty.searchTitle
             case .activity: Localized.Activity.State.Empty.searchTitle
+            case .perpetuals: Localized.Perpetuals.EmptyState.noMarketsFound
             }
         case .recents: Localized.RecentActivity.State.Empty.title
         case .contacts: Localized.Contacts.State.Empty.title
@@ -64,7 +65,7 @@ public struct EmptyContentTypeViewModel: EmptyContentViewable {
         case let .search(searchType, action):
             switch searchType {
             case .assets: action != nil ? Localized.Assets.State.Empty.searchDescription : Localized.Search.State.Empty.description
-            case .networks: Localized.Search.State.Empty.description
+            case .networks, .perpetuals: Localized.Search.State.Empty.description
             case .activity: Localized.Activity.State.Empty.searchDescription
             }
         case .markets: .none
@@ -119,7 +120,7 @@ public struct EmptyContentTypeViewModel: EmptyContentViewable {
             switch searchType {
             case .assets:
                 [EmptyAction(title: Localized.Assets.addCustomToken, action: action)]
-            case .networks:
+            case .networks, .perpetuals:
                 []
             case .activity:
                 [EmptyAction(title: Localized.Filter.clear, action: action)]
