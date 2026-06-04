@@ -5,7 +5,8 @@ use crate::{
 use cacher::CacherClient;
 use localizer::LanguageLocalizer;
 use primitives::{
-    Device, GorushNotification, PushNotification, PushNotificationTypes, StreamEvent, SupportStreamEvent, device_stream_channel, push_notification::PushNotificationSupport,
+    Device, GorushNotification, PushNotification, PushNotificationTypes, StreamEvent, SupportMessage, SupportStreamEvent, device_stream_channel,
+    push_notification::PushNotificationSupport,
 };
 use std::error::Error;
 use storage::database::devices::DevicesStore;
@@ -80,9 +81,16 @@ impl SupportClient {
         let Some(message) = payload.support_message() else {
             return Ok(0);
         };
+        if !Self::should_publish_stream_message(&message) {
+            return Ok(0);
+        }
 
         self.publish_stream_event(device, SupportStreamEvent::Message(message)).await?;
         Ok(1)
+    }
+
+    fn should_publish_stream_message(message: &SupportMessage) -> bool {
+        message.sender.is_agent()
     }
 
     async fn publish_stream_event(&self, device: &Device, event: SupportStreamEvent) -> Result<(), Box<dyn Error + Send + Sync>> {
@@ -131,5 +139,16 @@ mod tests {
         let notification = SupportClient::build_notification(&Device::mock(), &payload);
 
         assert!(notification.is_none());
+    }
+
+    #[test]
+    fn test_user_message_is_not_streamed() {
+        let payload: ChatwootWebhookPayload =
+            serde_json::from_str(r#"{"id":1,"conversation":{"id":2,"meta":{"sender":{"custom_attributes":{"device_id":"test-device"}}}},"event":"message_created","message_type":"incoming","private":false,"content":"from user","content_type":"text","created_at":1780601365}"#).unwrap();
+
+        let message = payload.support_message().unwrap();
+
+        assert!(message.sender.is_user());
+        assert!(!SupportClient::should_publish_stream_message(&message));
     }
 }
