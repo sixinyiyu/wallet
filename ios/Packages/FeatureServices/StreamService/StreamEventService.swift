@@ -67,6 +67,7 @@ public struct StreamEventService: Sendable {
         case let .fiatTransaction(update):
             Task { await perform { try await handleFiatTransactionUpdate(update) } }
         case .support:
+            // TODO: route to SupportChatService once the support stream backend is wired up.
             break
         }
     }

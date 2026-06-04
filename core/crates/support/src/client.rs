@@ -1,11 +1,8 @@
-use crate::{
-    ChatwootWebhookPayload,
-    constants::{EVENT_CONVERSATION_STATUS_CHANGED, EVENT_CONVERSATION_UPDATED, EVENT_MESSAGE_CREATED},
-};
+use crate::{ChatwootWebhookPayload, constants::EVENT_MESSAGE_CREATED};
 use cacher::CacherClient;
 use localizer::LanguageLocalizer;
 use primitives::{
-    Device, GorushNotification, PushNotification, PushNotificationTypes, StreamEvent, SupportStreamEvent, device_stream_channel, push_notification::PushNotificationSupport,
+    Device, GorushNotification, PushNotification, PushNotificationTypes, StreamEvent, device_stream_channel, push_notification::PushNotificationSupport,
 };
 use std::error::Error;
 use storage::database::devices::DevicesStore;
@@ -32,14 +29,10 @@ impl SupportClient {
     }
 
     pub async fn process_webhook(&self, device: &Device, payload: &ChatwootWebhookPayload) -> Result<(usize, usize), Box<dyn Error + Send + Sync>> {
-        match payload.event.as_str() {
-            EVENT_MESSAGE_CREATED => self.process_message_created(device, payload).await,
-            EVENT_CONVERSATION_UPDATED | EVENT_CONVERSATION_STATUS_CHANGED => self.process_conversation_updated(device, payload).await,
-            _ => Ok((0, 0)),
+        if payload.event.as_str() != EVENT_MESSAGE_CREATED {
+            return Ok((0, 0));
         }
-    }
 
-    async fn process_message_created(&self, device: &Device, payload: &ChatwootWebhookPayload) -> Result<(usize, usize), Box<dyn Error + Send + Sync>> {
         let notifications_count = if let Some(notification) = Self::build_notification(device, payload) {
             self.stream_producer.publish_notifications_support(NotificationsPayload::new(vec![notification])).await?;
             1
@@ -50,15 +43,6 @@ impl SupportClient {
         let stream_events_count = self.publish_stream_message(device, payload).await?;
 
         Ok((notifications_count, stream_events_count))
-    }
-
-    async fn process_conversation_updated(&self, device: &Device, payload: &ChatwootWebhookPayload) -> Result<(usize, usize), Box<dyn Error + Send + Sync>> {
-        if let Some(conversation) = payload.support_conversation() {
-            self.publish_stream_event(device, SupportStreamEvent::Conversation(conversation)).await?;
-            Ok((0, 1))
-        } else {
-            Ok((0, 0))
-        }
     }
 
     fn build_notification(device: &Device, payload: &ChatwootWebhookPayload) -> Option<GorushNotification> {
@@ -81,13 +65,9 @@ impl SupportClient {
             return Ok(0);
         };
 
-        self.publish_stream_event(device, SupportStreamEvent::Message(message)).await?;
-        Ok(1)
-    }
-
-    async fn publish_stream_event(&self, device: &Device, event: SupportStreamEvent) -> Result<(), Box<dyn Error + Send + Sync>> {
         let channel = device_stream_channel(&device.id);
-        self.cacher.publish(&channel, &StreamEvent::Support(event)).await
+        self.cacher.publish(&channel, &StreamEvent::Support(message)).await?;
+        Ok(1)
     }
 }
 

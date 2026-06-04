@@ -14,24 +14,6 @@ data class SupportAgent (
 )
 
 @Serializable
-enum class SupportConversationStatus(val string: String) {
-	@SerialName("open")
-	Open("open"),
-	@SerialName("resolved")
-	Resolved("resolved"),
-}
-
-@Serializable
-data class SupportConversation (
-	val id: String,
-	val status: SupportConversationStatus,
-	val firstMessage: String? = null,
-	val lastMessage: String? = null,
-	val lastActivityAt: SerializedDate,
-	val unreadCount: Int
-)
-
-@Serializable
 sealed class SupportMessageSender {
 	@Serializable
 	@SerialName("user")
@@ -65,7 +47,6 @@ data class SupportMessageImage (
 @Serializable
 data class SupportMessage (
 	val id: String,
-	val conversationId: String,
 	val content: String,
 	val sender: SupportMessageSender,
 	val deliveryStatus: SupportMessageDeliveryStatus,
@@ -86,16 +67,6 @@ sealed class SupportAction {
 	@Serializable
 	@SerialName("lastSeen")
 	object LastSeen: SupportAction()
-}
-
-@Serializable
-sealed class SupportStreamEvent {
-	@Serializable
-	@SerialName("message")
-	data class Message(val data: SupportMessage): SupportStreamEvent()
-	@Serializable
-	@SerialName("conversation")
-	data class Conversation(val data: SupportConversation): SupportStreamEvent()
 }
 
 @Serializable

@@ -20,6 +20,8 @@ let package = Package(
         .package(name: "PrimitivesComponents", path: "../../Packages/PrimitivesComponents"),
         .package(name: "Preferences", path: "../../Packages/Preferences"),
         .package(name: "FeatureServices", path: "../../Packages/FeatureServices"),
+        .package(name: "Store", path: "../../Packages/Store"),
+        .package(name: "GemAPI", path: "../../Packages/GemAPI"),
     ],
     targets: [
         .target(
@@ -34,6 +36,9 @@ let package = Package(
                 "Preferences",
                 .product(name: "NotificationService", package: "FeatureServices"),
                 .product(name: "DeviceService", package: "FeatureServices"),
+                .product(name: "SupportChatService", package: "FeatureServices"),
+                "Store",
+                .product(name: "GemAPI", package: "GemAPI"),
             ],
             path: "Sources",
         ),
