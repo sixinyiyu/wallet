@@ -143,6 +143,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
         chains,
         metrics.clone(),
         client,
+        config.chain_types.clone(),
         config.cache.clone(),
         config.retry.clone(),
         config.headers.clone(),

@@ -77,8 +77,8 @@ impl JsonRpcHandler {
                     request.elapsed().as_millis(),
                 );
 
-                let upstream_headers = ResponseBuilder::create_upstream_headers(url.url.host_str(), request.elapsed());
-                return Self::build_json_response(&response, upstream_headers, StatusCode::OK.as_u16());
+                let proxy_headers = ResponseBuilder::create_proxy_headers(request.id.as_str(), request.elapsed());
+                return Self::build_json_response(&response, proxy_headers, StatusCode::OK.as_u16());
             } else {
                 metrics.add_cache_miss(request.chain.as_ref(), &call.method);
             }
@@ -130,8 +130,8 @@ impl JsonRpcHandler {
 
         broadcast_webhook.notify_broadcast(request, response_status, &response_body, broadcast_providers);
 
-        let upstream_headers = ResponseBuilder::create_upstream_headers(url.url.host_str(), request.elapsed());
-        Self::build_json_response(&response, upstream_headers, response_status)
+        let proxy_headers = ResponseBuilder::create_proxy_headers(request.id.as_str(), request.elapsed());
+        Self::build_json_response(&response, proxy_headers, response_status)
     }
 
     async fn handle_batch_request(
@@ -174,8 +174,8 @@ impl JsonRpcHandler {
             latency = DurationMs(request.elapsed()),
         );
 
-        let upstream_headers = ResponseBuilder::create_upstream_headers(url.url.host_str(), request.elapsed());
-        Self::build_json_response(&responses, upstream_headers, response_status)
+        let proxy_headers = ResponseBuilder::create_proxy_headers(request.id.as_str(), request.elapsed());
+        Self::build_json_response(&responses, proxy_headers, response_status)
     }
 
     async fn send_jsonrpc_request(

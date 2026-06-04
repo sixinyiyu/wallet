@@ -100,13 +100,6 @@ impl JsonRpcRequest {
         }
     }
 
-    pub fn get_calls(&self) -> Vec<&JsonRpcCall> {
-        match self {
-            Self::Single(call) => vec![call],
-            Self::Batch(calls) => calls.iter().collect(),
-        }
-    }
-
     pub fn get_methods_list(&self) -> String {
         self.get_methods_for_metrics().join(",")
     }

@@ -10,7 +10,7 @@ use tokio::sync::RwLock;
 
 use super::switch_reason::NodeSwitchReason;
 use crate::cache::RequestCache;
-use crate::config::{CacheConfig, ChainConfig, ErrorMatcherConfig, HeadersConfig, RetryConfig, Url};
+use crate::config::{CacheConfig, ChainConfig, ChainTypesConfig, ErrorMatcherConfig, HeadersConfig, RetryConfig, Url};
 use crate::jsonrpc_types::{JsonRpcErrorResponse, RequestType};
 use crate::metrics::Metrics;
 use crate::proxy::constants::JSON_CONTENT_TYPE;
@@ -25,12 +25,14 @@ use serde_json::Value;
 use settings_chain::BroadcastProviders;
 
 const NODE_NOT_FOUND: &str = "Node not found";
+const REQUEST_NOT_ALLOWED: &str = "Request not allowed";
 
 #[derive(Clone)]
 pub struct NodeService {
     pub chains: HashMap<Chain, ChainConfig>,
     pub nodes: Arc<RwLock<HashMap<Chain, NodeDomain>>>,
     pub metrics: Arc<Metrics>,
+    chain_types: ChainTypesConfig,
     pub retry_config: RetryConfig,
     proxy_builder: ProxyBuilder,
 }
@@ -40,6 +42,7 @@ impl NodeService {
         chains: HashMap<Chain, ChainConfig>,
         metrics: Metrics,
         client: reqwest::Client,
+        chain_types: ChainTypesConfig,
         cache_config: CacheConfig,
         retry_config: RetryConfig,
         headers_config: HeadersConfig,
@@ -47,7 +50,7 @@ impl NodeService {
     ) -> Self {
         let nodes = chains.values().map(|c| (c.chain, NodeDomain::new(c.urls.first().unwrap().clone(), c.clone()))).collect();
 
-        let cache = RequestCache::new(cache_config);
+        let cache = RequestCache::new(cache_config, &chain_types, chains.values());
         let broadcast_providers = Arc::new(BroadcastProviders::from_chains(chains.keys().copied()));
         let proxy_builder = ProxyBuilder::new(metrics.clone(), cache, client, headers_config, broadcast_webhook, broadcast_providers);
 
@@ -55,6 +58,7 @@ impl NodeService {
             chains,
             nodes: Arc::new(RwLock::new(nodes)),
             metrics: Arc::new(metrics),
+            chain_types,
             retry_config,
             proxy_builder,
         }
@@ -96,6 +100,9 @@ impl NodeService {
 
     pub async fn handle_request(&self, request: ProxyRequest) -> Result<ProxyResponse, Box<dyn Error + Send + Sync>> {
         let chain_config = self.get_chain_config(&request)?;
+        if !self.chain_types.allows(chain_config, request.request_type()) {
+            return Self::request_not_allowed_response(&request);
+        }
         let Some(urls) = self.resolve_request_urls(chain_config, &request).await else {
             return self.node_not_found_response(&request);
         };
@@ -184,6 +191,26 @@ impl NodeService {
         self.log_and_create_error_response(request, None, NODE_NOT_FOUND, None)
     }
 
+    fn request_not_allowed_response(request: &ProxyRequest) -> Result<ProxyResponse, Box<dyn Error + Send + Sync>> {
+        info_with_fields!(
+            REQUEST_NOT_ALLOWED,
+            id = request.id.as_str(),
+            chain = request.chain.as_ref(),
+            method = request.method.as_str(),
+            uri = request.path.as_str(),
+            request = &request.request_type().get_methods_list(),
+        );
+
+        let body = serde_json::to_vec(&serde_json::json!({
+            "error": "Forbidden",
+            "message": REQUEST_NOT_ALLOWED,
+            "code": StatusCode::FORBIDDEN.as_u16()
+        }))?;
+
+        let headers = ResponseBuilder::create_proxy_headers(request.id.as_str(), request.elapsed());
+        ResponseBuilder::build_with_headers(body, StatusCode::FORBIDDEN.as_u16(), JSON_CONTENT_TYPE, headers)
+    }
+
     fn get_ordered_urls(urls: &[Url], current: &Url, request_id: &str) -> Vec<Url> {
         let mut ordered_urls = urls.to_vec();
         if let Some(current_index) = ordered_urls.iter().position(|url| *url == *current) {
@@ -250,7 +277,7 @@ impl NodeService {
             latency = latency,
         );
 
-        let upstream_headers = ResponseBuilder::create_upstream_headers(host, request.elapsed());
+        let proxy_headers = ResponseBuilder::create_proxy_headers(request.id.as_str(), request.elapsed());
 
         let response = match request.request_type() {
             RequestType::JsonRpc(_) => serde_json::to_value(JsonRpcErrorResponse::new(error_message))?,
@@ -264,23 +291,27 @@ impl NodeService {
 
         let body = serde_json::to_vec(&response)?;
 
-        ResponseBuilder::build_with_headers(body, StatusCode::INTERNAL_SERVER_ERROR.as_u16(), JSON_CONTENT_TYPE, upstream_headers)
+        ResponseBuilder::build_with_headers(body, StatusCode::INTERNAL_SERVER_ERROR.as_u16(), JSON_CONTENT_TYPE, proxy_headers)
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::config::{CacheConfig, MetricsConfig, Url};
+    use crate::config::{CacheConfig, ChainTypesConfig, MetricsConfig, Url};
     use crate::testkit::config as testkit;
     use primitives::Chain;
     use reqwest::{Method, header, header::HeaderMap};
 
     fn create_service(chains: HashMap<Chain, ChainConfig>) -> NodeService {
-        create_service_with_retry(chains, create_retry_config(false, vec![], vec![]))
+        create_service_with_retry(chains, testkit::retry_config(false, vec![], vec![]))
     }
 
     fn create_service_with_retry(chains: HashMap<Chain, ChainConfig>, retry_config: RetryConfig) -> NodeService {
+        create_service_with_config(chains, retry_config, ChainTypesConfig::default())
+    }
+
+    fn create_service_with_config(chains: HashMap<Chain, ChainConfig>, retry_config: RetryConfig, chain_types: ChainTypesConfig) -> NodeService {
         let metrics = Metrics::new(MetricsConfig::default());
         let broadcast_webhook = DynodeBroadcastWebhookClient::disabled();
 
@@ -288,6 +319,7 @@ mod tests {
             chains,
             metrics,
             reqwest::Client::new(),
+            chain_types,
             CacheConfig::default(),
             retry_config,
             HeadersConfig {
@@ -298,15 +330,13 @@ mod tests {
         )
     }
 
-    fn create_retry_config(enabled: bool, status_codes: Vec<u16>, error_messages: Vec<&str>) -> RetryConfig {
-        testkit::retry_config(enabled, status_codes, error_messages)
-    }
-
     fn create_chain_config(chain: Chain, url: &str) -> ChainConfig {
         ChainConfig {
             chain,
             poll_interval_seconds: None,
             overrides: None,
+            allowlist: None,
+            cache: None,
             urls: vec![Url {
                 url: url.to_string(),
                 headers: None,
@@ -325,6 +355,30 @@ mod tests {
             "test".to_string(),
             chain,
         )
+    }
+
+    fn create_jsonrpc_request(chain: Chain, method: &str) -> ProxyRequest {
+        ProxyRequest::new(
+            Method::POST,
+            HeaderMap::new(),
+            format!(r#"{{"jsonrpc":"2.0","method":"{method}","params":[],"id":1}}"#).into_bytes(),
+            "/".to_string(),
+            "/".to_string(),
+            "ethereum.example.com".to_string(),
+            "test".to_string(),
+            chain,
+        )
+    }
+
+    fn ethereum_chain_types() -> ChainTypesConfig {
+        serde_json::from_value(serde_json::json!({
+            "ethereum": {
+                "allowlist": [
+                    { "rpc_method": "eth_chainId" }
+                ]
+            }
+        }))
+        .unwrap()
     }
 
     #[test]
@@ -352,7 +406,7 @@ mod tests {
     #[test]
     fn test_matches_retry_status_codes() {
         let chains = HashMap::from([(Chain::Ethereum, create_chain_config(Chain::Ethereum, "https://ethereum.example.com"))]);
-        let service = create_service_with_retry(chains, create_retry_config(true, vec![429], vec![]));
+        let service = create_service_with_retry(chains, testkit::retry_config(true, vec![429], vec![]));
 
         let request = create_request("ethereum.example.com", Chain::Ethereum);
         let response = ProxyResponse::new(429, HeaderMap::new(), vec![]);
@@ -363,7 +417,7 @@ mod tests {
     #[test]
     fn test_matches_retry_jsonrpc_messages() {
         let chains = HashMap::from([(Chain::Ethereum, create_chain_config(Chain::Ethereum, "https://ethereum.example.com"))]);
-        let service = create_service_with_retry(chains, create_retry_config(true, vec![], vec!["Exceeded the quota usage"]));
+        let service = create_service_with_retry(chains, testkit::retry_config(true, vec![], vec!["Exceeded the quota usage"]));
 
         let request = ProxyRequest::new(
             Method::POST,
@@ -382,5 +436,35 @@ mod tests {
         );
 
         assert!(service.matches_response_error_signal(&request, &response, &service.retry_config.errors));
+    }
+
+    #[tokio::test]
+    async fn test_handle_request_denies_disallowed_jsonrpc_method() {
+        let chains = HashMap::from([(Chain::Ethereum, create_chain_config(Chain::Ethereum, "https://ethereum.example.com"))]);
+        let service = create_service_with_config(chains, testkit::retry_config(false, vec![], vec![]), ethereum_chain_types());
+        let request = create_jsonrpc_request(Chain::Ethereum, "trace_replayTransaction");
+
+        let response = service.handle_request(request).await.unwrap();
+
+        assert_eq!(response.status, StatusCode::FORBIDDEN.as_u16());
+        assert_eq!(
+            serde_json::from_slice::<Value>(&response.body).unwrap(),
+            serde_json::json!({
+                "error": "Forbidden",
+                "message": REQUEST_NOT_ALLOWED,
+                "code": StatusCode::FORBIDDEN.as_u16()
+            })
+        );
+    }
+
+    #[tokio::test]
+    async fn test_handle_request_allowed_jsonrpc_reaches_proxy_path() {
+        let chains = HashMap::from([(Chain::Ethereum, create_chain_config(Chain::Ethereum, "http://127.0.0.1:9"))]);
+        let service = create_service_with_config(chains, testkit::retry_config(false, vec![], vec![]), ethereum_chain_types());
+        let request = create_jsonrpc_request(Chain::Ethereum, "eth_chainId");
+
+        let result = service.handle_request(request).await;
+
+        assert!(result.is_err());
     }
 }
