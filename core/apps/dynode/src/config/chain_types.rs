@@ -19,9 +19,7 @@ impl ChainTypesConfig {
             return allowlist.allows(request_type);
         }
 
-        self.chain_type_config(chain_config)
-            .and_then(|config| config.allowlist(chain_config.chain))
-            .is_none_or(|allowlist| allowlist.allows(request_type))
+        self.chain_type_config(chain_config).is_none_or(|config| config.allows(chain_config.chain, request_type))
     }
 
     pub fn cache_rules(&self, chain_config: &ChainConfig) -> Vec<CacheRule> {
@@ -29,10 +27,7 @@ impl ChainTypesConfig {
             return rules.clone();
         }
 
-        self.chain_type_config(chain_config)
-            .and_then(|config| config.cache(chain_config.chain))
-            .cloned()
-            .unwrap_or_default()
+        self.chain_type_config(chain_config).map(|config| config.cache(chain_config.chain)).unwrap_or_default()
     }
 
     fn chain_type_config(&self, chain_config: &ChainConfig) -> Option<&ChainTypeConfig> {
@@ -49,12 +44,29 @@ struct ChainTypeConfig {
 }
 
 impl ChainTypeConfig {
-    fn allowlist(&self, chain: Chain) -> Option<&AllowlistConfig> {
-        self.chains.get(&chain).and_then(|config| config.allowlist.as_ref()).or(self.policy.allowlist.as_ref())
+    fn allows(&self, chain: Chain, request_type: &RequestType) -> bool {
+        let allowlists = [self.policy.allowlist.as_ref(), self.chains.get(&chain).and_then(|config| config.allowlist.as_ref())];
+        let mut has_rules = false;
+
+        for allowlist in allowlists.into_iter().flatten() {
+            if allowlist.is_empty() {
+                continue;
+            }
+            has_rules = true;
+            if allowlist.allows(request_type) {
+                return true;
+            }
+        }
+
+        !has_rules
     }
 
-    fn cache(&self, chain: Chain) -> Option<&Vec<CacheRule>> {
-        self.chains.get(&chain).and_then(|config| config.cache.as_ref()).or(self.policy.cache.as_ref())
+    fn cache(&self, chain: Chain) -> Vec<CacheRule> {
+        let mut rules = self.policy.cache.clone().unwrap_or_default();
+        if let Some(chain_rules) = self.chains.get(&chain).and_then(|config| config.cache.as_ref()) {
+            rules.extend(chain_rules.clone());
+        }
+        rules
     }
 }
 
@@ -127,30 +139,33 @@ mod tests {
     }
 
     #[test]
-    fn test_chain_allowlist_replaces_chain_type_allowlist() {
+    fn test_chain_allowlist_extends_chain_type_allowlist() {
         let config: ChainTypesConfig = serde_json::from_value(json!({
-            "ethereum": {
+            "cosmos": {
                 "allowlist": [
-                    { "rpc_method": "eth_call" }
+                    { "path": "/cosmos/bank/v1beta1/balances/**", "method": "GET" }
                 ],
                 "chains": {
-                    "ethereum": {
+                    "thorchain": {
                         "allowlist": [
-                            { "rpc_method": "eth_getLogs" }
+                            { "path": "/thorchain/quote/swap", "method": "GET" }
                         ]
                     }
                 }
             }
         }))
         .unwrap();
+        let balance = RequestType::from_request("GET", "/cosmos/bank/v1beta1/balances/thor15r90lnu7wa4ll0ex6rqu77ysavfjkehazqse5u".to_string(), Vec::new());
+        let quote = RequestType::from_request("GET", "/thorchain/quote/swap?from_asset=SOL.SOL".to_string(), Vec::new());
+        let denied = RequestType::from_request("GET", "/thorchain/vaults/asgard".to_string(), Vec::new());
 
-        assert!(!config.allows(&chain_config(Chain::Ethereum), &jsonrpc("eth_call")));
-        assert!(config.allows(&chain_config(Chain::Ethereum), &jsonrpc("eth_getLogs")));
-        assert!(config.allows(&chain_config(Chain::Arbitrum), &jsonrpc("eth_call")));
+        assert!(config.allows(&chain_config(Chain::Thorchain), &balance));
+        assert!(config.allows(&chain_config(Chain::Thorchain), &quote));
+        assert!(!config.allows(&chain_config(Chain::Thorchain), &denied));
     }
 
     #[test]
-    fn test_chain_cache_replaces_chain_type_cache() {
+    fn test_chain_cache_extends_chain_type_cache() {
         let config: ChainTypesConfig = serde_json::from_value(json!({
             "cosmos": {
                 "cache": [
@@ -168,7 +183,8 @@ mod tests {
         .unwrap();
 
         let rules = config.cache_rules(&chain_config(Chain::Thorchain));
-        assert_eq!(rules.len(), 1);
-        assert_eq!(rules[0].path.as_deref(), Some("/thorchain/inbound_addresses"));
+        assert_eq!(rules.len(), 2);
+        assert_eq!(rules[0].path.as_deref(), Some("/cosmos/staking/v1beta1/validators"));
+        assert_eq!(rules[1].path.as_deref(), Some("/thorchain/inbound_addresses"));
     }
 }

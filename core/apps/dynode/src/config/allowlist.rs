@@ -9,6 +9,10 @@ use super::path_without_query;
 pub struct AllowlistConfig(Vec<AllowlistRule>);
 
 impl AllowlistConfig {
+    pub(super) fn is_empty(&self) -> bool {
+        self.0.is_empty()
+    }
+
     pub fn allows(&self, request_type: &RequestType) -> bool {
         if self.0.is_empty() {
             return true;
