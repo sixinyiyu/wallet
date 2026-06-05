@@ -106,10 +106,6 @@ impl CacheProvider for MemoryCache {
     fn should_cache_call(&self, chain: &Chain, call: &JsonRpcCall) -> Option<Duration> {
         self.rules.get(chain)?.iter().find(|rule| rule.matches_rpc(&call.method)).and_then(|rule| rule.ttl)
     }
-
-    fn should_inflight_request(&self, chain: &Chain, request_type: &RequestType) -> bool {
-        matches!(request_type, RequestType::Regular { .. }) && self.rule_for_request(chain, request_type).is_some_and(|rule| rule.inflight)
-    }
 }
 
 #[cfg(test)]
@@ -319,33 +315,6 @@ mod tests {
     }
 
     #[test]
-    fn test_should_inflight_request() {
-        let chain_types: ChainTypesConfig = serde_json::from_value(serde_json::json!({
-            "tron": {
-                "cache": [
-                    {
-                        "path": "/wallet/getaccount",
-                        "method": "POST",
-                        "inflight": true
-                    }
-                ]
-            }
-        }))
-        .unwrap();
-        let chains = [create_chain_config(Chain::Tron)];
-        let cache = MemoryCache::new(CacheConfig { max_memory_mb: 64 }, &chain_types, chains.iter());
-        let chain = Chain::Tron;
-        let request_type = RequestType::Regular {
-            path: "/wallet/getaccount".to_string(),
-            method: "POST".to_string(),
-            body: br#"{"address":"T...","visible":true}"#.to_vec(),
-        };
-
-        assert!(cache.should_inflight_request(&chain, &request_type));
-        assert_eq!(cache.should_cache_request(&chain, &request_type), None);
-    }
-
-    #[test]
     fn test_chain_cache_replaces_chain_type_cache() {
         let chain_types = create_test_chain_types();
         let mut chain_config = create_chain_config(Chain::Ethereum);
@@ -354,7 +323,6 @@ mod tests {
             method: None,
             rpc_method: Some("eth_getLogs".to_string()),
             ttl: Some(Duration::from_secs(30)),
-            inflight: false,
             params: HashMap::new(),
         }]);
         let chains = [chain_config];

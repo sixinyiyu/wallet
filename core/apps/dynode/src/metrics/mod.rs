@@ -18,8 +18,6 @@ pub struct Metrics {
     node_host_current: Family<HostCurrentStateLabels, Gauge>,
     cache_hits: Family<CacheLabels, Counter>,
     cache_misses: Family<CacheLabels, Counter>,
-    inflight_hits: Family<CacheLabels, Counter>,
-    inflight_misses: Family<CacheLabels, Counter>,
     node_switches: Family<NodeSwitchLabels, Counter>,
     auth_requests: Family<AuthLabels, Counter>,
 }
@@ -91,8 +89,6 @@ impl Metrics {
         let node_host_current = Family::<HostCurrentStateLabels, Gauge>::default();
         let cache_hits = Family::<CacheLabels, Counter>::default();
         let cache_misses = Family::<CacheLabels, Counter>::default();
-        let inflight_hits = Family::<CacheLabels, Counter>::default();
-        let inflight_misses = Family::<CacheLabels, Counter>::default();
         let node_switches = Family::<NodeSwitchLabels, Counter>::default();
         let auth_requests = Family::<AuthLabels, Counter>::default();
 
@@ -114,8 +110,6 @@ impl Metrics {
         registry.register("node_host_current", "Node current host url", node_host_current.clone());
         registry.register("cache_hits", "Cache hits by host and path", cache_hits.clone());
         registry.register("cache_misses", "Cache misses by host and path", cache_misses.clone());
-        registry.register("inflight_hits", "In-flight coalescing hits by host and path", inflight_hits.clone());
-        registry.register("inflight_misses", "In-flight coalescing misses by host and path", inflight_misses.clone());
         registry.register("node_switches", "Node switches by chain", node_switches.clone());
         registry.register("auth_requests", "Auth requests by status", auth_requests.clone());
 
@@ -129,8 +123,6 @@ impl Metrics {
             node_host_current,
             cache_hits,
             cache_misses,
-            inflight_hits,
-            inflight_misses,
             node_switches,
             auth_requests,
         }
@@ -203,16 +195,6 @@ impl Metrics {
     pub fn add_cache_miss(&self, chain: &str, path: &str) {
         let path = self.truncate_path(path);
         self.cache_misses.get_or_create(&CacheLabels { chain: chain.to_string(), path }).inc();
-    }
-
-    pub fn add_inflight_hit(&self, chain: &str, path: &str) {
-        let path = self.truncate_path(path);
-        self.inflight_hits.get_or_create(&CacheLabels { chain: chain.to_string(), path }).inc();
-    }
-
-    pub fn add_inflight_miss(&self, chain: &str, path: &str) {
-        let path = self.truncate_path(path);
-        self.inflight_misses.get_or_create(&CacheLabels { chain: chain.to_string(), path }).inc();
     }
 
     pub fn add_node_switch(&self, chain: &str, old_host: &str, new_host: &str, reason: &str) {
