@@ -3,9 +3,7 @@ use primitives::{Device, SupportAgent, SupportMessage, SupportMessageDeliverySta
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
-use crate::constants::{
-    CHATWOOT_CONTENT_TYPE_TEXT, CHATWOOT_DELIVERY_STATUS_DELIVERED, CHATWOOT_DELIVERY_STATUS_READ, CHATWOOT_DELIVERY_STATUS_SENT, CHATWOOT_FILE_TYPE_IMAGE,
-};
+use crate::constants::{CHATWOOT_CONTENT_TYPE_TEXT, CHATWOOT_DELIVERY_STATUS_DELIVERED, CHATWOOT_DELIVERY_STATUS_READ, CHATWOOT_DELIVERY_STATUS_SENT, CHATWOOT_FILE_TYPE_IMAGE};
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(from = "i32", into = "i32")]
@@ -160,6 +158,14 @@ impl ChatwootWebhookPayload {
 
 impl Message {
     pub(crate) fn support_message(&self) -> Option<SupportMessage> {
+        self.map_support_message(self.private)
+    }
+
+    pub(crate) fn support_public_message(&self) -> Option<SupportMessage> {
+        self.map_support_message(self.private.or(Some(false)))
+    }
+
+    fn map_support_message(&self, private: Option<bool>) -> Option<SupportMessage> {
         let sender = match &self.message_type {
             MessageType::Incoming => SupportMessageSender::User,
             MessageType::Outgoing => SupportMessageSender::Agent(self.sender.as_ref()?.support_agent()?),
@@ -169,7 +175,7 @@ impl Message {
             self.id,
             self.content.as_deref(),
             self.content_type.as_deref(),
-            self.private,
+            private,
             sender,
             support_delivery_status(self.status.as_deref()),
             datetime_from_unix_timestamp(self.created_at)?,
@@ -294,6 +300,10 @@ pub(crate) fn support_messages(messages: &[Message]) -> Vec<SupportMessage> {
     messages.iter().filter_map(Message::support_message).collect()
 }
 
+pub(crate) fn support_public_messages(messages: &[Message]) -> Vec<SupportMessage> {
+    messages.iter().filter_map(Message::support_public_message).collect()
+}
+
 fn support_message(
     id: i64,
     content: Option<&str>,
@@ -341,4 +351,60 @@ fn support_delivery_status(status: Option<&str>) -> SupportMessageDeliveryStatus
 
 fn datetime_from_unix_timestamp(value: i64) -> Option<DateTime<Utc>> {
     DateTime::<Utc>::from_timestamp(value, 0)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use primitives::{SupportAgent, SupportMessageDeliveryStatus, SupportMessageSender};
+
+    #[test]
+    fn test_support_public_messages_maps_widget_messages_without_private() {
+        let response: ChatwootMessagesResponse = serde_json::from_str(
+            r#"{
+                "payload": [{
+                    "id": 1,
+                    "content": "from agent",
+                    "conversation_id": 2,
+                    "message_type": 1,
+                    "content_type": "text",
+                    "created_at": 1766478193,
+                    "sender": {"name": "Test Agent"}
+                }]
+            }"#,
+        )
+        .unwrap();
+
+        let messages = support_public_messages(&response.payload);
+
+        assert_eq!(messages.len(), 1);
+        assert_eq!(messages[0].id, "1");
+        assert_eq!(messages[0].content, "from agent");
+        assert_eq!(
+            messages[0].sender,
+            SupportMessageSender::Agent(SupportAgent {
+                name: "Test Agent".to_string(),
+                avatar_url: None,
+            })
+        );
+        assert_eq!(messages[0].delivery_status, SupportMessageDeliveryStatus::Sent);
+    }
+
+    #[test]
+    fn test_support_messages_keep_missing_private_strict() {
+        let message: Message = serde_json::from_str(
+            r#"{
+                "id": 1,
+                "content": "from agent",
+                "conversation_id": 2,
+                "message_type": 1,
+                "content_type": "text",
+                "created_at": 1766478193,
+                "sender": {"name": "Test Agent"}
+            }"#,
+        )
+        .unwrap();
+
+        assert_eq!(message.support_message(), None);
+    }
 }
