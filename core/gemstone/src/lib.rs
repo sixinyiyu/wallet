@@ -9,7 +9,9 @@ pub mod deeplink;
 pub mod ethereum;
 pub mod gateway;
 pub mod gem_swapper;
+pub mod keystore;
 pub mod message;
+pub mod mnemonic;
 pub mod models;
 pub mod network;
 pub mod payment;
@@ -93,6 +95,18 @@ impl From<AlienError> for GemstoneError {
 
 impl From<primitives::SignerError> for GemstoneError {
     fn from(error: primitives::SignerError) -> Self {
+        Self::AnyError { msg: error.to_string() }
+    }
+}
+
+impl From<gem_keystore::KeystoreError> for GemstoneError {
+    fn from(error: gem_keystore::KeystoreError) -> Self {
+        Self::AnyError { msg: error.to_string() }
+    }
+}
+
+impl From<gem_derivation::AccountDerivationError> for GemstoneError {
+    fn from(error: gem_derivation::AccountDerivationError) -> Self {
         Self::AnyError { msg: error.to_string() }
     }
 }
