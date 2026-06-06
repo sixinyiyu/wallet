@@ -88,7 +88,7 @@ struct SolanaSignerTests {
 
     @Test
     func signSolanaMessage() throws {
-        let privateKey = try #require(Data(hexString: "0CF3BCE421F870B1D54B27632AED05B7BC2AAF4AA818ED1275FB3A75518E60CB"))
+        let privateKey = try #require(Data(fromHex: "0CF3BCE421F870B1D54B27632AED05B7BC2AAF4AA818ED1275FB3A75518E60CB"))
         let message = "hello world"
         let dataMessage = try #require(message.data(using: .utf8))
 

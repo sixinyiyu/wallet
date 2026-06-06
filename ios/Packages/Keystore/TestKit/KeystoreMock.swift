@@ -11,12 +11,20 @@ public struct KeystoreMock: Keystore {
         LocalKeystore.words
     }
 
+    public func importPreview(type _: KeystoreImportType) -> WalletImport {
+        WalletImport(walletId: .mock(), walletType: .multicoin, accounts: [])
+    }
+
     public func importWallet(name _: String, type _: KeystoreImportType, isWalletsEmpty _: Bool, source _: WalletSource) throws -> Wallet {
         .mock()
     }
 
     public func setupChains(chains _: [Primitives.Chain], for _: [Primitives.Wallet]) throws -> [Wallet] {
         [.mock()]
+    }
+
+    public func migrateV3Keystore(for _: Primitives.Wallet) throws -> String? {
+        nil
     }
 
     public func deleteKey(for _: Primitives.Wallet) throws {}
@@ -34,10 +42,6 @@ public struct KeystoreMock: Keystore {
 
     public func getPasswordAuthentication() throws -> KeystoreAuthentication {
         .none
-    }
-
-    public func sign(hash _: Data, wallet _: Primitives.Wallet, chain _: Primitives.Chain) throws -> Data {
-        Data()
     }
 
     public func destroy() throws {}
