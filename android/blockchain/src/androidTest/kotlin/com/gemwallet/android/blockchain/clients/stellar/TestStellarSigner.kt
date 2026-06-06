@@ -1,8 +1,7 @@
 package com.gemwallet.android.blockchain.clients.Stellar
 
+import androidx.test.core.app.ApplicationProvider
 import uniffi.gemstone.GemTransactionLoadMetadata
-
-import com.gemwallet.android.blockchain.includeLibs
 import com.gemwallet.android.blockchain.services.SignService
 import com.gemwallet.android.ext.asset
 import com.gemwallet.android.math.append0x
@@ -11,6 +10,9 @@ import com.gemwallet.android.model.ConfirmParams
 import com.gemwallet.android.model.DestinationAddress
 import com.gemwallet.android.model.Fee
 import com.gemwallet.android.testkit.TEST_PHRASE
+import com.gemwallet.android.testkit.gemstoneTestAccount
+import com.gemwallet.android.testkit.gemstoneTestPrivateKey
+import com.gemwallet.android.testkit.includeGemstoneLibs
 import com.wallet.core.primitives.Account
 import com.wallet.core.primitives.AssetId
 import com.wallet.core.primitives.Chain
@@ -18,22 +20,21 @@ import com.wallet.core.primitives.FeePriority
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
-import wallet.core.jni.CoinType
-import wallet.core.jni.HDWallet
 import java.math.BigInteger
 
 class TestStellarSigner {
     companion object {
         init {
-            includeLibs()
+            includeGemstoneLibs()
         }
     }
 
+    private val context = ApplicationProvider.getApplicationContext<android.content.Context>()
+
     @Test
     fun testStellarNativeSign() {
-        val hdWallet = HDWallet(TEST_PHRASE, "")
-        val privateKey = hdWallet.getKeyForCoin(CoinType.STELLAR)
-        val from = hdWallet.getAddressForCoin(CoinType.STELLAR)
+        val privateKey = gemstoneTestPrivateKey(context, Chain.Stellar, TEST_PHRASE)
+        val from = gemstoneTestAccount(context, Chain.Stellar, TEST_PHRASE).address
         val signer = SignService()
 
         val sign = runBlocking {
@@ -55,7 +56,7 @@ class TestStellarSigner {
                     amount = BigInteger.TEN,
                     options = emptyMap(),
                 ),
-                privateKey.data(),
+                privateKey,
             )
         }
 

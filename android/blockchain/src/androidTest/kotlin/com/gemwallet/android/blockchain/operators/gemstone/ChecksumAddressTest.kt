@@ -1,7 +1,7 @@
-package com.gemwallet.android.blockchain.operators.walletcore
+package com.gemwallet.android.blockchain.operators.gemstone
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.gemwallet.android.blockchain.includeLibs
+import com.gemwallet.android.testkit.includeGemstoneLibs
 import com.wallet.core.primitives.Chain
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
@@ -12,7 +12,7 @@ class ChecksumAddressTest {
 
     companion object {
         init {
-            includeLibs()
+            includeGemstoneLibs()
         }
     }
 

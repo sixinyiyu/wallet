@@ -2,7 +2,7 @@ package com.gemwallet.android.blockchain.clients.solana
 
 import uniffi.gemstone.GemTransactionLoadMetadata
 
-import com.gemwallet.android.blockchain.includeLibs
+import androidx.test.core.app.ApplicationProvider
 import com.gemwallet.android.blockchain.services.SignService
 import com.gemwallet.android.ext.asset
 import com.gemwallet.android.math.append0x
@@ -11,6 +11,9 @@ import com.gemwallet.android.model.ConfirmParams
 import com.gemwallet.android.model.DestinationAddress
 import com.gemwallet.android.model.Fee
 import com.gemwallet.android.testkit.TEST_PHRASE
+import com.gemwallet.android.testkit.gemstoneTestAccount
+import com.gemwallet.android.testkit.gemstoneTestPrivateKey
+import com.gemwallet.android.testkit.includeGemstoneLibs
 import com.wallet.core.primitives.Account
 import com.wallet.core.primitives.Asset
 import com.wallet.core.primitives.AssetId
@@ -20,27 +23,23 @@ import com.wallet.core.primitives.FeePriority
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
-import wallet.core.jni.Base58
-import wallet.core.jni.CoinType
-import wallet.core.jni.Curve
-import wallet.core.jni.HDWallet
-import wallet.core.jni.PrivateKey
 import java.math.BigInteger
 
 class TestSolanaSigner {
     companion object {
         init {
-            includeLibs()
+            includeGemstoneLibs()
         }
     }
 
-    val privateKey = HDWallet(TEST_PHRASE, "").getKeyForCoin(CoinType.SOLANA).data()
-    val senderAddress = "5yUxrLd6C5nSDzpvg9bNpQMXpcw6J6pSVrYQmr6Bmyp6"
+    private val context = ApplicationProvider.getApplicationContext<android.content.Context>()
+    val privateKey = gemstoneTestPrivateKey(context, Chain.Solana, TEST_PHRASE)
+    val senderAddress = gemstoneTestAccount(context, Chain.Solana, TEST_PHRASE).address
 
     @Test
     fun testSolana_sign_message() {
         val message = "hello".toByteArray()
-        val expected = Base58.encodeNoCheck(PrivateKey(privateKey).sign(message, Curve.ED25519))
+        val expected = "2JsztDwuNN4zdm6FzjXmJo3644YCnPJWgCBKhLL5tjsY8vw51otaY2NaP9YvfUsy8DmnJrAM6uvHfMsrVthK5PLc"
 
         val result = runBlocking {
             SignService().signMessage(Chain.Solana, message, privateKey)
@@ -84,15 +83,14 @@ class TestSolanaSigner {
             )
         }
         assertEquals(
-            "0x415965576d664f4538764f357870302b7159557733437a4450713839724b4c587a7976546a587673" +
-                    "7a37796f42746f44324f30394f3148554e78584f704c456a43645371397876414a4f6c41564a486b" +
-                    "397568707a516342414149455365626b44466a2b415242396b4b486b394f4167745057456e614370" +
-                    "426a475a3869707a61372f4e43577330767554324f647746546758414767305a6175317474703157" +
-                    "354f7153437a77434c53384e5738357a71514d47526d2f6c495263792f2b7974756e4c446d2b6538" +
-                    "6a4f573778666353617978446d7a7041414141414141414141414141414141414141414141414141" +
-                    "41414141414141414141414141414141414141414141414c4d706730536d427863684e486e756872" +
-                    "566468464259677863634c722b5370616932436959444a4b51514d4341416b4469424d4141414141" +
-                    "41414143414155436f49594241414d434141454d41674141414141414141414141414141", result.first().hex.append0x()
+            "0x415771316f41593841613775302f4e6c6544385a4e68486b42305a34374e565934412b73324b7665" +
+                    "3238513432564b696641442b39494a544a7147623852502f2b70514e555462716f57676835383854" +
+                    "79306f7257514942414149444e4c376b396a6e634255344677426f4e4757727462626164567554716b" +
+                    "677338416930764456764f63366b44426b5a76355345584d762f73726270797735766e76497a6c75" +
+                    "385833456d7373513573365141414141414141414141414141414141414141414141414141414141" +
+                    "4141414141414141414141414141414141414141414141437a4b594e457067635849545235376f61" +
+                    "315859525157494d584843362f6b71576f74676f6d4179536b45444151414a413467544141414141" +
+                    "414141415141464171434741514143416741414441494141414141414141414141414141413d3d", result.first().hex.append0x()
         )
     }
 
@@ -137,10 +135,10 @@ class TestSolanaSigner {
             )
         }
         assertEquals(
-            "0x4163456263336c444271665a76794f3954784d4e39647244584c6c374673626e664c4f453031362f" +
-                    "4c5a374a737059497248744a4579335a536354715842396143317362413734444e5033735a79686b" +
-                    "6c354f347967304241414d465365626b44466a2b415242396b4b486b394f4167745057456e614370" +
-                    "426a475a3869707a61372f4e435775356d6277492b744e3454586473757149654b725254647a734b" +
+            "0x41553247526b432f794948526c5a356461667335765242386d376c4431485a584638303341485034" +
+                    "4f676448475373334e34416b37794f7048503174366964777a5a672b5a56435a3856566d73717251" +
+                    "53356d467767734241414d464e4c376b396a6e634255344677426f4e475772746262616456755471" +
+                    "6b677338416930764456764f63366d356d6277492b744e3454586473757149654b725254647a734b" +
                     "644444707a385843635179334a766a50304d3442446d43763762496e4637316a4753395546466f2f" +
                     "6c6c6f7a75344c5378774b657373346549494a6b41775a47622b5568467a4c2f374b323663734f62" +
                     "3537794d3562764639784a724c454f624f6b41414141414733666268313257686b396e4c3455624f" +
@@ -191,10 +189,10 @@ class TestSolanaSigner {
             )
         }
         assertEquals(
-            "0x416642774d397335796f63362b3845727a325432664e595a35747a35466f41786f69485463664d6f" +
-                    "744a4967757549733931386f507673584c59366964776e5a6f41696b506d6e356f4a775865443153" +
-                    "3171354a6c51514241414d465365626b44466a2b415242396b4b486b394f4167745057456e614370" +
-                    "426a475a3869707a61372f4e43577470783737467363375a7773776d4234324a6539304538487a62" +
+            "0x4151495a7138446a6c3554623571776a5144586656722f4158595350442b725151746d6459647338" +
+                    "4e636f31324c594c3975383366334e4a4f32626a62357571477663346275442f6f3077453638516d" +
+                    "53396d567677734241414d464e4c376b396a6e634255344677426f4e475772746262616456755471" +
+                    "6b677338416930764456764f63366c70783737467363375a7773776d4234324a6539304538487a62" +
                     "2b59486131534a74465451777a3853517052655353447473696971487430636467552b566b666b35" +
                     "5849514b6e4f505a394e57366654704c696e536541775a47622b5568467a4c2f374b323663734f62" +
                     "3537794d3562764639784a724c454f624f6b41414141414733666268376e57503368684358627a6b" +

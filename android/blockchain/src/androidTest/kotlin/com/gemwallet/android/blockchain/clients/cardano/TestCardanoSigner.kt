@@ -3,13 +3,15 @@ package com.gemwallet.android.blockchain.clients.cardano
 import uniffi.gemstone.GemTransactionLoadMetadata
 import com.gemwallet.android.domains.asset.toGem
 
-import com.gemwallet.android.blockchain.includeLibs
+import androidx.test.core.app.ApplicationProvider
 import com.gemwallet.android.blockchain.services.SignService
 import com.gemwallet.android.ext.asset
 import com.gemwallet.android.model.ConfirmParams
 import com.gemwallet.android.model.DestinationAddress
 import com.gemwallet.android.model.Fee
 import com.gemwallet.android.testkit.TEST_PHRASE
+import com.gemwallet.android.testkit.gemstoneTestPrivateKey
+import com.gemwallet.android.testkit.includeGemstoneLibs
 import com.wallet.core.primitives.Account
 import com.wallet.core.primitives.AssetId
 import com.wallet.core.primitives.Chain
@@ -18,20 +20,20 @@ import com.wallet.core.primitives.UTXO
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
-import wallet.core.jni.CoinType
-import wallet.core.jni.HDWallet
 import java.math.BigInteger
 
 class TestCardanoSigner {
     companion object {
         init {
-            includeLibs()
+            includeGemstoneLibs()
         }
     }
 
+    private val context = ApplicationProvider.getApplicationContext<android.content.Context>()
+
     @Test
     fun testCardanoNativeSign() {
-        val privateKey = HDWallet(TEST_PHRASE, "").getKeyForCoin(CoinType.CARDANO)
+        val privateKey = gemstoneTestPrivateKey(context, Chain.Cardano, TEST_PHRASE)
         val signer = SignService()
 
         val sign = runBlocking {
@@ -60,7 +62,7 @@ class TestCardanoSigner {
                     amount = BigInteger.TEN,
                     options = emptyMap(),
                 ),
-                privateKey.data(),
+                privateKey,
             )
         }
 

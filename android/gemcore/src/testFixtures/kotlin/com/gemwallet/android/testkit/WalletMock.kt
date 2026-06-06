@@ -12,6 +12,7 @@ fun mockMulticoinWalletId(address: String = "0xabc") = mockWalletId("multicoin_$
 
 fun mockWallet(
     id: String = "wallet-1",
+    externalId: String? = null,
     name: String = "Wallet",
     index: Int = 0,
     type: WalletType = WalletType.Multicoin,
@@ -21,6 +22,7 @@ fun mockWallet(
     source: WalletSource = WalletSource.Create,
 ) = Wallet(
     id = WalletId(id),
+    externalId = externalId,
     name = name,
     index = index,
     type = type,

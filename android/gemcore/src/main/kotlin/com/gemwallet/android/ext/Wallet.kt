@@ -1,5 +1,6 @@
 package com.gemwallet.android.ext
 
+import com.gemwallet.android.math.fromHex
 import com.wallet.core.primitives.Account
 import com.wallet.core.primitives.Asset
 import com.wallet.core.primitives.AssetId
@@ -16,6 +17,14 @@ fun Wallet.getAccount(assetId: AssetId): Account? = getAccount(assetId.chain)
 
 val WalletType.isViewOnly: Boolean get() = this == WalletType.View
 val WalletType.canSign: Boolean get() = !isViewOnly
+
+// Deterministic v4 keystore id derived from the wallet id, recomputed on demand (no persistence).
+val Wallet.keystoreId: String
+    get() = uniffi.gemstone.keystoreIdForWallet(id.id)
+
+fun String.v4KeystorePasswordBytes(): ByteArray = fromHex()
+
+fun String.legacyAndroidV3PasswordBytes(): ByteArray = fromHex()
 
 val Wallet.hyperliquidAccount: Account?
     get() = accounts.firstOrNull {
