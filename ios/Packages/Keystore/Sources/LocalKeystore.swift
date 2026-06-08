@@ -1,3 +1,4 @@
+public import class Gemstone.MessageSigner
 import Foundation
 import GemstonePrimitives
 import Primitives
@@ -5,7 +6,7 @@ import Primitives
 internal import Gemstone
 
 public final class LocalKeystore: Keystore, @unchecked Sendable {
-    private let gemKeystore: GemKeystore
+    let gemKeystore: GemKeystore
     private let keystoreURL: URL
     private let keystorePassword: KeystorePassword
     private let queue = DispatchQueue(label: "com.gemwallet.keystore", qos: .userInitiated)
@@ -170,15 +171,35 @@ public final class LocalKeystore: Keystore, @unchecked Sendable {
         }
     }
 
-    public func getPrivateKey(wallet: Primitives.Wallet, chain: Primitives.Chain) async throws -> Data {
+    public func sign(wallet: Primitives.Wallet, input: SignerInput) async throws -> [String] {
+        let gemInput = try input.map()
         let password = try await getPassword()
+        let keystoreId = wallet.keystoreId
+        let chain = input.asset.chain.rawValue
         return try await queue.asyncTask { [gemKeystore] in
             try withV4Password(password) { passwordBytes in
-                try gemKeystore.privateKey(
-                    keystoreId: wallet.keystoreId,
-                    chain: chain.rawValue,
-                    password: passwordBytes,
-                )
+                try gemKeystore.sign(keystoreId: keystoreId, chain: chain, input: gemInput, password: passwordBytes)
+            }
+        }
+    }
+
+    public func signMessage(signer: MessageSigner, wallet: Primitives.Wallet) async throws -> String {
+        let password = try await getPassword()
+        let keystoreId = wallet.keystoreId
+        return try await queue.asyncTask { [gemKeystore] in
+            try withV4Password(password) { passwordBytes in
+                try signer.signWithKeystore(keystore: gemKeystore, keystoreId: keystoreId, password: passwordBytes)
+            }
+        }
+    }
+
+    public func signAuthMessageHash(wallet: Primitives.Wallet, chain: Primitives.Chain, hash: Data) async throws -> String {
+        let password = try await getPassword()
+        let keystoreId = wallet.keystoreId
+        let chainId = chain.rawValue
+        return try await queue.asyncTask { [gemKeystore] in
+            try withV4Password(password) { passwordBytes in
+                try gemKeystore.signAuth(keystoreId: keystoreId, chain: chainId, hash: hash, password: passwordBytes)
             }
         }
     }
@@ -220,7 +241,7 @@ public final class LocalKeystore: Keystore, @unchecked Sendable {
     }
 
     @MainActor
-    private func getPassword() throws -> String {
+    func getPassword() throws -> String {
         try keystorePassword.getPassword()
     }
 
@@ -281,7 +302,7 @@ public final class LocalKeystore: Keystore, @unchecked Sendable {
     }
 }
 
-private func withV4Password<T>(
+func withV4Password<T>(
     _ password: String,
     _ operation: (Data) throws -> T,
 ) throws -> T {

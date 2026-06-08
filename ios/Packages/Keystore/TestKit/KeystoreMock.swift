@@ -1,5 +1,6 @@
 // Copyright (c). Gem Wallet. All rights reserved.
 
+public import class Gemstone.MessageSigner
 import Foundation
 import Keystore
 import Primitives
@@ -28,8 +29,17 @@ public struct KeystoreMock: Keystore {
     }
 
     public func deleteKey(for _: Primitives.Wallet) throws {}
-    public func getPrivateKey(wallet _: Primitives.Wallet, chain _: Primitives.Chain) throws -> Data {
-        Data()
+
+    public func sign(wallet _: Primitives.Wallet, input _: SignerInput) throws -> [String] {
+        []
+    }
+
+    public func signMessage(signer _: MessageSigner, wallet _: Primitives.Wallet) throws -> String {
+        .empty
+    }
+
+    public func signAuthMessageHash(wallet _: Primitives.Wallet, chain _: Primitives.Chain, hash _: Data) throws -> String {
+        .empty
     }
 
     public func getPrivateKeyEncoded(wallet _: Primitives.Wallet, chain _: Primitives.Chain) throws -> String {

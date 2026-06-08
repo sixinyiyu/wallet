@@ -1,5 +1,6 @@
 // Copyright (c). Gem Wallet. All rights reserved.
 
+public import class Gemstone.MessageSigner
 import Foundation
 import Primitives
 
@@ -14,7 +15,10 @@ public protocol Keystore: Sendable {
     /// Migrates a v3 keystore to v4; returns the new keystore_id, or nil if already v4.
     func migrateV3Keystore(for wallet: Wallet) async throws -> String?
     func deleteKey(for wallet: Wallet) async throws
-    func getPrivateKey(wallet: Wallet, chain: Chain) async throws -> Data
+    func sign(wallet: Wallet, input: SignerInput) async throws -> [String]
+    /// Reuses the same MessageSigner instance so its construction timestamp (e.g. TON) stays consistent.
+    func signMessage(signer: MessageSigner, wallet: Wallet) async throws -> String
+    func signAuthMessageHash(wallet: Wallet, chain: Chain, hash: Data) async throws -> String
     func getPrivateKeyEncoded(wallet: Wallet, chain: Chain) async throws -> String
     func getMnemonic(wallet: Wallet) async throws -> [String]
     func getPasswordAuthentication() throws -> KeystoreAuthentication
