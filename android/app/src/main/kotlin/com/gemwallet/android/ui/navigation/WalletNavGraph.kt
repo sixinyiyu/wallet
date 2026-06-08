@@ -37,7 +37,6 @@ import com.gemwallet.android.ui.navigation.routes.assetScreen
 import com.gemwallet.android.ui.navigation.routes.bridgesScreen
 import com.gemwallet.android.ui.navigation.routes.confirm
 import com.gemwallet.android.ui.navigation.routes.fiatScreen
-import com.gemwallet.android.ui.navigation.routes.nftCollection
 import com.gemwallet.android.ui.navigation.routes.perpetualScreen
 import com.gemwallet.android.ui.navigation.routes.receiveScreen
 import com.gemwallet.android.ui.navigation.routes.recipientInput
@@ -132,14 +131,6 @@ fun WalletNavGraph(
                 finishAction = { _ -> navigator.popConfirmFlow() },
                 onBuy = navigator::openBuy,
                 cancelAction = onCancel,
-            )
-
-            nftCollection(
-                cancelAction = onCancel,
-                collectionIdAction = navigator::openNftCollection,
-                assetIdAction = navigator::openNftAsset,
-                onRecipient = navigator::openNftRecipient,
-                onReceive = navigator::openReceiveNftChains,
             )
 
             fiatScreen(

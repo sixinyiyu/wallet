@@ -1,9 +1,7 @@
 mod asset;
-mod nft;
 mod perpetual;
 
 pub use asset::*;
-pub use nft::*;
 pub use perpetual::*;
 
 pub const INDEX_PRIMARY_KEY: &str = "id";
@@ -30,13 +28,6 @@ pub const INDEX_CONFIGS: &[IndexConfig] = &[
         sorts: PERPETUALS_SORTS,
         search_attributes: PERPETUALS_SEARCH_ATTRIBUTES,
         ranking_rules: PERPETUALS_RANKING_RULES,
-    },
-    IndexConfig {
-        name: NFTS_INDEX_NAME,
-        filters: NFTS_FILTERS,
-        sorts: NFTS_SORTS,
-        search_attributes: NFTS_SEARCH_ATTRIBUTES,
-        ranking_rules: NFTS_RANKING_RULES,
     },
 ];
 

@@ -19,7 +19,6 @@ pub use self::database::{
     assets::{AssetFilter, AssetUpdate},
     charts::ChartFilter,
     fiat::FiatAssetFilter,
-    nft::{NftAssetFilter, NftCollectionFilter},
     perpetuals::PerpetualFilter,
     prices::{AssetsWithPricesFilter, PriceUpdate},
     referrals::{AbusePatterns, ReferralUpdate},
@@ -40,7 +39,6 @@ pub use self::repositories::{
     devices_repository::DevicesRepository,
     fiat_repository::FiatRepository,
     migrations_repository::MigrationsRepository,
-    nft_repository::NftRepository,
     notifications_repository::NotificationsRepository,
     parser_state_repository::ParserStateRepository,
     perpetuals_repository::PerpetualsRepository,
@@ -112,10 +110,6 @@ impl Database {
     }
 
     pub fn perpetuals(&self) -> Result<DatabaseClient, Box<dyn Error + Send + Sync>> {
-        self.client()
-    }
-
-    pub fn nft(&self) -> Result<DatabaseClient, Box<dyn Error + Send + Sync>> {
         self.client()
     }
 

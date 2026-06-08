@@ -9,7 +9,6 @@ fn get_fee(chain: CosmosChain, input_type: &TransactionInputType) -> BigInt {
         CosmosChain::Cosmos => match input_type {
             TransactionInputType::Transfer(_)
             | TransactionInputType::Deposit(_)
-            | TransactionInputType::TransferNft(_, _)
             | TransactionInputType::Account(_, _)
             | TransactionInputType::TokenApprove(_, _)
             | TransactionInputType::Generic(_, _, _)
@@ -21,7 +20,6 @@ fn get_fee(chain: CosmosChain, input_type: &TransactionInputType) -> BigInt {
         CosmosChain::Osmosis => match input_type {
             TransactionInputType::Transfer(_)
             | TransactionInputType::Deposit(_)
-            | TransactionInputType::TransferNft(_, _)
             | TransactionInputType::Account(_, _)
             | TransactionInputType::TokenApprove(_, _)
             | TransactionInputType::Generic(_, _, _)
@@ -33,7 +31,6 @@ fn get_fee(chain: CosmosChain, input_type: &TransactionInputType) -> BigInt {
         CosmosChain::Celestia => match input_type {
             TransactionInputType::Transfer(_)
             | TransactionInputType::Deposit(_)
-            | TransactionInputType::TransferNft(_, _)
             | TransactionInputType::Account(_, _)
             | TransactionInputType::TokenApprove(_, _)
             | TransactionInputType::Generic(_, _, _)
@@ -45,7 +42,6 @@ fn get_fee(chain: CosmosChain, input_type: &TransactionInputType) -> BigInt {
         CosmosChain::Sei => match input_type {
             TransactionInputType::Transfer(_)
             | TransactionInputType::Deposit(_)
-            | TransactionInputType::TransferNft(_, _)
             | TransactionInputType::Account(_, _)
             | TransactionInputType::TokenApprove(_, _)
             | TransactionInputType::Generic(_, _, _)
@@ -57,7 +53,6 @@ fn get_fee(chain: CosmosChain, input_type: &TransactionInputType) -> BigInt {
         CosmosChain::Injective => match input_type {
             TransactionInputType::Transfer(_)
             | TransactionInputType::Deposit(_)
-            | TransactionInputType::TransferNft(_, _)
             | TransactionInputType::Account(_, _)
             | TransactionInputType::TokenApprove(_, _)
             | TransactionInputType::Generic(_, _, _)
@@ -74,7 +69,6 @@ fn get_gas_limit(input_type: &TransactionInputType, _chain: CosmosChain) -> u64 
     match input_type {
         TransactionInputType::Transfer(_)
         | TransactionInputType::Deposit(_)
-        | TransactionInputType::TransferNft(_, _)
         | TransactionInputType::Account(_, _)
         | TransactionInputType::TokenApprove(_, _)
         | TransactionInputType::Generic(_, _, _)

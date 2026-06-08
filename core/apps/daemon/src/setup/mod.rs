@@ -4,8 +4,8 @@ use self::scan_addresses::setup_scan_addresses;
 use chrono::Utc;
 use gem_tracing::info_with_fields;
 use primitives::{
-    Asset, AssetId, AssetTag, Chain, ChartTimeframe, ConfigKey, ConfigParamKey, FiatProviderName, FiatQuoteType, FiatTransaction, FiatTransactionStatus, NFTChain,
-    NotificationType, PlatformStore as PrimitivePlatformStore, PriceAlert, PriceAlertDirection, PriceId, PriceProvider, WebhookKind,
+    Asset, AssetId, AssetTag, Chain, ChartTimeframe, ConfigKey, ConfigParamKey, FiatProviderName, FiatQuoteType, FiatTransaction, FiatTransactionStatus, NotificationType,
+    PlatformStore as PrimitivePlatformStore, PriceAlert, PriceAlertDirection, PriceId, PriceProvider, WebhookKind,
 };
 use search_index::{INDEX_CONFIGS, INDEX_PRIMARY_KEY, SearchIndexClient};
 use settings::Settings;
@@ -188,10 +188,7 @@ async fn setup_queues(settings: &Settings) -> Result<(), Box<dyn std::error::Err
 }
 
 fn queue_supported_chains(queue: &QueueName, all_chains: &[Chain]) -> Vec<Chain> {
-    match queue {
-        QueueName::FetchNftAssociations => NFTChain::all().into_iter().map(Into::into).collect(),
-        _ => all_chains.to_vec(),
-    }
+    all_chains.to_vec()
 }
 
 pub async fn run_setup_dev(settings: Settings) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {

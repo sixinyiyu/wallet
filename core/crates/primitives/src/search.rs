@@ -1,4 +1,4 @@
-use crate::{AssetBasic, NFTCollection, PerpetualSearchData};
+use crate::{AssetBasic, PerpetualSearchData};
 use serde::{Deserialize, Serialize};
 use typeshare::typeshare;
 
@@ -7,7 +7,6 @@ use typeshare::typeshare;
 pub struct SearchResponse {
     pub assets: Vec<AssetBasic>,
     pub perpetuals: Vec<PerpetualSearchData>,
-    pub nfts: Vec<NFTCollection>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -16,5 +15,4 @@ pub struct SearchResponse {
 pub enum SearchItemType {
     Asset,
     Perpetual,
-    Nft,
 }

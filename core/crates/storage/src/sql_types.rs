@@ -3,7 +3,6 @@ use diesel::expression::AsExpression;
 use diesel::pg::{Pg, PgValue};
 use diesel::serialize::{self, Output, ToSql};
 use primitives::AssetId as PrimitiveAssetId;
-use primitives::nft::NFTType as PrimitiveNFTType;
 use primitives::rewards::{
     RedemptionStatus as PrimitiveRedemptionStatus, RewardEventType as PrimitiveRewardEventType, RewardRedemptionType as PrimitiveRewardRedemptionType,
     RewardStatus as PrimitiveRewardStatus,
@@ -24,10 +23,10 @@ use std::str::FromStr;
 
 use crate::schema::sql_types::{
     AddressType as AddressTypeSql, AssetType as AssetTypeSql, FiatTransactionStatus as FiatTransactionStatusSql, FiatTransactionType as FiatTransactionTypeSql,
-    IpUsageType as IpUsageTypeSql, LinkType as LinkTypeSql, NftType as NftTypeSql, NotificationType as NotificationTypeSql, Platform as PlatformSql,
-    PlatformStore as PlatformStoreSql, RedemptionStatus as RedemptionStatusSql, RewardEventType as RewardEventTypeSql, RewardRedemptionType as RewardRedemptionTypeSql,
-    RewardStatus as RewardStatusSql, TransactionState as TransactionStateSql, TransactionType as TransactionTypeSql, UsernameStatus as UsernameStatusSql,
-    WalletSource as WalletSourceSql, WalletType as WalletTypeSql, WebhookKind as WebhookKindSql,
+    IpUsageType as IpUsageTypeSql, LinkType as LinkTypeSql, NotificationType as NotificationTypeSql, Platform as PlatformSql, PlatformStore as PlatformStoreSql,
+    RedemptionStatus as RedemptionStatusSql, RewardEventType as RewardEventTypeSql, RewardRedemptionType as RewardRedemptionTypeSql, RewardStatus as RewardStatusSql,
+    TransactionState as TransactionStateSql, TransactionType as TransactionTypeSql, UsernameStatus as UsernameStatusSql, WalletSource as WalletSourceSql,
+    WalletType as WalletTypeSql, WebhookKind as WebhookKindSql,
 };
 
 macro_rules! diesel_enum {
@@ -83,7 +82,6 @@ diesel_enum!(
     TransactionTypeSql,
     [
         Transfer,
-        TransferNFT,
         Swap,
         TokenApproval,
         StakeDelegate,
@@ -122,8 +120,6 @@ diesel_enum!(
         TikTok
     ]
 );
-
-diesel_enum!(NftType, PrimitiveNFTType, NftTypeSql, [ERC721, ERC1155, SPL, JETTON]);
 
 diesel_enum!(FiatTransactionType, PrimitiveFiatQuoteType, FiatTransactionTypeSql, [Buy, Sell]);
 
@@ -336,6 +332,4 @@ macro_rules! diesel_varchar_display {
 
 diesel_varchar_display!(PriceId, PrimitivePriceId);
 diesel_varchar_display!(WalletIdRow, primitives::WalletId);
-diesel_varchar_display!(NftAssetIdRow, primitives::NFTAssetId);
-diesel_varchar_display!(NftCollectionIdRow, primitives::NFTCollectionId);
 diesel_varchar_display!(PerpetualIdRow, primitives::PerpetualId);

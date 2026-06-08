@@ -47,7 +47,7 @@ impl<C: Client> ChainTransactionLoad for TronClient<C> {
 
         let has_memo = input.get_memo().is_some();
         let fee = match &input.input_type {
-            TransactionInputType::Transfer(asset) | TransactionInputType::TransferNft(asset, _) | TransactionInputType::Account(asset, _) => match &asset.id.token_id {
+            TransactionInputType::Transfer(asset)  | TransactionInputType::Account(asset, _) => match &asset.id.token_id {
                 None => TransactionFee::new_from_fee(calculate_transfer_fee_rate(&chain_parameters, &account_usage, is_new_account, has_memo)?),
                 Some(token_id) => {
                     self.estimate_token_transfer_fee(
@@ -144,7 +144,7 @@ impl<C: Client> TronClient<C> {
     async fn get_is_new_account_for_input_type(&self, input: &TransactionLoadInput) -> Result<bool, Box<dyn Error + Send + Sync>> {
         match &input.input_type {
             TransactionInputType::Transfer(asset)
-            | TransactionInputType::TransferNft(asset, _)
+            
             | TransactionInputType::Account(asset, _)
             | TransactionInputType::Swap(asset, _, _) => match asset.id.token_subtype() {
                 AssetSubtype::NATIVE => self.is_new_account(input.input_type.swap_to_address().unwrap_or(&input.destination_address)).await,

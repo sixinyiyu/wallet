@@ -1,6 +1,6 @@
 use crate::{
-    AddressName, AssetAddress, Chain, NFTAssetId, TransactionId, TransactionNFTTransferMetadata, TransactionSwapMetadata, asset_id::AssetId,
-    transaction_direction::TransactionDirection, transaction_state::TransactionState, transaction_type::TransactionType, transaction_utxo::TransactionUtxoInput,
+    AddressName, AssetAddress, Chain, TransactionId, TransactionSwapMetadata, asset_id::AssetId, transaction_direction::TransactionDirection, transaction_state::TransactionState,
+    transaction_type::TransactionType, transaction_utxo::TransactionUtxoInput,
 };
 
 use chrono::{DateTime, Utc};
@@ -254,16 +254,6 @@ impl Transaction {
         self.metadata.as_ref().and_then(|value| TransactionSwapMetadata::deserialize(value).ok())
     }
 
-    pub fn nft_asset_id(&self) -> Option<NFTAssetId> {
-        if self.transaction_type != TransactionType::TransferNFT {
-            return None;
-        }
-        self.metadata
-            .as_ref()
-            .and_then(|value| TransactionNFTTransferMetadata::deserialize(value).ok())
-            .map(|metadata| metadata.asset_id)
-    }
-
     pub fn asset_ids(&self) -> Vec<AssetId> {
         match self.transaction_type {
             TransactionType::Transfer
@@ -276,7 +266,6 @@ impl Transaction {
             | TransactionType::StakeFreeze
             | TransactionType::StakeUnfreeze
             | TransactionType::AssetActivation
-            | TransactionType::TransferNFT
             | TransactionType::SmartContractCall
             | TransactionType::PerpetualOpenPosition
             | TransactionType::PerpetualClosePosition
@@ -293,7 +282,7 @@ impl Transaction {
 
     pub fn assets_addresses(&self) -> Vec<AssetAddress> {
         match self.transaction_type {
-            TransactionType::Transfer | TransactionType::TransferNFT => self
+            TransactionType::Transfer => self
                 .addresses()
                 .into_iter()
                 .map(|x| AssetAddress::new(self.asset_id.clone(), x, None))

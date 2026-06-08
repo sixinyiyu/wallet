@@ -9,9 +9,7 @@ use crate::{
     registry::ContractRegistry,
     rpc::model::{Block, Transaction, TransactionReciept, TransactionReplayTrace},
 };
-use primitives::{
-    AssetId, NFTAssetId, Transaction as PrimitivesTransaction, TransactionType, chain::Chain, hex::decode_hex_utf8, transaction_metadata_types::TransactionNFTTransferMetadata,
-};
+use primitives::{AssetId, Transaction as PrimitivesTransaction, TransactionType, chain::Chain, hex::decode_hex_utf8};
 
 pub const INPUT_0X: &str = "0x";
 pub const FUNCTION_ERC20_TRANSFER: &str = "0xa9059cbb";
@@ -77,70 +75,6 @@ impl EthereumMapper {
             && let Some(tx) = ProtocolParsers::map_transaction(&chain, transaction, transaction_reciept, trace, contract_registry, created_at)
         {
             return Some(tx);
-        }
-
-        // nft eip 721
-
-        if transaction.input.starts_with(FUNCTION_EIP721_TRANSFER)
-            && transaction_reciept
-                .logs
-                .last()
-                .is_some_and(|log| log.topics.len() == 4 && log.topics.first().is_some_and(|x| x == TRANSFER_TOPIC))
-            && let Some(log) = transaction_reciept.logs.last()
-        {
-            let address = ethereum_address_from_topic(&log.topics[2])?;
-            let token_id = BigUint::from_str_radix(&log.topics[3].replace("0x", ""), 16).ok()?;
-            let contract_address = ethereum_address_checksum(&log.address).ok()?;
-            let metadata = TransactionNFTTransferMetadata::from_asset_id(NFTAssetId::new(chain, &contract_address, &token_id.to_string()));
-
-            let transaction = PrimitivesTransaction::new(
-                hash,
-                AssetId::from_chain(chain),
-                from.clone(),
-                address,
-                None,
-                TransactionType::TransferNFT,
-                state,
-                fee.to_string(),
-                fee_asset_id,
-                "0".to_string(),
-                None,
-                serde_json::to_value(metadata).ok(),
-                created_at,
-            );
-            return Some(transaction);
-        }
-
-        // nft eip 1155
-
-        if transaction.input.starts_with(FUNCTION_EIP1155_TRANSFER)
-            && transaction_reciept
-                .logs
-                .last()
-                .is_some_and(|log| log.topics.len() == 4 && log.topics.first().is_some_and(|x| x == TRANSFER_SINGLE))
-            && let Some(log) = transaction_reciept.logs.last()
-        {
-            let to_address = ethereum_address_from_topic(&log.topics[3])?;
-            let token_id = BigUint::from_str_radix(&log.data.replace("0x", "")[0..64], 16).ok()?;
-            let contract_address = ethereum_address_checksum(&log.address).ok()?;
-            let metadata = TransactionNFTTransferMetadata::from_asset_id(NFTAssetId::new(chain, &contract_address, &token_id.to_string()));
-
-            let transaction = PrimitivesTransaction::new(
-                hash,
-                AssetId::from_chain(chain),
-                from.clone(),
-                to_address,
-                None,
-                TransactionType::TransferNFT,
-                state,
-                fee.to_string(),
-                fee_asset_id,
-                "0".to_string(),
-                None,
-                serde_json::to_value(metadata).ok(),
-                created_at,
-            );
-            return Some(transaction);
         }
 
         // erc20 approve
@@ -287,57 +221,6 @@ mod tests {
         assert_eq!(transaction.from, "0x8d7460E51bCf4eD26877cb77E56f3ce7E9f5EB8F");
         assert_eq!(transaction.to, "0x2Fc617E933a52713247CE25730f6695920B3befe");
         assert_eq!(transaction.value, "4801292");
-    }
-
-    #[test]
-    fn test_map_transaction_by_hash() {
-        let transaction = serde_json::from_value::<JsonRpcResult<Transaction>>(serde_json::from_str(include_str!("../../testdata/transfer_nft_eip721.json")).unwrap())
-            .unwrap()
-            .result;
-        let transaction_reciept =
-            serde_json::from_value::<JsonRpcResult<TransactionReciept>>(serde_json::from_str(include_str!("../../testdata/transfer_nft_eip721_receipt.json")).unwrap())
-                .unwrap()
-                .result;
-
-        let transaction = EthereumMapper::map_transaction(Chain::Ethereum, &transaction, &transaction_reciept, None, &BigUint::from(1735671600u64), None).unwrap();
-        assert_eq!(transaction.hash, TEST_TRANSACTION_ID);
-        assert_eq!(transaction.transaction_type, TransactionType::TransferNFT);
-
-        assert_eq!(transaction.asset_id, AssetId::from_chain(Chain::Ethereum));
-        assert_eq!(transaction.from, "0xBA4D1d35bCe0e8F28E5a3403e7a0b996c5d50AC4");
-        assert_eq!(transaction.to, "0xf1158986419F6058231b0Dbd7A78Ff0674ebBc50");
-        assert_eq!(transaction.value, "0");
-        assert_eq!(
-            transaction.metadata,
-            Some(serde_json::json!({
-                "assetId": "ethereum_0x47A00fC8590C11bE4c419D9Ae50DEc267B6E24ee::9143"
-            }))
-        );
-    }
-
-    #[test]
-    fn test_nft_eip1155_transfer() {
-        let transaction = serde_json::from_value::<JsonRpcResult<Transaction>>(serde_json::from_str(include_str!("../../testdata/transfer_nft_eip1155.json")).unwrap())
-            .unwrap()
-            .result;
-        let transaction_reciept =
-            serde_json::from_value::<JsonRpcResult<TransactionReciept>>(serde_json::from_str(include_str!("../../testdata/transfer_nft_eip1155_receipt.json")).unwrap())
-                .unwrap()
-                .result;
-
-        let transaction = EthereumMapper::map_transaction(Chain::Ethereum, &transaction, &transaction_reciept, None, &BigUint::from(1735671600u64), None).unwrap();
-        assert_eq!(transaction.transaction_type, TransactionType::TransferNFT);
-
-        assert_eq!(transaction.asset_id, AssetId::from_chain(Chain::Ethereum));
-        assert_eq!(transaction.from, "0xBA4D1d35bCe0e8F28E5a3403e7a0b996c5d50AC4");
-        assert_eq!(transaction.to, "0xEE67a32a55318a211CE4BB5051Ed98c679851143");
-        assert_eq!(transaction.value, "0");
-        assert_eq!(
-            transaction.metadata,
-            Some(serde_json::json!({
-                "assetId": "ethereum_0xD4416b13d2b3a9aBae7AcD5D6C2BbDBE25686401::78312089388574796712357673212383836573632856632295981350303734331484536429721"
-            }))
-        );
     }
 
     #[test]

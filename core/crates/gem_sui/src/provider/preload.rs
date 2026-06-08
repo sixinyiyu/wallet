@@ -96,7 +96,7 @@ impl SuiClient {
             },
             TransactionInputType::Swap(_, _, _) => Ok((OwnedCoins::default(), None, Vec::new())),
             TransactionInputType::Generic(_, _, _) => Ok((OwnedCoins::default(), None, Vec::new())),
-            TransactionInputType::TransferNft(_, _) | TransactionInputType::Account(_, _) => Err("Unsupported transaction type for Sui".into()),
+            TransactionInputType::Account(_, _) => Err("Unsupported transaction type for Sui".into()),
             _ => Err("Unsupported transaction type for Sui".into()),
         }
     }

@@ -7,7 +7,6 @@ mod config;
 mod devices;
 mod markets;
 mod model;
-mod nft;
 mod params;
 mod prices;
 mod referral;
@@ -26,7 +25,6 @@ use strum::IntoEnumIterator;
 
 use ::fiat::FiatClient;
 use ::fiat::FiatProviderFactory;
-use ::nft::{NFTClient, NFTProviderClient, NFTProviderConfig};
 use admin::AdminConfig;
 use api_connector::PusherClient;
 use assets::{AssetsClient, SearchClient};
@@ -82,9 +80,6 @@ fn mount_routes(rocket: Rocket<Build>, admin_enabled: bool) -> Rocket<Build> {
                 chain::swap::get_swap_quote,
                 chain::swap::get_vault_addresses,
                 swap::get_swap_assets,
-                nft::get_nft_asset_preview,
-                nft::get_nft_asset_resource,
-                nft::get_nft_collection_preview,
                 markets::get_markets,
                 chain::staking::get_validators,
                 chain::staking::get_staking_apy,
@@ -92,9 +87,6 @@ fn mount_routes(rocket: Rocket<Build>, admin_enabled: bool) -> Rocket<Build> {
                 chain::address::get_balances,
                 chain::address::get_assets,
                 chain::address::get_transactions,
-                chain::nft::get_nfts,
-                chain::nft::get_nft_asset,
-                chain::nft::get_nft_collection,
                 chain::transaction::get_transaction,
                 chain::transaction::get_transaction_status,
                 referral::get_rewards_leaderboard,
@@ -115,7 +107,6 @@ fn mount_routes(rocket: Rocket<Build>, admin_enabled: bool) -> Rocket<Build> {
                 devices::is_device_registered_v2,
                 devices::update_device_v2,
                 devices::send_push_notification_device_v2,
-                devices::report_device_nft_v2,
                 devices::scan_device_transaction_v2,
                 devices::get_device_assets_v2,
                 devices::get_device_wallet_configuration_v2,
@@ -124,9 +115,6 @@ fn mount_routes(rocket: Rocket<Build>, admin_enabled: bool) -> Rocket<Build> {
                 devices::get_device_transaction_by_id_v2,
                 devices::get_device_transactions_v2,
                 devices::get_device_address_names_v2,
-                devices::get_device_nft_assets_v2,
-                devices::get_device_nft_asset_v2,
-                devices::refresh_device_nft_asset_v2,
                 devices::get_device_rewards_v2,
                 devices::get_device_rewards_events_v2,
                 devices::get_device_rewards_redemption_v2,
@@ -159,8 +147,6 @@ fn mount_routes(rocket: Rocket<Build>, admin_enabled: bool) -> Rocket<Build> {
                 admin::assets::add_asset,
                 admin::transactions::add_transaction,
                 admin::prices::add_price,
-                admin::nft::update_nft_asset,
-                admin::nft::update_nft_collection,
                 admin::fiat::get_fiat_quotes,
             ],
         )
@@ -223,13 +209,6 @@ async fn rocket_api(settings: Settings) -> Result<Rocket<Build>, Box<dyn std::er
         stream_producer.clone(),
     );
     let fiat_quotes_client = FiatQuotesClient::new(database.clone(), fiat_client);
-    let nft_config = NFTProviderConfig::new(
-        settings.nft.opensea.key.secret.clone(),
-        settings.nft.magiceden.key.secret.clone(),
-        settings.chains.ton.url.clone(),
-    );
-    let nft_client = NFTClient::from_config(database.clone(), nft_config.clone(), settings.nft.url.clone());
-    let nft_provider_client = NFTProviderClient::new(nft_config);
     let auth_client = Arc::new(AuthClient::new(cacher_client.clone()));
     let markets_client = MarketsClient::new(database.clone(), cacher_client.clone());
     let webhooks_client = WebhooksClient::new(stream_producer.clone());
@@ -273,8 +252,6 @@ async fn rocket_api(settings: Settings) -> Result<Rocket<Build>, Box<dyn std::er
         .manage(wallet_configuration_client)
         .manage(Mutex::new(scan_client))
         .manage(Mutex::new(swap_client))
-        .manage(nft_client)
-        .manage(nft_provider_client)
         .manage(Mutex::new(price_alert_client))
         .manage(Mutex::new(chain_client))
         .manage(swapper)

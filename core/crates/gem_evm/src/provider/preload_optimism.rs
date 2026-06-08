@@ -37,7 +37,7 @@ impl<C: Client + Clone> OptimismGasOracle<C> {
         let adjusted_value = match &input.input_type {
             TransactionInputType::Transfer(asset)
             | TransactionInputType::Deposit(asset)
-            | TransactionInputType::TransferNft(asset, _)
+            
             | TransactionInputType::Account(asset, _) => {
                 if asset.id.is_native() && input.is_max_value {
                     let parsed_value = BigInt::from_str_radix(&input.value, 10)?;
@@ -141,7 +141,7 @@ impl<C: Client + Clone> OptimismGasOracle<C> {
         match &input.input_type {
             TransactionInputType::Transfer(asset)
             | TransactionInputType::Deposit(asset)
-            | TransactionInputType::TransferNft(asset, _)
+            
             | TransactionInputType::Account(asset, _)
                 if asset.id.is_native() && encoded.len() > 3 =>
             {

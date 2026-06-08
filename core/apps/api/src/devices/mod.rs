@@ -6,9 +6,7 @@ pub mod error;
 pub mod guard;
 pub mod signature;
 use crate::assets::AssetsClient;
-use crate::params::{
-    AssetIdParam, ChainParam, ChartPeriodParam, CurrencyParam, DeviceParam, FiatProviderIdParam, FiatQuoteTypeParam, NftAssetIdParam, TransactionIdParam, UserAgent,
-};
+use crate::params::{AssetIdParam, ChainParam, ChartPeriodParam, CurrencyParam, DeviceParam, FiatProviderIdParam, FiatQuoteTypeParam, TransactionIdParam, UserAgent};
 use crate::responders::{ApiError, ApiResponse};
 use auth_config::AuthConfig;
 pub use client::DevicesClient;
@@ -20,15 +18,13 @@ pub use clients::{
 use gem_auth::AuthClient;
 use guard::{AuthenticatedDevice, AuthenticatedDeviceWallet, VerifiedDeviceId};
 use name_resolver::client::Client as NameClient;
-use nft::NFTClient;
 use primitives::DeviceToken;
 use primitives::device::Device;
 use primitives::name::NameRecord;
-use primitives::nft::NFTAssetData;
 use primitives::rewards::{RedemptionRequest, RedemptionResult, RewardRedemptionOption};
 use primitives::{
-    AddressName, AssetId, AuthNonce, ChainAddress, FiatAssets, FiatQuoteRequest, FiatQuoteType, FiatQuoteUrl, FiatQuotes, InAppNotification, NFTData, PortfolioAssets,
-    PortfolioAssetsRequest, PriceAlerts, ReportNft, RewardEvent, Rewards, ScanTransaction, ScanTransactionPayload, Transaction, TransactionsResponse, WalletConfigurationResult,
+    AddressName, AssetId, AuthNonce, ChainAddress, FiatAssets, FiatQuoteRequest, FiatQuoteType, FiatQuoteUrl, FiatQuotes, InAppNotification, PortfolioAssets,
+    PortfolioAssetsRequest, PriceAlerts, RewardEvent, Rewards, ScanTransaction, ScanTransactionPayload, Transaction, TransactionsResponse, WalletConfigurationResult,
     WalletSubscriptionChains,
 };
 use rocket::{State, delete, get, post, put, serde::json::Json, tokio::sync::Mutex};
@@ -109,25 +105,6 @@ pub async fn get_device_address_names_v2(
     client: &State<Mutex<AddressNamesClient>>,
 ) -> Result<ApiResponse<Vec<AddressName>>, ApiError> {
     Ok(client.lock().await.get_address_names(requests.into_inner())?.into())
-}
-
-#[get("/devices/nft_assets")]
-pub async fn get_device_nft_assets_v2(device: AuthenticatedDeviceWallet, client: &State<NFTClient>) -> Result<ApiResponse<Vec<NFTData>>, ApiError> {
-    Ok(client.get_nft_assets_by_wallet_id(device.device_row.id, device.wallet_id).await?.into())
-}
-
-#[get("/devices/nft_assets/<asset_id>")]
-pub async fn get_device_nft_asset_v2(_device: AuthenticatedDevice, asset_id: NftAssetIdParam, client: &State<NFTClient>) -> Result<ApiResponse<NFTAssetData>, ApiError> {
-    Ok(client.get_nft_asset_data(asset_id.0)?.into())
-}
-
-#[post("/devices/nft_assets/<asset_id>/refresh")]
-pub async fn refresh_device_nft_asset_v2(
-    _device: AuthenticatedDeviceWallet,
-    asset_id: NftAssetIdParam,
-    stream_producer: &State<StreamProducer>,
-) -> Result<ApiResponse<bool>, ApiError> {
-    Ok(stream_producer.publish_fetch_nft_asset(asset_id.0).await?.into())
 }
 
 #[get("/devices/rewards")]
@@ -224,19 +201,6 @@ pub async fn send_push_notification_device_v2(device: AuthenticatedDevice, clien
             .await
             .map_err(ApiError::from)?,
     ))
-}
-
-#[post("/devices/nft/report", format = "json", data = "<request>")]
-pub async fn report_device_nft_v2(device: AuthenticatedDevice, request: Json<ReportNft>, client: &State<NFTClient>) -> Result<ApiResponse<bool>, ApiError> {
-    let asset_id = request
-        .asset_id
-        .as_deref()
-        .map(|asset_id| AssetId::new(asset_id).ok_or_else(|| ApiError::BadRequest(format!("Invalid asset_id: {asset_id}"))))
-        .transpose()?;
-
-    Ok(client
-        .report_nft(&device.device_row.device_id, request.collection_id.clone(), asset_id, request.reason.clone())?
-        .into())
 }
 
 #[get("/devices/name/resolve/<name>?<chain>")]

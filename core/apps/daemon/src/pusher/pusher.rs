@@ -4,7 +4,7 @@ use localizer::LanguageLocalizer;
 use number_formatter::{ValueFormatter, ValueStyle};
 use primitives::{
     AddressFormatStyle, AddressFormatter, Asset, AssetVecExt, Chain, DeviceSubscription, FiatQuoteType, GorushNotification, PushNotification, PushNotificationTransaction,
-    PushNotificationTypes, Transaction, TransactionNFTTransferMetadata, TransactionPerpetualMetadata, TransactionSwapMetadata, TransactionType,
+    PushNotificationTypes, Transaction, TransactionPerpetualMetadata, TransactionSwapMetadata, TransactionType,
 };
 use storage::{Database, ScanAddressesRepository};
 
@@ -61,22 +61,6 @@ impl Pusher {
             TransactionType::Transfer | TransactionType::SmartContractCall => {
                 let is_sent = transaction.is_sent(address.to_string());
                 let title = localizer.notification_transfer_title(is_sent, &amount);
-                let message = localizer.notification_transfer_description(is_sent, to_address.as_str(), from_address.as_str());
-                Ok(Message { title, message: Some(message) })
-            }
-            TransactionType::TransferNFT => {
-                let metadata = transaction.metadata.clone().ok_or("Missing metadata")?;
-                let metadata: TransactionNFTTransferMetadata = serde_json::from_value(metadata)?;
-                let nft_asset_id = metadata.asset_id;
-                let name = if let Some(name) = metadata.name {
-                    name
-                } else if nft_asset_id.token_id.len() < 6 {
-                    format!("#{}", nft_asset_id.token_id)
-                } else {
-                    format!("#{}...", nft_asset_id.token_id.get(..6).unwrap_or(&nft_asset_id.token_id))
-                };
-                let is_sent = transaction.is_sent(address.to_string());
-                let title = localizer.notification_nft_transfer_title(is_sent, &name);
                 let message = localizer.notification_transfer_description(is_sent, to_address.as_str(), from_address.as_str());
                 Ok(Message { title, message: Some(message) })
             }

@@ -46,15 +46,11 @@ import com.gemwallet.android.ui.navigation.routes.FiatSelectRoute
 import com.gemwallet.android.ui.navigation.routes.FiatTransactionsRoute
 import com.gemwallet.android.ui.navigation.routes.InAppNotificationsRoute
 import com.gemwallet.android.ui.navigation.routes.NetworksRoute
-import com.gemwallet.android.ui.navigation.routes.NftAssetRoute
-import com.gemwallet.android.ui.navigation.routes.NftCollectionRoute
-import com.gemwallet.android.ui.navigation.routes.NftUnverifiedCollectionsRoute
 import com.gemwallet.android.ui.navigation.routes.NotificationsRoute
 import com.gemwallet.android.ui.navigation.routes.PerpetualPositionRoute
 import com.gemwallet.android.ui.navigation.routes.PerpetualRoute
 import com.gemwallet.android.ui.navigation.routes.PreferencesRoute
 import com.gemwallet.android.ui.navigation.routes.PriceAlertsRoute
-import com.gemwallet.android.ui.navigation.routes.ReceiveNftChainsRoute
 import com.gemwallet.android.ui.navigation.routes.ReceiveRoute
 import com.gemwallet.android.ui.navigation.routes.ReceiveSelectRoute
 import com.gemwallet.android.ui.navigation.routes.RecipientInputRoute
@@ -74,7 +70,6 @@ import com.gemwallet.android.ui.navigation.routes.WalletSecurityReminderRoute
 import com.gemwallet.android.ui.navigation.routes.WalletsRoute
 import com.gemwallet.android.ext.toIdentifier
 import com.wallet.core.primitives.AssetId
-import com.wallet.core.primitives.NFTAssetId
 import com.wallet.core.primitives.TransactionId
 import com.wallet.core.primitives.WalletId
 import com.wallet.core.primitives.WalletType
@@ -214,10 +209,8 @@ class WalletNavigator(
     fun openDelegation(validatorId: String, delegationId: String) = push(DelegationRoute(validatorId, delegationId))
     fun openReceive() = push(ReceiveSelectRoute)
     fun openReceive(assetId: AssetId) = push(ReceiveRoute(assetId))
-    fun openReceiveNftChains() = push(ReceiveNftChainsRoute)
     fun openRecipient() = push(SendSelectRoute)
     fun openRecipient(assetId: AssetId) = push(RecipientInputRoute(assetId, nftAssetId = null))
-    fun openNftRecipient(assetId: AssetId, nftAssetId: NFTAssetId) = push(RecipientInputRoute(assetId, nftAssetId.toIdentifier()))
     fun openAmount(params: AmountParams) {
         val pack = params.pack() ?: return
         push(AmountRoute(pack))
@@ -250,10 +243,6 @@ class WalletNavigator(
         val pack = params.pack() ?: return
         push(ConfirmRoute(pack))
     }
-    fun openNftCollection(nftCollectionId: String) = push(NftCollectionRoute(nftCollectionId))
-    fun openNftUnverifiedCollections() = push(NftUnverifiedCollectionsRoute)
-    fun openNftAsset(nftAssetId: NFTAssetId) = push(NftAssetRoute(nftAssetId.toIdentifier()))
-
     fun finishAcceptTerms(destination: AcceptTermsDestination) {
         replaceTop(
             when (destination) {

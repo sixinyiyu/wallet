@@ -2,23 +2,20 @@ pub mod fetch_address_transactions_consumer;
 pub mod fetch_assets_consumer;
 pub mod fetch_blocks_consumer;
 pub mod fetch_coin_addresses_consumer;
-pub mod fetch_nft_asset_consumer;
-pub mod fetch_nft_assets_addresses_consumer;
 pub mod fetch_prices_consumer;
 pub mod fetch_token_addresses_consumer;
 
 use std::error::Error;
 use std::sync::Arc;
 
-use ::nft::NFTClient;
 use cacher::CacherClient;
 use pricer::PriceClient;
-use primitives::{Chain, NFTChain};
+use primitives::Chain;
 use settings::Settings;
 use storage::Database;
 use streamer::{
-    ChainAddressPayload, ConsumerStatusReporter, FetchAssetsPayload, FetchBlocksPayload, FetchNFTAssetPayload, FetchPricesPayload, QueueName, ShutdownReceiver, StreamConnection,
-    StreamReader, run_consumer,
+    ChainAddressPayload, ConsumerStatusReporter, FetchAssetsPayload, FetchBlocksPayload, FetchPricesPayload, QueueName, ShutdownReceiver, StreamConnection, StreamReader,
+    run_consumer,
 };
 
 use crate::consumers::runner::ChainConsumerRunner;
@@ -28,8 +25,6 @@ use fetch_address_transactions_consumer::FetchAddressTransactionsConsumer;
 use fetch_assets_consumer::FetchAssetsConsumer;
 use fetch_blocks_consumer::FetchBlocksConsumer;
 use fetch_coin_addresses_consumer::FetchCoinAddressesConsumer;
-use fetch_nft_asset_consumer::FetchNftAssetConsumer;
-use fetch_nft_assets_addresses_consumer::FetchNftAssetsAddressesConsumer;
 use fetch_prices_consumer::FetchPricesConsumer;
 use fetch_token_addresses_consumer::FetchTokenAddressesConsumer;
 
@@ -52,8 +47,6 @@ pub async fn run_consumer_indexer(
             FetchPrices,
             FetchTokenAssociations,
             FetchCoinAssociations,
-            FetchNftAssociations,
-            FetchNftAssets,
             FetchAddressTransactions,
         ],
     };
@@ -72,8 +65,6 @@ pub async fn run_consumer_indexer(
                     FetchPrices => run_fetch_prices(settings, database, shutdown_rx, reporter).await,
                     FetchTokenAssociations => run_fetch_token_associations(settings, database, shutdown_rx, reporter).await,
                     FetchCoinAssociations => run_fetch_coin_associations(settings, database, shutdown_rx, reporter).await,
-                    FetchNftAssociations => run_fetch_nft_associations(settings, database, shutdown_rx, reporter).await,
-                    FetchNftAssets => run_fetch_nft_assets(settings, database, shutdown_rx, reporter).await,
                     FetchAddressTransactions => run_fetch_transaction_associations(settings, database, shutdown_rx, reporter).await,
                 }
             })
@@ -207,57 +198,6 @@ async fn run_fetch_coin_associations(
             )
             .await
         })
-        .await
-}
-
-async fn run_fetch_nft_associations(
-    settings: Arc<Settings>,
-    database: Database,
-    shutdown_rx: ShutdownReceiver,
-    reporter: Arc<dyn ConsumerStatusReporter>,
-) -> Result<(), Box<dyn Error + Send + Sync>> {
-    let chains: Vec<Chain> = NFTChain::all().into_iter().map(Into::into).collect();
-    ChainConsumerRunner::new((*settings).clone(), database, QueueName::FetchNftAssociations, shutdown_rx, reporter)
-        .await?
-        .run_for_chains(chains, |runner, chain| async move {
-            FetchNftAssetsAddressesConsumer::run(
-                runner.settings,
-                runner.database,
-                chain,
-                &runner.connection,
-                runner.cacher,
-                runner.config,
-                runner.shutdown_rx,
-                runner.reporter,
-            )
-            .await
-        })
-        .await
-}
-
-async fn run_fetch_nft_assets(
-    settings: Arc<Settings>,
-    database: Database,
-    shutdown_rx: ShutdownReceiver,
-    reporter: Arc<dyn ConsumerStatusReporter>,
-) -> Result<(), Box<dyn Error + Send + Sync>> {
-    let queue = QueueName::FetchNFTCollectionAssets;
-    let name = queue.to_string();
-    let connection = StreamConnection::new(&settings.rabbitmq.url, name.clone()).await?;
-    let config = reader_config(&settings.rabbitmq, name.clone());
-    let stream_reader = StreamReader::from_connection(&connection, config).await?;
-    let cacher = CacherClient::new(&settings.redis.url).await;
-    let nft_config = ::nft::NFTProviderConfig::new(
-        settings.nft.opensea.key.secret.clone(),
-        settings.nft.magiceden.key.secret.clone(),
-        settings.chains.ton.url.clone(),
-    );
-    let nft_client = NFTClient::from_config(database, nft_config, settings.nft.url.clone());
-    let consumer = FetchNftAssetConsumer {
-        nft_client: Arc::new(tokio::sync::Mutex::new(nft_client)),
-        cacher,
-    };
-    run_consumer::<FetchNFTAssetPayload, FetchNftAssetConsumer, usize>(&name, stream_reader, queue, None, consumer, consumer_config(&settings.consumer), shutdown_rx, reporter)
         .await
 }
 

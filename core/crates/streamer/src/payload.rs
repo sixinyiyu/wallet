@@ -1,6 +1,6 @@
 use primitives::{
-    AssetAddress, AssetId, Chain, ChainAddress, FailedNotification, FiatProviderName, FiatTransactionUpdate, GorushNotification, NFTAssetId, NotificationType, PriceData, PriceId,
-    Transaction, TransactionId,
+    AssetAddress, AssetId, Chain, ChainAddress, FailedNotification, FiatProviderName, FiatTransactionUpdate, GorushNotification, NotificationType, PriceData, PriceId, Transaction,
+    TransactionId,
 };
 use serde::{Deserialize, Serialize};
 use std::fmt;
@@ -145,41 +145,6 @@ impl fmt::Display for FetchBlocksPayload {
 impl FetchBlocksPayload {
     pub fn new(chain: Chain, block: u64) -> Self {
         Self { chain, block }
-    }
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct FetchNFTCollectionPayload {
-    pub chain: Chain,
-    pub collection_id: String,
-}
-
-impl FetchNFTCollectionPayload {
-    pub fn new(chain: Chain, collection_id: String) -> Self {
-        Self { chain, collection_id }
-    }
-}
-
-impl fmt::Display for FetchNFTCollectionPayload {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "chain={}, collection_id={}", self.chain.as_ref(), self.collection_id)
-    }
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct FetchNFTAssetPayload {
-    pub asset_id: NFTAssetId,
-}
-
-impl FetchNFTAssetPayload {
-    pub fn new(asset_id: NFTAssetId) -> Self {
-        Self { asset_id }
-    }
-}
-
-impl fmt::Display for FetchNFTAssetPayload {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "asset_id={}", self.asset_id)
     }
 }
 
@@ -392,7 +357,6 @@ impl fmt::Display for WalletStreamPayload {
 pub enum WalletStreamEvent {
     Transactions { transaction_ids: Vec<TransactionId>, asset_ids: Vec<AssetId> },
     FiatTransaction,
-    Nft,
     Perpetual,
 }
 
@@ -403,7 +367,6 @@ impl fmt::Display for WalletStreamEvent {
                 write!(f, "transactions: {}, assets: {}", transaction_ids.len(), asset_ids.len())
             }
             WalletStreamEvent::FiatTransaction => write!(f, "fiat_transaction"),
-            WalletStreamEvent::Nft => write!(f, "nft"),
             WalletStreamEvent::Perpetual => write!(f, "perpetual"),
         }
     }

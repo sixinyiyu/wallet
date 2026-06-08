@@ -21,8 +21,6 @@ pub use self::chain_request::{ChainRequest, ChainRequestProtocol, ChainRequestTy
 pub mod chain_config;
 pub mod chain_stake;
 pub use self::chain_stake::StakeChain;
-pub mod chain_nft;
-pub use self::chain_nft::NFTChain;
 pub mod chain_type;
 pub use self::chain_type::ChainType;
 pub mod chain_transaction_timeout;
@@ -154,9 +152,7 @@ pub use self::scan::{AddressType, ScanAddress, ScanAddressTarget, ScanTransactio
 pub mod hex;
 pub use self::hex::{HexError, decode_hex, decode_hex_array};
 pub mod transaction_metadata_types;
-pub use self::transaction_metadata_types::{
-    TransactionNFTTransferMetadata, TransactionPerpetualMetadata, TransactionResourceTypeMetadata, TransactionSmartContractMetadata, TransactionSwapMetadata,
-};
+pub use self::transaction_metadata_types::{TransactionPerpetualMetadata, TransactionResourceTypeMetadata, TransactionSmartContractMetadata, TransactionSwapMetadata};
 pub mod wallet_connect_namespace;
 pub use self::wallet_connect_namespace::WalletConnectCAIP2;
 pub mod wallet_connect;
@@ -176,8 +172,6 @@ pub use self::wallet_connector::{
     WCPairingProposal, WalletConnection, WalletConnectionEvents, WalletConnectionMethods, WalletConnectionSession, WalletConnectionSessionAppMetadata,
     WalletConnectionSessionProposal, WalletConnectionState, WalletConnectionVerificationStatus,
 };
-pub mod nft;
-pub use self::nft::{MIME_TYPE_PNG, NFTAsset, NFTAssetId, NFTAttribute, NFTAttributeType, NFTCollection, NFTCollectionId, NFTData, NFTImages, NFTResource, NFTType, ReportNft};
 pub mod price_alert;
 pub use self::price_alert::{DevicePriceAlert, PriceAlert, PriceAlertDirection, PriceAlertType, PriceAlerts};
 pub mod rewards;
@@ -196,8 +190,6 @@ pub mod block_explorer;
 pub mod explorers;
 pub mod validator;
 pub use self::validator::StakeValidator;
-pub mod solana_nft;
-pub use self::solana_nft::SolanaNftStandard;
 pub mod solana_token_program;
 pub use self::solana_token_program::SolanaTokenProgramId;
 pub mod solana_types;

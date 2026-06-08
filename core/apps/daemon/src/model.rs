@@ -28,8 +28,6 @@ pub enum IndexerConsumer {
     FetchBlocks,
     FetchTokenAssociations,
     FetchCoinAssociations,
-    FetchNftAssociations,
-    FetchNftAssets,
     FetchAddressTransactions,
 }
 

@@ -5,8 +5,7 @@ use crate::swap::{ApprovalData, SwapData};
 use crate::transaction_fee::TransactionFee;
 use crate::transaction_load_metadata::TransactionLoadMetadata;
 use crate::{
-    Asset, GasPriceType, PerpetualType, SignerError, TransactionPreloadInput, TransactionType, TransferDataExtra, WalletConnectionSessionAppMetadata, nft::NFTAsset,
-    perpetual::AccountDataType,
+    Asset, GasPriceType, PerpetualType, SignerError, TransactionPreloadInput, TransactionType, TransferDataExtra, WalletConnectionSessionAppMetadata, perpetual::AccountDataType,
 };
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
@@ -23,7 +22,6 @@ pub enum TransactionInputType {
     Stake(Asset, StakeType),
     TokenApprove(Asset, ApprovalData),
     Generic(Asset, WalletConnectionSessionAppMetadata, TransferDataExtra),
-    TransferNft(Asset, NFTAsset),
     Account(Asset, AccountDataType),
     Perpetual(Asset, PerpetualType),
     Earn(Asset, EarnType, ContractCallData),
@@ -38,7 +36,6 @@ impl TransactionInputType {
             TransactionInputType::Stake(asset, _) => asset,
             TransactionInputType::TokenApprove(asset, _) => asset,
             TransactionInputType::Generic(asset, _, _) => asset,
-            TransactionInputType::TransferNft(asset, _) => asset,
             TransactionInputType::Account(asset, _) => asset,
             TransactionInputType::Perpetual(asset, _) => asset,
             TransactionInputType::Earn(asset, _, _) => asset,
@@ -63,13 +60,6 @@ impl TransactionInputType {
         match self {
             TransactionInputType::TokenApprove(_, approval) => Ok(approval),
             _ => Err("expected token approval transaction"),
-        }
-    }
-
-    pub fn get_nft_asset(&self) -> Result<&NFTAsset, &'static str> {
-        match self {
-            TransactionInputType::TransferNft(_, nft) => Ok(nft),
-            _ => Err("expected NFT transfer transaction"),
         }
     }
 
@@ -109,7 +99,6 @@ impl TransactionInputType {
             TransactionInputType::Stake(asset, _) => asset,
             TransactionInputType::TokenApprove(asset, _) => asset,
             TransactionInputType::Generic(asset, _, _) => asset,
-            TransactionInputType::TransferNft(asset, _) => asset,
             TransactionInputType::Account(asset, _) => asset,
             TransactionInputType::Perpetual(asset, _) => asset,
             TransactionInputType::Earn(asset, _, _) => asset,
@@ -131,7 +120,6 @@ impl TransactionInputType {
             },
             TransactionInputType::TokenApprove(_, _) => TransactionType::TokenApproval,
             TransactionInputType::Generic(_, _, _) => TransactionType::SmartContractCall,
-            TransactionInputType::TransferNft(_, _) => TransactionType::TransferNFT,
             TransactionInputType::Account(_, _) => TransactionType::AssetActivation,
             TransactionInputType::Perpetual(_, perpetual_type) => match perpetual_type {
                 PerpetualType::Open(_) | PerpetualType::Increase(_) => TransactionType::PerpetualOpenPosition,

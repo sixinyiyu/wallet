@@ -23,16 +23,11 @@ pub enum QueueName {
     FetchPrices,
     // fetch new blocks and store to db
     FetchBlocks,
-    // Fetch and store nft collection
-    FetchNFTCollection,
-    // Fetch and store nft collection assets
-    FetchNFTCollectionAssets,
     // Fetch address token balances from providers and store to db
     FetchTokenAssociations,
     // Fetch address coin balances from providers and store to db
     FetchCoinAssociations,
     // Fetch address nft assets from providers and store to db
-    FetchNftAssociations,
     // Fetch address transactions from providers and store to db
     FetchAddressTransactions,
     // Process fiat order webhooks
@@ -62,7 +57,6 @@ impl QueueName {
             QueueName::FetchBlocks,
             QueueName::FetchTokenAssociations,
             QueueName::FetchCoinAssociations,
-            QueueName::FetchNftAssociations,
             QueueName::FetchAddressTransactions,
         ]
     }
@@ -78,12 +72,9 @@ impl fmt::Display for QueueName {
             QueueName::FetchAssets => write!(f, "fetch_assets"),
             QueueName::FetchPrices => write!(f, "fetch_prices"),
             QueueName::FetchBlocks => write!(f, "fetch_blocks"),
-            QueueName::FetchNFTCollection => write!(f, "fetch_nft_collection"),
-            QueueName::FetchNFTCollectionAssets => write!(f, "fetch_nft_collection_assets"),
             QueueName::FetchTokenAssociations => write!(f, "fetch_token_associations"),
             QueueName::FetchCoinAssociations => write!(f, "fetch_coin_associations"),
             QueueName::FetchAddressTransactions => write!(f, "fetch_address_transactions"),
-            QueueName::FetchNftAssociations => write!(f, "fetch_nft_associations"),
             QueueName::FiatOrderWebhooks => write!(f, "fiat_order_webhooks"),
             QueueName::SupportWebhooks => write!(f, "support_webhooks"),
             QueueName::StorePendingTransactions => write!(f, "store_pending_transactions"),

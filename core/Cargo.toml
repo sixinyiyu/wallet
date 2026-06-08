@@ -42,7 +42,6 @@ members = [
     "crates/job_runner",
     "crates/metrics",
     "crates/search_index",
-    "crates/nft",
     "crates/in_app_notifications",
     "crates/serde_serializers",
     "crates/number_formatter",

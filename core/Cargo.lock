@@ -620,7 +620,6 @@ dependencies = [
  "in_app_notifications",
  "localizer",
  "name_resolver",
- "nft",
  "portfolio",
  "pricer",
  "prices",
@@ -2149,7 +2148,6 @@ dependencies = [
  "job_runner",
  "localizer",
  "metrics",
- "nft",
  "num-bigint",
  "number_formatter",
  "pricer",
@@ -5002,24 +5000,6 @@ dependencies = [
  "serde",
  "serde_json",
  "settings",
- "tokio",
-]
-
-[[package]]
-name = "nft"
-version = "1.0.0"
-dependencies = [
- "async-trait",
- "futures",
- "gem_client",
- "gem_evm",
- "gem_ton",
- "primitives",
- "reqwest 0.13.4",
- "serde",
- "serde_json",
- "settings",
- "storage",
  "tokio",
 ]
 

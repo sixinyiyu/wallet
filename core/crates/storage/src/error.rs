@@ -75,14 +75,6 @@ impl ResourceName for crate::models::FiatTransactionRow {
     const RESOURCE_NAME: &'static str = "FiatTransaction";
 }
 
-impl ResourceName for crate::models::NftAssetRow {
-    const RESOURCE_NAME: &'static str = "NFTAsset";
-}
-
-impl ResourceName for crate::models::NftCollectionRow {
-    const RESOURCE_NAME: &'static str = "NFTCollection";
-}
-
 impl ResourceName for crate::models::ParserStateRow {
     const RESOURCE_NAME: &'static str = "ParserState";
 }
