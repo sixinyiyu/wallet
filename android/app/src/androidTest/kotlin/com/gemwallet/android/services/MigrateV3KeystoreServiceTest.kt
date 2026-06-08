@@ -4,9 +4,10 @@ import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
 import com.gemwallet.android.application.PasswordStore
-import com.gemwallet.android.blockchain.operators.gemstone.GemLoadPrivateKeyOperator
 import com.gemwallet.android.blockchain.operators.gemstone.GemMigrateKeystoreOperator
 import com.gemwallet.android.data.repositories.wallets.WalletsRepository
+import com.gemwallet.android.ext.keystoreId
+import com.gemwallet.android.ext.v4KeystorePasswordBytes
 import com.gemwallet.android.math.hex
 import com.gemwallet.android.testkit.includeGemstoneLibs
 import com.wallet.core.primitives.Chain
@@ -35,7 +36,9 @@ class MigrateV3KeystoreServiceTest {
     private val passwordStore = FakePasswordStore()
     private val walletsRepository = mockk<WalletsRepository>()
     private val service = MigrateV3KeystoreService(context, walletsRepository, passwordStore, GemMigrateKeystoreOperator(baseDir.toString()))
-    private val loadKey = GemLoadPrivateKeyOperator(baseDir.toString())
+
+    private fun loadKey(wallet: Wallet, chain: Chain, password: String): ByteArray =
+        uniffi.gemstone.GemKeystore(baseDir.toString()).use { it.privateKey(wallet.keystoreId, chain.string, password.v4KeystorePasswordBytes()) }
 
     @Before
     fun setUp() = cleanup()

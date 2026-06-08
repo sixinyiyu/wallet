@@ -2,12 +2,10 @@ package com.gemwallet.android.blockchain.operators.gemstone
 
 import com.gemwallet.android.blockchain.operators.StorePhraseOperator
 import com.gemwallet.android.blockchain.operators.StoredWalletSecret
-import com.gemwallet.android.ext.v4KeystorePasswordBytes
 import com.gemwallet.android.ext.words
 import com.wallet.core.primitives.Wallet
 import com.wallet.core.primitives.WalletType
 import uniffi.gemstone.GemImportType
-import uniffi.gemstone.GemKeystore
 
 class GemStorePhraseOperator(
     private val baseDir: String,
@@ -30,8 +28,8 @@ class GemStorePhraseOperator(
             WalletType.View -> throw IllegalArgumentException("View wallets do not store secrets")
         }
 
-        GemKeystore(baseDir).use { keystore ->
-            val stored = keystore.createWallet(walletImport, password.v4KeystorePasswordBytes())
+        withGemKeystore(baseDir, password) { keystore, passwordBytes ->
+            val stored = keystore.createWallet(walletImport, passwordBytes)
             require(stored.walletId == wallet.id.id) {
                 "Stored wallet id ${stored.walletId} does not match ${wallet.id.id}"
             }

@@ -24,22 +24,6 @@ fun gemstoneTestAccount(context: Context, chain: Chain, phrase: String): Account
     }
 }
 
-fun gemstoneTestPrivateKey(context: Context, chain: Chain, phrase: String): ByteArray {
-    val password = "test-password".toByteArray()
-    val walletImport = GemImportType.MulticoinPhrase(
-        words = phrase.words(),
-        chains = listOf(chain.string),
-    )
-    return GemKeystore(gemstoneTestBaseDir(context)).use { keystore ->
-        val stored = keystore.createWallet(walletImport, password)
-        try {
-            keystore.privateKey(stored.keystoreId, chain.string, password)
-        } finally {
-            keystore.delete(stored.keystoreId)
-        }
-    }
-}
-
 fun gemstoneTestAddressForPrivateKey(context: Context, chain: Chain, value: String): String {
     return GemKeystore(gemstoneTestBaseDir(context)).use { keystore ->
         keystore.importWallet(GemImportType.PrivateKey(value = value, chain = chain.string)).accounts.first().address
