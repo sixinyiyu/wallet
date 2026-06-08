@@ -3205,6 +3205,7 @@ dependencies = [
  "primitives",
  "serde",
  "serde_json",
+ "sha2 0.11.0",
  "uuid",
 ]
 
@@ -3750,6 +3751,7 @@ dependencies = [
  "num-bigint",
  "number_formatter",
  "primitives",
+ "rand 0.10.1",
  "serde_json",
  "signer",
  "simulation",

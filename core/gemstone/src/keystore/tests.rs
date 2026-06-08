@@ -3,6 +3,9 @@ use primitives::testkit::ABANDON_PHRASE;
 use tempfile::TempDir;
 
 use super::*;
+use crate::auth::sign_auth_message_hash;
+use crate::message::sign_type::{SignDigestType, SignMessage};
+use crate::message::signer::MessageSigner;
 
 fn phrase_words() -> Vec<String> {
     ABANDON_PHRASE.split_whitespace().map(|word| word.to_string()).collect()
@@ -41,6 +44,53 @@ fn test_gem_keystore_private_key_create_export_delete() {
         "add_accounts does not support private-key wallets"
     );
     assert!(keystore.delete(stored.keystore_id.clone()).unwrap());
+}
+
+#[test]
+fn test_gem_keystore_sign_with_keystore_matches_raw_key() {
+    let dir = TempDir::new().unwrap();
+    let keystore = GemKeystore::new(dir.path().to_string_lossy().to_string()).unwrap();
+    let stored = keystore
+        .create_wallet(
+            GemImportType::PrivateKey {
+                value: "0x30df0ffc2b43717f4653c2a1e827e9dfb3d9364e019cc60092496cd4997d5d6e".to_string(),
+                chain: Chain::Ethereum,
+            },
+            b"password".to_vec(),
+        )
+        .unwrap();
+    let raw_key = keystore.private_key(stored.keystore_id.clone(), Chain::Ethereum, b"password".to_vec()).unwrap();
+
+    let signer = MessageSigner::new(SignMessage {
+        chain: Chain::Ethereum,
+        sign_type: SignDigestType::Eip191,
+        data: b"hello world".to_vec(),
+    });
+    let expected = signer.sign(raw_key).unwrap();
+    let actual = signer.sign_with_keystore(keystore, stored.keystore_id, b"password".to_vec()).unwrap();
+    assert_eq!(actual, expected);
+}
+
+#[test]
+fn test_gem_keystore_sign_auth_matches_raw_key() {
+    let dir = TempDir::new().unwrap();
+    let keystore = GemKeystore::new(dir.path().to_string_lossy().to_string()).unwrap();
+    let stored = keystore
+        .create_wallet(
+            GemImportType::PrivateKey {
+                value: "0x30df0ffc2b43717f4653c2a1e827e9dfb3d9364e019cc60092496cd4997d5d6e".to_string(),
+                chain: Chain::Ethereum,
+            },
+            b"password".to_vec(),
+        )
+        .unwrap();
+    let raw_key = keystore.private_key(stored.keystore_id.clone(), Chain::Ethereum, b"password".to_vec()).unwrap();
+
+    // Auth signing through the keystore must match signing the hash with the exported raw key.
+    let hash = vec![7u8; 32];
+    let expected = sign_auth_message_hash(hash.clone(), raw_key).unwrap();
+    let actual = keystore.sign_auth(stored.keystore_id, Chain::Ethereum, hash, b"password".to_vec()).unwrap();
+    assert_eq!(actual, expected);
 }
 
 #[test]

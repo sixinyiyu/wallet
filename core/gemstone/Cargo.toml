@@ -63,6 +63,7 @@ num-bigint.workspace = true
 futures.workspace = true
 bs58 = { workspace = true }
 zeroize = { workspace = true }
+rand = { workspace = true }
 
 [build-dependencies]
 uniffi = { workspace = true, features = ["build"] }

@@ -11,6 +11,8 @@ use zeroize::Zeroizing;
 
 use super::types::{GemImportType, GemKeystoreAccount, GemStoredSecretMigration, GemStoredWallet, GemWalletImport};
 use crate::GemstoneError;
+use crate::models::transaction::GemSignerInput;
+use crate::signer::GemChainSigner;
 
 #[derive(uniffi::Object)]
 pub struct GemKeystore {
@@ -116,6 +118,14 @@ impl GemKeystore {
     pub fn delete(&self, keystore_id: String) -> Result<bool, GemstoneError> {
         Ok(self.inner.delete(&keystore_id)?)
     }
+
+    pub fn sign(&self, keystore_id: String, chain: Chain, input: GemSignerInput, password: Vec<u8>) -> Result<Vec<String>, GemstoneError> {
+        GemChainSigner::new(chain).sign_input(input, self.signing_key(&keystore_id, chain, password)?)
+    }
+
+    pub fn sign_auth(&self, keystore_id: String, chain: Chain, hash: Vec<u8>, password: Vec<u8>) -> Result<String, GemstoneError> {
+        crate::auth::sign_auth_message_hash(hash, self.signing_key(&keystore_id, chain, password)?)
+    }
 }
 
 /// Deterministic keystore id for a wallet id. The same wallet always maps to the same keystore file,
@@ -126,6 +136,11 @@ pub fn keystore_id_for_wallet(wallet_id: String) -> String {
 }
 
 impl GemKeystore {
+    pub(crate) fn signing_key(&self, keystore_id: &str, chain: Chain, password: Vec<u8>) -> Result<Vec<u8>, GemstoneError> {
+        let password = Zeroizing::new(password);
+        Ok(self.load_private_key(keystore_id, chain, &password)?.to_vec())
+    }
+
     fn load_private_key(&self, keystore_id: &str, chain: Chain, password: &[u8]) -> Result<Zeroizing<Vec<u8>>, GemstoneError> {
         match self.inner.decrypt_mnemonic(keystore_id, password) {
             Ok(phrase) => Ok(derive_private_key_from_mnemonic(&phrase, chain)?),
