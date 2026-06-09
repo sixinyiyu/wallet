@@ -1,5 +1,5 @@
 variable "GITHUB_REPOSITORY" {
-  default = "gemwalletcom/wallet"
+  default = "sixinyiyu/wallet"
 }
 
 variable "GITHUB_SHA" {
@@ -23,8 +23,8 @@ target "core" {
   inherits = ["_common"]
   target = "core"
   tags = [
-    "ghcr.io/gemwalletcom/wallet/core:latest",
-    "ghcr.io/gemwalletcom/wallet/core:${GITHUB_SHA}",
+    "ghcr.io/${GITHUB_REPOSITORY}/core:latest",
+    "ghcr.io/${GITHUB_REPOSITORY}/core:${GITHUB_SHA}",
   ]
   cache-from = ["type=gha,scope=core"]
   cache-to = ["type=gha,mode=max,scope=core"]
@@ -34,8 +34,8 @@ target "dynode" {
   inherits = ["_common"]
   target = "dynode"
   tags = [
-    "ghcr.io/gemwalletcom/wallet/dynode:latest",
-    "ghcr.io/gemwalletcom/wallet/dynode:${GITHUB_SHA}",
+    "ghcr.io/${GITHUB_REPOSITORY}/dynode:latest",
+    "ghcr.io/${GITHUB_REPOSITORY}/dynode:${GITHUB_SHA}",
   ]
   cache-from = ["type=gha,scope=dynode"]
   cache-to = ["type=gha,mode=max,scope=dynode"]
