@@ -10,8 +10,6 @@ use primitives::{AssetId, Chain, SwapProvider, Transaction, TransactionState, Tr
 const CHAIN: Chain = Chain::Solana;
 const SWAP_PROGRAMS: &[(SwapProvider, &str)] = &[(SwapProvider::Jupiter, JUPITER_PROGRAM_ID), (SwapProvider::Okx, OKX_DEX_V2_PROGRAM_ID)];
 
-
-
 fn get_swap_provider(account_keys: &[String]) -> Option<(SwapProvider, &'static str)> {
     SWAP_PROGRAMS.iter().copied().find(|(_, program_id)| account_keys.iter().any(|key| key == program_id))
 }

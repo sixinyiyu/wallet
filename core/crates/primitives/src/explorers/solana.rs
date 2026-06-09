@@ -35,7 +35,6 @@ impl BlockExplorer for SolanaExplorer {
     fn get_token_url(&self, token: &str) -> Option<String> {
         Some(format!("{}{}/{}", self.base_url, self.token_path, token))
     }
-
 }
 
 pub fn new_solscan() -> Box<dyn BlockExplorer> {

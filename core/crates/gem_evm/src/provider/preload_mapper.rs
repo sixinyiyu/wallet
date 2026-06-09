@@ -8,8 +8,7 @@ use num_bigint::BigInt;
 use num_traits::Num;
 use primitives::swap::SwapQuoteDataType;
 use primitives::{
-    AssetSubtype, Chain, EVMChain, FeeRate, StakeType, TransactionInputType, TransactionLoadInput, TransactionLoadMetadata, decode_hex, fee::FeePriority,
-    fee::GasPriceType,
+    AssetSubtype, Chain, EVMChain, FeeRate, StakeType, TransactionInputType, TransactionLoadInput, TransactionLoadMetadata, decode_hex, fee::FeePriority, fee::GasPriceType,
 };
 
 use crate::encode::{encode_erc20_approve_max_value, encode_erc20_transfer};
@@ -172,7 +171,7 @@ pub fn calculate_gas_limit_with_increase(gas_limit: BigInt) -> BigInt {
 
 pub fn get_priority_fee_by_type(input_type: &TransactionInputType, is_max_value: bool, gas_price_type: &GasPriceType) -> BigInt {
     match input_type {
-        TransactionInputType::Transfer(asset) | TransactionInputType::Deposit(asset)  | TransactionInputType::Account(asset, _) => {
+        TransactionInputType::Transfer(asset) | TransactionInputType::Deposit(asset) | TransactionInputType::Account(asset, _) => {
             if asset.id.is_native() && is_max_value {
                 gas_price_type.gas_price()
             } else {

@@ -36,7 +36,6 @@ fn get_gas_limit(input_type: &TransactionInputType) -> BigInt {
     match input_type {
         TransactionInputType::Transfer(_)
         | TransactionInputType::Deposit(_)
-        
         | TransactionInputType::Account(_, _)
         | TransactionInputType::TokenApprove(_, _)
         | TransactionInputType::Generic(_, _, _)
@@ -57,7 +56,6 @@ fn get_multiple_of(input_type: &TransactionInputType) -> i64 {
     match input_type {
         TransactionInputType::Transfer(asset)
         | TransactionInputType::Deposit(asset)
-        
         | TransactionInputType::Account(asset, _)
         | TransactionInputType::TokenApprove(asset, _)
         | TransactionInputType::Generic(asset, _, _)

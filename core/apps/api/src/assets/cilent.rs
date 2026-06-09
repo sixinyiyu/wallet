@@ -104,6 +104,4 @@ impl SearchClient {
 
         Ok(perpetuals.into_iter().map(Into::into).collect())
     }
-
-
 }

@@ -6,7 +6,7 @@ use crate::provider::preload_mapper::{calculate_fee_rates, calculate_transaction
 use gem_client::Client;
 use primitives::{Chain, FeeRate, SolanaTokenProgramId, TransactionInputType, TransactionLoadData, TransactionLoadInput, TransactionLoadMetadata, TransactionPreloadInput};
 
-use crate::{get_token_program_id_by_address, rpc::client::SolanaClient};
+use crate::rpc::client::SolanaClient;
 
 #[cfg(feature = "rpc")]
 #[async_trait]

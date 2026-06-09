@@ -5,8 +5,6 @@ use primitives::TransactionState;
 use serde::{Deserialize, Serialize};
 use serde_serializers::deserialize_biguint_from_str;
 
-use crate::address::Address;
-
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DecodedBody {
     #[serde(rename = "type")]
@@ -142,7 +140,6 @@ pub struct JettonTransferDetails {
     pub amount: String,
     pub comment: Option<String>,
 }
-
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransactionMessage {

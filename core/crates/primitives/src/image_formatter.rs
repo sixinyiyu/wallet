@@ -17,7 +17,6 @@ impl ImageFormatter {
     pub fn get_validator_url(url: &str, chain: &str, id: &str) -> String {
         format!("{url}/blockchains/{chain}/validators/{id}/logo.png")
     }
-
 }
 #[cfg(test)]
 mod tests {
@@ -47,5 +46,4 @@ mod tests {
             "https://example.com/blockchains/ethereum/validators/1/logo.png"
         );
     }
-
 }

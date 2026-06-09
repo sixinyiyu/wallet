@@ -29,7 +29,6 @@ use primitives::{
 };
 use rocket::{State, delete, get, post, put, serde::json::Json, tokio::sync::Mutex};
 use std::sync::Arc;
-use streamer::{StreamProducer, StreamProducerQueue};
 
 use crate::auth::WalletSigned;
 

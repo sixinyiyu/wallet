@@ -91,9 +91,7 @@ impl<C: Client> AptosClient<C> {
         let sequence = input.metadata.get_sequence()?;
 
         match &input.input_type {
-            TransactionInputType::Transfer(asset)
-            | TransactionInputType::Deposit(asset)
-            | TransactionInputType::Account(asset, _) => {
+            TransactionInputType::Transfer(asset) | TransactionInputType::Deposit(asset) | TransactionInputType::Account(asset, _) => {
                 let payload = match &asset.id.token_id {
                     None => build_transfer_transaction_payload(&input.destination_address, &input.value),
                     Some(token_id) => build_token_transfer_transaction_payload(token_id, &input.destination_address, &input.value)?,

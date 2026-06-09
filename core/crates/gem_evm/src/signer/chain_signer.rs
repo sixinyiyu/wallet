@@ -8,7 +8,7 @@ use primitives::{ChainSigner, EVMChain, SignerError, SignerInput, StakeType, dec
 
 use super::model::TransactionParams;
 use super::sign_eip1559_tx;
-use crate::encode::{encode_erc20_approve_max_value, encode_erc20_transfer, encode_erc721_transfer, encode_erc1155_transfer};
+use crate::encode::{encode_erc20_approve_max_value, encode_erc20_transfer};
 
 #[allow(dead_code)]
 pub struct EvmChainSigner {

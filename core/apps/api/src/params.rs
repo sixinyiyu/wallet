@@ -87,7 +87,6 @@ impl<'r> FromFormField<'r> for AddressParam {
     }
 }
 
-
 pub struct AssetIdParam(pub AssetId);
 
 impl<'r> FromParam<'r> for AssetIdParam {

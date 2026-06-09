@@ -187,7 +187,7 @@ async fn setup_queues(settings: &Settings) -> Result<(), Box<dyn std::error::Err
     Ok(())
 }
 
-fn queue_supported_chains(queue: &QueueName, all_chains: &[Chain]) -> Vec<Chain> {
+fn queue_supported_chains(_queue: &QueueName, all_chains: &[Chain]) -> Vec<Chain> {
     all_chains.to_vec()
 }
 

@@ -1,8 +1,7 @@
 use crate::address::{Address, hex_to_base64_address};
 use crate::constants::FAILED_OPERATION_OPCODES;
 use crate::models::{
-    BroadcastTransaction, JettonSwapDetails, JettonTransferDetails, OutMessage, TRACE_ACTION_JETTON_SWAP, TRACE_ACTION_JETTON_TRANSFER,
-    Trace, TraceAction, TransactionMessage,
+    BroadcastTransaction, JettonSwapDetails, JettonTransferDetails, OutMessage, TRACE_ACTION_JETTON_SWAP, TRACE_ACTION_JETTON_TRANSFER, Trace, TraceAction, TransactionMessage,
 };
 use chrono::DateTime;
 use gem_encoding::decode_base64;

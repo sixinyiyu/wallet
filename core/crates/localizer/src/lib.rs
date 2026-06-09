@@ -109,8 +109,6 @@ impl LanguageLocalizer {
         }
     }
 
-
-
     pub fn notification_transfer_description(&self, is_sent: bool, to_address: &str, from_address: &str) -> String {
         if is_sent {
             fl!(self.loader.as_ref(), "notification_sent_description", address = to_address)

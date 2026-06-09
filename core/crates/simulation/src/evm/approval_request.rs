@@ -55,7 +55,6 @@ impl ApprovalRequest {
         )
     }
 
-
     pub(crate) fn permit(
         chain: Chain,
         contract_address: String,

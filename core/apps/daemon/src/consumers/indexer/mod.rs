@@ -10,7 +10,6 @@ use std::sync::Arc;
 
 use cacher::CacherClient;
 use pricer::PriceClient;
-use primitives::Chain;
 use settings::Settings;
 use storage::Database;
 use streamer::{

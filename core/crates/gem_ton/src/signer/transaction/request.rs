@@ -75,4 +75,3 @@ pub(crate) struct JettonTransferRequest {
     pub forward_ton_amount: BigUint,
     pub comment: Option<String>,
 }
-

@@ -282,8 +282,6 @@ mod tests {
         matches!(warning, SimulationWarningType::TokenApproval(_))
     }
 
-
-
     #[test]
     fn eip712_permit_simulation_result_contains_payload_and_warnings() {
         let json: Value = serde_json::from_str(include_str!("../../../gem_evm/testdata/1inch_permit.json")).unwrap();

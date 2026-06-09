@@ -1,5 +1,4 @@
 const SECONDS_PER_MINUTE: u64 = 60;
-const SECONDS_PER_HOUR: u64 = 60 * SECONDS_PER_MINUTE;
 const SECONDS_PER_DAY: u64 = 24 * 60 * 60;
 
 pub enum CacheKey<'a> {
