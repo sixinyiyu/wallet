@@ -29,7 +29,6 @@ class RouteArgumentsNavEntryDecoratorTest {
             mapOf("routeArguments" to mapOf(RouteArgument.AssetId.key to "bitcoin")),
             routeArguments(
                 RouteArgument.AssetId to "bitcoin",
-                RouteArgument.NftAssetId to null,
             ),
         )
     }

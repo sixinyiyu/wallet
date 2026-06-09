@@ -453,23 +453,6 @@ struct TransferAmountCalculatorTests {
         }
     }
 
-    @Test
-    func nftTransfer() {
-        let nftAsset = NFTAsset.mock()
-        #expect(throws: Never.self) {
-            let result = try service.calculate(input: TransferAmountInput(
-                asset: coinAsset,
-                assetBalance: Balance(available: BigInt(50)),
-                value: BigInt(1),
-                availableValue: BigInt(50),
-                assetFee: coinAsset.feeAsset,
-                assetFeeBalance: Balance(available: BigInt(20)),
-                fee: BigInt(3),
-                transferData: TransferData.mock(type: .transferNft(nftAsset), value: BigInt(1)),
-            ))
-            #expect(result == TransferAmount(value: 1, networkFee: 3, useMaxAmount: false))
-        }
-    }
 
     @Test
     func stakeFlexible() {

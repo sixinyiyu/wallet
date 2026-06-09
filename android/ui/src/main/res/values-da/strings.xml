@@ -85,7 +85,6 @@
   <string name="wallet_title">Tegnebog</string>
   <string name="wallet_add_token_title">Tilføj token</string>
   <string name="wallet_sell">Sælg</string>
-  <string name="wallet_receive_collection">Modtag samling</string>
   <string name="wallet_more">Mere</string>
   <string name="wallet_import_contract_address_field">Kontrakt eller token-ID</string>
   <string name="wallet_import_address_warning">Du kan se saldi og transaktioner for denne adresse, men **kan ikke sende eller sælge penge**.</string>
@@ -470,18 +469,6 @@
   <string name="info_minimum_amount_title">Minimumsbeløb</string>
   <string name="info_minimum_amount_description">På %1$s-netværket er minimumsbeløbet for denne transaktion %2$s.</string>
   <string name="input_enter_amount_to">Indtast venligst beløb til %1$s</string>
-  <string name="nft_properties">Egenskaber</string>
-  <string name="nft_collections">Samlinger</string>
-  <string name="nft_collection">Samling</string>
-  <string name="nft_save_to_photos">Gem til Fotos</string>
-  <string name="nft_set_as_avatar">Indstil som Avatar</string>
-  <string name="nft_state_empty_title">Dine NFT\'er vil blive vist her️</string>
-  <string name="nft_state_empty_description">Modtag din første NFT</string>
-  <string name="nft_report_reason_spam">Spam</string>
-  <string name="nft_report_reason_malicious">Ondsindet</string>
-  <string name="nft_report_reason_inappropriate">Upassende indhold</string>
-  <string name="nft_report_reason_copyright">Ophavsret</string>
-  <string name="nft_report_report_button_title">Rapport</string>
   <string name="permissions_access_denied">Adgang nægtet</string>
   <string name="permissions_image_photo_access_denied_description">Denne app har ikke tilladelse til at få adgang til dit fotobibliotek. Aktiver venligst adgang i dine enhedsindstillinger.</string>
   <string name="markets_title">Markeder</string>
@@ -586,7 +573,6 @@
   <string name="contacts_add_to_contacts">Føj til Kontakter</string>
   <string name="simulation_header_unlimited_asset">Ubegrænset %1$s</string>
   <string name="simulation_warning_unlimited_token_approval_description">Dette giver brugeren adgang til at bruge denne token, indtil du tilbagekalder godkendelsen, eller den udløber.</string>
-  <string name="simulation_warning_nft_collection_approval_title">Fuld adgang til NFT-samling anmodes</string>
   <string name="simulation_warning_unlimited_token_approval_title">Ubegrænset tokengodkendelse</string>
   <string name="application_name">Gem</string>
   <string name="camera_permission_request_camera">Kameratilladelse kræves til QR-kodescanning.\nGiv venligst tilladelse.</string>

@@ -37,9 +37,6 @@ private fun uniffi.gemstone.SimulationWarningType.toPrimitives(): SimulationWarn
     }
     uniffi.gemstone.SimulationWarningType.SuspiciousSpender -> SimulationWarningType.SuspiciousSpender
     uniffi.gemstone.SimulationWarningType.ExternallyOwnedSpender -> SimulationWarningType.ExternallyOwnedSpender
-    is uniffi.gemstone.SimulationWarningType.NftCollectionApproval -> v1.toAssetId()?.let {
-        SimulationWarningType.NftCollectionApproval(it)
-    }
     is uniffi.gemstone.SimulationWarningType.PermitApproval -> v1.assetId.toAssetId()?.let {
         SimulationWarningType.PermitApproval(SimulationWarningApproval(it, v1.value))
     }

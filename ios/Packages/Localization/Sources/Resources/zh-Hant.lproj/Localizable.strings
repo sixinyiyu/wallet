@@ -80,7 +80,6 @@
 "wallet.title" = "錢包";
 "wallet.add_token.title" = "添加代幣";
 "wallet.sell" = "出售";
-"wallet.receive_collection" = "接收 NFT 藏品";
 "wallet.more" = "更多";
 "wallet.import.contract_address_field" = "合約或代幣ID";
 "wallet.import_address_warning" = "您可以查看此地址的餘額和交易，但**不能發送或出售資金**。";
@@ -455,18 +454,6 @@
 "info.minimum_amount.title" = "最低金額";
 "info.minimum_amount.description" = "在 %@ 網路上，此交易的最低金額為 %@。";
 "input.enter_amount_to" = "請輸入您要%@的數量";
-"nft.properties" = "特性";
-"nft.collections" = "藏品集合";
-"nft.collection" = "藏品";
-"nft.save_to_photos" = "儲存到照片";
-"nft.set_as_avatar" = "設為頭像";
-"nft.state.empty.title" = "NFT 將顯示在這裡️";
-"nft.state.empty.description" = "接收第一個 NFT";
-"nft.report.reason.spam" = "垃圾郵件";
-"nft.report.reason.malicious" = "惡意";
-"nft.report.reason.inappropriate" = "不當內容";
-"nft.report.reason.copyright" = "版權";
-"nft.report.report_button_title" = "檢舉";
 "permissions.access_denied" = "拒絕訪問";
 "permissions.image.photo_access.denied.description" = "此應用程式無權存取您的照片庫。請在您的裝置設定中啟用存取。";
 "markets.title" = "市場";
@@ -571,5 +558,4 @@
 "contacts.add_to_contacts" = "加入聯絡人";
 "simulation.header.unlimited_asset" = "無限 %@";
 "simulation.warning.unlimited_token_approval.description" = "這樣，消費者就可以一直使用該代幣，直到你撤銷授權或代幣過期為止。";
-"simulation.warning.nft_collection_approval.title" = "請求訪問完整的NFT收藏集";
 "simulation.warning.unlimited_token_approval.title" = "無限代幣批准";

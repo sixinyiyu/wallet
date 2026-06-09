@@ -36,9 +36,6 @@ impl BlockExplorer for SolanaExplorer {
         Some(format!("{}{}/{}", self.base_url, self.token_path, token))
     }
 
-    fn get_nft_url(&self, _contract: &str, token_id: &str) -> Option<String> {
-        self.get_token_url(token_id)
-    }
 }
 
 pub fn new_solscan() -> Box<dyn BlockExplorer> {
@@ -70,10 +67,6 @@ mod tests {
             explorer.get_token_url("GvhwZwtV32kYUXUw965CUM3KGPdtBsDwPVpi92brY5R2"),
             Some("https://solscan.io/token/GvhwZwtV32kYUXUw965CUM3KGPdtBsDwPVpi92brY5R2".to_string())
         );
-        assert_eq!(
-            explorer.get_nft_url("ignored-contract", "GvhwZwtV32kYUXUw965CUM3KGPdtBsDwPVpi92brY5R2"),
-            Some("https://solscan.io/token/GvhwZwtV32kYUXUw965CUM3KGPdtBsDwPVpi92brY5R2".to_string())
-        );
     }
 
     #[test]
@@ -91,10 +84,6 @@ mod tests {
         );
         assert_eq!(
             explorer.get_token_url("GvhwZwtV32kYUXUw965CUM3KGPdtBsDwPVpi92brY5R2"),
-            Some("https://solana.fm/address/GvhwZwtV32kYUXUw965CUM3KGPdtBsDwPVpi92brY5R2".to_string())
-        );
-        assert_eq!(
-            explorer.get_nft_url("ignored-contract", "GvhwZwtV32kYUXUw965CUM3KGPdtBsDwPVpi92brY5R2"),
             Some("https://solana.fm/address/GvhwZwtV32kYUXUw965CUM3KGPdtBsDwPVpi92brY5R2".to_string())
         );
     }

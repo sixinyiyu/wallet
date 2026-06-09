@@ -194,30 +194,10 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "NFTServiceTests"
-               BuildableName = "NFTServiceTests"
-               BlueprintName = "NFTServiceTests"
-               ReferencedContainer = "container:Services/NFTService">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "NativeProviderServiceTests"
                BuildableName = "NativeProviderServiceTests"
                BlueprintName = "NativeProviderServiceTests"
                ReferencedContainer = "container:Services/NativeProviderService">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "NFTTests"
-               BuildableName = "NFTTests"
-               BlueprintName = "NFTTests"
-               ReferencedContainer = "container:Features/NFT">
             </BuildableReference>
          </TestableReference>
          <TestableReference

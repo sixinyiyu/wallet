@@ -157,7 +157,6 @@ public enum Images {
 
     public enum Tabs {
         public static let settings = Image(.tabSettings)
-        public static let collections = Image(.tabCollections)
         public static let activity = Image(.tabActivity)
         public static let wallet = Image(.tabWallet)
         public static let markets = Image(.tabDiscover)
@@ -200,7 +199,6 @@ public enum Images {
     public enum EmptyContent {
         public static let activity = Image(.emptyActivity)
         public static let priceAlerts = Image(.emptyNotification)
-        public static let nft = Image(.emptyIcons)
         public static let stake = Image(.emptyStake)
         public static let walletConnect = Image(.emptyDapps)
         public static let search = Image(.emptySearch)

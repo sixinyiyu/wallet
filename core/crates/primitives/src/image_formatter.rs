@@ -18,17 +18,6 @@ impl ImageFormatter {
         format!("{url}/blockchains/{chain}/validators/{id}/logo.png")
     }
 
-    pub fn get_nft_asset_url(url: &str, id: &str) -> String {
-        format!("{url}/assets/{id}/preview")
-    }
-
-    pub fn get_nft_asset_resource_url(url: &str, id: &str) -> String {
-        format!("{url}/assets/{id}/resource")
-    }
-
-    pub fn get_nft_collection_url(url: &str, id: &str) -> String {
-        format!("{url}/collections/{id}/preview")
-    }
 }
 #[cfg(test)]
 mod tests {
@@ -59,14 +48,4 @@ mod tests {
         );
     }
 
-    #[test]
-    fn test_get_nft_urls() {
-        let id = "ethereum_0xabc::1";
-        assert_eq!(ImageFormatter::get_nft_asset_url(URL, id), "https://example.com/assets/ethereum_0xabc::1/preview");
-        assert_eq!(ImageFormatter::get_nft_asset_resource_url(URL, id), "https://example.com/assets/ethereum_0xabc::1/resource");
-        assert_eq!(
-            ImageFormatter::get_nft_collection_url(URL, "ethereum_0xabc"),
-            "https://example.com/collections/ethereum_0xabc/preview"
-        );
-    }
 }

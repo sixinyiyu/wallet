@@ -8,11 +8,11 @@ use num_bigint::BigInt;
 use num_traits::Num;
 use primitives::swap::SwapQuoteDataType;
 use primitives::{
-    AssetSubtype, Chain, EVMChain, FeeRate, NFTType, StakeType, TransactionInputType, TransactionLoadInput, TransactionLoadMetadata, decode_hex, fee::FeePriority,
+    AssetSubtype, Chain, EVMChain, FeeRate, StakeType, TransactionInputType, TransactionLoadInput, TransactionLoadMetadata, decode_hex, fee::FeePriority,
     fee::GasPriceType,
 };
 
-use crate::encode::{encode_erc20_approve_max_value, encode_erc20_transfer, encode_erc721_transfer, encode_erc1155_transfer};
+use crate::encode::{encode_erc20_approve_max_value, encode_erc20_transfer};
 use crate::everstake::{DEFAULT_ALLOWED_INTERCHANGE_NUM, EVERSTAKE_ACCOUNTING_ADDRESS, EVERSTAKE_POOL_ADDRESS, EVERSTAKE_SOURCE, IAccounting, IPool};
 use crate::fee_calculator::FeeCalculator;
 use crate::models::fee::EthereumFeeHistory;
@@ -81,15 +81,6 @@ pub fn get_transaction_params(chain: EVMChain, input: &TransactionLoadInput) -> 
                 Ok(TransactionParams::new(to, data, BigInt::from(0)))
             }
         },
-        TransactionInputType::TransferNft(_, nft_asset) => {
-            let contract_address = nft_asset.contract_address.as_ref().ok_or("Missing contract address")?;
-            let data = match nft_asset.token_type {
-                NFTType::ERC721 => encode_erc721_transfer(&input.sender_address, &input.destination_address, &nft_asset.token_id)?,
-                NFTType::ERC1155 => encode_erc1155_transfer(&input.sender_address, &input.destination_address, &nft_asset.token_id)?,
-                _ => return Err("Unsupported NFT type for EVM".into()),
-            };
-            Ok(TransactionParams::new(contract_address.clone(), data, BigInt::from(0)))
-        }
         TransactionInputType::Swap(from_asset, _, swap_data) => {
             if let Some(approval) = &swap_data.data.approval {
                 Ok(TransactionParams::new(

@@ -82,15 +82,6 @@ public final class RecipientSceneViewModel {
         Localized.Transfer.memo
     }
 
-    func nftAssetImage(for nftAsset: NFTAsset) -> AssetImage {
-        AssetImage(
-            type: "NFT",
-            imageURL: assetImageFormatter.getNFTUrl(for: nftAsset.id.identifier),
-            placeholder: .none,
-            chainPlaceholder: .none,
-        )
-    }
-
     var actionButtonTitle: String {
         Localized.Common.continue
     }
@@ -216,7 +207,6 @@ extension RecipientSceneViewModel {
         {
             let transferType: TransferDataType = switch type {
             case let .asset(asset): .transfer(asset)
-            case let .nft(asset): .transferNft(asset)
             }
 
             let value = try formatter.inputNumber(from: amount, decimals: asset.decimals.asInt)
@@ -286,8 +276,6 @@ extension RecipientSceneViewModel {
         switch type {
         case .asset:
             onRecipientDataAction?(recipientData)
-        case let .nft(asset):
-            handle(transferData: TransferData(type: .transferNft(asset), recipientData: recipientData, value: .zero, canChangeValue: true))
         }
     }
 

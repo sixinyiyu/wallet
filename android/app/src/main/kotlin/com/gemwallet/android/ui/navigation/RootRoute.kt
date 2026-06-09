@@ -210,7 +210,7 @@ class WalletNavigator(
     fun openReceive() = push(ReceiveSelectRoute)
     fun openReceive(assetId: AssetId) = push(ReceiveRoute(assetId))
     fun openRecipient() = push(SendSelectRoute)
-    fun openRecipient(assetId: AssetId) = push(RecipientInputRoute(assetId, nftAssetId = null))
+    fun openRecipient(assetId: AssetId) = push(RecipientInputRoute(assetId))
     fun openAmount(params: AmountParams) {
         val pack = params.pack() ?: return
         push(AmountRoute(pack))

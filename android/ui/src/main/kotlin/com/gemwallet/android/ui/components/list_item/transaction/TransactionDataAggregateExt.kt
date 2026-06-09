@@ -49,7 +49,6 @@ fun TransactionDataAggregate.getBadgeColor(): Color = state.statusColor()
 
 @Composable
 fun TransactionDataAggregate.formatAddress(): String? = when (type) {
-    TransactionType.TransferNFT,
     TransactionType.Transfer,
     TransactionType.TokenApproval,
     TransactionType.SmartContractCall -> {
@@ -118,8 +117,7 @@ fun TransactionType.getTitle(direction: TransactionDirection? = null, state: Tra
         TransactionType.StakeUndelegate -> R.string.transfer_unstake_title
         TransactionType.StakeRedelegate -> R.string.transfer_redelegate_title
         TransactionType.StakeRewards -> R.string.transfer_rewards_title
-        TransactionType.Transfer,
-        TransactionType.TransferNFT -> when (state) {
+        TransactionType.Transfer -> when (state) {
             TransactionState.Failed,
             TransactionState.Reverted,
             TransactionState.Pending -> R.string.transfer_title

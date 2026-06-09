@@ -80,7 +80,6 @@
 "wallet.title" = "Mkoba";
 "wallet.add_token.title" = "Ongeza Ishara";
 "wallet.sell" = "Uza";
-"wallet.receive_collection" = "Pokea Mkusanyiko";
 "wallet.more" = "Zaidi";
 "wallet.import.contract_address_field" = "Mkataba au ID ya Token";
 "wallet.import_address_warning" = "Unaweza kuangalia salio na miamala ya anwani hii, lakini **haiwezi kutuma au kuuza fedha**.";
@@ -455,18 +454,6 @@
 "info.minimum_amount.title" = "Kiasi cha Chini";
 "info.minimum_amount.description" = "Kwenye mtandao wa %@, kiasi cha chini kwa muamala huu ni %@.";
 "input.enter_amount_to" = "Tafadhali weka kiasi hadi %@";
-"nft.properties" = "Mali";
-"nft.collections" = "Mikusanyiko";
-"nft.collection" = "Mkusanyiko";
-"nft.save_to_photos" = "Hifadhi kwa Picha";
-"nft.set_as_avatar" = "Weka kama Avatar";
-"nft.state.empty.title" = "NFT zako zitaonekana hapa️";
-"nft.state.empty.description" = "Pokea NFT yako ya kwanza";
-"nft.report.reason.spam" = "Barua taka";
-"nft.report.reason.malicious" = "Uovu";
-"nft.report.reason.inappropriate" = "Maudhui Yasiyofaa";
-"nft.report.reason.copyright" = "Hakimiliki";
-"nft.report.report_button_title" = "Ripoti";
 "permissions.access_denied" = "Ufikiaji Umekataliwa";
 "permissions.image.photo_access.denied.description" = "Programu hii haina ruhusa ya kufikia maktaba yako ya picha. Tafadhali wezesha ufikiaji katika mipangilio ya kifaa chako.";
 "markets.title" = "Masoko";
@@ -571,5 +558,4 @@
 "contacts.add_to_contacts" = "Ongeza kwenye Anwani";
 "simulation.header.unlimited_asset" = "Isiyo na kikomo %@";
 "simulation.warning.unlimited_token_approval.description" = "Hii inampa mtumiaji uwezo wa kutumia tokeni hii hadi utakapobatilisha idhini au itakapoisha muda wake.";
-"simulation.warning.nft_collection_approval.title" = "Ufikiaji kamili wa ukusanyaji wa NFT umeombwa";
 "simulation.warning.unlimited_token_approval.title" = "Idhini ya tokeni isiyo na kikomo";

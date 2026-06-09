@@ -85,7 +85,6 @@
   <string name="wallet_title">Cüzdan</string>
   <string name="wallet_add_token_title">Jeton Ekle</string>
   <string name="wallet_sell">Satmak</string>
-  <string name="wallet_receive_collection">Koleksiyon Al</string>
   <string name="wallet_more">Daha</string>
   <string name="wallet_import_contract_address_field">Sözleşme veya Token ID</string>
   <string name="wallet_import_address_warning">Bu adrese ait bakiyeleri ve işlemleri görüntüleyebilirsiniz, ancak **para gönderemez veya satamazsınız**.</string>
@@ -470,18 +469,6 @@
   <string name="info_minimum_amount_title">Asgari Tutar</string>
   <string name="info_minimum_amount_description">%1$s ağında, bu işlem için minimum tutar %2$s.</string>
   <string name="input_enter_amount_to">Lütfen tutarı %1$s olarak girin</string>
-  <string name="nft_properties">Özellikler</string>
-  <string name="nft_collections">Koleksiyonlar</string>
-  <string name="nft_collection">Koleksiyon</string>
-  <string name="nft_save_to_photos">Fotoğraflara Kaydet</string>
-  <string name="nft_set_as_avatar">Avatar olarak ayarla</string>
-  <string name="nft_state_empty_title">NFT\'leriniz burada görünecek️</string>
-  <string name="nft_state_empty_description">İlk NFT\'nizi alın</string>
-  <string name="nft_report_reason_spam">İstenmeyen e-posta</string>
-  <string name="nft_report_reason_malicious">Kötü niyetli</string>
-  <string name="nft_report_reason_inappropriate">Uygunsuz İçerik</string>
-  <string name="nft_report_reason_copyright">Telif hakkı</string>
-  <string name="nft_report_report_button_title">Bildir</string>
   <string name="permissions_access_denied">Erişim engellendi</string>
   <string name="permissions_image_photo_access_denied_description">Bu uygulama fotoğraf kütüphanenize erişim iznine sahip değil. Lütfen cihaz ayarlarınızda erişimi etkinleştirin.</string>
   <string name="markets_title">Piyasalar</string>
@@ -586,7 +573,6 @@
   <string name="contacts_add_to_contacts">Kişilere Ekle</string>
   <string name="simulation_header_unlimited_asset">Sınırsız %1$s</string>
   <string name="simulation_warning_unlimited_token_approval_description">Bu, harcama yapan kişiye, siz onayı iptal edene veya süresi dolana kadar bu belirteci kullanma erişimi sağlar.</string>
-  <string name="simulation_warning_nft_collection_approval_title">NFT koleksiyonunun tamamına erişim talep edildi.</string>
   <string name="simulation_warning_unlimited_token_approval_title">Sınırsız token onayı</string>
   <string name="application_name">Gem</string>
   <string name="camera_permission_request_camera">QR Kod taraması için kamera izni gereklidir.\n Lütfen izin verin.</string>

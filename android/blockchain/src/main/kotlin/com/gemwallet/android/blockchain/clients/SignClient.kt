@@ -104,14 +104,6 @@ interface SignClient {
         privateKey: ByteArray,
     ): List<ByteArray> = emptyList()
 
-    suspend fun signNft(
-        params: ConfirmParams.NftParams,
-        metadata: GemTransactionLoadMetadata,
-        finalAmount: BigInteger,
-        fee: Fee,
-        privateKey: ByteArray,
-    ): List<ByteArray> = emptyList()
-
     suspend fun signFreeze(
         params: ConfirmParams.Stake.Freeze,
         metadata: GemTransactionLoadMetadata,

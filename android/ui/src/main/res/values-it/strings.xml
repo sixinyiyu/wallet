@@ -85,7 +85,6 @@
   <string name="wallet_title">Portafoglio</string>
   <string name="wallet_add_token_title">Aggiungi gettone</string>
   <string name="wallet_sell">Vendere</string>
-  <string name="wallet_receive_collection">Ricevi la raccolta</string>
   <string name="wallet_more">Di più</string>
   <string name="wallet_import_contract_address_field">Contratto o ID token</string>
   <string name="wallet_import_address_warning">Puoi visualizzare i saldi e le transazioni per questo indirizzo, ma **non puoi inviare o vendere fondi**.</string>
@@ -470,18 +469,6 @@
   <string name="info_minimum_amount_title">Importo minimo</string>
   <string name="info_minimum_amount_description">Sulla rete %1$s, l\'importo minimo per questa transazione è %2$s.</string>
   <string name="input_enter_amount_to">Inserisci l\'importo in %1$s</string>
-  <string name="nft_properties">Proprietà</string>
-  <string name="nft_collections">Collezioni</string>
-  <string name="nft_collection">Collezione</string>
-  <string name="nft_save_to_photos">Salva in Foto</string>
-  <string name="nft_set_as_avatar">Imposta come avatar</string>
-  <string name="nft_state_empty_title">I tuoi NFT appariranno qui️</string>
-  <string name="nft_state_empty_description">Ricevi il tuo primo NFT</string>
-  <string name="nft_report_reason_spam">Spam</string>
-  <string name="nft_report_reason_malicious">Malizioso</string>
-  <string name="nft_report_reason_inappropriate">Contenuto inappropriato</string>
-  <string name="nft_report_reason_copyright">Diritto d\'autore</string>
-  <string name="nft_report_report_button_title">Segnala</string>
   <string name="permissions_access_denied">Accesso negato</string>
   <string name="permissions_image_photo_access_denied_description">Questa app non ha l\'autorizzazione per accedere alla tua libreria di foto. Abilita l\'accesso nelle impostazioni del tuo dispositivo.</string>
   <string name="markets_title">Mercati</string>
@@ -586,7 +573,6 @@
   <string name="contacts_add_to_contacts">Aggiungi ai contatti</string>
   <string name="simulation_header_unlimited_asset">Illimitato %1$s</string>
   <string name="simulation_warning_unlimited_token_approval_description">Ciò consente allo spender di utilizzare questo token finché non revochi l\'approvazione o finché non scade.</string>
-  <string name="simulation_warning_nft_collection_approval_title">È richiesto l\'accesso completo alla collezione NFT</string>
   <string name="simulation_warning_unlimited_token_approval_title">Approvazione token illimitata</string>
   <string name="application_name">Gem</string>
   <string name="camera_permission_request_camera">È richiesta l\'autorizzazione della fotocamera per la scansione del codice QR.\nConcedi l\'autorizzazione.</string>

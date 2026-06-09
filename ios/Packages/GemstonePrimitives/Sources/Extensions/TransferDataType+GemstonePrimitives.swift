@@ -17,8 +17,6 @@ public extension TransferDataType {
              let .tokenApprove(asset, _),
              let .generic(asset, _, _):
             asset
-        case let .transferNft(asset):
-            asset.chain.asset
         }
     }
 }

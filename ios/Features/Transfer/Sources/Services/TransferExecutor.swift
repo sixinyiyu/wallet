@@ -129,7 +129,7 @@ extension TransferExecutor {
                 return []
             case .perpetual where !transaction.id.hash.hasPrefix(Self.hyperCoreOrderIdPrefix):
                 return []
-            case .stake, .perpetual, .transfer, .deposit, .withdrawal, .transferNft, .swap, .tokenApprove, .generic, .account, .earn:
+            case .stake, .perpetual, .transfer, .deposit, .withdrawal, .swap, .tokenApprove, .generic, .account, .earn:
                 break
             }
         default:
@@ -147,7 +147,7 @@ extension TransferExecutor {
         switch data.chain {
         case .solana:
             switch data.type {
-            case .transfer, .deposit, .withdrawal, .transferNft, .stake, .account, .tokenApprove, .perpetual, .earn: BroadcastOptions(
+            case .transfer, .deposit, .withdrawal, .stake, .account, .tokenApprove, .perpetual, .earn: BroadcastOptions(
                     skipPreflight: false,
                 )
             case .swap, .generic: BroadcastOptions(skipPreflight: true)

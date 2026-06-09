@@ -6,8 +6,6 @@ import Blockchain
 import EarnService
 import Foundation
 import NativeProviderService
-import NFTService
-import NFTServiceTestKit
 import Primitives
 import StakeService
 import StakeServiceTestKit
@@ -21,14 +19,12 @@ public extension TransactionStateScheduler {
         gatewayService: GatewayService = GatewayService(provider: NativeProvider(url: Constants.apiURL, requestInterceptor: EmptyRequestInterceptor())),
         stakeService: StakeService = .mock(),
         earnService: EarnService = .mock(),
-        nftService: NFTService = .mock(),
     ) -> TransactionStateScheduler {
         let postProcessingService = TransactionPostProcessingService(
             transactionStore: transactionStore,
             balanceUpdater: .mock(),
             stakeService: stakeService,
             earnService: earnService,
-            nftService: nftService,
         )
         let service = TransactionStateService(
             transactionStore: transactionStore,

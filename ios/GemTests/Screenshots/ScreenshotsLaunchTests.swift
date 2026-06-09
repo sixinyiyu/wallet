@@ -84,28 +84,13 @@ final class ScreenshotsLaunchTests: XCTestCase {
 
         app.navigationBars.buttons.element(boundBy: 0).tap()
 
-        if app.tabBars.element.exists {
-            app.tabBars.buttons.element(boundBy: 1).tap()
-        } else {
-            app.buttons.element(boundBy: 1).tap()
-        }
-
-        sleep(3)
-
-        try snapshoter.snap("nft")
-
-        if app.tabBars.element.exists {
-            app.tabBars.buttons.element(boundBy: 2).tap()
-        } else {
-            app.buttons.element(boundBy: 2).tap()
-        }
 
         try snapshoter.snap("activity")
 
         if app.tabBars.element.exists {
-            app.tabBars.buttons.element(boundBy: 3).tap()
+            app.tabBars.buttons.element(boundBy: 1).tap()
         } else {
-            app.buttons.element(boundBy: 3).tap()
+            app.buttons.element(boundBy: 1).tap()
         }
 
         try snapshoter.snap("control")

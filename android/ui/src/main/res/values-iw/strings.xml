@@ -85,7 +85,6 @@
   <string name="wallet_title">ארנק</string>
   <string name="wallet_add_token_title">הוסף אסימון</string>
   <string name="wallet_sell">מְכִירָה</string>
-  <string name="wallet_receive_collection">קבלת אוסף</string>
   <string name="wallet_more">יוֹתֵר</string>
   <string name="wallet_import_contract_address_field">חוזה או מזהה טוקן</string>
   <string name="wallet_import_address_warning">ניתן לצפות ביתרות ועסקאות עבור כתובת זו, אך **לא ניתן לשלוח או למכור כספים**.</string>
@@ -470,18 +469,6 @@
   <string name="info_minimum_amount_title">כמות מינימלית</string>
   <string name="info_minimum_amount_description">ברשת %1$s, הסכום המינימלי לעסקה זו הוא %2$s.</string>
   <string name="input_enter_amount_to">נא להזין סכום ל-%1$s</string>
-  <string name="nft_properties">נכסים</string>
-  <string name="nft_collections">אוספים</string>
-  <string name="nft_collection">גְבִיָה</string>
-  <string name="nft_save_to_photos">שמור בתמונות</string>
-  <string name="nft_set_as_avatar">הגדר כאווטר</string>
-  <string name="nft_state_empty_title">ה-NFT שלך יופיע כאן️</string>
-  <string name="nft_state_empty_description">קבל את ה-NFT הראשון שלך</string>
-  <string name="nft_report_reason_spam">ספאם</string>
-  <string name="nft_report_reason_malicious">זְדוֹנִי</string>
-  <string name="nft_report_reason_inappropriate">תוכן לא הולם</string>
-  <string name="nft_report_reason_copyright">זְכוּת יְוֹצרִים</string>
-  <string name="nft_report_report_button_title">דווח</string>
   <string name="permissions_access_denied">הגִישָׁה נִדחֲתָה</string>
   <string name="permissions_image_photo_access_denied_description">לאפליקציה הזו אין הרשאה לגשת לספריית התמונות שלך. אפשר גישה בהגדרות המכשיר שלך.</string>
   <string name="markets_title">שווקים</string>
@@ -586,7 +573,6 @@
   <string name="contacts_add_to_contacts">הוסף לאנשי קשר</string>
   <string name="simulation_header_unlimited_asset">בִּלתִי מוּגבָּל %1$s</string>
   <string name="simulation_warning_unlimited_token_approval_description">זה נותן למוציא גישה להשתמש באסימון זה עד שתבטל את האישור או שהוא יפוג תוקפו.</string>
-  <string name="simulation_warning_nft_collection_approval_title">התבקשה גישה מלאה לאוסף NFT</string>
   <string name="simulation_warning_unlimited_token_approval_title">אישור אסימונים ללא הגבלה</string>
   <string name="application_name">Gem</string>
   <string name="camera_permission_request_camera">נדרשת הרשאת מצלמה לסריקת קוד QR.\nאנא הענק הרשאה.</string>

@@ -14,7 +14,6 @@ import com.gemwallet.android.domains.transaction.aggregates.TransactionDetailsAg
 import com.gemwallet.android.domains.transaction.values.TransactionDetailsValue
 import com.gemwallet.android.domains.transaction.values.ValueGroup
 import com.gemwallet.android.ext.getAssociatedAssetIds
-import com.gemwallet.android.ext.getNftMetadata
 import com.gemwallet.android.ext.getPerpetualMetadata
 import com.gemwallet.android.ext.getResourceMetadata
 import com.gemwallet.android.ext.getSwapMetadata
@@ -137,11 +136,6 @@ class TransactionDetailsAggregateImpl(
                         )
                     }
                 }
-                TransactionType.TransferNFT -> {
-                    data.transaction.getNftMetadata()?.let { TransactionDetailsValue.Amount.NFT(it) }
-                        ?: TransactionDetailsValue.Amount.None
-                }
-
                 else -> {
                     val value = Crypto(data.transaction.value.toBigInteger())
                     val fiat = data.price?.price?.let {
@@ -165,7 +159,6 @@ class TransactionDetailsAggregateImpl(
                             AmountSign(data.transaction.direction).format(formatter.string(value.atomicValue, asset)),
                             fiat,
                         )
-                        TransactionType.TransferNFT,
                         TransactionType.AssetActivation,
                         TransactionType.SmartContractCall,
                         TransactionType.PerpetualOpenPosition,
@@ -247,21 +240,6 @@ class TransactionDetailsAggregateImpl(
         }
         TransactionType.Swap -> this@TransactionDetailsAggregateImpl.swapProvider?.name?.let { TransactionDetailsValue.Destination.Provider(it) }
         TransactionType.Transfer,
-        TransactionType.TransferNFT -> when (data.transaction.direction) {
-            TransactionDirection.SelfTransfer,
-            TransactionDirection.Outgoing -> TransactionDetailsValue.Destination.Recipient(
-                data = data.transaction.to,
-                name = data.toAddress?.name,
-                addressType = data.toAddress?.type,
-                explorerLink = recipientExplorerLink,
-            )
-            TransactionDirection.Incoming -> TransactionDetailsValue.Destination.Sender(
-                data = data.transaction.from,
-                name = data.fromAddress?.name,
-                addressType = data.fromAddress?.type,
-                explorerLink = senderExplorerLink,
-            )
-        }
     }
 
     override val valueGroups: List<ValueGroup<TransactionDetailsValue>>

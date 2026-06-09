@@ -36,44 +36,6 @@ struct TransactionSceneViewModelTests {
         verifyNonEmpty(itemModel)
     }
 
-    @Test
-    func nftHeaderAction() {
-        let assetId = NFTAssetId(chain: .ethereum, contractAddress: "0xasset", tokenId: "1")
-        var selectedAction: TransactionHeaderAction?
-        let model = TransactionSceneViewModel(
-            transaction: TransactionExtended.mock(
-                transaction: Transaction.mock(
-                    type: .transferNFT,
-                    metadata: .encode(TransactionNFTTransferMetadata(assetId: assetId, name: "NFT")),
-                ),
-            ),
-            walletId: .mock(),
-            preferences: Preferences.standard,
-            onHeaderAction: { selectedAction = $0 },
-        )
-
-        #expect(model.onTransactionHeaderTap != nil)
-
-        model.onTransactionHeaderTap?(.header)
-
-        #expect(selectedAction == .nft(assetId: assetId))
-    }
-
-    @Test
-    func nftHeaderActionRequiresHandler() {
-        let model = TransactionSceneViewModel(
-            transaction: TransactionExtended.mock(
-                transaction: Transaction.mock(
-                    type: .transferNFT,
-                    metadata: .encode(TransactionNFTTransferMetadata(assetId: .mock(), name: "NFT")),
-                ),
-            ),
-            walletId: .mock(),
-            preferences: Preferences.standard,
-        )
-
-        #expect(model.onTransactionHeaderTap == nil)
-    }
 
     @Test
     func swapButtonItemModel() {

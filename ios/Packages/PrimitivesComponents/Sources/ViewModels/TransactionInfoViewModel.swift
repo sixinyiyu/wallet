@@ -71,15 +71,6 @@ public struct TransactionInfoViewModel: Sendable {
         case let .amount(showFiat): .amount(
                 amountDisplay().fiatVisibility(showFiat),
             )
-        case let .nft(name, id): .nft(
-                name: name,
-                image: AssetImage(
-                    type: "NFT",
-                    imageURL: AssetImageFormatter().getNFTUrl(for: id),
-                    placeholder: .none,
-                    chainPlaceholder: .none,
-                ),
-            )
         case let .swap(swapInput): .swap(
                 from: swapAmountField(input: swapInput.from),
                 to: swapAmountField(input: swapInput.to),

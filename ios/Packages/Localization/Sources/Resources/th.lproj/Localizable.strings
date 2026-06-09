@@ -80,7 +80,6 @@
 "wallet.title" = "กระเป๋าเงิน";
 "wallet.add_token.title" = "เพิ่มโทเค็น";
 "wallet.sell" = "ขาย";
-"wallet.receive_collection" = "รับการรวบรวม";
 "wallet.more" = "มากกว่า";
 "wallet.import.contract_address_field" = "สัญญาหรือรหัสโทเคน";
 "wallet.import_address_warning" = "คุณสามารถดูยอดคงเหลือและธุรกรรมสำหรับที่อยู่นี้ แต่ **ไม่สามารถส่งหรือขายเงินได้**";
@@ -455,18 +454,6 @@
 "info.minimum_amount.title" = "จำนวนเงินขั้นต่ำ";
 "info.minimum_amount.description" = "บนเครือข่าย %@ จำนวนขั้นต่ำสำหรับธุรกรรมนี้คือ %@";
 "input.enter_amount_to" = "กรุณากรอกจำนวนเงินเป็น %@";
-"nft.properties" = "คุณสมบัติ";
-"nft.collections" = "คอลเลคชั่น";
-"nft.collection" = "ของสะสม";
-"nft.save_to_photos" = "บันทึกลงในภาพถ่าย";
-"nft.set_as_avatar" = "ตั้งเป็นอวาตาร์";
-"nft.state.empty.title" = "NFT ของคุณจะปรากฏที่นี่";
-"nft.state.empty.description" = "รับ NFT แรกของคุณ";
-"nft.report.reason.spam" = "สแปม";
-"nft.report.reason.malicious" = "อันตราย";
-"nft.report.reason.inappropriate" = "เนื้อหาที่ไม่เหมาะสม";
-"nft.report.reason.copyright" = "ลิขสิทธิ์";
-"nft.report.report_button_title" = "รายงานปัญหา";
 "permissions.access_denied" = "การเข้าถึงถูกปฏิเสธ";
 "permissions.image.photo_access.denied.description" = "แอพนี้ไม่มีสิทธิ์ในการเข้าถึงคลังภาพของคุณ โปรดเปิดใช้งานสิทธิ์ในการตั้งค่าอุปกรณ์ของคุณ";
 "markets.title" = "ตลาด";
@@ -571,5 +558,4 @@
 "contacts.add_to_contacts" = "เพิ่มลงในรายชื่อติดต่อ";
 "simulation.header.unlimited_asset" = "ไม่จำกัด %@";
 "simulation.warning.unlimited_token_approval.description" = "これにより ผู้ใช้สามารถใช้โทเค็นนี้ได้จนกว่าคุณจะเพิกถอนการอนุมัติหรือโทเค็นหมดอายุ";
-"simulation.warning.nft_collection_approval.title" = "ขอสิทธิ์เข้าถึงคอลเลกชัน NFT ทั้งหมด";
 "simulation.warning.unlimited_token_approval.title" = "อนุมัติโทเค็นได้ไม่จำกัดจำนวน";

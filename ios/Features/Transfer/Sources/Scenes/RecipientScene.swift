@@ -32,12 +32,6 @@ public struct RecipientScene: View {
                     switch model.type {
                     case let .asset(asset):
                         AssetPreviewView(model: AssetViewModel(asset: asset))
-                    case let .nft(nftAsset):
-                        NftPreviewView(
-                            assetImage: model.nftAssetImage(for: nftAsset),
-                            name: nftAsset.name,
-                            size: .image.large,
-                        )
                     }
                 }
                 .frame(maxWidth: .infinity)

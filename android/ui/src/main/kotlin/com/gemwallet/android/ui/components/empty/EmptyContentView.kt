@@ -25,7 +25,6 @@ fun EmptyContentView(
 
 @Composable
 private fun EmptyContentType.title(): String = when (this) {
-    is EmptyContentType.Nft -> stringResource(R.string.nft_state_empty_title)
     is EmptyContentType.PriceAlerts -> stringResource(R.string.price_alerts_state_empty_title)
     is EmptyContentType.Contacts -> stringResource(R.string.contacts_state_empty_title)
     is EmptyContentType.Asset -> if (isViewOnly) {
@@ -50,7 +49,6 @@ private fun EmptyContentType.title(): String = when (this) {
 
 @Composable
 private fun EmptyContentType.description(): String? = when (this) {
-    is EmptyContentType.Nft -> if (onReceive != null) stringResource(R.string.nft_state_empty_description) else null
     is EmptyContentType.PriceAlerts -> stringResource(R.string.price_alerts_state_empty_description)
     is EmptyContentType.Contacts -> stringResource(R.string.contacts_state_empty_description)
     is EmptyContentType.Asset -> if (isViewOnly) null else stringResource(R.string.asset_state_empty_description, symbol)
@@ -73,7 +71,6 @@ private fun EmptyContentType.description(): String? = when (this) {
 private fun EmptyContentType.icon() = when (this) {
     is EmptyContentType.SearchAssets, is EmptyContentType.SearchActivity,
     is EmptyContentType.SearchNetworks, is EmptyContentType.SearchPerpetuals -> null
-    is EmptyContentType.Nft -> painterResource(R.drawable.empty_nfts)
     is EmptyContentType.PriceAlerts -> painterResource(R.drawable.empty_notifications)
     is EmptyContentType.Contacts -> painterResource(R.drawable.empty_contacts)
     is EmptyContentType.Asset, is EmptyContentType.Activity -> painterResource(R.drawable.empty_activity)
@@ -92,9 +89,6 @@ private fun EmptyContentType.iconVector(): ImageVector? = when (this) {
 
 @Composable
 private fun EmptyContentType.buttons(): List<EmptyAction> = when (this) {
-    is EmptyContentType.Nft -> listOfNotNull(
-        onReceive?.let { EmptyAction(stringResource(R.string.wallet_receive), it, EmptyActionStyle.Secondary) },
-    )
     is EmptyContentType.Asset -> if (isViewOnly) emptyList() else listOfNotNull(
         onBuy?.let { EmptyAction(stringResource(R.string.wallet_buy), it) },
         onSwap?.let { EmptyAction(stringResource(R.string.wallet_swap), it, EmptyActionStyle.Secondary) },

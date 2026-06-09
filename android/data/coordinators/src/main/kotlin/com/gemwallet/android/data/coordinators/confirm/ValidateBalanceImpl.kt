@@ -42,7 +42,6 @@ class ValidateBalanceImpl : ValidateBalance {
             TransactionType.StakeWithdraw,
             TransactionType.EarnWithdraw,
             TransactionType.StakeUnfreeze,
-            TransactionType.TransferNFT,
             TransactionType.PerpetualOpenPosition,
             TransactionType.PerpetualClosePosition,
             TransactionType.PerpetualModifyPosition -> amount

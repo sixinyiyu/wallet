@@ -43,11 +43,6 @@ public struct ExplorerService {
         return makeLink(name: name, url: explorer.getTokenUrl(explorerName: name, address: address))
     }
 
-    public func nftUrl(chain: Chain, contractAddress: String, tokenId: String) -> BlockExplorerLink? {
-        let (name, explorer) = getExplorer(chain: chain)
-        return makeLink(name: name, url: explorer.getNftUrl(explorerName: name, contractAddress: contractAddress, tokenId: tokenId))
-    }
-
     public func validatorUrl(chain: Chain, address: String) -> BlockExplorerLink? {
         let (name, explorer) = getExplorer(chain: chain)
         return makeLink(name: name, url: explorer.getValidatorUrl(explorerName: name, address: address))

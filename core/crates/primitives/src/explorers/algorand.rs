@@ -11,7 +11,6 @@ impl AlgorandAllo {
             tx_path: TX_PATH,
             address_path: ACCOUNT_PATH,
             token_path: None,
-            nft_path: None,
             validator_path: Some(ACCOUNT_PATH),
         })
     }
@@ -27,7 +26,6 @@ impl AlgorandPera {
             tx_path: TX_PATH,
             address_path: ACCOUNT_PATH,
             token_path: Some("/assets"),
-            nft_path: None,
             validator_path: Some(ACCOUNT_PATH),
         })
     }

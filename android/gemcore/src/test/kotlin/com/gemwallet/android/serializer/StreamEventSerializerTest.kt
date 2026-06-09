@@ -8,10 +8,10 @@ class StreamEventSerializerTest {
 
     @Test
     fun `transforms event key to type and passes through type key`() {
-        val withEventKey = """{"event": "nft", "data": {"walletId": "w1"}}"""
-        val withTypeKey = """{"type": "nft", "data": {"walletId": "w1"}}"""
+        val withEventKey = """{"event": "balances", "data": {"walletId": "w1", "assetId": "bitcoin", "balance": "1.0"}}"""
+        val withTypeKey = """{"type": "balances", "data": {"walletId": "w1", "assetId": "bitcoin", "balance": "1.0"}}"""
 
-        assertTrue(jsonEncoder.decodeFromString(StreamEventSerializer, withEventKey) is StreamEvent.Nft)
-        assertTrue(jsonEncoder.decodeFromString(StreamEventSerializer, withTypeKey) is StreamEvent.Nft)
+        assertTrue(jsonEncoder.decodeFromString(StreamEventSerializer, withEventKey) is StreamEvent.Balances)
+        assertTrue(jsonEncoder.decodeFromString(StreamEventSerializer, withTypeKey) is StreamEvent.Balances)
     }
 }

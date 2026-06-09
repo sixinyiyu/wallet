@@ -3,7 +3,6 @@
 import BalanceService
 import FiatService
 import Foundation
-import NFTService
 import PerpetualService
 import Preferences
 import PriceAlertService
@@ -19,7 +18,6 @@ public struct StreamEventService: Sendable {
     private let priceAlertService: PriceAlertService
     private let balanceUpdater: any BalanceUpdater
     private let transactionsService: TransactionsService
-    private let nftService: NFTService
     private let perpetualService: any HyperliquidPerpetualServiceable
     private let fiatService: FiatService
     private let preferences: Preferences
@@ -31,7 +29,6 @@ public struct StreamEventService: Sendable {
         priceAlertService: PriceAlertService,
         balanceUpdater: any BalanceUpdater,
         transactionsService: TransactionsService,
-        nftService: NFTService,
         perpetualService: any HyperliquidPerpetualServiceable,
         fiatService: FiatService,
         preferences: Preferences,
@@ -42,7 +39,6 @@ public struct StreamEventService: Sendable {
         self.priceAlertService = priceAlertService
         self.balanceUpdater = balanceUpdater
         self.transactionsService = transactionsService
-        self.nftService = nftService
         self.perpetualService = perpetualService
         self.fiatService = fiatService
         self.preferences = preferences
@@ -56,8 +52,6 @@ public struct StreamEventService: Sendable {
             Task { await perform { try await handleBalanceUpdate(update) } }
         case let .transactions(update):
             Task { await perform { try await transactionsService.updateAll(walletId: update.walletId) } }
-        case let .nft(update):
-            Task { await perform { try await handleNftUpdate(update) } }
         case let .perpetual(update):
             Task { await perform { try await handlePerpetualUpdate(update) } }
         case let .inAppNotification(update):
@@ -92,11 +86,6 @@ extension StreamEventService {
     private func handleBalanceUpdate(_ update: StreamBalanceUpdate) async throws {
         guard let wallet = try walletStore.getWallet(id: update.walletId) else { return }
         await balanceUpdater.updateBalance(for: wallet, assetIds: [update.assetId])
-    }
-
-    private func handleNftUpdate(_ update: StreamWalletUpdate) async throws {
-        guard let wallet = try walletStore.getWallet(id: update.walletId) else { return }
-        try await nftService.updateAssets(wallet: wallet)
     }
 
     private func handlePerpetualUpdate(_ update: StreamWalletUpdate) async throws {

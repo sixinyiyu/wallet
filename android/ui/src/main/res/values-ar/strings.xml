@@ -85,7 +85,6 @@
   <string name="wallet_title">محفظة</string>
   <string name="wallet_add_token_title">إضافة رمز مميز</string>
   <string name="wallet_sell">يبيع</string>
-  <string name="wallet_receive_collection">استلام المجموعة</string>
   <string name="wallet_more">أكثر</string>
   <string name="wallet_import_contract_address_field">عقد أو معرف توكن</string>
   <string name="wallet_import_address_warning">يمكنك عرض الأرصدة والمعاملات لهذا العنوان، ولكن **لا يمكنك إرسال أو بيع الأموال**.</string>
@@ -470,18 +469,6 @@
   <string name="info_minimum_amount_title">الحد الأدنى للمبلغ</string>
   <string name="info_minimum_amount_description">على شبكة %1$s، الحد الأدنى لمبلغ هذه المعاملة هو %2$s.</string>
   <string name="input_enter_amount_to">الرجاء إدخال المبلغ إلى %1$s</string>
-  <string name="nft_properties">ملكيات</string>
-  <string name="nft_collections">المجموعات</string>
-  <string name="nft_collection">مجموعة</string>
-  <string name="nft_save_to_photos">حفظ في الصور</string>
-  <string name="nft_set_as_avatar">تعيين كصورة رمزية</string>
-  <string name="nft_state_empty_title">ستظهر NFTs الخاصة بك هنا</string>
-  <string name="nft_state_empty_description">احصل على NFT الأول الخاص بك</string>
-  <string name="nft_report_reason_spam">رسائل إلكترونية مزعجة</string>
-  <string name="nft_report_reason_malicious">خبيث</string>
-  <string name="nft_report_reason_inappropriate">محتوى غير لائق</string>
-  <string name="nft_report_reason_copyright">حقوق الطبع والنشر</string>
-  <string name="nft_report_report_button_title">تقرير</string>
   <string name="permissions_access_denied">تم الرفض</string>
   <string name="permissions_image_photo_access_denied_description">لا يتوفر لهذا التطبيق إذن بالوصول إلى مكتبة الصور الخاصة بك. يُرجى تمكين هذا الإذن في إعدادات جهازك.</string>
   <string name="markets_title">الأسواق</string>
@@ -586,7 +573,6 @@
   <string name="contacts_add_to_contacts">أضف إلى جهات الاتصال</string>
   <string name="simulation_header_unlimited_asset">غير محدود %1$s</string>
   <string name="simulation_warning_unlimited_token_approval_description">يمنح هذا المنفق إمكانية استخدام هذا الرمز المميز حتى تقوم بإلغاء الموافقة أو تنتهي صلاحيته.</string>
-  <string name="simulation_warning_nft_collection_approval_title">تم طلب الوصول الكامل إلى مجموعة NFT</string>
   <string name="simulation_warning_unlimited_token_approval_title">الموافقة على الرموز المميزة غير محدودة</string>
   <string name="application_name">Gem</string>
   <string name="camera_permission_request_camera">مطلوب إذن الكاميرا لمسح رمز الاستجابة السريعة.\nيرجى منح الإذن.</string>

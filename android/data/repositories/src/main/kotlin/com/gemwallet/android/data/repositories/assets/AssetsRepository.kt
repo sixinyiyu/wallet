@@ -4,7 +4,6 @@ import android.util.Log
 import com.gemwallet.android.application.transactions.coordinators.GetChangedTransactions
 import com.gemwallet.android.blockchain.operators.GetAsset
 import com.gemwallet.android.blockchain.services.BalancesService
-import com.gemwallet.android.cases.nft.SyncNfts
 import com.gemwallet.android.cases.stake.SyncStakeDelegations
 import com.gemwallet.android.cases.tokens.SearchTokensCase
 import com.gemwallet.android.data.repositories.session.SessionRepository
@@ -95,7 +94,6 @@ class AssetsRepository @Inject constructor(
     private val balancesService: BalancesService,
     getChangedTransactions: GetChangedTransactions,
     private val syncStakeDelegations: SyncStakeDelegations,
-    private val syncNfts: SyncNfts,
     private val searchTokensCase: SearchTokensCase,
     private val streamSubscriptionService: StreamSubscriptionService,
     private val updateBalances: UpdateBalances = UpdateBalances(balancesDao, balancesService),
@@ -477,7 +475,6 @@ class AssetsRepository @Inject constructor(
                 address = transaction.from,
                 apr = assetInfos.firstOrNull { it.id() == transaction.assetId }?.stakeApr ?: 0.0,
             )
-            TransactionType.TransferNFT -> syncNfts.sync(walletId)
             else -> Unit
         }
     }

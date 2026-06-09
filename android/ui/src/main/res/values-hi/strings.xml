@@ -85,7 +85,6 @@
   <string name="wallet_title">बटुआ</string>
   <string name="wallet_add_token_title">टोकन जोड़ें</string>
   <string name="wallet_sell">बेचना</string>
-  <string name="wallet_receive_collection">संग्रह प्राप्त करें</string>
   <string name="wallet_more">अधिक</string>
   <string name="wallet_import_contract_address_field">कॉन्ट्रैक्ट या टोकन ID</string>
   <string name="wallet_import_address_warning">आप इस पते के लिए शेष राशि और लेनदेन देख सकते हैं, लेकिन **धन भेज या बेच नहीं सकते**।</string>
@@ -470,18 +469,6 @@
   <string name="info_minimum_amount_title">न्यूनतम राशि</string>
   <string name="info_minimum_amount_description">%1$s नेटवर्क पर, इस लेनदेन की न्यूनतम राशि %2$s है।</string>
   <string name="input_enter_amount_to">कृपया राशि %1$s दर्ज करें</string>
-  <string name="nft_properties">गुण</string>
-  <string name="nft_collections">संग्रह</string>
-  <string name="nft_collection">संग्रह</string>
-  <string name="nft_save_to_photos">फ़ोटो में सहेजें</string>
-  <string name="nft_set_as_avatar">अवतार के रूप में सेट करें</string>
-  <string name="nft_state_empty_title">आपके NFT यहां दिखाई देंगे️</string>
-  <string name="nft_state_empty_description">अपना पहला NFT प्राप्त करें</string>
-  <string name="nft_report_reason_spam">अवांछित ईमेल</string>
-  <string name="nft_report_reason_malicious">दुर्भावनापूर्ण</string>
-  <string name="nft_report_reason_inappropriate">अनुपयुक्त सामग्री</string>
-  <string name="nft_report_reason_copyright">कॉपीराइट</string>
-  <string name="nft_report_report_button_title">रिपोर्ट करें</string>
   <string name="permissions_access_denied">पहुंच अस्वीकृत</string>
   <string name="permissions_image_photo_access_denied_description">इस ऐप को आपकी फोटो लाइब्रेरी तक पहुंचने की अनुमति नहीं है। कृपया अपनी डिवाइस सेटिंग में पहुंच सक्षम करें।</string>
   <string name="markets_title">बाज़ार</string>
@@ -586,7 +573,6 @@
   <string name="contacts_add_to_contacts">संपर्क के खाते में जोड़ दे</string>
   <string name="simulation_header_unlimited_asset">असीमित %1$s</string>
   <string name="simulation_warning_unlimited_token_approval_description">इससे खर्च करने वाले को इस टोकन का उपयोग तब तक करने की अनुमति मिलती है जब तक आप अनुमोदन रद्द नहीं कर देते या यह समाप्त नहीं हो जाता।</string>
-  <string name="simulation_warning_nft_collection_approval_title">संपूर्ण एनएफटी संग्रह तक पहुंच का अनुरोध किया गया है</string>
   <string name="simulation_warning_unlimited_token_approval_title">असीमित टोकन अनुमोदन</string>
   <string name="application_name">Gem</string>
   <string name="camera_permission_request_camera">क्यूआर कोड स्कैन के लिए कैमरे की अनुमति आवश्यक है।\nकृपया अनुमति दें।</string>

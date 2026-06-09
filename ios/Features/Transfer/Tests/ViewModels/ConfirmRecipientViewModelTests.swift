@@ -17,13 +17,6 @@ struct ConfirmRecipientViewModelTests {
         #expect(item.account.address != "")
     }
 
-    @Test
-    func transferNft() {
-        let model = ConfirmRecipientViewModel(model: .mock(type: .transferNft(.mock())), addressName: nil, addressLink: .mock())
-
-        guard case let .recipient(item) = model.itemModel else { return }
-        #expect(item.title == Localized.Transfer.Recipient.title)
-    }
 
     @Test
     func deposit() {

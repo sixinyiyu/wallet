@@ -136,10 +136,6 @@ impl Chain {
         self.config().stake.is_some()
     }
 
-    pub fn is_nft_supported(&self) -> bool {
-        self.config().is_nft_supported
-    }
-
     // milliseconds
     pub fn block_time(&self) -> u32 {
         self.config().block_time

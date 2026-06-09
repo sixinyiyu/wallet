@@ -25,7 +25,7 @@ extension ConfirmHeaderViewModel: ItemModelProvidable {
 private extension ConfirmHeaderViewModel {
     var showClearHeader: Bool {
         switch headerType {
-        case .amount, .nft, .asset, .assetValue: true
+        case .amount, .asset, .assetValue: true
         case .swap: false
         }
     }

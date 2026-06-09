@@ -30,14 +30,6 @@ public struct TransactionViewModel: Sendable {
 
     public var assetImage: AssetImage {
         let asset = AssetIdViewModel(assetId: assetId).assetImage
-        if let nftMetadata = transaction.transaction.metadata?.decode(TransactionNFTTransferMetadata.self) {
-            return AssetImage(
-                type: "",
-                imageURL: assetImageFormatter.getNFTUrl(for: nftMetadata.assetId.identifier),
-                placeholder: asset.placeholder,
-                chainPlaceholder: overlayImage,
-            )
-        }
         return AssetImage(
             type: asset.type,
             imageURL: asset.imageURL,
@@ -48,7 +40,7 @@ public struct TransactionViewModel: Sendable {
 
     public var overlayImage: Image? {
         switch transaction.transaction.type {
-        case .transfer, .transferNFT, .smartContractCall:
+        case .transfer, .smartContractCall:
             switch transaction.transaction.direction {
             case .incoming: Images.Transaction.incoming
             case .outgoing, .selfTransfer: Images.Transaction.outgoing
@@ -93,8 +85,7 @@ public struct TransactionViewModel: Sendable {
     public var titleTextValue: TextValue {
         let title: String = {
             switch transaction.transaction.type {
-            case .transfer, .transferNFT, .smartContractCall:
-                switch transaction.transaction.state {
+            case .transfer, .smartContractCall:
                 case .confirmed:
                     switch transaction.transaction.direction {
                     case .incoming:
@@ -175,7 +166,7 @@ public struct TransactionViewModel: Sendable {
         let title: String? = {
             let chain = assetId.chain
             switch transaction.transaction.type {
-            case .transfer, .transferNFT, .tokenApproval, .smartContractCall:
+            case .transfer, .tokenApproval, .smartContractCall:
                 switch transaction.transaction.direction {
                 case .incoming:
                     return participantTitle(prefix: Localized.Transfer.from, address: transaction.transaction.from, chain: chain)
@@ -262,8 +253,6 @@ public struct TransactionViewModel: Sendable {
                 data: AssetValuePrice(asset: asset, value: BigInt.fromString(metadata.toValue), price: nil),
                 style: AmountDisplayStyle(sign: .incoming, formatter: formatter, currencyCode: currency),
             ).amount
-        case .transferNFT:
-            return nil
         case .perpetualModifyPosition:
             return nil
         }
@@ -272,7 +261,6 @@ public struct TransactionViewModel: Sendable {
     public var subtitleExtraTextValue: TextValue? {
         switch transaction.transaction.type {
         case .transfer,
-             .transferNFT,
              .tokenApproval,
              .stakeDelegate,
              .stakeUndelegate,

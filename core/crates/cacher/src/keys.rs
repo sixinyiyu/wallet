@@ -18,12 +18,10 @@ pub enum CacheKey<'a> {
     // Fetch consumer keys (chain, address)
     FetchCoinAddresses(&'a str, &'a str),
     FetchTokenAddresses(&'a str, &'a str),
-    FetchNftAssetsAddresses(&'a str, &'a str),
     FetchAddressTransactions(&'a str, &'a str),
 
     // Asset keys
     FetchAssets(&'a str),
-    FetchNftAsset(&'a str),
     Price(&'a str),
     PricerCoinInfo(&'a str),
 
@@ -81,10 +79,8 @@ impl CacheKey<'_> {
             Self::InactiveDeviceObserver(device_id) => format!("device:inactive_observer:{}", device_id),
             Self::FetchCoinAddresses(chain, address) => format!("fetch:coin_addresses:{}:{}", chain, address),
             Self::FetchTokenAddresses(chain, address) => format!("fetch:token_addresses:{}:{}", chain, address),
-            Self::FetchNftAssetsAddresses(chain, address) => format!("fetch:nft_assets_addresses:{}:{}", chain, address),
             Self::FetchAddressTransactions(chain, address) => format!("fetch:address_transactions:{}:{}", chain, address),
             Self::FetchAssets(asset_id) => format!("fetch:assets:{}", asset_id),
-            Self::FetchNftAsset(asset_id) => format!("fetch:nft_asset:{}", asset_id),
             Self::Price(asset_id) => format!("prices:{}", asset_id),
             Self::PricerCoinInfo(coin_id) => format!("pricer:coin_info:{}", coin_id),
             Self::FiatRates => "fiat:rates".to_string(),
@@ -119,10 +115,8 @@ impl CacheKey<'_> {
             Self::InactiveDeviceObserver(_) => 30 * SECONDS_PER_DAY,
             Self::FetchCoinAddresses(_, _) => 7 * SECONDS_PER_DAY,
             Self::FetchTokenAddresses(_, _) => 30 * SECONDS_PER_DAY,
-            Self::FetchNftAssetsAddresses(_, _) => 30 * SECONDS_PER_DAY,
             Self::FetchAddressTransactions(_, _) => 30 * SECONDS_PER_DAY,
             Self::FetchAssets(_) => 30 * SECONDS_PER_DAY,
-            Self::FetchNftAsset(_) => SECONDS_PER_HOUR,
             Self::Price(_) => 30 * SECONDS_PER_DAY,
             Self::PricerCoinInfo(_) => SECONDS_PER_DAY,
             Self::FiatRates => SECONDS_PER_DAY,

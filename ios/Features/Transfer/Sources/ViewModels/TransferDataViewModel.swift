@@ -46,7 +46,6 @@ struct TransferDataViewModel {
         case .transfer: Localized.Transfer.Send.title
         case .deposit: Localized.Wallet.deposit
         case .withdrawal: Localized.Wallet.withdraw
-        case .transferNft: Localized.Transfer.Send.title
         case .swap, .tokenApprove: Localized.Wallet.swap
         case .generic: Localized.Transfer.reviewRequest
         case let .stake(_, type):
@@ -84,7 +83,6 @@ struct TransferDataViewModel {
         case .transfer,
              .deposit,
              .withdrawal,
-             .transferNft,
              .swap,
              .tokenApprove,
              .stake,
@@ -104,7 +102,6 @@ struct TransferDataViewModel {
              .swap,
              .tokenApprove,
              .generic,
-             .transferNft,
              .perpetual: metadata?.available ?? .zero
         case let .account(_, type):
             switch type {

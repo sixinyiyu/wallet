@@ -7,7 +7,6 @@ import com.gemwallet.android.ui.models.actions.AmountTransactionAction
 import com.gemwallet.android.ui.models.actions.AssetIdAction
 import com.gemwallet.android.ui.models.actions.CancelAction
 import com.gemwallet.android.ui.models.actions.ConfirmTransactionAction
-import com.gemwallet.android.ui.models.navigation.RouteArgument
 import com.gemwallet.android.ui.navigation.assetIdArgument
 import com.gemwallet.android.ui.navigation.routeArguments
 import com.gemwallet.android.features.asset_select.presents.views.SelectSendScreen
@@ -15,7 +14,7 @@ import com.wallet.core.primitives.AssetId
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RecipientInputRoute(val assetId: AssetId, val nftAssetId: String?) : NavKey
+data class RecipientInputRoute(val assetId: AssetId) : NavKey
 
 @Serializable
 data object SendSelectRoute : NavKey
@@ -37,7 +36,6 @@ fun EntryProviderScope<NavKey>.recipientInput(
         metadata = { key ->
             routeArguments(
                 assetIdArgument(key.assetId),
-                RouteArgument.NftAssetId to key.nftAssetId,
             )
         },
     ) {

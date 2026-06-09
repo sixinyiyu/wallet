@@ -3,7 +3,6 @@ package com.gemwallet.android.data.repositories.stream
 import com.gemwallet.android.application.fiat.coordinators.SyncFiatTransactions
 import com.gemwallet.android.application.pricealerts.coordinators.UpdatePriceAlerts
 import com.gemwallet.android.application.transactions.coordinators.SyncTransactions
-import com.gemwallet.android.cases.nft.SyncNfts
 import com.gemwallet.android.data.repositories.assets.UpdateBalances
 import com.gemwallet.android.data.repositories.session.SessionRepository
 import com.gemwallet.android.data.repositories.wallets.WalletsRepository
@@ -36,7 +35,6 @@ class StreamEventHandlerTest {
     private val pricesDao = mockk<PricesDao>(relaxed = true)
     private val sessionRepository = mockk<SessionRepository>(relaxed = true)
     private val syncTransactions = mockk<dagger.Lazy<SyncTransactions>>()
-    private val syncNfts = mockk<SyncNfts>(relaxed = true)
     private val updatePriceAlerts = mockk<UpdatePriceAlerts>(relaxed = true)
     private val syncFiatTransactions = mockk<dagger.Lazy<SyncFiatTransactions>>()
     private val walletsRepository = mockk<WalletsRepository>()
@@ -48,7 +46,6 @@ class StreamEventHandlerTest {
         pricesDao = pricesDao,
         sessionRepository = sessionRepository,
         syncTransactions = syncTransactions,
-        syncNfts = syncNfts,
         updatePriceAlerts = updatePriceAlerts,
         syncFiatTransactions = syncFiatTransactions,
         walletsRepository = walletsRepository,
@@ -83,14 +80,6 @@ class StreamEventHandlerTest {
         handler.handle(StreamEvent.PriceAlerts(StreamPriceAlertUpdate(assets = emptyList())))
 
         coVerify { updatePriceAlerts.update() }
-    }
-
-    @Test
-    fun `nft event syncs wallet nfts`() = runTest {
-        handler.handle(StreamEvent.Nft(StreamWalletUpdate(walletId = walletId)))
-
-        coVerify { syncNfts.sync(walletId) }
-        coVerify(exactly = 0) { walletsRepository.getWallet(any()) }
     }
 
     @Test

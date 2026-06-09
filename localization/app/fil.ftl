@@ -91,7 +91,6 @@ wallet_receive_no_destination_tag_required = Walang kinakailangang tag ng patutu
 wallet_title = Wallet
 wallet_add_token_title = Magdagdag ng Token
 wallet_sell = Ibenta
-wallet_receive_collection = Tumanggap ng Koleksyon
 wallet_more = Higit pa
 wallet_import_contract_address_field = Kontrata o Token ID
 wallet_import_address_warning = Maaari mong tingnan ang mga balanse at transaksyon para sa address na ito, ngunit **hindi maaaring magpadala o magbenta ng mga pondo**.
@@ -573,21 +572,6 @@ info_minimum_amount_description = Sa %@ network, ang minimum na halaga para sa t
 
 input_enter_amount_to = Mangyaring magpasok ng halaga sa %@
 
-# Nft
-
-nft_properties = Mga Katangian
-nft_collections = Mga koleksyon
-nft_collection = Koleksyon
-nft_save_to_photos = I-save sa Mga Larawan
-nft_set_as_avatar = Itakda bilang Avatar
-nft_state_empty_title = Lalabas dito ang iyong mga NFT ️
-nft_state_empty_description = Tanggapin ang iyong unang NFT
-nft_report_reason_spam = Spam
-nft_report_reason_malicious = Malisyoso
-nft_report_reason_inappropriate = Hindi Naaangkop na Nilalaman
-nft_report_reason_copyright = Copyright
-nft_report_report_button_title = I-report
-
 # Permissions
 
 permissions_access_denied = Tinanggihan ang Access
@@ -733,7 +717,6 @@ contacts_add_to_contacts = Idagdag sa Mga Kontak
 
 simulation_header_unlimited_asset = Walang limitasyon %@
 simulation_warning_unlimited_token_approval_description = Nagbibigay ito sa gumagastos ng access na gamitin ang token na ito hanggang sa bawiin mo ang pag-apruba o hanggang sa mag-expire ito.
-simulation_warning_nft_collection_approval_title = Hiniling ang kumpletong access sa koleksyon ng NFT
 simulation_warning_unlimited_token_approval_title = Walang limitasyong pag-apruba ng token
 
 # Application

@@ -26,8 +26,6 @@ import com.gemwallet.android.ui.navigation.routes.ConfirmRoute
 import com.gemwallet.android.ui.navigation.routes.DelegationRoute
 import com.gemwallet.android.ui.navigation.routes.FiatInputRoute
 import com.gemwallet.android.ui.navigation.routes.FiatSelectRoute
-import com.gemwallet.android.ui.navigation.routes.NftAssetRoute
-import com.gemwallet.android.ui.navigation.routes.NftCollectionRoute
 import com.gemwallet.android.ui.navigation.routes.PriceAlertsRoute
 import com.gemwallet.android.ui.navigation.routes.RecipientInputRoute
 import com.gemwallet.android.ui.navigation.routes.ReceiveRoute
@@ -42,7 +40,6 @@ import com.gemwallet.android.ui.navigation.routes.WalletDetailsRoute
 import com.gemwallet.android.ui.navigation.routes.WalletPhraseRoute
 import com.gemwallet.android.ui.navigation.routes.WalletSecurityReminderRoute
 import com.wallet.core.primitives.Chain
-import com.wallet.core.primitives.NFTAssetId
 import com.wallet.core.primitives.WalletType
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -195,7 +192,7 @@ class WalletNavigatorTest {
             AssetRoute(assetId),
             WalletSecurityReminderRoute(walletId, WalletType.Multicoin),
             WalletPhraseRoute(walletId, WalletType.Multicoin),
-            RecipientInputRoute(assetId, nftAssetId = null),
+            RecipientInputRoute(assetId),
             AmountRoute("amount"),
             AmountRoute("perpetual"),
             ConfirmRoute("confirm"),
@@ -231,14 +228,12 @@ class WalletNavigatorTest {
 
         navigator.openRecipient()
         navigator.openRecipient(assetId)
-        navigator.openNftRecipient(assetId, NFTAssetId(Chain.Ethereum, "0xcollection", "1"))
 
         assertEquals(
             listOf(
                 WalletRootRoute,
                 SendSelectRoute,
-                RecipientInputRoute(assetId, nftAssetId = null),
-                RecipientInputRoute(assetId, nftAssetId = "ethereum_0xcollection::1"),
+                RecipientInputRoute(assetId),
             ),
             navigator.backStack.toList(),
         )
@@ -279,23 +274,6 @@ class WalletNavigatorTest {
                 WalletRootRoute,
                 PriceAlertsRoute,
                 AssetPriceAlertsRoute(assetId),
-            ),
-            navigator.backStack.toList(),
-        )
-    }
-
-    @Test
-    fun openNft_usesExplicitRoutes() {
-        val navigator = navigatorWith(WalletRootRoute)
-
-        navigator.openNftCollection("ethereum_0xcollection")
-        navigator.openNftAsset(NFTAssetId(Chain.Ethereum, "0xcollection", "1"))
-
-        assertEquals(
-            listOf(
-                WalletRootRoute,
-                NftCollectionRoute("ethereum_0xcollection"),
-                NftAssetRoute("ethereum_0xcollection::1"),
             ),
             navigator.backStack.toList(),
         )
@@ -362,7 +340,7 @@ class WalletNavigatorTest {
             WalletRootRoute,
             WalletsRoute,
             AssetRoute(assetId),
-            RecipientInputRoute(assetId, nftAssetId = null),
+            RecipientInputRoute(assetId),
             AmountRoute("amount"),
             ConfirmRoute("confirm"),
         )

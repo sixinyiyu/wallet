@@ -4,7 +4,6 @@ import Assets
 import AssetsService
 import Components
 import Localization
-import NFT
 import Primitives
 import PrimitivesComponents
 import Store
@@ -21,7 +20,6 @@ struct TransactionsNavigationStack: View {
     @Environment(\.assetSearchService) private var assetSearchService
     @Environment(\.avatarService) private var avatarService
     @Environment(\.navigationPresenter) private var presenter
-    @Environment(\.nftService) private var nftService
 
     @State private var model: TransactionsViewModel
 
@@ -61,17 +59,6 @@ struct TransactionsNavigationStack: View {
                         ),
                     )
                 }
-                .navigationDestination(for: Scenes.Collectible.self) {
-                    CollectibleScene(
-                        model: CollectibleViewModel(
-                            wallet: model.wallet,
-                            assetData: $0.assetData,
-                            avatarService: avatarService,
-                            nftService: nftService,
-                            isPresentingSelectedAssetInput: presenter.isPresentingAssetInput,
-                        ),
-                    )
-                }
                 .toast(message: $model.isPresentingToastMessage)
                 .sheet(item: $model.isPresentingSheet) { type in
                     switch type {
@@ -105,15 +92,12 @@ extension TransactionsNavigationStack {
     private func onSelectTransactionHeaderAction(_ action: TransactionHeaderAction) {
         Task {
             do {
-                try await presenter.handleTransactionHeaderAction(
-                    action,
-                    wallet: model.wallet,
-                    navigationState: navigationState,
-                    assetsService: assetsService,
-                    nftService: nftService,
-                    nftDestination: navigationState.activity,
-                )
-            } catch {
+                    try await presenter.handleTransactionHeaderAction(
+                        action,
+                        wallet: model.wallet,
+                        navigationState: navigationState,
+                        assetsService: assetsService,
+                    )            } catch {
                 model.isPresentingToastMessage = .error(Localized.Errors.errorOccured)
             }
         }

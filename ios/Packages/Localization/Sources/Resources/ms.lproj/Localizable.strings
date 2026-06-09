@@ -80,7 +80,6 @@
 "wallet.title" = "Dompet";
 "wallet.add_token.title" = "Tambah Token";
 "wallet.sell" = "Jual";
-"wallet.receive_collection" = "Terima Koleksi";
 "wallet.more" = "Lagi";
 "wallet.import.contract_address_field" = "Kontrak atau ID Token";
 "wallet.import_address_warning" = "Anda boleh melihat baki dan urus niaga untuk alamat ini, tetapi **tidak boleh menghantar atau menjual dana**.";
@@ -455,18 +454,6 @@
 "info.minimum_amount.title" = "Jumlah Minimum";
 "info.minimum_amount.description" = "Pada rangkaian %@, jumlah minimum untuk transaksi ini ialah %@.";
 "input.enter_amount_to" = "Sila masukkan amaun kepada %@";
-"nft.properties" = "Hartanah";
-"nft.collections" = "Koleksi";
-"nft.collection" = "Koleksi";
-"nft.save_to_photos" = "Simpan ke Foto";
-"nft.set_as_avatar" = "Tetapkan sebagai Avatar";
-"nft.state.empty.title" = "NFT anda akan muncul di sini️";
-"nft.state.empty.description" = "Terima NFT pertama anda";
-"nft.report.reason.spam" = "Spam";
-"nft.report.reason.malicious" = "Berniat jahat";
-"nft.report.reason.inappropriate" = "Kandungan Tidak Sesuai";
-"nft.report.reason.copyright" = "Hak Cipta";
-"nft.report.report_button_title" = "Laporan";
 "permissions.access_denied" = "Akses Ditolak";
 "permissions.image.photo_access.denied.description" = "Apl ini tidak mempunyai kebenaran untuk mengakses pustaka foto anda. Sila dayakan akses dalam tetapan peranti anda.";
 "markets.title" = "Pasaran";
@@ -571,5 +558,4 @@
 "contacts.add_to_contacts" = "Tambah ke Kenalan";
 "simulation.header.unlimited_asset" = "Tidak terhad %@";
 "simulation.warning.unlimited_token_approval.description" = "Ini memberi pembeli akses untuk menggunakan token ini sehingga anda membatalkan kelulusan atau ia tamat tempoh.";
-"simulation.warning.nft_collection_approval.title" = "Akses koleksi NFT penuh diminta";
 "simulation.warning.unlimited_token_approval.title" = "Kelulusan token tanpa had";

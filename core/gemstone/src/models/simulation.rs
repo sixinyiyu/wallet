@@ -22,7 +22,6 @@ pub enum SimulationWarningType {
     TokenApproval(SimulationWarningApproval),
     SuspiciousSpender,
     ExternallyOwnedSpender,
-    NftCollectionApproval(AssetId),
     PermitApproval(SimulationWarningApproval),
     PermitBatchApproval(Option<GemBigInt>),
     ValidationError,

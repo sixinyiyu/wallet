@@ -756,40 +756,7 @@ public enum Localized {
       }
     }
   }
-  public enum Nft {
-    /// Collection
-    public static let collection = Localized.tr("Localizable", "nft.collection", fallback: "Collection")
-    /// Collections
-    public static let collections = Localized.tr("Localizable", "nft.collections", fallback: "Collections")
-    /// Properties
-    public static let properties = Localized.tr("Localizable", "nft.properties", fallback: "Properties")
-    /// Save to Photos
-    public static let saveToPhotos = Localized.tr("Localizable", "nft.save_to_photos", fallback: "Save to Photos")
-    /// Set as Avatar
-    public static let setAsAvatar = Localized.tr("Localizable", "nft.set_as_avatar", fallback: "Set as Avatar")
-    public enum Report {
-      /// Report
-      public static let reportButtonTitle = Localized.tr("Localizable", "nft.report.report_button_title", fallback: "Report")
-      public enum Reason {
-        /// Copyright
-        public static let copyright = Localized.tr("Localizable", "nft.report.reason.copyright", fallback: "Copyright")
-        /// Inappropriate Content
-        public static let inappropriate = Localized.tr("Localizable", "nft.report.reason.inappropriate", fallback: "Inappropriate Content")
-        /// Malicious
-        public static let malicious = Localized.tr("Localizable", "nft.report.reason.malicious", fallback: "Malicious")
-        /// Spam
-        public static let spam = Localized.tr("Localizable", "nft.report.reason.spam", fallback: "Spam")
-      }
-    }
-    public enum State {
-      public enum Empty {
-        /// Receive your first NFT
-        public static let description = Localized.tr("Localizable", "nft.state.empty.description", fallback: "Receive your first NFT")
-        /// Your NFTs will appear here️
-        public static let title = Localized.tr("Localizable", "nft.state.empty.title", fallback: "Your NFTs will appear here️")
-      }
-    }
-  }
+
   public enum Nodes {
     /// Gem Wallet Node
     public static let gemWalletNode = Localized.tr("Localizable", "nodes.gem_wallet_node", fallback: "Gem Wallet Node")
@@ -1275,10 +1242,6 @@ public enum Localized {
       }
     }
     public enum Warning {
-      public enum NftCollectionApproval {
-        /// Full NFT collection access requested
-        public static let title = Localized.tr("Localizable", "simulation.warning.nft_collection_approval.title", fallback: "Full NFT collection access requested")
-      }
       public enum UnlimitedTokenApproval {
         /// This gives the spender access to use this token until you revoke the approval or it expires.
         public static let description = Localized.tr("Localizable", "simulation.warning.unlimited_token_approval.description", fallback: "This gives the spender access to use this token until you revoke the approval or it expires.")

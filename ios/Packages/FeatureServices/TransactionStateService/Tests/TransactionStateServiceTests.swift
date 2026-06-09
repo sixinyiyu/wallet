@@ -3,7 +3,6 @@
 import BalanceServiceTestKit
 import EarnService
 import Foundation
-import NFTServiceTestKit
 import Primitives
 import PrimitivesTestKit
 import StakeServiceTestKit
@@ -257,7 +256,6 @@ private extension TransactionStateServiceTests {
             balanceUpdater: BalanceUpdaterMock(),
             stakeService: .mock(),
             earnService: .mock(),
-            nftService: .mock(),
         )
         let service = TransactionStateService(
             transactionStore: store,

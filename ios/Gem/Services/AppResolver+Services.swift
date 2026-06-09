@@ -17,7 +17,6 @@ import ExplorerService
 import FiatService
 import Foundation
 import NameService
-import NFTService
 import NodeService
 import NotificationService
 import PerpetualService
@@ -60,7 +59,6 @@ extension AppResolver {
         let walletSetupService: WalletSetupService
         let explorerService: ExplorerService
         let scanService: ScanService
-        let nftService: NFTService
         let avatarService: AvatarService
         let swapService: SwapService
         let subscriptionsService: SubscriptionService
@@ -112,7 +110,6 @@ extension AppResolver {
             walletSetupService: WalletSetupService,
             explorerService: ExplorerService,
             scanService: ScanService,
-            nftService: NFTService,
             avatarService: AvatarService,
             swapService: SwapService,
             appReleaseService: AppReleaseService,
@@ -164,7 +161,6 @@ extension AppResolver {
             self.walletSetupService = walletSetupService
             self.explorerService = explorerService
             self.scanService = scanService
-            self.nftService = nftService
             self.avatarService = avatarService
             self.swapService = swapService
             self.appReleaseService = appReleaseService

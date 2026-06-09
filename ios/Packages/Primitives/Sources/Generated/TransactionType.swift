@@ -6,7 +6,6 @@ import Foundation
 
 public enum TransactionType: String, Codable, CaseIterable, Equatable, Sendable {
 	case transfer
-	case transferNFT
 	case swap
 	case tokenApproval
 	case stakeDelegate

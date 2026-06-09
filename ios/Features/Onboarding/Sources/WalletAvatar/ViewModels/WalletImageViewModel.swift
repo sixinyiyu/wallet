@@ -18,24 +18,14 @@ public final class WalletImageViewModel: Sendable {
         case wallet
     }
 
-    struct NFTAssetImageItem: Identifiable {
-        let id: String
-        let assetImage: AssetImage
-    }
-
     public let wallet: Wallet
     public let source: Source
     private let avatarService: AvatarService
 
     public let walletQuery: ObservableQuery<WalletRequest>
-    public let nftQuery: ObservableQuery<NFTRequest>
 
     public var dbWallet: Wallet? {
         walletQuery.value
-    }
-
-    public var nftDataList: [NFTData] {
-        nftQuery.value
     }
 
     let emojiViewSize: Sizing = .image.extraLarge
@@ -50,7 +40,6 @@ public final class WalletImageViewModel: Sendable {
         self.source = source
         self.avatarService = avatarService
         walletQuery = ObservableQuery(WalletRequest(walletId: wallet.id), initialValue: wallet)
-        nftQuery = ObservableQuery(NFTRequest(walletId: wallet.id, filter: .all), initialValue: [])
     }
 
     var title: String {
@@ -60,33 +49,10 @@ public final class WalletImageViewModel: Sendable {
         }
     }
 
-    var emptyContentModel: EmptyContentTypeViewModel {
-        EmptyContentTypeViewModel(type: .nfts(action: nil))
-    }
-
-    func buildNftAssetsItems(from list: [NFTData]) -> [NFTAssetImageItem] {
-        list
-            .map(\.assets)
-            .reduce([], +)
-            .map {
-                NFTAssetImageItem(
-                    id: $0.id.identifier,
-                    assetImage: AssetImage(
-                        type: $0.name,
-                        imageURL: $0.images.preview.url.asURL,
-                        placeholder: nil,
-                        chainPlaceholder: nil,
-                    ),
-                )
-            }
-    }
-
     func getColumns(for tab: WalletImageScene.Tab) -> [GridItem] {
         switch tab {
         case .emoji:
             Array(repeating: GridItem(.flexible(), spacing: .medium), count: 4)
-        case .collections:
-            Array(repeating: GridItem(spacing: .medium), count: 2)
         }
     }
 
@@ -96,7 +62,7 @@ public final class WalletImageViewModel: Sendable {
         do {
             try await avatarService.save(url: url, for: wallet)
         } catch {
-            debugLog("Set nft image error: \(error)")
+            debugLog("Set image error: \(error)")
         }
     }
 

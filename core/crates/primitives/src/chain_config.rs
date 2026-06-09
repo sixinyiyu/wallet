@@ -43,7 +43,7 @@ pub struct ChainConfig {
     pub block_time: u32,
     pub rank: i32,
     pub is_swap_supported: bool,
-    pub is_nft_supported: bool,
+
     pub is_utxo: bool,
     pub evm: Option<EvmChainConfig>,
     pub stake: Option<StakeChainConfig>,
@@ -65,7 +65,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 600_000,
             rank: 100,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: true,
             evm: None,
             stake: None,
@@ -83,7 +82,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 600_000,
             rank: 40,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: true,
             evm: None,
             stake: None,
@@ -101,7 +99,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 120_000,
             rank: 30,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: true,
             evm: None,
             stake: None,
@@ -119,7 +116,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 12_000,
             rank: 85,
             is_swap_supported: true,
-            is_nft_supported: true,
             is_utxo: false,
             evm: Some(EvmChainConfig {
                 min_priority_fee: 100_000_000,
@@ -151,7 +147,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 1_000,
             rank: 80,
             is_swap_supported: true,
-            is_nft_supported: true,
             is_utxo: false,
             evm: Some(EvmChainConfig {
                 min_priority_fee: 50_000_000,
@@ -183,7 +178,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 500,
             rank: 80,
             is_swap_supported: true,
-            is_nft_supported: true,
             is_utxo: false,
             evm: None,
             stake: Some(StakeChainConfig {
@@ -210,7 +204,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 3_000,
             rank: 30,
             is_swap_supported: true,
-            is_nft_supported: true,
             is_utxo: false,
             evm: Some(EvmChainConfig {
                 min_priority_fee: 30_000_000_000,
@@ -233,7 +226,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 2_000,
             rank: 30,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: false,
             evm: None,
             stake: None,
@@ -251,7 +243,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 6_000,
             rank: 30,
             is_swap_supported: false,
-            is_nft_supported: false,
             is_utxo: false,
             evm: None,
             stake: None,
@@ -269,7 +260,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 6_000,
             rank: 40,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: false,
             evm: None,
             stake: Some(StakeChainConfig {
@@ -296,7 +286,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 6_000,
             rank: 50,
             is_swap_supported: false,
-            is_nft_supported: false,
             is_utxo: false,
             evm: None,
             stake: Some(StakeChainConfig {
@@ -323,7 +312,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 1_000,
             rank: 30,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: false,
             evm: Some(EvmChainConfig {
                 min_priority_fee: 10_000_000,
@@ -346,7 +334,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 5_000,
             rank: 50,
             is_swap_supported: true,
-            is_nft_supported: true,
             is_utxo: false,
             evm: None,
             stake: None,
@@ -364,7 +351,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 3_000,
             rank: 70,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: false,
             evm: None,
             stake: Some(StakeChainConfig {
@@ -391,7 +377,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 60_000,
             rank: 30,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: true,
             evm: None,
             stake: None,
@@ -409,7 +394,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 75_000,
             rank: 30,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: true,
             evm: None,
             stake: None,
@@ -427,7 +411,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 2_000,
             rank: 30,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: false,
             evm: Some(EvmChainConfig {
                 min_priority_fee: 1_000_000,
@@ -450,7 +433,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 500,
             rank: 40,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: false,
             evm: None,
             stake: Some(StakeChainConfig {
@@ -477,7 +459,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 2_000,
             rank: 30,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: false,
             evm: Some(EvmChainConfig {
                 min_priority_fee: 5_000_000,
@@ -500,7 +481,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 2_000,
             rank: 30,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: false,
             evm: Some(EvmChainConfig {
                 min_priority_fee: 25_000_000_000,
@@ -523,7 +503,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 500,
             rank: 40,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: false,
             evm: None,
             stake: Some(StakeChainConfig {
@@ -550,7 +529,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 4_000,
             rank: 40,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: false,
             evm: None,
             stake: None,
@@ -568,7 +546,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 1_000,
             rank: 30,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: false,
             evm: Some(EvmChainConfig {
                 min_priority_fee: 1_000_000,
@@ -591,7 +568,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 1_000,
             rank: 30,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: false,
             evm: Some(EvmChainConfig {
                 min_priority_fee: 3_500_000_000,
@@ -614,7 +590,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 5_000,
             rank: 30,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: false,
             evm: Some(EvmChainConfig {
                 min_priority_fee: 3_000_000_000,
@@ -637,7 +612,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 6_000,
             rank: 40,
             is_swap_supported: false,
-            is_nft_supported: false,
             is_utxo: false,
             evm: None,
             stake: Some(StakeChainConfig {
@@ -664,7 +638,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 6_000,
             rank: 40,
             is_swap_supported: false,
-            is_nft_supported: false,
             is_utxo: false,
             evm: None,
             stake: Some(StakeChainConfig {
@@ -691,7 +664,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 1_000,
             rank: 30,
             is_swap_supported: false,
-            is_nft_supported: false,
             is_utxo: false,
             evm: None,
             stake: Some(StakeChainConfig {
@@ -718,7 +690,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 400,
             rank: 30,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: false,
             evm: Some(EvmChainConfig {
                 min_priority_fee: 1_000_000_000,
@@ -741,7 +712,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 2_000,
             rank: 30,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: false,
             evm: Some(EvmChainConfig {
                 min_priority_fee: 10_000_000,
@@ -764,7 +734,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 2_000,
             rank: 30,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: false,
             evm: Some(EvmChainConfig {
                 min_priority_fee: 200_000_000,
@@ -787,7 +756,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 6_000,
             rank: 20,
             is_swap_supported: false,
-            is_nft_supported: false,
             is_utxo: false,
             evm: None,
             stake: None,
@@ -805,7 +773,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 1_000,
             rank: 30,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: false,
             evm: Some(EvmChainConfig {
                 min_priority_fee: 20_000_000,
@@ -828,7 +795,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 1_000,
             rank: 30,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: false,
             evm: Some(EvmChainConfig {
                 min_priority_fee: 50_000_000,
@@ -851,7 +817,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 1_000,
             rank: 30,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: false,
             evm: Some(EvmChainConfig {
                 min_priority_fee: 10_000_000,
@@ -874,7 +839,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 1_000,
             rank: 30,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: false,
             evm: Some(EvmChainConfig {
                 min_priority_fee: 10_000_000,
@@ -897,7 +861,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 1_000,
             rank: 30,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: false,
             evm: None,
             stake: None,
@@ -915,7 +878,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 2_000,
             rank: 30,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: false,
             evm: Some(EvmChainConfig {
                 min_priority_fee: 1_000_000,
@@ -938,7 +900,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 6_000,
             rank: 30,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: false,
             evm: None,
             stake: None,
@@ -956,7 +917,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 500,
             rank: 30,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: false,
             evm: Some(EvmChainConfig {
                 min_priority_fee: 10_000_000,
@@ -979,7 +939,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 4_000,
             rank: 30,
             is_swap_supported: false,
-            is_nft_supported: false,
             is_utxo: false,
             evm: None,
             stake: None,
@@ -997,7 +956,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 5_000,
             rank: 40,
             is_swap_supported: false,
-            is_nft_supported: false,
             is_utxo: false,
             evm: None,
             stake: None,
@@ -1015,7 +973,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 2_000,
             rank: 30,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: false,
             evm: Some(EvmChainConfig {
                 min_priority_fee: 100_000,
@@ -1038,7 +995,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 20_000,
             rank: 30,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: true,
             evm: None,
             stake: None,
@@ -1056,7 +1012,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 1_000,
             rank: 35,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: false,
             evm: Some(EvmChainConfig {
                 min_priority_fee: 1_000_000,
@@ -1079,7 +1034,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 2_000,
             rank: 35,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: false,
             evm: Some(EvmChainConfig {
                 min_priority_fee: 1_000_000_000,
@@ -1102,7 +1056,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 1_000,
             rank: 35,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: false,
             evm: Some(EvmChainConfig {
                 min_priority_fee: 1_000_000,
@@ -1125,7 +1078,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 1_000,
             rank: 35,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: false,
             evm: Some(EvmChainConfig {
                 min_priority_fee: 1_000_000,
@@ -1148,7 +1100,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 2_000,
             rank: 40,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: false,
             evm: Some(EvmChainConfig {
                 min_priority_fee: 1_000_000_000,
@@ -1171,7 +1122,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 2_000,
             rank: 40,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: false,
             evm: None,
             stake: Some(StakeChainConfig {
@@ -1198,7 +1148,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 500,
             rank: 40,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: false,
             evm: Some(EvmChainConfig {
                 min_priority_fee: 1_000_000_000,
@@ -1230,7 +1179,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 2_000,
             rank: 30,
             is_swap_supported: true,
-            is_nft_supported: false,
             is_utxo: false,
             evm: Some(EvmChainConfig {
                 min_priority_fee: 1_000_000_000,
@@ -1253,7 +1201,6 @@ static CHAIN_CONFIGS: LazyLock<Vec<ChainConfig>> = LazyLock::new(|| {
             block_time: 1_000,
             rank: 30,
             is_swap_supported: false,
-            is_nft_supported: false,
             is_utxo: false,
             evm: Some(EvmChainConfig {
                 min_priority_fee: 1_000_000,

@@ -25,7 +25,6 @@ import GemstonePrimitives
 import Keystore
 import NameService
 import NativeProviderService
-import NFTService
 import NodeService
 import NotificationService
 import PerpetualService
@@ -121,10 +120,6 @@ struct ServicesFactory {
             addressStore: storeManager.addressStore,
             chainFactory: chainServiceFactory,
         )
-        let nftService = Self.makeNftService(
-            apiService: apiService,
-            nftStore: storeManager.nftStore,
-        )
         let transactionsService = Self.makeTransactionsService(
             apiService: apiService,
             transactionStore: storeManager.transactionStore,
@@ -136,7 +131,6 @@ struct ServicesFactory {
             gatewayService: gatewayService,
             stakeService: stakeService,
             earnService: earnService,
-            nftService: nftService,
             balanceService: balanceService,
         )
 
@@ -193,7 +187,6 @@ struct ServicesFactory {
             priceAlertService: priceAlertService,
             balanceUpdater: balanceService,
             transactionsService: transactionsService,
-            nftService: nftService,
             perpetualService: perpetualService,
             fiatService: fiatService,
             preferences: preferences,
@@ -229,7 +222,6 @@ struct ServicesFactory {
             assetService: assetsService,
             assetsEnabler: assetsEnabler,
             transactionsService: transactionsService,
-            nftService: nftService,
         )
         let walletSetupService = WalletSetupService(balanceService: balanceService)
 
@@ -351,7 +343,6 @@ struct ServicesFactory {
             walletSetupService: walletSetupService,
             explorerService: explorerService,
             scanService: scanService,
-            nftService: nftService,
             avatarService: avatarService,
             swapService: swapService,
             appReleaseService: releaseService,
@@ -500,7 +491,6 @@ extension ServicesFactory {
         gatewayService: GatewayService,
         stakeService: StakeService,
         earnService: EarnService,
-        nftService: NFTService,
         balanceService: BalanceService,
     ) -> TransactionStateScheduler {
         let postProcessingService = TransactionPostProcessingService(
@@ -508,7 +498,6 @@ extension ServicesFactory {
             balanceUpdater: balanceService,
             stakeService: stakeService,
             earnService: earnService,
-            nftService: nftService,
         )
         let service = TransactionStateService(
             transactionStore: transactionStore,
@@ -628,15 +617,6 @@ extension ServicesFactory {
         )
     }
 
-    private static func makeNftService(
-        apiService: GemAPIService,
-        nftStore: NFTStore,
-    ) -> NFTService {
-        NFTService(
-            apiService: apiService,
-            nftStore: nftStore,
-        )
-    }
 
     private static func makePerpetualService(
         perpetualStore: PerpetualStore,

@@ -85,8 +85,6 @@ sealed class SimulationWarningType {
 	@SerialName("externallyOwnedSpender")
 	object ExternallyOwnedSpender: SimulationWarningType()
 	@Serializable
-	@SerialName("nftCollectionApproval")
-	data class NftCollectionApproval(val content: AssetId): SimulationWarningType()
 	@Serializable
 	@SerialName("permitApproval")
 	data class PermitApproval(val content: SimulationWarningApproval): SimulationWarningType()
@@ -118,4 +116,3 @@ data class SimulationWarningApproval (
 	val assetId: AssetId,
 	val value: String? = null
 )
-

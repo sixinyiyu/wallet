@@ -6,7 +6,6 @@ import Components
 import InfoSheet
 import Localization
 import MarketInsight
-import NFT
 import Perpetuals
 import PriceAlerts
 import PriceService
@@ -37,7 +36,6 @@ struct WalletNavigationStack: View {
     @Environment(\.walletSearchService) private var walletSearchService
     @Environment(\.assetSearchService) private var assetSearchService
     @Environment(\.avatarService) private var avatarService
-    @Environment(\.nftService) private var nftService
     @Environment(\.observablePreferences) private var preferences
 
     @State private var model: WalletSceneViewModel
@@ -117,17 +115,6 @@ struct WalletNavigationStack: View {
                         transaction: $0.transaction,
                         walletId: model.wallet.id,
                         onHeaderAction: onSelectTransactionHeaderAction,
-                    ),
-                )
-            }
-            .navigationDestination(for: Scenes.Collectible.self) {
-                CollectibleScene(
-                    model: CollectibleViewModel(
-                        wallet: model.wallet,
-                        assetData: $0.assetData,
-                        avatarService: avatarService,
-                        nftService: nftService,
-                        isPresentingSelectedAssetInput: model.isPresentingSelectedAssetInput,
                     ),
                 )
             }
@@ -260,8 +247,6 @@ extension WalletNavigationStack {
                     wallet: model.wallet,
                     navigationState: navigationState,
                     assetsService: assetsService,
-                    nftService: nftService,
-                    nftDestination: navigationState.wallet,
                 )
             } catch {
                 model.isPresentingToastMessage = .error(Localized.Errors.errorOccured)

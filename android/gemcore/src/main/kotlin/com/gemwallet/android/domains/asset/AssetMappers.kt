@@ -4,19 +4,10 @@ import com.gemwallet.android.ext.toAssetId
 import com.gemwallet.android.ext.toIdentifier
 import com.wallet.core.primitives.Asset
 import com.wallet.core.primitives.AssetType
-import com.wallet.core.primitives.NFTAsset
-import com.wallet.core.primitives.NFTAttributeType
-import com.wallet.core.primitives.NFTType
 import com.wallet.core.primitives.UTXO
 import uniffi.gemstone.Chain
 import uniffi.gemstone.GemAsset
 import uniffi.gemstone.GemAssetType
-import uniffi.gemstone.GemNftAsset
-import uniffi.gemstone.GemNftAttribute
-import uniffi.gemstone.GemNftAttributeType
-import uniffi.gemstone.GemNftImages
-import uniffi.gemstone.GemNftResource
-import uniffi.gemstone.GemNftType
 import uniffi.gemstone.GemUtxo
 
 fun Asset.toGem() = GemAsset(
@@ -42,42 +33,6 @@ fun Asset.toGem() = GemAsset(
         AssetType.SPOT -> throw IllegalAccessException()
     }
 )
-
-fun NFTAsset.toGem() = GemNftAsset(
-    id = id.toIdentifier(),
-    collectionId = collectionId.toIdentifier(),
-    contractAddress = contractAddress,
-    tokenId = tokenId,
-    tokenType = when (tokenType) {
-        NFTType.ERC721 -> GemNftType.ERC721
-        NFTType.ERC1155 -> GemNftType.ERC1155
-        NFTType.SPL -> GemNftType.SPL
-        NFTType.JETTON -> GemNftType.JETTON
-    },
-    name = name,
-    description = description,
-    chain = chain.string,
-    resource = GemNftResource(
-        resource.url,
-        resource.mimeType,
-    ),
-    images = GemNftImages(
-        GemNftResource(images.preview.url, images.preview.mimeType)
-    ),
-    attributes = attributes.map {
-        GemNftAttribute(
-            name = it.name,
-            value = it.value,
-            valueType = it.valueType?.toGemNftAttributeType(),
-            percentage = it.percentage,
-        )
-    }
-)
-
-private fun NFTAttributeType.toGemNftAttributeType() = when (this) {
-    NFTAttributeType.String -> GemNftAttributeType.STRING
-    NFTAttributeType.Timestamp -> GemNftAttributeType.TIMESTAMP
-}
 
 fun GemAsset.toDTO() = Asset(
     id = id.toAssetId()!!,

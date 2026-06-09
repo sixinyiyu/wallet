@@ -80,7 +80,6 @@
 "wallet.title" = "ウォレット";
 "wallet.add_token.title" = "トークンを追加";
 "wallet.sell" = "売却する";
-"wallet.receive_collection" = "コレクションを受け取る";
 "wallet.more" = "もっと見る";
 "wallet.import.contract_address_field" = "契約またはトークンID";
 "wallet.import_address_warning" = "このアドレスの残高と取引は表示できますが、**資金を送信または売却することはできません**。";
@@ -455,18 +454,6 @@
 "info.minimum_amount.title" = "最低金額";
 "info.minimum_amount.description" = "%@ ネットワークで、この取引の最低金額は %@ です。";
 "input.enter_amount_to" = "%@の金額を入力してください";
-"nft.properties" = "プロパティ";
-"nft.collections" = "コレクション";
-"nft.collection" = "コレクション";
-"nft.save_to_photos" = "写真に保存";
-"nft.set_as_avatar" = "アバターとして設定";
-"nft.state.empty.title" = "NFTはここに表示されます️";
-"nft.state.empty.description" = "最初のNFTを受け取る";
-"nft.report.reason.spam" = "スパム";
-"nft.report.reason.malicious" = "悪意のある";
-"nft.report.reason.inappropriate" = "不適切なコンテンツ";
-"nft.report.reason.copyright" = "著作権";
-"nft.report.report_button_title" = "報告";
 "permissions.access_denied" = "アクセスが拒否されました";
 "permissions.image.photo_access.denied.description" = "このアプリには写真ライブラリにアクセスする権限がありません。デバイスの設定でアクセスを有効にしてください。";
 "markets.title" = "マーケット";
@@ -571,5 +558,4 @@
 "contacts.add_to_contacts" = "連絡先に追加";
 "simulation.header.unlimited_asset" = "無制限 %@";
 "simulation.warning.unlimited_token_approval.description" = "これにより、承認を取り消すか期限が切れるまで、支出者はこのトークンを使用できるようになります。";
-"simulation.warning.nft_collection_approval.title" = "NFTコレクションへのフルアクセスをリクエスト";
 "simulation.warning.unlimited_token_approval.title" = "無制限のトークン承認";

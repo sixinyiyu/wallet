@@ -80,7 +80,6 @@
 "wallet.title" = "پرس";
 "wallet.add_token.title" = "ٹوکن شامل کریں۔";
 "wallet.sell" = "بیچنا";
-"wallet.receive_collection" = "مجموعہ وصول کریں۔";
 "wallet.more" = "مزید";
 "wallet.import.contract_address_field" = "کنٹریکٹ یا ٹوکن ID";
 "wallet.import_address_warning" = "آپ اس پتے کے بیلنس اور لین دین دیکھ سکتے ہیں، لیکن **فنڈز بھیج یا فروخت نہیں کر سکتے**۔";
@@ -455,18 +454,6 @@
 "info.minimum_amount.title" = "کم از کم رقم";
 "info.minimum_amount.description" = "%@ نیٹ ورک پر، اس ٹرانزیکشن کی کم از کم رقم %@ ہے۔";
 "input.enter_amount_to" = "براہ کرم رقم %@ درج کریں";
-"nft.properties" = "پراپرٹیز";
-"nft.collections" = "مجموعے";
-"nft.collection" = "مجموعہ";
-"nft.save_to_photos" = "تصاویر میں محفوظ کریں۔";
-"nft.set_as_avatar" = "اوتار کے طور پر سیٹ کریں۔";
-"nft.state.empty.title" = "آپ کے NFTs یہاں ظاہر ہوں گے۔";
-"nft.state.empty.description" = "اپنا پہلا NFT وصول کریں۔";
-"nft.report.reason.spam" = "سپیم";
-"nft.report.reason.malicious" = "بدنیتی پر مبنی";
-"nft.report.reason.inappropriate" = "نامناسب مواد";
-"nft.report.reason.copyright" = "کاپی رائٹ";
-"nft.report.report_button_title" = "رپورٹ";
 "permissions.access_denied" = "رسائی سے انکار کر دیا گیا۔";
 "permissions.image.photo_access.denied.description" = "اس ایپ کو آپ کی تصویری لائبریری تک رسائی کی اجازت نہیں ہے۔ براہ کرم اپنے آلے کی ترتیبات میں رسائی کو فعال کریں۔";
 "markets.title" = "منڈیاں";
@@ -571,5 +558,4 @@
 "contacts.add_to_contacts" = "رابطوں میں شامل کریں۔";
 "simulation.header.unlimited_asset" = "لا محدود %@";
 "simulation.warning.unlimited_token_approval.description" = "یہ خرچ کرنے والے کو اس ٹوکن کو استعمال کرنے تک رسائی دیتا ہے جب تک کہ آپ منظوری منسوخ نہیں کرتے یا اس کی میعاد ختم نہیں ہوجاتی۔";
-"simulation.warning.nft_collection_approval.title" = "مکمل NFT جمع کرنے تک رسائی کی درخواست کی گئی۔";
 "simulation.warning.unlimited_token_approval.title" = "لامحدود ٹوکن کی منظوری";

@@ -80,7 +80,6 @@
 "wallet.title" = "محفظة";
 "wallet.add_token.title" = "إضافة رمز مميز";
 "wallet.sell" = "يبيع";
-"wallet.receive_collection" = "استلام المجموعة";
 "wallet.more" = "أكثر";
 "wallet.import.contract_address_field" = "عقد أو معرف توكن";
 "wallet.import_address_warning" = "يمكنك عرض الأرصدة والمعاملات لهذا العنوان، ولكن **لا يمكنك إرسال أو بيع الأموال**.";
@@ -455,18 +454,6 @@
 "info.minimum_amount.title" = "الحد الأدنى للمبلغ";
 "info.minimum_amount.description" = "على شبكة %@، الحد الأدنى لمبلغ هذه المعاملة هو %@.";
 "input.enter_amount_to" = "الرجاء إدخال المبلغ إلى %@";
-"nft.properties" = "ملكيات";
-"nft.collections" = "المجموعات";
-"nft.collection" = "مجموعة";
-"nft.save_to_photos" = "حفظ في الصور";
-"nft.set_as_avatar" = "تعيين كصورة رمزية";
-"nft.state.empty.title" = "ستظهر NFTs الخاصة بك هنا";
-"nft.state.empty.description" = "احصل على NFT الأول الخاص بك";
-"nft.report.reason.spam" = "رسائل إلكترونية مزعجة";
-"nft.report.reason.malicious" = "خبيث";
-"nft.report.reason.inappropriate" = "محتوى غير لائق";
-"nft.report.reason.copyright" = "حقوق الطبع والنشر";
-"nft.report.report_button_title" = "تقرير";
 "permissions.access_denied" = "تم الرفض";
 "permissions.image.photo_access.denied.description" = "لا يتوفر لهذا التطبيق إذن بالوصول إلى مكتبة الصور الخاصة بك. يُرجى تمكين هذا الإذن في إعدادات جهازك.";
 "markets.title" = "الأسواق";
@@ -571,5 +558,4 @@
 "contacts.add_to_contacts" = "أضف إلى جهات الاتصال";
 "simulation.header.unlimited_asset" = "غير محدود %@";
 "simulation.warning.unlimited_token_approval.description" = "يمنح هذا المنفق إمكانية استخدام هذا الرمز المميز حتى تقوم بإلغاء الموافقة أو تنتهي صلاحيته.";
-"simulation.warning.nft_collection_approval.title" = "تم طلب الوصول الكامل إلى مجموعة NFT";
 "simulation.warning.unlimited_token_approval.title" = "الموافقة على الرموز المميزة غير محدودة";

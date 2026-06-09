@@ -52,7 +52,7 @@ private extension SimulationWarningType {
         case let .tokenApproval(approval): approval.value == nil
         case let .permitApproval(approval): approval.value == nil
         case let .permitBatchApproval(value): value == nil
-        case .suspiciousSpender, .externallyOwnedSpender, .nftCollectionApproval, .validationError:
+        case .suspiciousSpender, .externallyOwnedSpender, .validationError:
             true
         }
     }
@@ -62,7 +62,6 @@ private extension SimulationWarningType {
         case let .tokenApproval(approval): approval.value == nil ? Localized.Simulation.Warning.UnlimitedTokenApproval.title : nil
         case let .permitApproval(approval): approval.value == nil ? Localized.Simulation.Warning.UnlimitedTokenApproval.title : nil
         case let .permitBatchApproval(value): value == nil ? Localized.Simulation.Warning.UnlimitedTokenApproval.title : nil
-        case .nftCollectionApproval: Localized.Simulation.Warning.NftCollectionApproval.title
         case .suspiciousSpender, .externallyOwnedSpender, .validationError: Localized.Errors.errorOccured
         }
     }
@@ -74,7 +73,6 @@ private extension SimulationWarningType {
         case let .permitBatchApproval(value): value == nil ? Localized.Simulation.Warning.UnlimitedTokenApproval.description : nil
         case .validationError: Localized.Errors.errorOccured
         case .suspiciousSpender, .externallyOwnedSpender: Localized.Common.suspiciousAddress
-        case .nftCollectionApproval: nil
         }
     }
 }

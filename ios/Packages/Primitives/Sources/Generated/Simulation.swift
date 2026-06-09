@@ -72,7 +72,6 @@ public enum SimulationWarningType: Codable, Equatable, Hashable, Sendable {
 	case tokenApproval(SimulationWarningApproval)
 	case suspiciousSpender
 	case externallyOwnedSpender
-	case nftCollectionApproval(AssetId)
 	case permitApproval(SimulationWarningApproval)
 	case permitBatchApproval(String?)
 	case validationError
@@ -81,7 +80,6 @@ public enum SimulationWarningType: Codable, Equatable, Hashable, Sendable {
 		case tokenApproval,
 			suspiciousSpender,
 			externallyOwnedSpender,
-			nftCollectionApproval,
 			permitApproval,
 			permitBatchApproval,
 			validationError
@@ -106,11 +104,6 @@ public enum SimulationWarningType: Codable, Equatable, Hashable, Sendable {
 			case .externallyOwnedSpender:
 				self = .externallyOwnedSpender
 				return
-			case .nftCollectionApproval:
-				if let content = try? container.decode(AssetId.self, forKey: .content) {
-					self = .nftCollectionApproval(content)
-					return
-				}
 			case .permitApproval:
 				if let content = try? container.decode(SimulationWarningApproval.self, forKey: .content) {
 					self = .permitApproval(content)
@@ -143,9 +136,6 @@ public enum SimulationWarningType: Codable, Equatable, Hashable, Sendable {
 			try container.encode(CodingKeys.suspiciousSpender, forKey: .type)
 		case .externallyOwnedSpender:
 			try container.encode(CodingKeys.externallyOwnedSpender, forKey: .type)
-		case .nftCollectionApproval(let content):
-			try container.encode(CodingKeys.nftCollectionApproval, forKey: .type)
-			try container.encode(content, forKey: .content)
 		case .permitApproval(let content):
 			try container.encode(CodingKeys.permitApproval, forKey: .type)
 			try container.encode(content, forKey: .content)

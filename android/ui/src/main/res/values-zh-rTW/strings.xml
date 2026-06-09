@@ -85,7 +85,6 @@
   <string name="wallet_title">錢包</string>
   <string name="wallet_add_token_title">添加代幣</string>
   <string name="wallet_sell">出售</string>
-  <string name="wallet_receive_collection">接收 NFT 藏品</string>
   <string name="wallet_more">更多</string>
   <string name="wallet_import_contract_address_field">合約或代幣ID</string>
   <string name="wallet_import_address_warning">您可以查看此地址的餘額和交易，但**不能發送或出售資金**。</string>
@@ -470,18 +469,6 @@
   <string name="info_minimum_amount_title">最低金額</string>
   <string name="info_minimum_amount_description">在 %1$s 網路上，此交易的最低金額為 %2$s。</string>
   <string name="input_enter_amount_to">請輸入您要%1$s的數量</string>
-  <string name="nft_properties">特性</string>
-  <string name="nft_collections">藏品集合</string>
-  <string name="nft_collection">藏品</string>
-  <string name="nft_save_to_photos">儲存到照片</string>
-  <string name="nft_set_as_avatar">設為頭像</string>
-  <string name="nft_state_empty_title">NFT 將顯示在這裡️</string>
-  <string name="nft_state_empty_description">接收第一個 NFT</string>
-  <string name="nft_report_reason_spam">垃圾郵件</string>
-  <string name="nft_report_reason_malicious">惡意</string>
-  <string name="nft_report_reason_inappropriate">不當內容</string>
-  <string name="nft_report_reason_copyright">版權</string>
-  <string name="nft_report_report_button_title">檢舉</string>
   <string name="permissions_access_denied">拒絕訪問</string>
   <string name="permissions_image_photo_access_denied_description">此應用程式無權存取您的照片庫。請在您的裝置設定中啟用存取。</string>
   <string name="markets_title">市場</string>
@@ -586,7 +573,6 @@
   <string name="contacts_add_to_contacts">加入聯絡人</string>
   <string name="simulation_header_unlimited_asset">無限 %1$s</string>
   <string name="simulation_warning_unlimited_token_approval_description">這樣，消費者就可以一直使用該代幣，直到你撤銷授權或代幣過期為止。</string>
-  <string name="simulation_warning_nft_collection_approval_title">請求訪問完整的NFT收藏集</string>
   <string name="simulation_warning_unlimited_token_approval_title">無限代幣批准</string>
   <string name="application_name">Gem</string>
   <string name="camera_permission_request_camera">需要相機權限以掃描QR碼。\n請授予權限。</string>

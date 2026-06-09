@@ -4,7 +4,6 @@ import Primitives
 
 public enum TransactionHeaderAction: Equatable, Sendable {
     case asset(assetId: AssetId)
-    case nft(assetId: NFTAssetId)
     case perpetual(assetId: AssetId)
     case swap(fromAssetId: AssetId, toAssetId: AssetId)
 }

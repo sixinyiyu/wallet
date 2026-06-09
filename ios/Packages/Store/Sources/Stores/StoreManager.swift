@@ -14,7 +14,6 @@ public struct StoreManager: Sendable {
     public let stakeStore: StakeStore
     public let bannerStore: BannerStore
     public let priceAlertStore: PriceAlertStore
-    public let nftStore: NFTStore
     public let addressStore: AddressStore
     public let perpetualStore: PerpetualStore
     public let recentActivityStore: RecentActivityStore
@@ -35,7 +34,6 @@ public struct StoreManager: Sendable {
         stakeStore = StakeStore(db: db)
         bannerStore = BannerStore(db: db)
         priceAlertStore = PriceAlertStore(db: db)
-        nftStore = NFTStore(db: db)
         addressStore = AddressStore(db: db)
         perpetualStore = PerpetualStore(db: db)
         recentActivityStore = RecentActivityStore(db: db)

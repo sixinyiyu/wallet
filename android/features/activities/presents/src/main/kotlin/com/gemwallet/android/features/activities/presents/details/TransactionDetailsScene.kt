@@ -19,7 +19,6 @@ import com.gemwallet.android.features.activities.presents.details.components.Tra
 import com.gemwallet.android.ui.R
 import com.gemwallet.android.ui.components.buttons.MainActionButton
 import com.gemwallet.android.ui.components.list_head.AmountListHead
-import com.gemwallet.android.ui.components.list_head.NftHead
 import com.gemwallet.android.ui.components.list_head.SwapListHead
 import com.gemwallet.android.ui.components.list_item.property.PropertyItem
 import com.gemwallet.android.ui.components.list_item.property.PropertyNetworkFee
@@ -53,12 +52,6 @@ internal fun TransactionDetailsScene(
             data.valueGroups.forEach { group ->
                 itemsPositioned(group.items) { position, item ->
                     when (item) {
-                        is TransactionDetailsValue.Amount.NFT -> NftHead(
-                            metadata = item.metadata,
-                            onClick = {
-                                onAction(TransactionDetailsAction.OpenNft(item.metadata.assetId))
-                            },
-                        )
                         TransactionDetailsValue.Amount.None -> {}
                         is TransactionDetailsValue.Amount.Plain -> AmountListHead(
                             icon = item.asset,
@@ -142,7 +135,6 @@ private fun TransactionDetailsAggregate.amountAction(asset: Asset): TransactionD
         TransactionType.PerpetualClosePosition,
         TransactionType.PerpetualModifyPosition -> TransactionDetailsAction.OpenPerpetual(asset.id)
         TransactionType.Swap,
-        TransactionType.TransferNFT,
         TransactionType.AssetActivation,
         TransactionType.SmartContractCall,
         TransactionType.EarnDeposit,

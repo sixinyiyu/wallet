@@ -91,7 +91,6 @@ wallet_receive_no_destination_tag_required = Geen bestemmingstag vereist
 wallet_title = Portemonnee
 wallet_add_token_title = Token toevoegen
 wallet_sell = Verkopen
-wallet_receive_collection = Ontvang collectie
 wallet_more = Meer
 wallet_import_contract_address_field = Contract of token-ID
 wallet_import_address_warning = U kunt het saldo en de transacties voor dit adres bekijken, maar u kunt geen geld verzenden of verkopen.
@@ -573,21 +572,6 @@ info_minimum_amount_description = Op het %@-netwerk is het minimumbedrag voor de
 
 input_enter_amount_to = Voer een bedrag in tot %@
 
-# Nft
-
-nft_properties = Eigenschappen
-nft_collections = Collecties
-nft_collection = Collectie
-nft_save_to_photos = Opslaan in Foto's
-nft_set_as_avatar = Instellen als Avatar
-nft_state_empty_title = Uw NFT's verschijnen hier️
-nft_state_empty_description = Ontvang uw eerste NFT
-nft_report_reason_spam = Spam
-nft_report_reason_malicious = Kwaadwillend
-nft_report_reason_inappropriate = Ongepaste inhoud
-nft_report_reason_copyright = Auteursrecht
-nft_report_report_button_title = Melden
-
 # Permissions
 
 permissions_access_denied = Toegang geweigerd
@@ -733,7 +717,6 @@ contacts_add_to_contacts = Toevoegen aan contacten
 
 simulation_header_unlimited_asset = Onbeperkt %@
 simulation_warning_unlimited_token_approval_description = Dit geeft de gebruiker toegang tot het gebruik van dit token totdat u de goedkeuring intrekt of het token verloopt.
-simulation_warning_nft_collection_approval_title = Volledige toegang tot de NFT-collectie aangevraagd
 simulation_warning_unlimited_token_approval_title = Onbeperkte tokengoedkeuring
 
 # Application

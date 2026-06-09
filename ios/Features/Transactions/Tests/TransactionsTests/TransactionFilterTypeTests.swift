@@ -11,8 +11,6 @@ struct TransactionFilterTypeTests {
             switch type {
             case .transfer:
                 #expect(type.filterType == .transfers)
-            case .transferNFT:
-                #expect(type.filterType == .transfers)
             case .smartContractCall:
                 #expect(type.filterType == .smartContract)
             case .swap:

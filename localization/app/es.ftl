@@ -91,7 +91,6 @@ wallet_receive_no_destination_tag_required = No se requiere etiqueta de destino
 wallet_title = Cartera
 wallet_add_token_title = Agregar ficha
 wallet_sell = Vender
-wallet_receive_collection = Recibir colección
 wallet_more = Más
 wallet_import_contract_address_field = Contrato o ID de token
 wallet_import_address_warning = Puede ver los saldos y las transacciones de esta dirección, pero **no puede enviar ni vender fondos**.
@@ -573,21 +572,6 @@ info_minimum_amount_description = En la red %@, el importe mínimo para esta tra
 
 input_enter_amount_to = Por favor ingrese la cantidad a %@
 
-# Nft
-
-nft_properties = Propiedades
-nft_collections = Colecciones
-nft_collection = Recopilación
-nft_save_to_photos = Guardar en Fotos
-nft_set_as_avatar = Establecer como avatar
-nft_state_empty_title = Tus NFT aparecerán aquí️
-nft_state_empty_description = Recibe tu primer NFT
-nft_report_reason_spam = Correo basura
-nft_report_reason_malicious = Malicioso
-nft_report_reason_inappropriate = Contenido inapropiado
-nft_report_reason_copyright = Derechos de autor
-nft_report_report_button_title = Reportar
-
 # Permissions
 
 permissions_access_denied = Acceso denegado
@@ -733,7 +717,6 @@ contacts_add_to_contacts = Añadir a contactos
 
 simulation_header_unlimited_asset = Ilimitado %@
 simulation_warning_unlimited_token_approval_description = Esto le da al gastador acceso para usar este token hasta que revoque la aprobación o expire.
-simulation_warning_nft_collection_approval_title = Se solicita acceso completo a la colección NFT
 simulation_warning_unlimited_token_approval_title = Aprobación ilimitada de tokens
 
 # Application

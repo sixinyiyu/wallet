@@ -63,7 +63,6 @@ impl TransferRequest {
 
 pub(crate) enum TransferPayload {
     Jetton(JettonTransferRequest),
-    Nft(NftTransferRequest),
     Custom(CellArc),
 }
 
@@ -77,10 +76,3 @@ pub(crate) struct JettonTransferRequest {
     pub comment: Option<String>,
 }
 
-pub(crate) struct NftTransferRequest {
-    pub query_id: u64,
-    pub new_owner: Address,
-    pub response_destination: Address,
-    pub forward_amount: BigUint,
-    pub comment: Option<String>,
-}

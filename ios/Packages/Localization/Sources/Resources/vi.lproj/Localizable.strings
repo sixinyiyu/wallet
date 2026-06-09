@@ -80,7 +80,6 @@
 "wallet.title" = "Cái ví";
 "wallet.add_token.title" = "Thêm mã thông báo";
 "wallet.sell" = "Bán";
-"wallet.receive_collection" = "Nhận bộ sưu tập";
 "wallet.more" = "Hơn";
 "wallet.import.contract_address_field" = "Hợp đồng hoặc ID token";
 "wallet.import_address_warning" = "Bạn có thể xem số dư và giao dịch của địa chỉ này, nhưng **không thể gửi hoặc bán tiền**.";
@@ -455,18 +454,6 @@
 "info.minimum_amount.title" = "Số tiền tối thiểu";
 "info.minimum_amount.description" = "Trên mạng %@, số tiền tối thiểu cho giao dịch này là %@.";
 "input.enter_amount_to" = "Vui lòng nhập số tiền tới %@";
-"nft.properties" = "Của cải";
-"nft.collections" = "Bộ sưu tập";
-"nft.collection" = "Bộ sưu tập";
-"nft.save_to_photos" = "Lưu vào Ảnh";
-"nft.set_as_avatar" = "Đặt làm Avatar";
-"nft.state.empty.title" = "NFT của bạn sẽ xuất hiện ở đây️";
-"nft.state.empty.description" = "Nhận NFT đầu tiên của bạn";
-"nft.report.reason.spam" = "Thư rác";
-"nft.report.reason.malicious" = "Độc hại";
-"nft.report.reason.inappropriate" = "Nội dung không phù hợp";
-"nft.report.reason.copyright" = "Bản quyền";
-"nft.report.report_button_title" = "Báo cáo";
 "permissions.access_denied" = "Truy cập bị từ chối";
 "permissions.image.photo_access.denied.description" = "Ứng dụng này không có quyền truy cập vào thư viện ảnh của bạn. Vui lòng bật quyền truy cập trong cài đặt thiết bị của bạn.";
 "markets.title" = "Thị trường";
@@ -571,5 +558,4 @@
 "contacts.add_to_contacts" = "Thêm vào danh bạ";
 "simulation.header.unlimited_asset" = "Không giới hạn %@";
 "simulation.warning.unlimited_token_approval.description" = "Điều này cho phép người chi tiêu có quyền sử dụng mã thông báo này cho đến khi bạn thu hồi sự chấp thuận hoặc mã thông báo hết hạn.";
-"simulation.warning.nft_collection_approval.title" = "Yêu cầu quyền truy cập đầy đủ vào bộ sưu tập NFT";
 "simulation.warning.unlimited_token_approval.title" = "Phê duyệt mã thông báo không giới hạn";

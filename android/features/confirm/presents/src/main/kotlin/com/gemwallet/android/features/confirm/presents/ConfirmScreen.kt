@@ -46,7 +46,6 @@ import com.gemwallet.android.ui.components.perpetual.title
 import com.wallet.core.primitives.PerpetualType
 import com.gemwallet.android.ui.components.buttons.MainActionButton
 import com.gemwallet.android.ui.components.list_head.AmountListHead
-import com.gemwallet.android.ui.components.list_head.NftHead
 import com.gemwallet.android.ui.components.list_head.SwapListHead
 import com.gemwallet.android.ui.components.list_item.property.DataBadgeChevron
 import com.gemwallet.android.ui.components.list_item.property.PropertyDataText
@@ -165,8 +164,6 @@ fun ConfirmScreen(
                             currency = model.currency,
                         )
                     }
-
-                    amountModel?.transactionType == TransactionType.TransferNFT -> amountModel?.nftAsset?.let { NftHead(it) }
 
                     perpetualType != null -> {
                         val asset = amountModel?.asset?.asset

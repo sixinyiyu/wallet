@@ -18,7 +18,6 @@ import Foundation
 import GRDB
 import Keystore
 import NameService
-import NFTService
 import NodeService
 import NotificationService
 import PerpetualService
@@ -58,7 +57,6 @@ extension EnvironmentValues {
     @Entry var connectionsService: ConnectionsService = AppResolver.main.services.connectionsService
     @Entry var walletConnectorManager: WalletConnectorManager = AppResolver.main.services.walletConnectorManager
     @Entry var chainServiceFactory: ChainServiceFactory = AppResolver.main.services.chainServiceFactory
-    @Entry var nftService: NFTService = AppResolver.main.services.nftService
     @Entry var avatarService: AvatarService = AppResolver.main.services.avatarService
     @Entry var releaseService: AppReleaseService = AppResolver.main.services.appReleaseService
     @Entry var scanService: ScanService = AppResolver.main.services.scanService

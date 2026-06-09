@@ -11,11 +11,10 @@ import SwiftUI
 
 public struct WalletImageScene: View {
     enum Tab: Equatable {
-        case emoji, collections
+        case emoji
     }
 
     @Environment(\.dismiss) private var dismiss
-    @State private var selectedTab: Tab = .emoji
     @State private var model: WalletImageViewModel
 
     public init(model: WalletImageViewModel) {
@@ -33,50 +32,24 @@ public struct WalletImageScene: View {
                 .padding(.top, .medium)
                 .padding(.bottom, .extraLarge)
             }
-            switch model.source {
-            case .onboarding:
-                listView
-            case .wallet:
-                pickerView
-                    .padding(.bottom, .medium)
-                    .padding(.horizontal, .medium)
-                listView
-            }
+            listView
         }
-        .bindQuery(model.walletQuery, model.nftQuery)
+        .bindQuery(model.walletQuery)
         .navigationTitle(model.title)
         .navigationBarTitleDisplayMode(.inline)
         .background(Colors.grayBackground)
     }
 
-    private var pickerView: some View {
-        Picker("", selection: $selectedTab) {
-            Text(Localized.Common.emoji).tag(Tab.emoji)
-            Text(Localized.Nft.collections).tag(Tab.collections)
-        }
-        .pickerStyle(.segmented)
-    }
-
     private var listView: some View {
         ScrollView {
             LazyVGrid(
-                columns: model.getColumns(for: selectedTab),
+                columns: model.getColumns(for: .emoji),
                 alignment: .center,
                 spacing: .medium,
             ) {
-                switch selectedTab {
-                case .emoji:
-                    emojiListView
-                case .collections:
-                    nftAssetListView
-                }
+                emojiListView
             }
             .padding(.horizontal, .medium)
-        }
-        .overlay {
-            if model.nftDataList.isEmpty, case .collections = selectedTab {
-                EmptyContentView(model: model.emptyContentModel)
-            }
         }
     }
 
@@ -92,29 +65,11 @@ public struct WalletImageScene: View {
             .transition(.opacity)
         }
     }
-
-    private var nftAssetListView: some View {
-        ForEach(model.buildNftAssetsItems(from: model.nftDataList)) { item in
-            let view = GridPosterView(model: GridPosterViewModel(assetImage: item.assetImage, title: nil))
-            NavigationCustomLink(with: view) {
-                onSelectNftAsset(item)
-            }
-        }
-    }
 }
 
 // MARK: - Actions
 
 private extension WalletImageScene {
-    func onSelectNftAsset(_ item: WalletImageViewModel.NFTAssetImageItem) {
-        guard let url = item.assetImage.imageURL else {
-            return
-        }
-        Task {
-            await model.setImage(from: url)
-        }
-    }
-
     func setDefaultAvatar() {
         model.setDefaultAvatar()
         onDismiss()

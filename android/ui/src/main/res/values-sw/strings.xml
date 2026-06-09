@@ -85,7 +85,6 @@
   <string name="wallet_title">Mkoba</string>
   <string name="wallet_add_token_title">Ongeza Ishara</string>
   <string name="wallet_sell">Uza</string>
-  <string name="wallet_receive_collection">Pokea Mkusanyiko</string>
   <string name="wallet_more">Zaidi</string>
   <string name="wallet_import_contract_address_field">Mkataba au ID ya Token</string>
   <string name="wallet_import_address_warning">Unaweza kuangalia salio na miamala ya anwani hii, lakini **haiwezi kutuma au kuuza fedha**.</string>
@@ -470,18 +469,6 @@
   <string name="info_minimum_amount_title">Kiasi cha Chini</string>
   <string name="info_minimum_amount_description">Kwenye mtandao wa %1$s, kiasi cha chini kwa muamala huu ni %2$s.</string>
   <string name="input_enter_amount_to">Tafadhali weka kiasi hadi %1$s</string>
-  <string name="nft_properties">Mali</string>
-  <string name="nft_collections">Mikusanyiko</string>
-  <string name="nft_collection">Mkusanyiko</string>
-  <string name="nft_save_to_photos">Hifadhi kwa Picha</string>
-  <string name="nft_set_as_avatar">Weka kama Avatar</string>
-  <string name="nft_state_empty_title">NFT zako zitaonekana hapa️</string>
-  <string name="nft_state_empty_description">Pokea NFT yako ya kwanza</string>
-  <string name="nft_report_reason_spam">Barua taka</string>
-  <string name="nft_report_reason_malicious">Uovu</string>
-  <string name="nft_report_reason_inappropriate">Maudhui Yasiyofaa</string>
-  <string name="nft_report_reason_copyright">Hakimiliki</string>
-  <string name="nft_report_report_button_title">Ripoti</string>
   <string name="permissions_access_denied">Ufikiaji Umekataliwa</string>
   <string name="permissions_image_photo_access_denied_description">Programu hii haina ruhusa ya kufikia maktaba yako ya picha. Tafadhali wezesha ufikiaji katika mipangilio ya kifaa chako.</string>
   <string name="markets_title">Masoko</string>
@@ -586,7 +573,6 @@
   <string name="contacts_add_to_contacts">Ongeza kwenye Anwani</string>
   <string name="simulation_header_unlimited_asset">Isiyo na kikomo %1$s</string>
   <string name="simulation_warning_unlimited_token_approval_description">Hii inampa mtumiaji uwezo wa kutumia tokeni hii hadi utakapobatilisha idhini au itakapoisha muda wake.</string>
-  <string name="simulation_warning_nft_collection_approval_title">Ufikiaji kamili wa ukusanyaji wa NFT umeombwa</string>
   <string name="simulation_warning_unlimited_token_approval_title">Idhini ya tokeni isiyo na kikomo</string>
   <string name="application_name">Gem</string>
   <string name="camera_permission_request_camera">Ruhusa ya kamera inahitajika ili kuchanganua Msimbo wa QR.\nTafadhali toa ruhusa.</string>

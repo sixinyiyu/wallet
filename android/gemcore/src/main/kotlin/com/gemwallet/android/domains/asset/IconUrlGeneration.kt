@@ -13,8 +13,6 @@ import com.wallet.core.primitives.Chain
 import com.wallet.core.primitives.DelegationValidator
 import com.wallet.core.primitives.FiatProvider
 import com.wallet.core.primitives.FiatProviderName
-import com.wallet.core.primitives.NFTAsset
-import com.wallet.core.primitives.TransactionNFTTransferMetadata
 import uniffi.gemstone.SwapperProvider
 
 //fun Int.getDrawableUri() = "android.resource://com.gemwallet.android/drawable/$this"
@@ -117,9 +115,3 @@ fun SwapperProvider.getSwapProviderIcon(): String {
     }
     return "file:///android_asset/swap/${iconName.lowercase()}.svg"
 }
-
-fun NFTAsset.getImageUrl(): String = nftImageUrl(id.toIdentifier())
-
-fun TransactionNFTTransferMetadata.getImageUrl(): String = nftImageUrl(assetId.toIdentifier())
-
-private fun nftImageUrl(assetId: String): String = "${Constants.ASSETS_URL}/nft/assets/$assetId/preview"

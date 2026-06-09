@@ -24,7 +24,6 @@ struct CreateWalletModelTests {
         #expect(preferences.completeInitialWalletConfiguration)
         #expect(preferences.completeInitialLoadAssets)
         #expect(preferences.completeInitialLoadTransactions)
-        #expect(preferences.completeInitialLoadNFTs)
 
         preferences.clear()
     }

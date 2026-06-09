@@ -120,12 +120,6 @@ struct RecipientSceneViewModelTests {
         }
     }
 
-    @Test
-    func nftAssetImage() {
-        let nftAsset = NFTAsset.mock(id: NFTAssetId(chain: .ethereum, contractAddress: "0x123", tokenId: "1"))
-        let image = RecipientSceneViewModel.mock().nftAssetImage(for: nftAsset)
-        #expect(image.imageURL?.absoluteString.contains("ethereum_0x123::1") == true)
-    }
 }
 
 // MARK: - Mocks

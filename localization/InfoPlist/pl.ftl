@@ -1,6 +1,6 @@
 # Permissions
 
 NSCameraUsageDescription = Gem Wallet potrzebuje dostępu do Twojego aparatu, aby skanować kody QR.
-NSPhotoLibraryAddUsageDescription = Ta aplikacja wymaga dostępu do Twojej biblioteki zdjęć, aby zapisywać NFT.
+NSPhotoLibraryAddUsageDescription = Ta aplikacja wymaga dostępu do Twojej biblioteki zdjęć, aby zapisywać obrazy.
 NSFaceIDUsageDescription = Włączenie funkcji Face ID pomaga Gem Wallet chronić Twoje aktywa.
 NSPhotoLibraryUsageDescription = Aby umożliwić Ci wybór zdjęć, potrzebujemy dostępu do Twojej biblioteki zdjęć.

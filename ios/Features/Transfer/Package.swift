@@ -118,7 +118,6 @@ let package = Package(
                 .product(name: "ChainServiceTestKit", package: "ChainServices"),
                 .product(name: "StoreTestKit", package: "Store"),
                 .product(name: "StakeServiceTestKit", package: "ChainServices"),
-                .product(name: "NFTServiceTestKit", package: "FeatureServices"),
                 .product(name: "SignerTestKit", package: "Signer"),
                 .product(name: "EarnServiceTestKit", package: "FeatureServices"),
                 .product(name: "FiatServiceTestKit", package: "FeatureServices"),

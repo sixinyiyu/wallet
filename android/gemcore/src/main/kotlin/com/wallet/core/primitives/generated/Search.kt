@@ -11,7 +11,6 @@ import kotlinx.serialization.SerialName
 data class SearchResponse (
 	val assets: List<AssetBasic>,
 	val perpetuals: List<PerpetualSearchData>,
-	val nfts: List<NFTCollection>
 )
 
 @Serializable
@@ -20,7 +19,4 @@ enum class SearchItemType(val string: String) {
 	Asset("asset"),
 	@SerialName("perpetual")
 	Perpetual("perpetual"),
-	@SerialName("nft")
-	Nft("nft"),
 }
-

@@ -38,7 +38,6 @@ extension ConfirmDetailsViewModel: ItemModelProvidable {
         case .transfer,
              .deposit,
              .withdrawal,
-             .transferNft,
              .tokenApprove,
              .stake,
              .account,

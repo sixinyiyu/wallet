@@ -13,13 +13,11 @@ fun WalletImageNavScreen(
     viewModel: WalletImageViewModel = hiltViewModel(),
 ) {
     val wallet by viewModel.wallet.collectAsStateWithLifecycle()
-    val nftImages by viewModel.nftImages.collectAsStateWithLifecycle()
     val dismissOnSelect = { if (source == WalletImageSource.Onboarding) onCancel() }
 
     WalletImageScene(
         wallet = wallet,
         emojis = viewModel.emojis,
-        nftImages = nftImages,
         source = source,
         onAction = { action ->
             when (action) {
@@ -27,7 +25,6 @@ fun WalletImageNavScreen(
                     viewModel.setEmoji(action.emoji, action.backgroundColor)
                     dismissOnSelect()
                 }
-                is WalletImageAction.SetNftImage -> viewModel.setNftImage(action.url)
                 WalletImageAction.ResetToDefault -> {
                     viewModel.resetToDefault()
                     dismissOnSelect()

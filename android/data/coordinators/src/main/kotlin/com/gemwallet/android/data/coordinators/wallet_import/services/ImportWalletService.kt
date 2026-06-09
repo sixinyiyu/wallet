@@ -7,7 +7,6 @@ import com.gemwallet.android.application.wallet_import.coordinators.SyncWalletCo
 import com.gemwallet.android.application.wallet_import.coordinators.SyncWalletImport
 import com.gemwallet.android.application.wallet_import.values.ImportWalletState
 import com.gemwallet.android.cases.device.SyncSubscription
-import com.gemwallet.android.cases.nft.SyncNfts
 import com.gemwallet.android.cases.tokens.SearchTokensCase
 import com.gemwallet.android.data.repositories.assets.AssetsRepository
 import com.gemwallet.android.data.repositories.session.SessionRepository
@@ -39,7 +38,6 @@ class ImportWalletService(
     private val assetsRepository: AssetsRepository,
     private val syncSubscription: SyncSubscription,
     private val syncTransactions: SyncTransactions,
-    private val syncNfts: SyncNfts,
     private val walletConfigurationSync: SyncWalletConfiguration,
     private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO + CoroutineExceptionHandler { _, _ -> }),
 ) : SyncWalletImport, GetImportWalletState {
@@ -63,7 +61,6 @@ class ImportWalletService(
             launch { walletConfigurationSync.sync(wallet.id) }
             launch { discoverAssets(wallet) }
             launch { syncTransactions.syncTransactions(wallet) }
-            launch { syncNfts.sync(wallet.id) }
         }
     }
 

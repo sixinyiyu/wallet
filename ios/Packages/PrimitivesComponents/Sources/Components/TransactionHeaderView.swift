@@ -8,7 +8,6 @@ import SwiftUI
 public enum TransactionHeaderType {
     case amount(AmountDisplay)
     case swap(from: SwapAmountField, to: SwapAmountField)
-    case nft(name: String?, image: AssetImage)
     case asset(image: AssetImage)
     case assetValue(AssetValueHeaderData)
 }
@@ -38,8 +37,6 @@ public struct TransactionHeaderView: View {
                 )
             case let .swap(from, to):
                 SwapAmountView(from: from, to: to, action: action)
-            case let .nft(name, image):
-                NftPreviewView(assetImage: image, name: name, size: .image.large)
             case let .asset(image):
                 AssetImageView(assetImage: image, size: .image.large)
                     .padding(.bottom, .space12)

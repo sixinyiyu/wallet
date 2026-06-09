@@ -26,7 +26,6 @@ fun AssetInfo.balance(
         TransactionType.TokenApproval,
         TransactionType.StakeFreeze,
         TransactionType.AssetActivation,
-        TransactionType.TransferNFT,
         TransactionType.SmartContractCall -> balance.balance.available.toBigInteger()
 
         TransactionType.EarnDeposit,

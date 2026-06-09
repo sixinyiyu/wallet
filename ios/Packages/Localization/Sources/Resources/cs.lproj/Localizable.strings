@@ -80,7 +80,6 @@
 "wallet.title" = "Peněženka";
 "wallet.add_token.title" = "Přidat token";
 "wallet.sell" = "Prodat";
-"wallet.receive_collection" = "Přijmout sbírku";
 "wallet.more" = "Více";
 "wallet.import.contract_address_field" = "Kontrakt nebo token ID";
 "wallet.import_address_warning" = "Pro tuto adresu si můžete prohlížet zůstatky a transakce, ale **nemůžete posílat ani prodávat finanční prostředky**.";
@@ -455,18 +454,6 @@
 "info.minimum_amount.title" = "Minimální částka";
 "info.minimum_amount.description" = "V síti %@ je minimální částka pro tuto transakci %@.";
 "input.enter_amount_to" = "Zadejte částku do %@";
-"nft.properties" = "Vlastnosti";
-"nft.collections" = "Sbírky";
-"nft.collection" = "Sbírka";
-"nft.save_to_photos" = "Uložit do Fotek";
-"nft.set_as_avatar" = "Nastavit jako Avatar";
-"nft.state.empty.title" = "Vaše NFT se zobrazí zde ️";
-"nft.state.empty.description" = "Získejte svůj první NFT";
-"nft.report.reason.spam" = "Spam";
-"nft.report.reason.malicious" = "Zlomyslný";
-"nft.report.reason.inappropriate" = "Nevhodný obsah";
-"nft.report.reason.copyright" = "Autorská práva";
-"nft.report.report_button_title" = "Nahlásit";
 "permissions.access_denied" = "Přístup odepřen";
 "permissions.image.photo_access.denied.description" = "Tato aplikace nemá oprávnění k přístupu do vaší knihovny fotografií. Povolte přístup v nastavení zařízení.";
 "markets.title" = "trhy";
@@ -571,5 +558,4 @@
 "contacts.add_to_contacts" = "Přidat do kontaktů";
 "simulation.header.unlimited_asset" = "Neomezený %@";
 "simulation.warning.unlimited_token_approval.description" = "To dává útratě přístup k používání tohoto tokenu, dokud schválení nezrušíte nebo dokud nevyprší jeho platnost.";
-"simulation.warning.nft_collection_approval.title" = "Požadován plný přístup k NFT kolekci";
 "simulation.warning.unlimited_token_approval.title" = "Neomezené schvalování tokenů";

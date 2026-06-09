@@ -91,7 +91,6 @@ wallet_receive_no_destination_tag_required = 不需要目的地標籤
 wallet_title = 錢包
 wallet_add_token_title = 添加代幣
 wallet_sell = 出售
-wallet_receive_collection = 接收 NFT 藏品
 wallet_more = 更多
 wallet_import_contract_address_field = 合約或代幣ID
 wallet_import_address_warning = 您可以查看此地址的餘額和交易，但**不能發送或出售資金**。
@@ -573,21 +572,6 @@ info_minimum_amount_description = 在 %@ 網路上，此交易的最低金額為
 
 input_enter_amount_to = 請輸入您要%@的數量
 
-# Nft
-
-nft_properties = 特性
-nft_collections = 藏品集合
-nft_collection = 藏品
-nft_save_to_photos = 儲存到照片
-nft_set_as_avatar = 設為頭像
-nft_state_empty_title = NFT 將顯示在這裡️
-nft_state_empty_description = 接收第一個 NFT
-nft_report_reason_spam = 垃圾郵件
-nft_report_reason_malicious = 惡意
-nft_report_reason_inappropriate = 不當內容
-nft_report_reason_copyright = 版權
-nft_report_report_button_title = 檢舉
-
 # Permissions
 
 permissions_access_denied = 拒絕訪問
@@ -733,7 +717,6 @@ contacts_add_to_contacts = 加入聯絡人
 
 simulation_header_unlimited_asset = 無限 %@
 simulation_warning_unlimited_token_approval_description = 這樣，消費者就可以一直使用該代幣，直到你撤銷授權或代幣過期為止。
-simulation_warning_nft_collection_approval_title = 請求訪問完整的NFT收藏集
 simulation_warning_unlimited_token_approval_title = 無限代幣批准
 
 # Application

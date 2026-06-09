@@ -91,7 +91,6 @@ wallet_receive_no_destination_tag_required = Hakuna lebo ya lengwa inahitajika
 wallet_title = Mkoba
 wallet_add_token_title = Ongeza Ishara
 wallet_sell = Uza
-wallet_receive_collection = Pokea Mkusanyiko
 wallet_more = Zaidi
 wallet_import_contract_address_field = Mkataba au ID ya Token
 wallet_import_address_warning = Unaweza kuangalia salio na miamala ya anwani hii, lakini **haiwezi kutuma au kuuza fedha**.
@@ -573,21 +572,6 @@ info_minimum_amount_description = Kwenye mtandao wa %@, kiasi cha chini kwa muam
 
 input_enter_amount_to = Tafadhali weka kiasi hadi %@
 
-# Nft
-
-nft_properties = Mali
-nft_collections = Mikusanyiko
-nft_collection = Mkusanyiko
-nft_save_to_photos = Hifadhi kwa Picha
-nft_set_as_avatar = Weka kama Avatar
-nft_state_empty_title = NFT zako zitaonekana hapa️
-nft_state_empty_description = Pokea NFT yako ya kwanza
-nft_report_reason_spam = Barua taka
-nft_report_reason_malicious = Uovu
-nft_report_reason_inappropriate = Maudhui Yasiyofaa
-nft_report_reason_copyright = Hakimiliki
-nft_report_report_button_title = Ripoti
-
 # Permissions
 
 permissions_access_denied = Ufikiaji Umekataliwa
@@ -733,7 +717,6 @@ contacts_add_to_contacts = Ongeza kwenye Anwani
 
 simulation_header_unlimited_asset = Isiyo na kikomo %@
 simulation_warning_unlimited_token_approval_description = Hii inampa mtumiaji uwezo wa kutumia tokeni hii hadi utakapobatilisha idhini au itakapoisha muda wake.
-simulation_warning_nft_collection_approval_title = Ufikiaji kamili wa ukusanyaji wa NFT umeombwa
 simulation_warning_unlimited_token_approval_title = Idhini ya tokeni isiyo na kikomo
 
 # Application

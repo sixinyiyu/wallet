@@ -312,8 +312,7 @@ pub mod simulation;
 pub use self::simulation::{
     SimulationBalanceChange, SimulationHeader, SimulationPayloadField, SimulationPayloadFieldDisplay, SimulationPayloadFieldKind, SimulationPayloadFieldType, SimulationResult,
     SimulationSeverity, SimulationWarning, SimulationWarningApproval, SimulationWarningType, promote_single_secondary_payload_field,
-};
-pub mod ip_usage_type;
+};pub mod ip_usage_type;
 pub use self::ip_usage_type::IpUsageType;
 pub mod metrics;
 pub use self::metrics::{ConsumerStatus, ParserStatus, ReportedError};

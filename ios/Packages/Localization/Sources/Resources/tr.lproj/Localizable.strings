@@ -80,7 +80,6 @@
 "wallet.title" = "Cüzdan";
 "wallet.add_token.title" = "Jeton Ekle";
 "wallet.sell" = "Satmak";
-"wallet.receive_collection" = "Koleksiyon Al";
 "wallet.more" = "Daha";
 "wallet.import.contract_address_field" = "Sözleşme veya Token ID";
 "wallet.import_address_warning" = "Bu adrese ait bakiyeleri ve işlemleri görüntüleyebilirsiniz, ancak **para gönderemez veya satamazsınız**.";
@@ -455,18 +454,6 @@
 "info.minimum_amount.title" = "Asgari Tutar";
 "info.minimum_amount.description" = "%@ ağında, bu işlem için minimum tutar %@.";
 "input.enter_amount_to" = "Lütfen tutarı %@ olarak girin";
-"nft.properties" = "Özellikler";
-"nft.collections" = "Koleksiyonlar";
-"nft.collection" = "Koleksiyon";
-"nft.save_to_photos" = "Fotoğraflara Kaydet";
-"nft.set_as_avatar" = "Avatar olarak ayarla";
-"nft.state.empty.title" = "NFT'leriniz burada görünecek️";
-"nft.state.empty.description" = "İlk NFT'nizi alın";
-"nft.report.reason.spam" = "İstenmeyen e-posta";
-"nft.report.reason.malicious" = "Kötü niyetli";
-"nft.report.reason.inappropriate" = "Uygunsuz İçerik";
-"nft.report.reason.copyright" = "Telif hakkı";
-"nft.report.report_button_title" = "Bildir";
 "permissions.access_denied" = "Erişim engellendi";
 "permissions.image.photo_access.denied.description" = "Bu uygulama fotoğraf kütüphanenize erişim iznine sahip değil. Lütfen cihaz ayarlarınızda erişimi etkinleştirin.";
 "markets.title" = "Piyasalar";
@@ -571,5 +558,4 @@
 "contacts.add_to_contacts" = "Kişilere Ekle";
 "simulation.header.unlimited_asset" = "Sınırsız %@";
 "simulation.warning.unlimited_token_approval.description" = "Bu, harcama yapan kişiye, siz onayı iptal edene veya süresi dolana kadar bu belirteci kullanma erişimi sağlar.";
-"simulation.warning.nft_collection_approval.title" = "NFT koleksiyonunun tamamına erişim talep edildi.";
 "simulation.warning.unlimited_token_approval.title" = "Sınırsız token onayı";

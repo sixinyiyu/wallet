@@ -7,7 +7,6 @@ import Testing
 struct TransferDataTypeTests {
     @Test
     func shouldIgnoreValueCheck() {
-        #expect(TransferData.mock(type: .transferNft(.mock())).type.shouldIgnoreValueCheck == true)
         #expect(TransferData.mock(type: .stake(.mock(), .stake(.mock()))).type.shouldIgnoreValueCheck == true)
         #expect(TransferData.mock(type: .account(.mock(), .activate)).type.shouldIgnoreValueCheck == true)
         #expect(TransferData.mock(type: .transfer(.mock())).type.shouldIgnoreValueCheck == false)
@@ -38,7 +37,6 @@ struct TransferDataTypeTests {
         #expect(TransferData.mock(type: .stake(.mock(), .withdraw(.mock(state: .inactive)))).canChangeValue == true)
         #expect(TransferData.mock(type: .stake(.mock(), .rewards([.mock()]))).canChangeValue == true)
 
-        #expect(TransferData.mock(type: .transferNft(.mock())).canChangeValue == true)
         #expect(TransferData.mock(type: .tokenApprove(.mock(), .mock())).canChangeValue == true)
         #expect(TransferData.mock(type: .account(.mock(), .activate)).canChangeValue == true)
         #expect(TransferData.mock(type: .generic(asset: .mock(), metadata: .mock(), extra: .mock(outputType: .encodedTransaction))).canChangeValue == true)

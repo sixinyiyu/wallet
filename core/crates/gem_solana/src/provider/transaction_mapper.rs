@@ -113,7 +113,7 @@ pub fn map_transaction(transaction: &BlockTransaction, block_time: i64) -> Optio
     let pre_token_balances = transaction.meta.pre_token_balances.clone();
     let post_token_balances = transaction.meta.post_token_balances.clone();
 
-    // SPL token transfer (regular tokens or NFTs that go through the SPL Token program).
+    // SPL token transfer (regular tokens that go through the SPL Token program).
     if let Some(first_balance) = pre_token_balances.first() {
         let token_id = &first_balance.mint;
         if account_keys.contains(&TOKEN_PROGRAM.to_string())

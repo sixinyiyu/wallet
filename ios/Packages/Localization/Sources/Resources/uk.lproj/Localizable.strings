@@ -80,7 +80,6 @@
 "wallet.title" = "Гаманець";
 "wallet.add_token.title" = "Додати токен";
 "wallet.sell" = "Продати";
-"wallet.receive_collection" = "Отримати колекцію";
 "wallet.more" = "більше";
 "wallet.import.contract_address_field" = "Контракт або ID токена";
 "wallet.import_address_warning" = "Ви можете переглядати баланси та транзакції для цієї адреси, але **не можете надсилати або продавати кошти**.";
@@ -455,18 +454,6 @@
 "info.minimum_amount.title" = "Мінімальна сума";
 "info.minimum_amount.description" = "У мережі %@ мінімальна сума для цієї транзакції становить %@.";
 "input.enter_amount_to" = "Будь ласка, введіть суму для %@";
-"nft.properties" = "Властивості";
-"nft.collections" = "Колекції";
-"nft.collection" = "Колекція";
-"nft.save_to_photos" = "Зберегти до фотографій";
-"nft.set_as_avatar" = "Встановити як аватар";
-"nft.state.empty.title" = "Ваші NFT-транзакції з'являться тут ️";
-"nft.state.empty.description" = "Отримайте свій перший NFT";
-"nft.report.reason.spam" = "Спам";
-"nft.report.reason.malicious" = "Зловмисний";
-"nft.report.reason.inappropriate" = "Неприйнятний контент";
-"nft.report.reason.copyright" = "Авторське право";
-"nft.report.report_button_title" = "Поскаржитися";
 "permissions.access_denied" = "Доступ заборонено";
 "permissions.image.photo_access.denied.description" = "Ця програма не має дозволу на доступ до вашої бібліотеки фотографій. Увімкніть доступ у налаштуваннях пристрою.";
 "markets.title" = "Ринки";
@@ -571,5 +558,4 @@
 "contacts.add_to_contacts" = "Додати до контактів";
 "simulation.header.unlimited_asset" = "Безлімітний %@";
 "simulation.warning.unlimited_token_approval.description" = "Це надає споживачеві доступ до використання цього токена, доки ви не скасуєте схвалення або термін його дії не закінчиться.";
-"simulation.warning.nft_collection_approval.title" = "Запитується повний доступ до колекції NFT";
 "simulation.warning.unlimited_token_approval.title" = "Необмежене схвалення токенів";

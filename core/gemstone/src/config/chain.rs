@@ -17,7 +17,6 @@ pub struct ChainConfig {
     pub block_time: u32,
     pub is_swap_supported: bool,
     pub is_stake_supported: bool,
-    pub is_nft_supported: bool,
     pub is_memo_supported: bool,
 }
 
@@ -38,7 +37,6 @@ pub fn get_chain_config(chain: Chain) -> ChainConfig {
         block_time: chain.block_time(),
         is_swap_supported: chain.is_swap_supported(),
         is_stake_supported: chain.is_stake_supported(),
-        is_nft_supported: chain.is_nft_supported(),
         is_memo_supported: is_memo_supported(chain),
     }
 }

@@ -80,7 +80,6 @@
 "wallet.title" = "Tegnebog";
 "wallet.add_token.title" = "Tilføj token";
 "wallet.sell" = "Sælg";
-"wallet.receive_collection" = "Modtag samling";
 "wallet.more" = "Mere";
 "wallet.import.contract_address_field" = "Kontrakt eller token-ID";
 "wallet.import_address_warning" = "Du kan se saldi og transaktioner for denne adresse, men **kan ikke sende eller sælge penge**.";
@@ -455,18 +454,6 @@
 "info.minimum_amount.title" = "Minimumsbeløb";
 "info.minimum_amount.description" = "På %@-netværket er minimumsbeløbet for denne transaktion %@.";
 "input.enter_amount_to" = "Indtast venligst beløb til %@";
-"nft.properties" = "Egenskaber";
-"nft.collections" = "Samlinger";
-"nft.collection" = "Samling";
-"nft.save_to_photos" = "Gem til Fotos";
-"nft.set_as_avatar" = "Indstil som Avatar";
-"nft.state.empty.title" = "Dine NFT'er vil blive vist her️";
-"nft.state.empty.description" = "Modtag din første NFT";
-"nft.report.reason.spam" = "Spam";
-"nft.report.reason.malicious" = "Ondsindet";
-"nft.report.reason.inappropriate" = "Upassende indhold";
-"nft.report.reason.copyright" = "Ophavsret";
-"nft.report.report_button_title" = "Rapport";
 "permissions.access_denied" = "Adgang nægtet";
 "permissions.image.photo_access.denied.description" = "Denne app har ikke tilladelse til at få adgang til dit fotobibliotek. Aktiver venligst adgang i dine enhedsindstillinger.";
 "markets.title" = "Markeder";
@@ -571,5 +558,4 @@
 "contacts.add_to_contacts" = "Føj til Kontakter";
 "simulation.header.unlimited_asset" = "Ubegrænset %@";
 "simulation.warning.unlimited_token_approval.description" = "Dette giver brugeren adgang til at bruge denne token, indtil du tilbagekalder godkendelsen, eller den udløber.";
-"simulation.warning.nft_collection_approval.title" = "Fuld adgang til NFT-samling anmodes";
 "simulation.warning.unlimited_token_approval.title" = "Ubegrænset tokengodkendelse";

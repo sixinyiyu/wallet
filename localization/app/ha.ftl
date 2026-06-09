@@ -91,7 +91,6 @@ wallet_receive_no_destination_tag_required = Babu alamar makoma da ake buƙata
 wallet_title = Wallet
 wallet_add_token_title = Ƙara Token
 wallet_sell = Sayarwa
-wallet_receive_collection = Karɓi Tarin
 wallet_more = Kara
 wallet_import_contract_address_field = Kwangila ko Token ID
 wallet_import_address_warning = Kuna iya duba ma'auni da ma'amaloli don wannan adireshin, amma ** ba za ku iya aikawa ko siyar da kuɗi ba**.
@@ -573,21 +572,6 @@ info_minimum_amount_description = A kan hanyar sadarwar %@, mafi ƙarancin adadi
 
 input_enter_amount_to = Da fatan za a shigar da adadin zuwa %@
 
-# Nft
-
-nft_properties = Kayayyaki
-nft_collections = Tari
-nft_collection = Tarin
-nft_save_to_photos = Ajiye zuwa Hotuna
-nft_set_as_avatar = Saita azaman Avatar
-nft_state_empty_title = NFT naku zasu bayyana anan️
-nft_state_empty_description = Karɓi NFT na farko
-nft_report_reason_spam = Spam
-nft_report_reason_malicious = Mai mugunta
-nft_report_reason_inappropriate = Abun ciki mara dacewa
-nft_report_reason_copyright = Haƙƙin mallaka
-nft_report_report_button_title = Yi korafi
-
 # Permissions
 
 permissions_access_denied = An hana shiga
@@ -733,7 +717,6 @@ contacts_add_to_contacts = Ƙara zuwa Lambobin Sadarwa
 
 simulation_header_unlimited_asset = Unlimited %@
 simulation_warning_unlimited_token_approval_description = Wannan yana ba mai kashe kuɗi damar amfani da wannan alamar har sai kun soke amincewa ko kuma ta ƙare.
-simulation_warning_nft_collection_approval_title = An nemi cikakken damar tattara NFT
 simulation_warning_unlimited_token_approval_title = Amincewa da alamar mara iyaka
 
 # Application

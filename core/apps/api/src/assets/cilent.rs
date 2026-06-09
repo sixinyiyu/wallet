@@ -5,8 +5,8 @@ use super::filter::{build_assets_filters, build_filter};
 use super::model::SearchRequest;
 use chrono::{DateTime, Utc};
 use pricer::PriceClient;
-use primitives::{Asset, AssetBasic, AssetFull, AssetId, ChainAddress, NFTCollection, PerpetualSearchData, PriceConfig};
-use search_index::{ASSETS_INDEX_NAME, AssetDocument, NFTDocument, NFTS_INDEX_NAME, PERPETUALS_INDEX_NAME, PerpetualDocument, SearchIndexClient};
+use primitives::{Asset, AssetBasic, AssetFull, AssetId, ChainAddress, PerpetualSearchData, PriceConfig};
+use search_index::{ASSETS_INDEX_NAME, AssetDocument, PERPETUALS_INDEX_NAME, PerpetualDocument, SearchIndexClient};
 use storage::{AssetsAddressesRepository, AssetsRepository, Database, WalletsRepository};
 
 #[derive(Clone)]
@@ -105,12 +105,5 @@ impl SearchClient {
         Ok(perpetuals.into_iter().map(Into::into).collect())
     }
 
-    pub async fn get_nfts_search(&self, request: &SearchRequest) -> Result<Vec<NFTCollection>, Box<dyn Error + Send + Sync>> {
-        let nfts: Vec<NFTDocument> = self
-            .client
-            .search(NFTS_INDEX_NAME, &request.query, &build_filter(vec![]), [].as_ref(), request.limit, request.offset)
-            .await?;
 
-        Ok(nfts.into_iter().map(|x| x.collection).collect())
-    }
 }

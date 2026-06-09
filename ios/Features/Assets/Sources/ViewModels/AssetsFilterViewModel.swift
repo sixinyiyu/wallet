@@ -44,7 +44,7 @@ public struct AssetsFilterViewModel: Sendable, Equatable {
         case let .receive(type):
             switch type {
             case .asset: [.enabled]
-            case .collection: [.enabled, .chainsOrAssets([], Chain.allCases.filter(\.isNFTSupported).map(\.rawValue))]
+            case .collection: [.enabled]
             }
         case .buy: [.enabled, .buyable]
         case let .swap(type):

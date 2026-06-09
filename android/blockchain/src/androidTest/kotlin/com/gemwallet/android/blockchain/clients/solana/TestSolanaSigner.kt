@@ -62,8 +62,7 @@ class TestSolanaSigner {
             blockHash = "kiEPF6aKvEsj5nbi4FBvgRRm9ha36Y3cgDU9qnUKt32",
             recipientTokenAddress = null,
             senderTokenAddress = "",
-            tokenProgram = uniffi.gemstone.SolanaTokenProgramId.TOKEN,
-            nft = null
+            tokenProgram = uniffi.gemstone.SolanaTokenProgramId.TOKEN
         )
         val result = runBlocking {
             signer.signNativeTransfer(
@@ -115,8 +114,7 @@ class TestSolanaSigner {
             blockHash = "kiEPF6aKvEsj5nbi4FBvgRRm9ha36Y3cgDU9qnUKt32",
             recipientTokenAddress = "DVWPV7brSbPDkA7a3qdn6UJsVc3J3DyhQhjNaZeZqwzo",
             senderTokenAddress = "DVWPV7brSbPDkA7a3qdn6UJsVc3J3DyhQhjNaZeZqwzo",
-            tokenProgram = uniffi.gemstone.SolanaTokenProgramId.TOKEN,
-            nft = null
+            tokenProgram = uniffi.gemstone.SolanaTokenProgramId.TOKEN
         )
         val result = runBlocking {
             signer.signTokenTransfer(
@@ -169,8 +167,7 @@ class TestSolanaSigner {
             blockHash = "kiEPF6aKvEsj5nbi4FBvgRRm9ha36Y3cgDU9qnUKt32",
             recipientTokenAddress = "87vTugUvkkepa84mBRfENnvkPQRj5EZSkiG8XyFAhbQQ",
             senderTokenAddress = "87vTugUvkkepa84mBRfENnvkPQRj5EZSkiG8XyFAhbQQ",
-            tokenProgram = uniffi.gemstone.SolanaTokenProgramId.TOKEN2022,
-            nft = null
+            tokenProgram = uniffi.gemstone.SolanaTokenProgramId.TOKEN2022
         )
         val result = runBlocking {
             signer.signTokenTransfer(

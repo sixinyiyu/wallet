@@ -85,7 +85,6 @@
   <string name="wallet_title">지갑</string>
   <string name="wallet_add_token_title">토큰 추가하기</string>
   <string name="wallet_sell">팔다</string>
-  <string name="wallet_receive_collection">컬렉션 수신</string>
   <string name="wallet_more">더</string>
   <string name="wallet_import_contract_address_field">계약 또는 토큰 ID</string>
   <string name="wallet_import_address_warning">이 주소에 대한 잔액과 거래 내역은 볼 수 있지만, **자금을 보내거나 판매할 수는 없습니다**.</string>
@@ -470,18 +469,6 @@
   <string name="info_minimum_amount_title">최소 금액</string>
   <string name="info_minimum_amount_description">%1$s 네트워크에서 이 거래의 최소 금액은 %2$s입니다.</string>
   <string name="input_enter_amount_to">%1$s까지 금액을 입력하세요.</string>
-  <string name="nft_properties">속성</string>
-  <string name="nft_collections">컬렉션</string>
-  <string name="nft_collection">수집</string>
-  <string name="nft_save_to_photos">사진에 저장</string>
-  <string name="nft_set_as_avatar">아바타로 설정</string>
-  <string name="nft_state_empty_title">귀하의 NFT가 여기에 표시됩니다.</string>
-  <string name="nft_state_empty_description">첫 번째 NFT를 받으세요</string>
-  <string name="nft_report_reason_spam">스팸</string>
-  <string name="nft_report_reason_malicious">악의 있는</string>
-  <string name="nft_report_reason_inappropriate">부적절한 콘텐츠</string>
-  <string name="nft_report_reason_copyright">저작권</string>
-  <string name="nft_report_report_button_title">신고</string>
   <string name="permissions_access_denied">접근 불가</string>
   <string name="permissions_image_photo_access_denied_description">이 앱은 사진 라이브러리에 액세스할 권한이 없습니다. 기기 설정에서 액세스를 활성화하세요.</string>
   <string name="markets_title">시장</string>
@@ -586,7 +573,6 @@
   <string name="contacts_add_to_contacts">연락처에 추가</string>
   <string name="simulation_header_unlimited_asset">제한 없는 %1$s</string>
   <string name="simulation_warning_unlimited_token_approval_description">이렇게 하면 사용자가 승인을 취소하거나 만료될 때까지 해당 토큰을 사용할 수 있습니다.</string>
-  <string name="simulation_warning_nft_collection_approval_title">NFT 컬렉션 전체 접근 권한이 요청되었습니다.</string>
   <string name="simulation_warning_unlimited_token_approval_title">무제한 토큰 승인</string>
   <string name="application_name">Gem</string>
   <string name="camera_permission_request_camera">QR코드 스캔을 위해서는 카메라 권한이 필요합니다.\n권한을 부여해 주세요.</string>

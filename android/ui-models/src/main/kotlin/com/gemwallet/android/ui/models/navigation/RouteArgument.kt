@@ -7,8 +7,6 @@ enum class RouteArgument(val key: String) {
     ContactId("contactId"),
     DelegationId("delegationId"),
     FromAssetId("fromAssetId"),
-    NftAssetId("nftAssetId"),
-    NftCollectionId("nftCollectionId"),
     Params("params"),
     SwapItemType("swapItemType"),
     ToAssetId("toAssetId"),

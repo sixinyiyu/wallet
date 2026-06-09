@@ -80,7 +80,6 @@ fun TransactionItem(
 @Composable
 private fun TransactionIcon(data: TransactionDataAggregate) = when (data.type) {
     TransactionType.Transfer,
-    TransactionType.TransferNFT,
     TransactionType.SmartContractCall -> DirectionBadgedIcon(data)
     else -> AssetIcon(data.asset)
 }
@@ -99,8 +98,8 @@ private fun DirectionBadgedIcon(data: TransactionDataAggregate) {
         else -> MaterialTheme.colorScheme.primary
     }
     IconWithBadge(
-        icon = data.nftImageUrl ?: data.asset.getIconUrl(),
-        placeholder = if (data.nftImageUrl != null) "NFT" else data.asset.type.string,
+        icon = data.asset.getIconUrl(),
+        placeholder = data.asset.type.string,
         size = size,
     ) {
         BadgeCircle(size = size, color = color) {

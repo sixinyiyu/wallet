@@ -93,7 +93,6 @@ impl<C: Client> AptosClient<C> {
         match &input.input_type {
             TransactionInputType::Transfer(asset)
             | TransactionInputType::Deposit(asset)
-            | TransactionInputType::TransferNft(asset, _)
             | TransactionInputType::Account(asset, _) => {
                 let payload = match &asset.id.token_id {
                     None => build_transfer_transaction_payload(&input.destination_address, &input.value),

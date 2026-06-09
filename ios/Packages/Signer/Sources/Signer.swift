@@ -26,8 +26,6 @@ public struct Signer: Sendable {
             case .token:
                 return try [signer.signTokenTransfer(input: input, privateKey: privateKey)]
             }
-        case .transferNft:
-            return try [signer.signNftTransfer(input: input, privateKey: privateKey)]
         case .tokenApprove:
             return try [signer.signTokenTransfer(input: input, privateKey: privateKey)]
         case let .swap(fromAsset, _, swapData):

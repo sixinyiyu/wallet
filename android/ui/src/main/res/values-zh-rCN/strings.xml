@@ -85,7 +85,6 @@
   <string name="wallet_title">钱包</string>
   <string name="wallet_add_token_title">添加代币</string>
   <string name="wallet_sell">出售</string>
-  <string name="wallet_receive_collection">接收 NFT 藏品</string>
   <string name="wallet_more">更多</string>
   <string name="wallet_import_contract_address_field">合约或代币ID</string>
   <string name="wallet_import_address_warning">您可以查看此地址的余额和交易，但**不能发送或出售资金**。</string>
@@ -470,18 +469,6 @@
   <string name="info_minimum_amount_title">最低金额</string>
   <string name="info_minimum_amount_description">在 %1$s 网络上，此交易的最低金额为 %2$s。</string>
   <string name="input_enter_amount_to">输入%1$s的数量</string>
-  <string name="nft_properties">特性</string>
-  <string name="nft_collections">藏品集合</string>
-  <string name="nft_collection">藏品</string>
-  <string name="nft_save_to_photos">保存到照片</string>
-  <string name="nft_set_as_avatar">设为头像</string>
-  <string name="nft_state_empty_title">NFT 将显示在这里️</string>
-  <string name="nft_state_empty_description">接收第一个 NFT</string>
-  <string name="nft_report_reason_spam">垃圾邮件</string>
-  <string name="nft_report_reason_malicious">恶意</string>
-  <string name="nft_report_reason_inappropriate">不当内容</string>
-  <string name="nft_report_reason_copyright">版权</string>
-  <string name="nft_report_report_button_title">举报</string>
   <string name="permissions_access_denied">拒绝访问</string>
   <string name="permissions_image_photo_access_denied_description">此应用无权访问您的照片库。请在设备设置中启用访问权限。</string>
   <string name="markets_title">市场</string>
@@ -586,7 +573,6 @@
   <string name="contacts_add_to_contacts">添加到联系人</string>
   <string name="simulation_header_unlimited_asset">无限 %1$s</string>
   <string name="simulation_warning_unlimited_token_approval_description">这样，消费者就可以一直使用该代币，直到你撤销授权或代币过期为止。</string>
-  <string name="simulation_warning_nft_collection_approval_title">请求访问完整的NFT收藏集</string>
   <string name="simulation_warning_unlimited_token_approval_title">无限代币批准</string>
   <string name="application_name">Gem</string>
   <string name="camera_permission_request_camera">需要相机权限以扫描二维码。\n请授予权限。</string>

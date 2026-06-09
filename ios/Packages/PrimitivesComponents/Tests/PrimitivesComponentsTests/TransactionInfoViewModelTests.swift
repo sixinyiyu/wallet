@@ -128,28 +128,6 @@ struct TransactionInfoModelTests {
         #expect(display.fiat?.text == "$1.50")
     }
 
-    @Test
-    func headerTypeNFT() {
-        let nftAsset = NFTAsset.mock()
-        let model = TransactionInfoViewModel(
-            currency: "USD",
-            asset: asset,
-            assetPrice: assetPrice,
-            feeAsset: feeAsset,
-            feeAssetPrice: feeAssetPrice,
-            value: value,
-            feeValue: feeValue,
-            direction: nil,
-        )
-
-        let header = model.headerType(input: .nft(name: nftAsset.name, id: nftAsset.id.identifier))
-        guard case let .nft(name, _) = header else {
-            Issue.record("Expected header type .nft")
-            return
-        }
-
-        #expect(name == nftAsset.name)
-    }
 
     @Test
     func headerTypeSwap() {

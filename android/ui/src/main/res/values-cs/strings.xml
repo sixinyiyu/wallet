@@ -85,7 +85,6 @@
   <string name="wallet_title">Peněženka</string>
   <string name="wallet_add_token_title">Přidat token</string>
   <string name="wallet_sell">Prodat</string>
-  <string name="wallet_receive_collection">Přijmout sbírku</string>
   <string name="wallet_more">Více</string>
   <string name="wallet_import_contract_address_field">Kontrakt nebo token ID</string>
   <string name="wallet_import_address_warning">Pro tuto adresu si můžete prohlížet zůstatky a transakce, ale **nemůžete posílat ani prodávat finanční prostředky**.</string>
@@ -470,18 +469,6 @@
   <string name="info_minimum_amount_title">Minimální částka</string>
   <string name="info_minimum_amount_description">V síti %1$s je minimální částka pro tuto transakci %2$s.</string>
   <string name="input_enter_amount_to">Zadejte částku do %1$s</string>
-  <string name="nft_properties">Vlastnosti</string>
-  <string name="nft_collections">Sbírky</string>
-  <string name="nft_collection">Sbírka</string>
-  <string name="nft_save_to_photos">Uložit do Fotek</string>
-  <string name="nft_set_as_avatar">Nastavit jako Avatar</string>
-  <string name="nft_state_empty_title">Vaše NFT se zobrazí zde ️</string>
-  <string name="nft_state_empty_description">Získejte svůj první NFT</string>
-  <string name="nft_report_reason_spam">Spam</string>
-  <string name="nft_report_reason_malicious">Zlomyslný</string>
-  <string name="nft_report_reason_inappropriate">Nevhodný obsah</string>
-  <string name="nft_report_reason_copyright">Autorská práva</string>
-  <string name="nft_report_report_button_title">Nahlásit</string>
   <string name="permissions_access_denied">Přístup odepřen</string>
   <string name="permissions_image_photo_access_denied_description">Tato aplikace nemá oprávnění k přístupu do vaší knihovny fotografií. Povolte přístup v nastavení zařízení.</string>
   <string name="markets_title">trhy</string>
@@ -586,7 +573,6 @@
   <string name="contacts_add_to_contacts">Přidat do kontaktů</string>
   <string name="simulation_header_unlimited_asset">Neomezený %1$s</string>
   <string name="simulation_warning_unlimited_token_approval_description">To dává útratě přístup k používání tohoto tokenu, dokud schválení nezrušíte nebo dokud nevyprší jeho platnost.</string>
-  <string name="simulation_warning_nft_collection_approval_title">Požadován plný přístup k NFT kolekci</string>
   <string name="simulation_warning_unlimited_token_approval_title">Neomezené schvalování tokenů</string>
   <string name="application_name">Gem</string>
   <string name="camera_permission_request_camera">Pro skenování QR kódu je vyžadováno oprávnění k fotoaparátu.\nUdělte prosím oprávnění.</string>

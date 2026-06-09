@@ -51,16 +51,6 @@ struct ConfirmHeaderViewModelTests {
         #expect(item.showClearHeader == false)
     }
 
-    @Test
-    func nftShowsClearHeader() {
-        let model = ConfirmHeaderViewModel(
-            headerType: .nft(name: nil, image: AssetImage()),
-        )
-
-        guard case let .header(item) = model.itemModel else { return }
-        guard case .nft = item.headerType else { return }
-        #expect(item.showClearHeader == true)
-    }
 
     @Test
     func assetValueShowsClearHeader() {

@@ -23,14 +23,12 @@ fun SimulationWarning.isVisible(): Boolean = when (val warningType = warning) {
     is SimulationWarningType.PermitBatchApproval -> warningType.content == null
     SimulationWarningType.SuspiciousSpender,
     SimulationWarningType.ExternallyOwnedSpender,
-    is SimulationWarningType.NftCollectionApproval,
     SimulationWarningType.ValidationError -> true
 }
 
 @StringRes
 fun SimulationWarning.titleRes(): Int? = when (warning) {
     SimulationWarningType.ValidationError -> if (severity != SimulationSeverity.Critical) R.string.common_warning else R.string.errors_error_occured
-    is SimulationWarningType.NftCollectionApproval -> R.string.simulation_warning_nft_collection_approval_title
     is SimulationWarningType.TokenApproval,
     is SimulationWarningType.PermitApproval,
     is SimulationWarningType.PermitBatchApproval -> if (isVisible()) R.string.simulation_warning_unlimited_token_approval_title else null
@@ -46,7 +44,6 @@ fun SimulationWarning.descriptionRes(): Int? = when (warning) {
     SimulationWarningType.SuspiciousSpender,
     SimulationWarningType.ExternallyOwnedSpender -> R.string.common_suspicious_address
     SimulationWarningType.ValidationError -> if (severity == SimulationSeverity.Critical) R.string.errors_error_occured else null
-    is SimulationWarningType.NftCollectionApproval -> null
 }
 
 @Composable

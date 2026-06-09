@@ -10,7 +10,6 @@ public extension GemTransactionInputType {
         switch self {
         case let .transfer(asset): asset
         case let .deposit(asset): asset
-        case let .transferNft(asset, _): asset
         case let .swap(fromAsset, _, _): fromAsset
         case let .stake(asset, _): asset
         case let .tokenApprove(asset, _): asset
@@ -31,8 +30,6 @@ public extension GemTransactionInputType {
             try TransferDataType.deposit(asset.map())
         case let .swap(fromAsset, toAsset, gemSwapData):
             try TransferDataType.swap(fromAsset.map(), toAsset.map(), gemSwapData.map())
-        case let .transferNft(_, nftAsset):
-            try TransferDataType.transferNft(nftAsset.map())
         case let .stake(asset, type):
             try TransferDataType.stake(asset.map(), type.map())
         case let .tokenApprove(asset, approvalData):
@@ -58,8 +55,6 @@ public extension TransferDataType {
             return .deposit(asset: asset.map())
         case let .swap(fromAsset, toAsset, swapData):
             return try .swap(fromAsset: fromAsset.map(), toAsset: toAsset.map(), swapData: swapData.map())
-        case let .transferNft(nftAsset):
-            return .transferNft(asset: Asset(nftAsset.chain).map(), nftAsset: nftAsset.map())
         case let .stake(asset, stakeType):
             return .stake(asset: asset.map(), stakeType: stakeType.map())
         case let .tokenApprove(asset, approvalData):

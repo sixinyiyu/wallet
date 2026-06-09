@@ -96,7 +96,7 @@ public struct StateEmptyView<Content: View>: View {
             StateEmptyView(
                 title: "No Results Found",
                 description: "Try adjusting your search or filter to find what you're looking for.",
-                image: Images.EmptyContent.nft,
+                image: Images.EmptyContent.search,
             )
         }
 

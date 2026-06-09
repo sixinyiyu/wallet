@@ -80,7 +80,6 @@
 "wallet.title" = "Cartera";
 "wallet.add_token.title" = "Agregar ficha";
 "wallet.sell" = "Vender";
-"wallet.receive_collection" = "Recibir colección";
 "wallet.more" = "Más";
 "wallet.import.contract_address_field" = "Contrato o ID de token";
 "wallet.import_address_warning" = "Puede ver los saldos y las transacciones de esta dirección, pero **no puede enviar ni vender fondos**.";
@@ -455,18 +454,6 @@
 "info.minimum_amount.title" = "Cantidad Mínima";
 "info.minimum_amount.description" = "En la red %@, el importe mínimo para esta transacción es %@.";
 "input.enter_amount_to" = "Por favor ingrese la cantidad a %@";
-"nft.properties" = "Propiedades";
-"nft.collections" = "Colecciones";
-"nft.collection" = "Recopilación";
-"nft.save_to_photos" = "Guardar en Fotos";
-"nft.set_as_avatar" = "Establecer como avatar";
-"nft.state.empty.title" = "Tus NFT aparecerán aquí️";
-"nft.state.empty.description" = "Recibe tu primer NFT";
-"nft.report.reason.spam" = "Correo basura";
-"nft.report.reason.malicious" = "Malicioso";
-"nft.report.reason.inappropriate" = "Contenido inapropiado";
-"nft.report.reason.copyright" = "Derechos de autor";
-"nft.report.report_button_title" = "Reportar";
 "permissions.access_denied" = "Acceso denegado";
 "permissions.image.photo_access.denied.description" = "Esta aplicación no tiene permiso para acceder a tu biblioteca de fotos. Habilita el acceso en la configuración de tu dispositivo.";
 "markets.title" = "Mercados";
@@ -571,5 +558,4 @@
 "contacts.add_to_contacts" = "Añadir a contactos";
 "simulation.header.unlimited_asset" = "Ilimitado %@";
 "simulation.warning.unlimited_token_approval.description" = "Esto le da al gastador acceso para usar este token hasta que revoque la aprobación o expire.";
-"simulation.warning.nft_collection_approval.title" = "Se solicita acceso completo a la colección NFT";
 "simulation.warning.unlimited_token_approval.title" = "Aprobación ilimitada de tokens";

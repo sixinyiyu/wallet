@@ -85,7 +85,6 @@
   <string name="wallet_title">Wallet</string>
   <string name="wallet_add_token_title">Magdagdag ng Token</string>
   <string name="wallet_sell">Ibenta</string>
-  <string name="wallet_receive_collection">Tumanggap ng Koleksyon</string>
   <string name="wallet_more">Higit pa</string>
   <string name="wallet_import_contract_address_field">Kontrata o Token ID</string>
   <string name="wallet_import_address_warning">Maaari mong tingnan ang mga balanse at transaksyon para sa address na ito, ngunit **hindi maaaring magpadala o magbenta ng mga pondo**.</string>
@@ -470,18 +469,6 @@
   <string name="info_minimum_amount_title">Pinakamababang Halaga</string>
   <string name="info_minimum_amount_description">Sa %1$s network, ang minimum na halaga para sa transaksyong ito ay %2$s.</string>
   <string name="input_enter_amount_to">Mangyaring magpasok ng halaga sa %1$s</string>
-  <string name="nft_properties">Mga Katangian</string>
-  <string name="nft_collections">Mga koleksyon</string>
-  <string name="nft_collection">Koleksyon</string>
-  <string name="nft_save_to_photos">I-save sa Mga Larawan</string>
-  <string name="nft_set_as_avatar">Itakda bilang Avatar</string>
-  <string name="nft_state_empty_title">Lalabas dito ang iyong mga NFT ️</string>
-  <string name="nft_state_empty_description">Tanggapin ang iyong unang NFT</string>
-  <string name="nft_report_reason_spam">Spam</string>
-  <string name="nft_report_reason_malicious">Malisyoso</string>
-  <string name="nft_report_reason_inappropriate">Hindi Naaangkop na Nilalaman</string>
-  <string name="nft_report_reason_copyright">Copyright</string>
-  <string name="nft_report_report_button_title">I-report</string>
   <string name="permissions_access_denied">Tinanggihan ang Access</string>
   <string name="permissions_image_photo_access_denied_description">Walang pahintulot ang app na ito na i-access ang iyong library ng larawan. Mangyaring paganahin ang pag-access sa mga setting ng iyong device.</string>
   <string name="markets_title">Mga pamilihan</string>
@@ -586,7 +573,6 @@
   <string name="contacts_add_to_contacts">Idagdag sa Mga Kontak</string>
   <string name="simulation_header_unlimited_asset">Walang limitasyon %1$s</string>
   <string name="simulation_warning_unlimited_token_approval_description">Nagbibigay ito sa gumagastos ng access na gamitin ang token na ito hanggang sa bawiin mo ang pag-apruba o hanggang sa mag-expire ito.</string>
-  <string name="simulation_warning_nft_collection_approval_title">Hiniling ang kumpletong access sa koleksyon ng NFT</string>
   <string name="simulation_warning_unlimited_token_approval_title">Walang limitasyong pag-apruba ng token</string>
   <string name="application_name">Gem</string>
   <string name="camera_permission_request_camera">Kinakailangan ng pahintulot sa camera para sa pag-scan ng QR Code.\nPakibigay ng pahintulot.</string>

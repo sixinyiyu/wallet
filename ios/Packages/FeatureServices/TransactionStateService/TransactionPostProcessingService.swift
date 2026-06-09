@@ -3,7 +3,6 @@
 import BalanceService
 import EarnService
 import Foundation
-import NFTService
 import Primitives
 import StakeService
 import Store
@@ -13,20 +12,17 @@ public struct TransactionPostProcessingService: Sendable {
     private let balanceUpdater: any BalanceUpdater
     private let stakeService: StakeService
     private let earnService: EarnService
-    private let nftService: NFTService
 
     public init(
         transactionStore: TransactionStore,
         balanceUpdater: any BalanceUpdater,
         stakeService: StakeService,
         earnService: EarnService,
-        nftService: NFTService,
     ) {
         self.transactionStore = transactionStore
         self.balanceUpdater = balanceUpdater
         self.stakeService = stakeService
         self.earnService = earnService
-        self.nftService = nftService
     }
 
     func process(wallet: Wallet, transaction: Transaction) async throws {
@@ -57,10 +53,6 @@ public struct TransactionPostProcessingService: Sendable {
                         address: transaction.from,
                     )
                 }
-            }
-        case .transferNFT:
-            Task {
-                // TODO: implement nftService.update when ready
             }
         default:
             break

@@ -16,7 +16,6 @@ public struct EmptyContentTypeViewModel: EmptyContentViewable {
 
     public var title: String {
         switch type {
-        case .nfts: Localized.Nft.State.Empty.title
         case .priceAlerts: Localized.PriceAlerts.State.Empty.title
         case let .asset(_, _, _, isViewOnly):
             switch isViewOnly {
@@ -47,7 +46,6 @@ public struct EmptyContentTypeViewModel: EmptyContentViewable {
 
     public var description: String? {
         switch type {
-        case let .nfts(action): action != nil ? Localized.Nft.State.Empty.description : nil
         case .priceAlerts: Localized.PriceAlerts.State.Empty.description
         case let .asset(symbol, _, _, isViewOnly):
             switch isViewOnly {
@@ -77,7 +75,6 @@ public struct EmptyContentTypeViewModel: EmptyContentViewable {
 
     public var image: Image? {
         switch type {
-        case .nfts: Images.EmptyContent.nft
         case .priceAlerts: Images.EmptyContent.priceAlerts
         case .asset, .activity: Images.EmptyContent.activity
         case .stake: Images.EmptyContent.stake
@@ -106,8 +103,6 @@ public struct EmptyContentTypeViewModel: EmptyContentViewable {
                     []
                 }
             }
-        case let .nfts(action):
-            [EmptyAction(title: Localized.Wallet.receive, action: action)]
         case let .activity(receive, buy, isViewOnly):
             switch isViewOnly {
             case true: []

@@ -6,11 +6,10 @@ use primitives::{FeeOption, SignerError, SignerInput};
 
 use super::{
     message::{InternalMessage, build_internal_message},
-    request::{JettonTransferRequest, NftTransferRequest, TransferPayload, TransferRequest},
+    request::{JettonTransferRequest, TransferPayload, TransferRequest},
 };
 use crate::{
     address::Address,
-    constants::NFT_TRANSFER_FORWARD_AMOUNT,
     signer::signer::TonSigner,
     tvm::{BagOfCells, CellBuilder},
 };
@@ -40,20 +39,6 @@ impl TonSigner {
             comment: input.memo.clone(),
         };
         let request = TransferRequest::new_contract_transfer(&sender_token_address, optional_ton_attachment(input)?, TransferPayload::Jetton(jetton))?;
-        self.sign_requests(vec![request], input.metadata.get_sequence()?, expire_at)
-    }
-
-    pub fn sign_nft_transfer(&self, input: &SignerInput, expire_at: Option<u32>) -> Result<String, SignerError> {
-        let nft_asset = input.input_type.get_nft_asset()?;
-        let nft_item = nft_asset.get_contract_address()?;
-        let nft = NftTransferRequest {
-            query_id: 0,
-            new_owner: Address::parse(&input.destination_address)?,
-            response_destination: Address::parse(&input.sender_address)?,
-            forward_amount: BigUint::from(NFT_TRANSFER_FORWARD_AMOUNT),
-            comment: input.memo.clone(),
-        };
-        let request = TransferRequest::new_contract_transfer(nft_item, optional_ton_attachment(input)?, TransferPayload::Nft(nft))?;
         self.sign_requests(vec![request], input.metadata.get_sequence()?, expire_at)
     }
 
@@ -107,7 +92,7 @@ fn resolve_expire_at(sequence: u32, expire_at: Option<u32>) -> Result<u32, Signe
 mod tests {
     use num_bigint::{BigInt, BigUint};
     use primitives::{
-        Address as AddressTrait, Asset, AssetId, AssetType, Chain, FeeOption, NFTAsset, SignerInput, TransactionFee, TransactionInputType, TransactionLoadMetadata,
+        Address as AddressTrait, Asset, AssetId, AssetType, Chain, FeeOption, SignerInput, TransactionFee, TransactionInputType, TransactionLoadMetadata,
         asset_constants::TON_USDT_TOKEN_ID, swap::SwapData,
     };
 
@@ -117,7 +102,6 @@ mod tests {
     };
     use crate::{
         address::Address,
-        constants::NFT_TRANSFER_ATTACHMENT,
         signer::{TonSigner, testkit::mock_cell},
     };
 
@@ -167,38 +151,6 @@ mod tests {
         );
     }
 
-    #[test]
-    fn test_sign_nft_transfer() {
-        let signer = test_signer();
-        let mut input = SignerInput::mock_ton(
-            TransactionInputType::TransferNft(Asset::from_chain(Chain::Ton), NFTAsset::mock_ton()),
-            TransactionLoadMetadata::mock_ton(1),
-        );
-        input.fee = TransactionFee::new_from_fee_with_option(BigInt::from(0), FeeOption::TokenAccountCreation, BigInt::from(NFT_TRANSFER_ATTACHMENT));
-
-        assert_eq!(
-            signer.sign_nft_transfer(&input, Some(1_000_000_000)).unwrap(),
-            "te6cckECBAEAAQMAAUWIAZBdcOu3ASxtHtA+49Mtkoc35Qntia5QI0uKQvFB4POQDAEBnNqNNNoZtfnJIY5Ay3QVhWak/TIAnQoTWEq80qOayjpIrJzSwtwHEOKtIL9yqLZw0PhzzP5Q/hDKawfvX80AhAYpqaMXO5rKAAAAAAEAAwIBaGIAV+JOXDw3kOQ4ItjPbzx+NaNiiCQiiZ/HTTaiAwDgzHUgF9eEAAAAAAAAAAAAAAAAAAEDAKVfzD0UAAAAAAAAAACACxq4qfdwkRXv1VoZuOs5Ue3+8/kqqiDYJnNgb9gUgGjwAWNXFT7uEiK9+qtDNx1nKj2/3n8lVUQbBM5sDfsCkA0ccxLQCBmg7No="
-        );
-    }
-
-    #[test]
-    fn test_sign_nft_transfer_validates_contract_address() {
-        let signer = test_signer();
-
-        let mut nft_asset = NFTAsset::mock_ton();
-        nft_asset.contract_address = None;
-        let input_type = TransactionInputType::TransferNft(Asset::from_chain(Chain::Ton), nft_asset);
-        let input = SignerInput::mock_ton(input_type, TransactionLoadMetadata::mock_ton(1));
-
-        assert_eq!(
-            signer.sign_nft_transfer(&input, Some(1_000_000_000)).unwrap_err().to_string(),
-            "Invalid input: missing NFT contract address"
-        );
-    }
-
-    /// Deploy parity vector from TrustWallet wallet-core:
-    /// https://github.com/trustwallet/wallet-core/blob/master/rust/tw_tests/tests/chains/ton/ton_sign.rs
     #[test]
     fn test_sign_wallet_deploy() {
         let private_key = hex::decode(TRUST_WALLET_PRIVATE_KEY).unwrap();

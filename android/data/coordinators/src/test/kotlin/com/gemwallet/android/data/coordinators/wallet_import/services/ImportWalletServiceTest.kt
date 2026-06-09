@@ -4,7 +4,6 @@ import com.gemwallet.android.application.transactions.coordinators.SyncTransacti
 import com.gemwallet.android.application.wallet_import.coordinators.GetAvailableAssetIds
 import com.gemwallet.android.application.wallet_import.coordinators.SyncWalletConfiguration
 import com.gemwallet.android.cases.device.SyncSubscription
-import com.gemwallet.android.cases.nft.SyncNfts
 import com.gemwallet.android.cases.tokens.SearchTokensCase
 import com.gemwallet.android.data.repositories.assets.AssetsRepository
 import com.gemwallet.android.data.repositories.session.SessionRepository
@@ -36,7 +35,6 @@ class ImportWalletServiceTest {
     private val assetsRepository = mockk<AssetsRepository>(relaxed = true)
     private val syncSubscription = mockk<SyncSubscription>(relaxed = true)
     private val syncTransactions = mockk<SyncTransactions>(relaxed = true)
-    private val syncNfts = mockk<SyncNfts>(relaxed = true)
     private val walletConfigurationSync = mockk<SyncWalletConfiguration>(relaxed = true)
 
     @Test
@@ -82,7 +80,6 @@ class ImportWalletServiceTest {
         assetsRepository = assetsRepository,
         syncSubscription = syncSubscription,
         syncTransactions = syncTransactions,
-        syncNfts = syncNfts,
         walletConfigurationSync = walletConfigurationSync,
         scope = this,
     )

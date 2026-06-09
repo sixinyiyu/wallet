@@ -91,7 +91,6 @@ wallet_receive_no_destination_tag_required = Nu este necesară eticheta de desti
 wallet_title = Portofel
 wallet_add_token_title = Adăugați un token
 wallet_sell = Vinde
-wallet_receive_collection = Primește colecția
 wallet_more = Mai mult
 wallet_import_contract_address_field = Contract sau ID token
 wallet_import_address_warning = Puteți vizualiza soldurile și tranzacțiile pentru această adresă, dar **nu puteți trimite sau vinde fonduri**.
@@ -573,21 +572,6 @@ info_minimum_amount_description = În rețeaua %@, suma minimă pentru această 
 
 input_enter_amount_to = Vă rugăm să introduceți suma până la %@
 
-# Nft
-
-nft_properties = Proprietăți
-nft_collections = Colecții
-nft_collection = Colecție
-nft_save_to_photos = Salvați în Fotografii
-nft_set_as_avatar = Setați ca Avatar
-nft_state_empty_title = NFT-urile tale vor apărea aici️
-nft_state_empty_description = Primește primul tău NFT
-nft_report_reason_spam = Spam
-nft_report_reason_malicious = Malignorant
-nft_report_reason_inappropriate = Conținut neadecvat
-nft_report_reason_copyright = Drepturi de autor
-nft_report_report_button_title = Raportează
-
 # Permissions
 
 permissions_access_denied = Acces refuzat
@@ -733,7 +717,6 @@ contacts_add_to_contacts = Adăugați la Contacte
 
 simulation_header_unlimited_asset = Nelimitat %@
 simulation_warning_unlimited_token_approval_description = Aceasta îi oferă utilizatorului acces la utilizarea acestui token până când îi revocați aprobarea sau expiră.
-simulation_warning_nft_collection_approval_title = Acces complet la colecția NFT solicitat
 simulation_warning_unlimited_token_approval_title = Aprobare nelimitată de tokenuri
 
 # Application

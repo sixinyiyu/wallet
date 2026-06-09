@@ -80,7 +80,6 @@
 "wallet.title" = "Wallet";
 "wallet.add_token.title" = "Ƙara Token";
 "wallet.sell" = "Sayarwa";
-"wallet.receive_collection" = "Karɓi Tarin";
 "wallet.more" = "Kara";
 "wallet.import.contract_address_field" = "Kwangila ko Token ID";
 "wallet.import_address_warning" = "Kuna iya duba ma'auni da ma'amaloli don wannan adireshin, amma ** ba za ku iya aikawa ko siyar da kuɗi ba**.";
@@ -455,18 +454,6 @@
 "info.minimum_amount.title" = "Mafi ƙarancin kuɗi";
 "info.minimum_amount.description" = "A kan hanyar sadarwar %@, mafi ƙarancin adadin wannan ma'amala shi ne %@.";
 "input.enter_amount_to" = "Da fatan za a shigar da adadin zuwa %@";
-"nft.properties" = "Kayayyaki";
-"nft.collections" = "Tari";
-"nft.collection" = "Tarin";
-"nft.save_to_photos" = "Ajiye zuwa Hotuna";
-"nft.set_as_avatar" = "Saita azaman Avatar";
-"nft.state.empty.title" = "NFT naku zasu bayyana anan️";
-"nft.state.empty.description" = "Karɓi NFT na farko";
-"nft.report.reason.spam" = "Spam";
-"nft.report.reason.malicious" = "Mai mugunta";
-"nft.report.reason.inappropriate" = "Abun ciki mara dacewa";
-"nft.report.reason.copyright" = "Haƙƙin mallaka";
-"nft.report.report_button_title" = "Yi korafi";
 "permissions.access_denied" = "An hana shiga";
 "permissions.image.photo_access.denied.description" = "Wannan app ɗin bashi da izinin shiga ɗakin karatu na hoton ku. Da fatan za a ba da damar shiga cikin saitunan na'urar ku.";
 "markets.title" = "Kasuwanni";
@@ -571,5 +558,4 @@
 "contacts.add_to_contacts" = "Ƙara zuwa Lambobin Sadarwa";
 "simulation.header.unlimited_asset" = "Unlimited %@";
 "simulation.warning.unlimited_token_approval.description" = "Wannan yana ba mai kashe kuɗi damar amfani da wannan alamar har sai kun soke amincewa ko kuma ta ƙare.";
-"simulation.warning.nft_collection_approval.title" = "An nemi cikakken damar tattara NFT";
 "simulation.warning.unlimited_token_approval.title" = "Amincewa da alamar mara iyaka";

@@ -63,7 +63,6 @@ pub async fn get_search(
     let search_client = client.lock().await;
     let assets = search_client.get_assets_search(&request).await?;
     let perpetuals = search_client.get_perpetuals_search(&request).await?;
-    let nfts = search_client.get_nfts_search(&request).await?;
 
-    Ok(SearchResponse { assets, perpetuals, nfts }.into())
+    Ok(SearchResponse { assets, perpetuals }.into())
 }

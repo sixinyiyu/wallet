@@ -13,18 +13,6 @@ final class AssetImageFormatterTests {
     }
 
     @Test
-    func getNFTUrl() {
-        let formatter = AssetImageFormatter()
-
-        let assetId = "ton_EQC3dNlesgVD8YbAazcauIrXBPfiVhMMr5YYk2in0Mtsz0Bz::EQAqmedq_nTBz7rX6TvASY_kwXxbKexQap_qnsfS4E-qF0dI"
-        #expect(
-            formatter
-                .getNFTUrl(for: assetId)
-                .absoluteString == "\(Constants.assetsURL.absoluteString)/nft/assets/\(assetId)/preview",
-        )
-    }
-
-    @Test
     func getValidatorUrl() {
         let formatter = AssetImageFormatter()
 

@@ -91,7 +91,6 @@ wallet_receive_no_destination_tag_required = Tag tujuan tidak diperlukan
 wallet_title = Dompet
 wallet_add_token_title = Tambahkan Token
 wallet_sell = Menjual
-wallet_receive_collection = Terima Koleksi
 wallet_more = Lagi
 wallet_import_contract_address_field = Kontrak atau Token ID
 wallet_import_address_warning = Anda dapat melihat saldo dan transaksi untuk alamat ini, tetapi **tidak dapat mengirim atau menjual dana**.
@@ -573,21 +572,6 @@ info_minimum_amount_description = Di jaringan %@, jumlah minimum untuk transaksi
 
 input_enter_amount_to = Silakan masukkan jumlah ke %@
 
-# Nft
-
-nft_properties = Properti
-nft_collections = Koleksi
-nft_collection = Koleksi
-nft_save_to_photos = Simpan ke Foto
-nft_set_as_avatar = Tetapkan sebagai Avatar
-nft_state_empty_title = NFT Anda akan muncul di sini️
-nft_state_empty_description = Terima NFT pertama Anda
-nft_report_reason_spam = Spam
-nft_report_reason_malicious = Jahat
-nft_report_reason_inappropriate = Konten yang Tidak Pantas
-nft_report_reason_copyright = Hak cipta
-nft_report_report_button_title = Laporan
-
 # Permissions
 
 permissions_access_denied = Akses ditolak
@@ -733,7 +717,6 @@ contacts_add_to_contacts = Tambahkan ke Kontak
 
 simulation_header_unlimited_asset = Tak terbatas %@
 simulation_warning_unlimited_token_approval_description = Ini memberi pihak yang mengeluarkan dana akses untuk menggunakan token ini hingga Anda mencabut persetujuan atau token tersebut kedaluwarsa.
-simulation_warning_nft_collection_approval_title = Akses penuh ke koleksi NFT diminta.
 simulation_warning_unlimited_token_approval_title = Persetujuan token tanpa batas
 
 # Application

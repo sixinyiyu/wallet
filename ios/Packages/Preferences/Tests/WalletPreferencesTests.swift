@@ -16,7 +16,6 @@ struct WalletPreferencesTests {
         #expect(preferences.transactionsTimestamp == 0)
         #expect(!preferences.completeInitialLoadAssets)
         #expect(!preferences.completeInitialLoadTransactions)
-        #expect(!preferences.completeInitialLoadNFTs)
         #expect(!preferences.completeInitialWalletConfiguration)
         #expect(preferences.transactionsForAssetTimestamp(assetId: asset.id.identifier) == 0)
     }
@@ -35,9 +34,6 @@ struct WalletPreferencesTests {
         preferences.completeInitialLoadTransactions = true
         #expect(preferences.completeInitialLoadTransactions)
 
-        preferences.completeInitialLoadNFTs = true
-        #expect(preferences.completeInitialLoadNFTs)
-
         preferences.completeInitialWalletConfiguration = true
         #expect(preferences.completeInitialWalletConfiguration)
 
@@ -51,7 +47,6 @@ struct WalletPreferencesTests {
 
         #expect(preferences.completeInitialLoadAssets)
         #expect(preferences.completeInitialLoadTransactions)
-        #expect(preferences.completeInitialLoadNFTs)
         #expect(preferences.completeInitialWalletConfiguration)
     }
 
@@ -61,7 +56,6 @@ struct WalletPreferencesTests {
         preferences.transactionsTimestamp = 456
         preferences.completeInitialLoadAssets = true
         preferences.completeInitialLoadTransactions = true
-        preferences.completeInitialLoadNFTs = true
         preferences.completeInitialWalletConfiguration = true
         preferences.setTransactionsForAssetTimestamp(assetId: asset.id.identifier, value: 10)
 
@@ -69,7 +63,6 @@ struct WalletPreferencesTests {
         #expect(preferences.transactionsTimestamp == 456)
         #expect(preferences.completeInitialLoadAssets)
         #expect(preferences.completeInitialLoadTransactions)
-        #expect(preferences.completeInitialLoadNFTs)
         #expect(preferences.completeInitialWalletConfiguration)
         #expect(preferences.transactionsForAssetTimestamp(assetId: asset.id.identifier) == 10)
 
@@ -79,7 +72,6 @@ struct WalletPreferencesTests {
         #expect(preferences.transactionsTimestamp == 0)
         #expect(!preferences.completeInitialLoadAssets)
         #expect(!preferences.completeInitialLoadTransactions)
-        #expect(!preferences.completeInitialLoadNFTs)
         #expect(!preferences.completeInitialWalletConfiguration)
         #expect(preferences.transactionsForAssetTimestamp(assetId: asset.id.identifier) == 0)
     }

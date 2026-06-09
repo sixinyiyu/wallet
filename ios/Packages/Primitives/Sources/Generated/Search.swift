@@ -7,17 +7,14 @@ import Foundation
 public struct SearchResponse: Codable, Sendable {
 	public let assets: [AssetBasic]
 	public let perpetuals: [PerpetualSearchData]
-	public let nfts: [NFTCollection]
 
-	public init(assets: [AssetBasic], perpetuals: [PerpetualSearchData], nfts: [NFTCollection]) {
+	public init(assets: [AssetBasic], perpetuals: [PerpetualSearchData]) {
 		self.assets = assets
 		self.perpetuals = perpetuals
-		self.nfts = nfts
 	}
 }
 
 public enum SearchItemType: String, Codable, Sendable {
 	case asset
 	case perpetual
-	case nft
 }

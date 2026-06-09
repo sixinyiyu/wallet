@@ -110,7 +110,6 @@ impl Trace {
 
 pub const TRACE_ACTION_JETTON_SWAP: &str = "jetton_swap";
 pub const TRACE_ACTION_JETTON_TRANSFER: &str = "jetton_transfer";
-pub const TRACE_ACTION_NFT_TRANSFER: &str = "nft_transfer";
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TraceAction {
@@ -144,14 +143,6 @@ pub struct JettonTransferDetails {
     pub comment: Option<String>,
 }
 
-#[derive(Debug, Clone, Deserialize)]
-pub struct NftTransferDetails {
-    pub nft_collection: Address,
-    pub nft_item: Address,
-    pub old_owner: Address,
-    pub new_owner: Address,
-    pub comment: Option<String>,
-}
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TransactionMessage {

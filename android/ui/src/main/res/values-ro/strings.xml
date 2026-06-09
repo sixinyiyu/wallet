@@ -85,7 +85,6 @@
   <string name="wallet_title">Portofel</string>
   <string name="wallet_add_token_title">Adăugați un token</string>
   <string name="wallet_sell">Vinde</string>
-  <string name="wallet_receive_collection">Primește colecția</string>
   <string name="wallet_more">Mai mult</string>
   <string name="wallet_import_contract_address_field">Contract sau ID token</string>
   <string name="wallet_import_address_warning">Puteți vizualiza soldurile și tranzacțiile pentru această adresă, dar **nu puteți trimite sau vinde fonduri**.</string>
@@ -470,18 +469,6 @@
   <string name="info_minimum_amount_title">Suma minima</string>
   <string name="info_minimum_amount_description">În rețeaua %1$s, suma minimă pentru această tranzacție este %2$s.</string>
   <string name="input_enter_amount_to">Vă rugăm să introduceți suma până la %1$s</string>
-  <string name="nft_properties">Proprietăți</string>
-  <string name="nft_collections">Colecții</string>
-  <string name="nft_collection">Colecție</string>
-  <string name="nft_save_to_photos">Salvați în Fotografii</string>
-  <string name="nft_set_as_avatar">Setați ca Avatar</string>
-  <string name="nft_state_empty_title">NFT-urile tale vor apărea aici️</string>
-  <string name="nft_state_empty_description">Primește primul tău NFT</string>
-  <string name="nft_report_reason_spam">Spam</string>
-  <string name="nft_report_reason_malicious">Malignorant</string>
-  <string name="nft_report_reason_inappropriate">Conținut neadecvat</string>
-  <string name="nft_report_reason_copyright">Drepturi de autor</string>
-  <string name="nft_report_report_button_title">Raportează</string>
   <string name="permissions_access_denied">Acces refuzat</string>
   <string name="permissions_image_photo_access_denied_description">Această aplicație nu are permisiunea de a accesa biblioteca dvs. de fotografii. Vă rugăm să activați accesul în setările dispozitivului dvs.</string>
   <string name="markets_title">Piețele</string>
@@ -586,7 +573,6 @@
   <string name="contacts_add_to_contacts">Adăugați la Contacte</string>
   <string name="simulation_header_unlimited_asset">Nelimitat %1$s</string>
   <string name="simulation_warning_unlimited_token_approval_description">Aceasta îi oferă utilizatorului acces la utilizarea acestui token până când îi revocați aprobarea sau expiră.</string>
-  <string name="simulation_warning_nft_collection_approval_title">Acces complet la colecția NFT solicitat</string>
   <string name="simulation_warning_unlimited_token_approval_title">Aprobare nelimitată de tokenuri</string>
   <string name="application_name">Gem</string>
   <string name="camera_permission_request_camera">Este necesară permisiunea camerei pentru scanarea codului QR.\nVă rugăm să acordați permisiunea.</string>

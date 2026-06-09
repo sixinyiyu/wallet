@@ -19,7 +19,6 @@ import com.wallet.core.primitives.AssetId
 import com.wallet.core.primitives.AssetSubtype
 import com.wallet.core.primitives.Delegation
 import com.wallet.core.primitives.DelegationValidator
-import com.wallet.core.primitives.NFTAsset
 import com.wallet.core.primitives.PerpetualType
 import com.wallet.core.primitives.Resource
 import com.wallet.core.primitives.TransactionType
@@ -364,31 +363,6 @@ sealed class ConfirmParams() {
     }
 
     @Serializable
-    class NftParams(
-        override val asset: Asset,
-        override val from: Account,
-        val destination: DestinationAddress,
-        val nftAsset: NFTAsset,
-    ) : ConfirmParams() {
-        override val useMaxAmount: Boolean
-            get() = false
-
-        override val shouldIgnoreValueCheck: Boolean
-            get() = true
-
-        override fun toDto(): GemTransactionInputType = TransferNft(
-                asset.toGem(),
-                nftAsset.toGem(),
-            )
-
-        @Serializable(BigIntegerSerializer::class) override val amount: BigInteger = BigInteger.ZERO
-
-        override fun destination(): DestinationAddress {
-            return destination
-        }
-    }
-
-    @Serializable
     sealed class Stake : ConfirmParams() {
 
         @Serializable
@@ -600,7 +574,6 @@ sealed class ConfirmParams() {
             is TokenApprovalParams -> TransactionType.TokenApproval
             is SwapParams -> TransactionType.Swap
             is Activate -> TransactionType.AssetActivation
-            is NftParams -> TransactionType.TransferNFT
             is Stake.DelegateParams -> TransactionType.StakeDelegate
             is Stake.RewardsParams -> TransactionType.StakeRewards
             is Stake.RedelegateParams -> TransactionType.StakeRedelegate
@@ -649,7 +622,6 @@ sealed class ConfirmParams() {
                     Stake.Freeze::class.qualifiedName -> jsonEncoder.decodeFromString<Stake.Freeze>(json)
                     Stake.Unfreeze::class.qualifiedName -> jsonEncoder.decodeFromString<Stake.Unfreeze>(json)
                     Activate::class.qualifiedName -> jsonEncoder.decodeFromString<Activate>(json)
-                    NftParams::class.qualifiedName -> jsonEncoder.decodeFromString<NftParams>(json)
                     PerpetualParams::class.qualifiedName -> jsonEncoder.decodeFromString<PerpetualParams>(json)
                     else -> null
                 }

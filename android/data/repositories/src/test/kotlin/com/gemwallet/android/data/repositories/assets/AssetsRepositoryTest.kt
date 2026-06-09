@@ -2,7 +2,6 @@ package com.gemwallet.android.data.repositories.assets
 
 import com.gemwallet.android.application.transactions.coordinators.GetChangedTransactions
 import com.gemwallet.android.blockchain.services.BalancesService
-import com.gemwallet.android.cases.nft.SyncNfts
 import com.gemwallet.android.cases.stake.SyncStakeDelegations
 import com.gemwallet.android.data.repositories.session.SessionRepository
 import com.gemwallet.android.data.repositories.stream.StreamSubscriptionService
@@ -80,7 +79,6 @@ class AssetsRepositoryTest {
     private val balancesService = mockk<BalancesService>(relaxed = true)
     private val getChangedTransactions = mockk<GetChangedTransactions>()
     private val syncStakeDelegations = mockk<SyncStakeDelegations>(relaxed = true)
-    private val syncNfts = mockk<SyncNfts>(relaxed = true)
     private val searchTokensCase = mockk<SearchTokensCase>(relaxed = true)
     private val streamSubscriptionService = mockk<StreamSubscriptionService>(relaxed = true)
     private val updateBalances = mockk<UpdateBalances>(relaxed = true)
@@ -96,7 +94,6 @@ class AssetsRepositoryTest {
         balancesService = balancesService,
         getChangedTransactions = getChangedTransactions,
         syncStakeDelegations = syncStakeDelegations,
-        syncNfts = syncNfts,
         searchTokensCase = searchTokensCase,
         streamSubscriptionService = streamSubscriptionService,
         updateBalances = updateBalances,
@@ -148,29 +145,7 @@ class AssetsRepositoryTest {
         coVerify(exactly = 3) {
             syncStakeDelegations.sync(mockWalletId("wallet-1"), asset.id, "solana-sender", apr = 7.5)
         }
-        coVerify(exactly = 0) { syncNfts.sync(any()) }
-    }
 
-    @Test
-    fun completeNftTransfer_syncsWalletNfts() = runBlocking {
-        every { getChangedTransactions.getChangedTransactions() } returns emptyFlow()
-        sessionFlow.value = mockSession(wallet = mockWallet(id = "wallet-1"))
-        every { sessionRepository.session() } returns sessionFlow
-        val transaction = mockTransaction(type = TransactionType.TransferNFT)
-        every { assetsDao.getAssetsInfo("wallet-1", transaction.getAssociatedAssetIds().map { it.toIdentifier() }) } returns flowOf(
-            listOf(mockDbAssetInfo(chain = transaction.assetId.chain, id = transaction.assetId.toIdentifier()))
-        )
-
-        val subject = createSubject()
-        subject.processTransactions(
-            listOf(TransactionState.Confirmed, TransactionState.Failed, TransactionState.Reverted).map { state ->
-                mockTransactionExtended(transaction = transaction.copy(state = state))
-            }
-        )
-
-        coVerify(exactly = 3) { syncNfts.sync(mockWalletId()) }
-        coVerify(exactly = 0) { syncStakeDelegations.sync(any(), any(), any(), any()) }
-    }
 
     @Test
     fun saveAssetMetadata_storesLinksPriceAndMarketFromAssetResponse() = runBlocking {

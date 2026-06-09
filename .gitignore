@@ -7,3 +7,4 @@ core/.env
 core/.vscode/
 core/gemstone/src/.build/
 *.code-workspace
+output/

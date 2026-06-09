@@ -72,7 +72,7 @@ extension ConfirmRecipientViewModel {
             case .send: Localized.Transfer.Recipient.title
             }
         case .earn: Localized.Common.provider
-        case .transfer, .deposit, .withdrawal, .transferNft, .tokenApprove, .account, .perpetual: Localized.Transfer.Recipient.title
+        case .transfer, .deposit, .withdrawal, .tokenApprove, .account, .perpetual: Localized.Transfer.Recipient.title
         }
     }
 
@@ -95,7 +95,6 @@ extension ConfirmRecipientViewModel {
             case .send: true
             }
         case .transfer,
-             .transferNft,
              .deposit,
              .withdrawal,
              .tokenApprove: true

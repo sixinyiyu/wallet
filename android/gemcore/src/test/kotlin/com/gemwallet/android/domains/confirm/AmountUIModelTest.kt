@@ -32,7 +32,6 @@ class AmountUIModelTest {
         toAsset = null,
         fromAmount = "1000000000",
         toAmount = null,
-        nftAsset = null,
         price = price,
         currency = Currency.USD,
     )

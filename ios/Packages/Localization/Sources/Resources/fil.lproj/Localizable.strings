@@ -80,7 +80,6 @@
 "wallet.title" = "Wallet";
 "wallet.add_token.title" = "Magdagdag ng Token";
 "wallet.sell" = "Ibenta";
-"wallet.receive_collection" = "Tumanggap ng Koleksyon";
 "wallet.more" = "Higit pa";
 "wallet.import.contract_address_field" = "Kontrata o Token ID";
 "wallet.import_address_warning" = "Maaari mong tingnan ang mga balanse at transaksyon para sa address na ito, ngunit **hindi maaaring magpadala o magbenta ng mga pondo**.";
@@ -455,18 +454,6 @@
 "info.minimum_amount.title" = "Pinakamababang Halaga";
 "info.minimum_amount.description" = "Sa %@ network, ang minimum na halaga para sa transaksyong ito ay %@.";
 "input.enter_amount_to" = "Mangyaring magpasok ng halaga sa %@";
-"nft.properties" = "Mga Katangian";
-"nft.collections" = "Mga koleksyon";
-"nft.collection" = "Koleksyon";
-"nft.save_to_photos" = "I-save sa Mga Larawan";
-"nft.set_as_avatar" = "Itakda bilang Avatar";
-"nft.state.empty.title" = "Lalabas dito ang iyong mga NFT ️";
-"nft.state.empty.description" = "Tanggapin ang iyong unang NFT";
-"nft.report.reason.spam" = "Spam";
-"nft.report.reason.malicious" = "Malisyoso";
-"nft.report.reason.inappropriate" = "Hindi Naaangkop na Nilalaman";
-"nft.report.reason.copyright" = "Copyright";
-"nft.report.report_button_title" = "I-report";
 "permissions.access_denied" = "Tinanggihan ang Access";
 "permissions.image.photo_access.denied.description" = "Walang pahintulot ang app na ito na i-access ang iyong library ng larawan. Mangyaring paganahin ang pag-access sa mga setting ng iyong device.";
 "markets.title" = "Mga pamilihan";
@@ -571,5 +558,4 @@
 "contacts.add_to_contacts" = "Idagdag sa Mga Kontak";
 "simulation.header.unlimited_asset" = "Walang limitasyon %@";
 "simulation.warning.unlimited_token_approval.description" = "Nagbibigay ito sa gumagastos ng access na gamitin ang token na ito hanggang sa bawiin mo ang pag-apruba o hanggang sa mag-expire ito.";
-"simulation.warning.nft_collection_approval.title" = "Hiniling ang kumpletong access sa koleksyon ng NFT";
 "simulation.warning.unlimited_token_approval.title" = "Walang limitasyong pag-apruba ng token";

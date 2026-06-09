@@ -26,10 +26,6 @@ pub mod sql_types {
     pub struct LinkType;
 
     #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
-    #[diesel(postgres_type(name = "nft_type"))]
-    pub struct NftType;
-
-    #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
     #[diesel(postgres_type(name = "notification_type"))]
     pub struct NotificationType;
 
@@ -354,106 +350,7 @@ diesel::table! {
     }
 }
 
-diesel::table! {
-    use diesel::sql_types::*;
-    use super::sql_types::NftType;
 
-    nft_assets (id) {
-        id -> Int4,
-        #[max_length = 512]
-        identifier -> Varchar,
-        collection_id -> Int4,
-        #[max_length = 64]
-        chain -> Varchar,
-        #[max_length = 1024]
-        name -> Varchar,
-        #[max_length = 4096]
-        description -> Varchar,
-        #[max_length = 512]
-        image_preview_url -> Nullable<Varchar>,
-        #[max_length = 64]
-        image_preview_mime_type -> Nullable<Varchar>,
-        #[max_length = 512]
-        resource_url -> Nullable<Varchar>,
-        #[max_length = 64]
-        resource_mime_type -> Nullable<Varchar>,
-        token_type -> NftType,
-        #[max_length = 512]
-        token_id -> Varchar,
-        #[max_length = 512]
-        contract_address -> Varchar,
-        attributes -> Jsonb,
-        updated_at -> Timestamp,
-        created_at -> Timestamp,
-    }
-}
-
-diesel::table! {
-    nft_assets_associations (id) {
-        id -> Int4,
-        address_id -> Int4,
-        asset_id -> Int4,
-        updated_at -> Timestamp,
-        created_at -> Timestamp,
-    }
-}
-
-diesel::table! {
-    nft_collections (id) {
-        id -> Int4,
-        #[max_length = 512]
-        identifier -> Varchar,
-        #[max_length = 64]
-        chain -> Varchar,
-        #[max_length = 1024]
-        name -> Varchar,
-        #[max_length = 4096]
-        description -> Varchar,
-        #[max_length = 128]
-        symbol -> Nullable<Varchar>,
-        #[max_length = 128]
-        owner -> Nullable<Varchar>,
-        #[max_length = 128]
-        contract_address -> Varchar,
-        #[max_length = 512]
-        image_preview_url -> Nullable<Varchar>,
-        #[max_length = 64]
-        image_preview_mime_type -> Nullable<Varchar>,
-        is_verified -> Bool,
-        is_enabled -> Bool,
-        updated_at -> Timestamp,
-        created_at -> Timestamp,
-    }
-}
-
-diesel::table! {
-    use diesel::sql_types::*;
-    use super::sql_types::LinkType;
-
-    nft_collections_links (id) {
-        id -> Int4,
-        collection_id -> Int4,
-        link_type -> LinkType,
-        #[max_length = 256]
-        url -> Varchar,
-        updated_at -> Timestamp,
-        created_at -> Timestamp,
-    }
-}
-
-diesel::table! {
-    nft_reports (id) {
-        id -> Int4,
-        asset_id -> Nullable<Int4>,
-        collection_id -> Int4,
-        device_id -> Int4,
-        #[max_length = 1024]
-        reason -> Nullable<Varchar>,
-        reviewed -> Bool,
-        updated_at -> Timestamp,
-        created_at -> Timestamp,
-    }
-}
 
 diesel::table! {
     use diesel::sql_types::*;
@@ -931,15 +828,6 @@ diesel::joinable!(fiat_transactions -> devices (device_id));
 diesel::joinable!(fiat_transactions -> fiat_providers (provider_id));
 diesel::joinable!(fiat_transactions -> wallets (wallet_id));
 diesel::joinable!(fiat_transactions -> wallets_addresses (address_id));
-diesel::joinable!(nft_assets -> chains (chain));
-diesel::joinable!(nft_assets -> nft_collections (collection_id));
-diesel::joinable!(nft_assets_associations -> nft_assets (asset_id));
-diesel::joinable!(nft_assets_associations -> wallets_addresses (address_id));
-diesel::joinable!(nft_collections -> chains (chain));
-diesel::joinable!(nft_collections_links -> nft_collections (collection_id));
-diesel::joinable!(nft_reports -> devices (device_id));
-diesel::joinable!(nft_reports -> nft_assets (asset_id));
-diesel::joinable!(nft_reports -> nft_collections (collection_id));
 diesel::joinable!(notifications -> assets (asset_id));
 diesel::joinable!(notifications -> wallets (wallet_id));
 diesel::joinable!(parser_state -> chains (chain));
@@ -998,11 +886,6 @@ diesel::allow_tables_to_appear_in_same_query!(
     fiat_providers_countries,
     fiat_rates,
     fiat_transactions,
-    nft_assets,
-    nft_assets_associations,
-    nft_collections,
-    nft_collections_links,
-    nft_reports,
     notifications,
     parser_state,
     perpetuals,

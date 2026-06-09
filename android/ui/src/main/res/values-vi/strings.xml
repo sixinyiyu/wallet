@@ -85,7 +85,6 @@
   <string name="wallet_title">Cái ví</string>
   <string name="wallet_add_token_title">Thêm mã thông báo</string>
   <string name="wallet_sell">Bán</string>
-  <string name="wallet_receive_collection">Nhận bộ sưu tập</string>
   <string name="wallet_more">Hơn</string>
   <string name="wallet_import_contract_address_field">Hợp đồng hoặc ID token</string>
   <string name="wallet_import_address_warning">Bạn có thể xem số dư và giao dịch của địa chỉ này, nhưng **không thể gửi hoặc bán tiền**.</string>
@@ -470,18 +469,6 @@
   <string name="info_minimum_amount_title">Số tiền tối thiểu</string>
   <string name="info_minimum_amount_description">Trên mạng %1$s, số tiền tối thiểu cho giao dịch này là %2$s.</string>
   <string name="input_enter_amount_to">Vui lòng nhập số tiền tới %1$s</string>
-  <string name="nft_properties">Của cải</string>
-  <string name="nft_collections">Bộ sưu tập</string>
-  <string name="nft_collection">Bộ sưu tập</string>
-  <string name="nft_save_to_photos">Lưu vào Ảnh</string>
-  <string name="nft_set_as_avatar">Đặt làm Avatar</string>
-  <string name="nft_state_empty_title">NFT của bạn sẽ xuất hiện ở đây️</string>
-  <string name="nft_state_empty_description">Nhận NFT đầu tiên của bạn</string>
-  <string name="nft_report_reason_spam">Thư rác</string>
-  <string name="nft_report_reason_malicious">Độc hại</string>
-  <string name="nft_report_reason_inappropriate">Nội dung không phù hợp</string>
-  <string name="nft_report_reason_copyright">Bản quyền</string>
-  <string name="nft_report_report_button_title">Báo cáo</string>
   <string name="permissions_access_denied">Truy cập bị từ chối</string>
   <string name="permissions_image_photo_access_denied_description">Ứng dụng này không có quyền truy cập vào thư viện ảnh của bạn. Vui lòng bật quyền truy cập trong cài đặt thiết bị của bạn.</string>
   <string name="markets_title">Thị trường</string>
@@ -586,7 +573,6 @@
   <string name="contacts_add_to_contacts">Thêm vào danh bạ</string>
   <string name="simulation_header_unlimited_asset">Không giới hạn %1$s</string>
   <string name="simulation_warning_unlimited_token_approval_description">Điều này cho phép người chi tiêu có quyền sử dụng mã thông báo này cho đến khi bạn thu hồi sự chấp thuận hoặc mã thông báo hết hạn.</string>
-  <string name="simulation_warning_nft_collection_approval_title">Yêu cầu quyền truy cập đầy đủ vào bộ sưu tập NFT</string>
   <string name="simulation_warning_unlimited_token_approval_title">Phê duyệt mã thông báo không giới hạn</string>
   <string name="application_name">Gem</string>
   <string name="camera_permission_request_camera">Cần có sự cho phép của máy ảnh để quét Mã QR.\nVui lòng cấp quyền.</string>

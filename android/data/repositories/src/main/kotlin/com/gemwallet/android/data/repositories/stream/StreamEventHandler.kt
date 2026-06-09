@@ -4,7 +4,6 @@ import android.util.Log
 import com.gemwallet.android.application.fiat.coordinators.SyncFiatTransactions
 import com.gemwallet.android.application.pricealerts.coordinators.UpdatePriceAlerts
 import com.gemwallet.android.application.transactions.coordinators.SyncTransactions
-import com.gemwallet.android.cases.nft.SyncNfts
 import com.gemwallet.android.data.repositories.assets.UpdateBalances
 import com.gemwallet.android.data.repositories.session.SessionRepository
 import com.gemwallet.android.data.repositories.wallets.WalletsRepository
@@ -32,7 +31,6 @@ class StreamEventHandler(
     private val pricesDao: PricesDao,
     private val sessionRepository: SessionRepository,
     private val syncTransactions: dagger.Lazy<SyncTransactions>,
-    private val syncNfts: SyncNfts,
     private val updatePriceAlerts: UpdatePriceAlerts,
     private val syncFiatTransactions: dagger.Lazy<SyncFiatTransactions>,
     private val walletsRepository: WalletsRepository,
@@ -47,7 +45,6 @@ class StreamEventHandler(
             is StreamEvent.Balances -> perform { handleBalances(event.data) }
             is StreamEvent.Transactions -> perform { handleTransactions(event.data) }
             is StreamEvent.PriceAlerts -> perform { handlePriceAlerts() }
-            is StreamEvent.Nft -> perform { handleNft(event.data) }
             is StreamEvent.Perpetual -> { }
             is StreamEvent.InAppNotification -> perform { handleInAppNotification(event.data) }
             is StreamEvent.FiatTransaction -> perform { handleFiatTransaction(event.data) }
@@ -98,10 +95,6 @@ class StreamEventHandler(
 
     private suspend fun handlePriceAlerts() {
         updatePriceAlerts.update()
-    }
-
-    private suspend fun handleNft(update: StreamWalletUpdate) {
-        syncNfts.sync(update.walletId)
     }
 
     private suspend fun handleFiatTransaction(update: StreamWalletUpdate) {

@@ -7,8 +7,6 @@ import BalanceServiceTestKit
 import DiscoverAssetsService
 import GemAPI
 import GemAPITestKit
-import NFTService
-import NFTServiceTestKit
 import TransactionsService
 import TransactionsServiceTestKit
 
@@ -18,14 +16,12 @@ public extension AssetDiscoverable where Self == AssetDiscoveryService {
         assetService: AssetsService = .mock(),
         assetsEnabler: any AssetsEnabler = .mock(),
         transactionsService: TransactionsService = .mock(),
-        nftService: NFTService = .mock(),
     ) -> AssetDiscoveryService {
         AssetDiscoveryService(
             assetsListService: assetsListService,
             assetService: assetService,
             assetsEnabler: assetsEnabler,
             transactionsService: transactionsService,
-            nftService: nftService,
         )
     }
 }

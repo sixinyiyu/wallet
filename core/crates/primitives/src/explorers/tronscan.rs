@@ -11,7 +11,6 @@ impl TronScan {
             tx_path: TRANSACTION_PATH,
             address_path: ADDRESS_PATH,
             token_path: Some("/token20"),
-            nft_path: None,
             validator_path: Some(ADDRESS_PATH),
         })
     }

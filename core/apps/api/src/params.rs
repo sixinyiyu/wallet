@@ -1,5 +1,5 @@
 use primitives::currency::Currency;
-use primitives::{AssetId, Chain, ChartPeriod, Device, FiatProviderName, FiatQuoteType, NFTAssetId, NFTCollectionId, SwapProvider, TransactionId};
+use primitives::{AssetId, Chain, ChartPeriod, Device, FiatProviderName, FiatQuoteType, SwapProvider, TransactionId};
 use rocket::data::{FromData, Outcome, ToByteUnit};
 use rocket::form::{self, FromFormField, ValueField};
 use rocket::http::Status;
@@ -11,7 +11,6 @@ use unic_langid::LanguageIdentifier;
 
 const MAX_ADDRESS_LENGTH: usize = 256;
 const MAX_ASSET_ID_LENGTH: usize = 256;
-const MAX_NFT_ID_LENGTH: usize = 256;
 const MAX_SEARCH_QUERY_LENGTH: usize = 128;
 
 pub struct ChainParam(pub Chain);
@@ -88,31 +87,6 @@ impl<'r> FromFormField<'r> for AddressParam {
     }
 }
 
-pub struct NftCollectionIdParam(pub NFTCollectionId);
-
-impl<'r> FromParam<'r> for NftCollectionIdParam {
-    type Error = &'r str;
-
-    fn from_param(param: &'r str) -> Result<Self, Self::Error> {
-        if param.len() > MAX_NFT_ID_LENGTH {
-            return Err(param);
-        }
-        param.parse().map(NftCollectionIdParam).map_err(|_| param)
-    }
-}
-
-pub struct NftAssetIdParam(pub NFTAssetId);
-
-impl<'r> FromParam<'r> for NftAssetIdParam {
-    type Error = &'r str;
-
-    fn from_param(param: &'r str) -> Result<Self, Self::Error> {
-        if param.len() > MAX_NFT_ID_LENGTH {
-            return Err(param);
-        }
-        param.parse().map(NftAssetIdParam).map_err(|_| param)
-    }
-}
 
 pub struct AssetIdParam(pub AssetId);
 

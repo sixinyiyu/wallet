@@ -175,10 +175,6 @@ extension TransactionSceneViewModel {
              .stakeFreeze,
              .stakeUnfreeze:
             .asset(assetId: transactionExtended.transaction.assetId)
-        case .transferNFT:
-            transactionExtended.transaction.metadata?
-                .decode(TransactionNFTTransferMetadata.self)
-                .map { .nft(assetId: $0.assetId) }
         case .swap:
             transactionExtended.transaction.metadata?
                 .decode(TransactionSwapMetadata.self)

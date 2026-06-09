@@ -80,7 +80,6 @@
 "wallet.title" = "کیف پول";
 "wallet.add_token.title" = "افزودن توکن.";
 "wallet.sell" = "فروش";
-"wallet.receive_collection" = "دریافت مجموعه";
 "wallet.more" = "بیشتر";
 "wallet.import.contract_address_field" = "قرارداد یا شناسه توکن";
 "wallet.import_address_warning" = "شما می‌توانید موجودی و تراکنش‌های این آدرس را مشاهده کنید، اما **نمی‌توانید وجه ارسال یا بفروشید**.";
@@ -455,18 +454,6 @@
 "info.minimum_amount.title" = "حداقل مقدار";
 "info.minimum_amount.description" = "در شبکه %@، حداقل مبلغ برای این تراکنش %@ است.";
 "input.enter_amount_to" = "لطفاً مبلغ را به %@ وارد کنید";
-"nft.properties" = "خواص";
-"nft.collections" = "مجموعه ها";
-"nft.collection" = "مجموعه";
-"nft.save_to_photos" = "ذخیره در عکس ها";
-"nft.set_as_avatar" = "به عنوان آواتار تنظیم کنید";
-"nft.state.empty.title" = "NFT های شما اینجا ظاهر خواهند شد️";
-"nft.state.empty.description" = "اولین NFT خود را دریافت کنید";
-"nft.report.reason.spam" = "هرزنامه";
-"nft.report.reason.malicious" = "مخرب";
-"nft.report.reason.inappropriate" = "محتوای نامناسب";
-"nft.report.reason.copyright" = "حق نشر";
-"nft.report.report_button_title" = "گزارش";
 "permissions.access_denied" = "دسترسی ممنوع شد";
 "permissions.image.photo_access.denied.description" = "این برنامه اجازه دسترسی به کتابخانه عکس شما را ندارد. لطفاً دسترسی را در تنظیمات دستگاه خود فعال کنید.";
 "markets.title" = "بازارها";
@@ -571,5 +558,4 @@
 "contacts.add_to_contacts" = "اضافه کردن به مخاطبین";
 "simulation.header.unlimited_asset" = "نامحدود %@";
 "simulation.warning.unlimited_token_approval.description" = "این به خرج‌کننده دسترسی می‌دهد تا زمانی که تأییدیه را لغو کنید یا منقضی شود، از این توکن استفاده کند.";
-"simulation.warning.nft_collection_approval.title" = "دسترسی کامل به مجموعه NFT درخواست شد";
 "simulation.warning.unlimited_token_approval.title" = "تایید نامحدود توکن";

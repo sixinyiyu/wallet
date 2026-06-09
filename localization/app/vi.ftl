@@ -91,7 +91,6 @@ wallet_receive_no_destination_tag_required = Không cần thẻ đích
 wallet_title = Cái ví
 wallet_add_token_title = Thêm mã thông báo
 wallet_sell = Bán
-wallet_receive_collection = Nhận bộ sưu tập
 wallet_more = Hơn
 wallet_import_contract_address_field = Hợp đồng hoặc ID token
 wallet_import_address_warning = Bạn có thể xem số dư và giao dịch của địa chỉ này, nhưng **không thể gửi hoặc bán tiền**.
@@ -573,21 +572,6 @@ info_minimum_amount_description = Trên mạng %@, số tiền tối thiểu cho
 
 input_enter_amount_to = Vui lòng nhập số tiền tới %@
 
-# Nft
-
-nft_properties = Của cải
-nft_collections = Bộ sưu tập
-nft_collection = Bộ sưu tập
-nft_save_to_photos = Lưu vào Ảnh
-nft_set_as_avatar = Đặt làm Avatar
-nft_state_empty_title = NFT của bạn sẽ xuất hiện ở đây️
-nft_state_empty_description = Nhận NFT đầu tiên của bạn
-nft_report_reason_spam = Thư rác
-nft_report_reason_malicious = Độc hại
-nft_report_reason_inappropriate = Nội dung không phù hợp
-nft_report_reason_copyright = Bản quyền
-nft_report_report_button_title = Báo cáo
-
 # Permissions
 
 permissions_access_denied = Truy cập bị từ chối
@@ -733,7 +717,6 @@ contacts_add_to_contacts = Thêm vào danh bạ
 
 simulation_header_unlimited_asset = Không giới hạn %@
 simulation_warning_unlimited_token_approval_description = Điều này cho phép người chi tiêu có quyền sử dụng mã thông báo này cho đến khi bạn thu hồi sự chấp thuận hoặc mã thông báo hết hạn.
-simulation_warning_nft_collection_approval_title = Yêu cầu quyền truy cập đầy đủ vào bộ sưu tập NFT
 simulation_warning_unlimited_token_approval_title = Phê duyệt mã thông báo không giới hạn
 
 # Application

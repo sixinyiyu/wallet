@@ -31,7 +31,6 @@ public extension Gemstone.SimulationWarningType {
         case let .tokenApproval(approval): try .tokenApproval(approval.map())
         case .suspiciousSpender: .suspiciousSpender
         case .externallyOwnedSpender: .externallyOwnedSpender
-        case let .nftCollectionApproval(assetId): try .nftCollectionApproval(AssetId(id: assetId))
         case let .permitApproval(approval): try .permitApproval(approval.map())
         case let .permitBatchApproval(value): .permitBatchApproval(value?.description)
         case .validationError: .validationError

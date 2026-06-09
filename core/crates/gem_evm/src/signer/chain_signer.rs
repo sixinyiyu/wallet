@@ -4,7 +4,7 @@ use alloy_consensus::TxEip1559;
 use alloy_primitives::{Address, Bytes, TxKind, U256};
 use num_bigint::BigInt;
 use num_traits::Num;
-use primitives::{ChainSigner, EVMChain, NFTType, SignerError, SignerInput, StakeType, decode_hex, swap::SwapQuoteDataType};
+use primitives::{ChainSigner, EVMChain, SignerError, SignerInput, StakeType, decode_hex, swap::SwapQuoteDataType};
 
 use super::model::TransactionParams;
 use super::sign_eip1559_tx;
@@ -35,18 +35,6 @@ impl ChainSigner for EvmChainSigner {
         let token_id = input.input_type.get_asset().id.get_token_id()?;
         let data = encode_erc20_transfer(&input.destination_address, &BigInt::from_str_radix(&input.value, 10)?)?;
         sign_and_encode(&build_eip1559_transaction(&params, token_id, U256::ZERO, Bytes::from(data))?, private_key)
-    }
-
-    fn sign_nft_transfer(&self, input: &SignerInput, private_key: &[u8]) -> Result<String, SignerError> {
-        let params = TransactionParams::from_input(input)?;
-        let nft_asset = input.input_type.get_nft_asset()?;
-        let contract = nft_asset.get_contract_address()?;
-        let data = match nft_asset.token_type {
-            NFTType::ERC721 => encode_erc721_transfer(&input.sender_address, &input.destination_address, &nft_asset.token_id),
-            NFTType::ERC1155 => encode_erc1155_transfer(&input.sender_address, &input.destination_address, &nft_asset.token_id),
-            _ => return Err(SignerError::invalid_input("unsupported NFT type for EVM")),
-        }?;
-        sign_and_encode(&build_eip1559_transaction(&params, contract, U256::ZERO, Bytes::from(data))?, private_key)
     }
 
     fn sign_token_approval(&self, input: &SignerInput, private_key: &[u8]) -> Result<String, SignerError> {
@@ -209,8 +197,8 @@ mod tests {
     use super::*;
     use primitives::testkit::signer_mock::TEST_PRIVATE_KEY;
     use primitives::{
-        Asset, Chain, ChainSigner, DelegationValidator, EVMChain, NFTType, SignerInput, TransactionInputType, TransactionLoadMetadata, TransferDataExtra,
-        WalletConnectionSessionAppMetadata, contract_call_data::ContractCallData, nft::NFTAsset, swap::*,
+        Asset, Chain, ChainSigner, DelegationValidator, EVMChain, SignerInput, TransactionInputType, TransactionLoadMetadata, TransferDataExtra,
+        WalletConnectionSessionAppMetadata, contract_call_data::ContractCallData, swap::*,
     };
 
     #[test]
@@ -230,27 +218,6 @@ mod tests {
         assert_eq!(
             signer.sign_token_transfer(&input, &TEST_PRIVATE_KEY).unwrap(),
             "02f8b00180843b9aca008504a817c80082fde894a0b86a33e6441066d64bb38954e41f6b4b925c5980b844a9059cbb0000000000000000000000002b5ad5c4795c026514f8317c7a215e218dccd6cf00000000000000000000000000000000000000000000000000000000000f4240c001a09ca8ae6c1d3e9a70465ae36e44c4ca9982a0b94c3cb8ec7c56e6a183f2d04f16a02275a147339b8a41e36670cbec2df08df035ea3b403eedd8325b150b53a3d7f4"
-        );
-    }
-
-    #[test]
-    fn test_sign_nft_transfer() {
-        let signer = EvmChainSigner::new(EVMChain::Ethereum);
-
-        let input = SignerInput::mock_evm(TransactionInputType::TransferNft(Asset::from_chain(Chain::Ethereum), NFTAsset::mock()), "0", 100000);
-        assert_eq!(
-            signer.sign_nft_transfer(&input, &TEST_PRIVATE_KEY).unwrap(),
-            "02f8d10180843b9aca008504a817c800830186a094dac17f958d2ee523a2206206994597c13d831ec780b86442842e0e0000000000000000000000007e5f4552091a69125d5dfcb7b8c2659029395bdf0000000000000000000000002b5ad5c4795c026514f8317c7a215e218dccd6cf0000000000000000000000000000000000000000000000000000000000000001c080a08371f982a5384532d5ac3336a174239f571cd75663ddc1d6f3892a59c940c983a035902737dfc2f2af6df4244e741f652f4d764230aecf9d5a910d0d027dc4238d"
-        );
-
-        let input = SignerInput::mock_evm(
-            TransactionInputType::TransferNft(Asset::from_chain(Chain::Ethereum), NFTAsset::mock_with_type(NFTType::ERC1155)),
-            "0",
-            100000,
-        );
-        assert_eq!(
-            signer.sign_nft_transfer(&input, &TEST_PRIVATE_KEY).unwrap(),
-            "02f901310180843b9aca008504a817c800830186a094dac17f958d2ee523a2206206994597c13d831ec780b8c4f242432a0000000000000000000000007e5f4552091a69125d5dfcb7b8c2659029395bdf0000000000000000000000002b5ad5c4795c026514f8317c7a215e218dccd6cf0000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000000c080a032eb8933adf3d5fb105c292e413bae35339b9ee6b30ac4b8b679e9f14a0009dba00964abf4af5aa48120c18942ef2b64189bda437a97a7616e14b39624c0870329"
         );
     }
 

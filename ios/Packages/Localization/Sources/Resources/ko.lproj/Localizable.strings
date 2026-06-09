@@ -80,7 +80,6 @@
 "wallet.title" = "지갑";
 "wallet.add_token.title" = "토큰 추가하기";
 "wallet.sell" = "팔다";
-"wallet.receive_collection" = "컬렉션 수신";
 "wallet.more" = "더";
 "wallet.import.contract_address_field" = "계약 또는 토큰 ID";
 "wallet.import_address_warning" = "이 주소에 대한 잔액과 거래 내역은 볼 수 있지만, **자금을 보내거나 판매할 수는 없습니다**.";
@@ -455,18 +454,6 @@
 "info.minimum_amount.title" = "최소 금액";
 "info.minimum_amount.description" = "%@ 네트워크에서 이 거래의 최소 금액은 %@입니다.";
 "input.enter_amount_to" = "%@까지 금액을 입력하세요.";
-"nft.properties" = "속성";
-"nft.collections" = "컬렉션";
-"nft.collection" = "수집";
-"nft.save_to_photos" = "사진에 저장";
-"nft.set_as_avatar" = "아바타로 설정";
-"nft.state.empty.title" = "귀하의 NFT가 여기에 표시됩니다.";
-"nft.state.empty.description" = "첫 번째 NFT를 받으세요";
-"nft.report.reason.spam" = "스팸";
-"nft.report.reason.malicious" = "악의 있는";
-"nft.report.reason.inappropriate" = "부적절한 콘텐츠";
-"nft.report.reason.copyright" = "저작권";
-"nft.report.report_button_title" = "신고";
 "permissions.access_denied" = "접근 불가";
 "permissions.image.photo_access.denied.description" = "이 앱은 사진 라이브러리에 액세스할 권한이 없습니다. 기기 설정에서 액세스를 활성화하세요.";
 "markets.title" = "시장";
@@ -571,5 +558,4 @@
 "contacts.add_to_contacts" = "연락처에 추가";
 "simulation.header.unlimited_asset" = "제한 없는 %@";
 "simulation.warning.unlimited_token_approval.description" = "이렇게 하면 사용자가 승인을 취소하거나 만료될 때까지 해당 토큰을 사용할 수 있습니다.";
-"simulation.warning.nft_collection_approval.title" = "NFT 컬렉션 전체 접근 권한이 요청되었습니다.";
 "simulation.warning.unlimited_token_approval.title" = "무제한 토큰 승인";

@@ -16,7 +16,6 @@ import com.gemwallet.android.model.SignerParams
 import com.gemwallet.android.model.blockNumber
 import com.gemwallet.android.serializer.jsonEncoder
 import com.wallet.core.primitives.TransactionDirection
-import com.wallet.core.primitives.TransactionNFTTransferMetadata
 import com.wallet.core.primitives.TransactionResourceTypeMetadata
 import com.wallet.core.primitives.TransactionState
 import com.wallet.core.primitives.Account
@@ -157,9 +156,6 @@ internal fun ConfirmParams.toTransactionMetadataJson(): String? = when (this) {
             )
         )
     }
-    is ConfirmParams.NftParams -> jsonEncoder.encodeToString(
-        TransactionNFTTransferMetadata(nftAsset.id, nftAsset.name)
-    )
     is ConfirmParams.Stake.Freeze -> jsonEncoder.encodeToString(
         TransactionResourceTypeMetadata(resource)
     )

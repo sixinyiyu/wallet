@@ -29,7 +29,4 @@ public struct TransactionExtendedMetadata: Sendable {
         metadata?.decode(TransactionSwapMetadata.self)
     }
 
-    public var nftMetadata: TransactionNFTTransferMetadata? {
-        metadata?.decode(TransactionNFTTransferMetadata.self)
-    }
 }

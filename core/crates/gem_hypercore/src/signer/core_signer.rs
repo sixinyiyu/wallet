@@ -342,10 +342,6 @@ impl ChainSigner for HyperCoreSigner {
         self.sign_token_transfer_action(input, private_key)
     }
 
-    fn sign_nft_transfer(&self, _input: &SignerInput, _private_key: &[u8]) -> Result<String, SignerError> {
-        Err(SignerError::SigningError("NFT transfer not supported".to_string()))
-    }
-
     fn sign_swap(&self, input: &SignerInput, private_key: &[u8]) -> Result<Vec<String>, SignerError> {
         self.sign_swap_action(input, private_key)
     }

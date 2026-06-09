@@ -1,9 +1,9 @@
 use num_bigint::BigUint;
 use primitives::SignerError;
 
-use super::request::{JettonTransferRequest, NftTransferRequest, TransferPayload, TransferRequest};
+use super::request::{JettonTransferRequest, TransferPayload, TransferRequest};
 use crate::{
-    constants::{JETTON_TRANSFER_OPCODE, NFT_TRANSFER_OPCODE},
+    constants::JETTON_TRANSFER_OPCODE,
     tvm::{Cell, CellArc, CellBuilder},
 };
 
@@ -57,7 +57,6 @@ pub(super) fn build_internal_message(request: &TransferRequest) -> Result<Intern
 fn build_payload(request: &TransferRequest) -> Result<CellArc, SignerError> {
     match &request.payload {
         Some(TransferPayload::Jetton(jetton)) => build_jetton_payload(jetton),
-        Some(TransferPayload::Nft(nft)) => build_nft_payload(nft),
         Some(TransferPayload::Custom(payload)) => Ok(payload.clone()),
         None => match &request.comment {
             Some(comment) => build_comment_payload(comment),
@@ -85,19 +84,5 @@ fn build_jetton_payload(request: &JettonTransferRequest) -> Result<CellArc, Sign
     let forward_payload = request.comment.as_deref().map(build_comment_payload).transpose()?;
     builder.store_coins(&request.forward_ton_amount)?.store_maybe_reference(forward_payload.as_ref())?;
 
-    Ok(builder.build()?.into_arc())
-}
-
-fn build_nft_payload(request: &NftTransferRequest) -> Result<CellArc, SignerError> {
-    let mut builder = CellBuilder::new();
-    builder
-        .store_u32(32, NFT_TRANSFER_OPCODE)?
-        .store_u64(64, request.query_id)?
-        .store_address(&request.new_owner)?
-        .store_address(&request.response_destination)?
-        .store_maybe_reference(None)?;
-
-    let forward_payload = request.comment.as_deref().map(build_comment_payload).transpose()?;
-    builder.store_coins(&request.forward_amount)?.store_maybe_reference(forward_payload.as_ref())?;
     Ok(builder.build()?.into_arc())
 }

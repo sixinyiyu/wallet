@@ -80,7 +80,6 @@
 "wallet.title" = "बटुआ";
 "wallet.add_token.title" = "टोकन जोड़ें";
 "wallet.sell" = "बेचना";
-"wallet.receive_collection" = "संग्रह प्राप्त करें";
 "wallet.more" = "अधिक";
 "wallet.import.contract_address_field" = "कॉन्ट्रैक्ट या टोकन ID";
 "wallet.import_address_warning" = "आप इस पते के लिए शेष राशि और लेनदेन देख सकते हैं, लेकिन **धन भेज या बेच नहीं सकते**।";
@@ -455,18 +454,6 @@
 "info.minimum_amount.title" = "न्यूनतम राशि";
 "info.minimum_amount.description" = "%@ नेटवर्क पर, इस लेनदेन की न्यूनतम राशि %@ है।";
 "input.enter_amount_to" = "कृपया राशि %@ दर्ज करें";
-"nft.properties" = "गुण";
-"nft.collections" = "संग्रह";
-"nft.collection" = "संग्रह";
-"nft.save_to_photos" = "फ़ोटो में सहेजें";
-"nft.set_as_avatar" = "अवतार के रूप में सेट करें";
-"nft.state.empty.title" = "आपके NFT यहां दिखाई देंगे️";
-"nft.state.empty.description" = "अपना पहला NFT प्राप्त करें";
-"nft.report.reason.spam" = "अवांछित ईमेल";
-"nft.report.reason.malicious" = "दुर्भावनापूर्ण";
-"nft.report.reason.inappropriate" = "अनुपयुक्त सामग्री";
-"nft.report.reason.copyright" = "कॉपीराइट";
-"nft.report.report_button_title" = "रिपोर्ट करें";
 "permissions.access_denied" = "पहुंच अस्वीकृत";
 "permissions.image.photo_access.denied.description" = "इस ऐप को आपकी फोटो लाइब्रेरी तक पहुंचने की अनुमति नहीं है। कृपया अपनी डिवाइस सेटिंग में पहुंच सक्षम करें।";
 "markets.title" = "बाज़ार";
@@ -571,5 +558,4 @@
 "contacts.add_to_contacts" = "संपर्क के खाते में जोड़ दे";
 "simulation.header.unlimited_asset" = "असीमित %@";
 "simulation.warning.unlimited_token_approval.description" = "इससे खर्च करने वाले को इस टोकन का उपयोग तब तक करने की अनुमति मिलती है जब तक आप अनुमोदन रद्द नहीं कर देते या यह समाप्त नहीं हो जाता।";
-"simulation.warning.nft_collection_approval.title" = "संपूर्ण एनएफटी संग्रह तक पहुंच का अनुरोध किया गया है";
 "simulation.warning.unlimited_token_approval.title" = "असीमित टोकन अनुमोदन";

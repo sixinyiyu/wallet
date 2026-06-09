@@ -27,7 +27,7 @@ extension TransactionFilterType: Comparable {
 public extension TransactionType {
     var filterType: TransactionFilterType {
         switch self {
-        case .transfer, .transferNFT: .transfers
+        case .transfer: .transfers
         case .smartContractCall: .smartContract
         case .swap, .tokenApproval: .swaps
         case .stakeDelegate, .stakeUndelegate, .stakeRewards, .stakeRedelegate, .stakeWithdraw, .stakeFreeze, .stakeUnfreeze: .stake

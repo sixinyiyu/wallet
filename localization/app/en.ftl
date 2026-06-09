@@ -178,8 +178,6 @@ wallet_title = Wallet
 wallet_add_token_title = Add Token
 # Used in wallet creation, import, receive, and wallet detail screens for the sell label.
 wallet_sell = Sell
-# Used in wallet creation, import, receive, and wallet detail screens for the receive collection label.
-wallet_receive_collection = Receive Collection
 # Used in wallet creation, import, receive, and wallet detail screens for the more label.
 wallet_more = More
 # Used in wallet creation, import, receive, and wallet detail screens for the import contract address field label.
@@ -1045,33 +1043,6 @@ info_minimum_amount_description = On the %@ network, the minimum amount for this
 # Used in input validation prompts for the enter amount to label. Contains 1 string placeholder.
 input_enter_amount_to = Please enter amount to %@
 
-# Nft
-
-# Used in NFT detail and NFT collection screens for the properties label.
-nft_properties = Properties
-# Used in NFT detail and NFT collection screens for the collections label.
-nft_collections = Collections
-# Used in NFT detail and NFT collection screens for the collection label.
-nft_collection = Collection
-# Used in NFT detail and NFT collection screens for the save to photos label.
-nft_save_to_photos = Save to Photos
-# Used in NFT detail and NFT collection screens for the set as avatar label.
-nft_set_as_avatar = Set as Avatar
-# Used in NFT detail and NFT collection screens for the state empty title.
-nft_state_empty_title = Your NFTs will appear here️
-# Used in NFT detail and NFT collection screens for the state empty description.
-nft_state_empty_description = Receive your first NFT
-# Used in NFT detail and NFT collection screens for the report reason spam label.
-nft_report_reason_spam = Spam
-# Used in NFT detail and NFT collection screens for the report reason malicious label.
-nft_report_reason_malicious = Malicious
-# Used in NFT detail and NFT collection screens for the report reason inappropriate label.
-nft_report_reason_inappropriate = Inappropriate Content
-# Used in NFT detail and NFT collection screens for the report reason copyright label.
-nft_report_reason_copyright = Copyright
-# Used in NFT detail and NFT collection screens for the report report button title.
-nft_report_report_button_title = Report
-
 # Permissions
 
 # Used in permissions UI for the access denied label.
@@ -1321,8 +1292,6 @@ contacts_add_to_contacts = Add to Contacts
 simulation_header_unlimited_asset = Unlimited %@
 # Used in simulation UI for the warning unlimited token approval description.
 simulation_warning_unlimited_token_approval_description = This gives the spender access to use this token until you revoke the approval or it expires.
-# Used in simulation UI for the warning nft collection approval title.
-simulation_warning_nft_collection_approval_title = Full NFT collection access requested
 # Used in simulation UI for the warning unlimited token approval title.
 simulation_warning_unlimited_token_approval_title = Unlimited token approval
 

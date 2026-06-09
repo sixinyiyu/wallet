@@ -27,10 +27,6 @@ final class ChainSigner: Signable {
         try signer.signTokenTransfer(input: input.map(), privateKey: privateKey)
     }
 
-    func signNftTransfer(input: SignerInput, privateKey: Data) throws -> String {
-        try signer.signNftTransfer(input: input.map(), privateKey: privateKey)
-    }
-
     func signSwap(input: SignerInput, privateKey: Data) throws -> [String] {
         try signer.signSwap(input: input.map(), privateKey: privateKey)
     }

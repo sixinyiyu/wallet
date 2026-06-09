@@ -28,7 +28,6 @@ pub enum SimulationWarningType {
     TokenApproval(SimulationWarningApproval),
     SuspiciousSpender,
     ExternallyOwnedSpender,
-    NftCollectionApproval(AssetId),
     PermitApproval(SimulationWarningApproval),
     PermitBatchApproval(Option<BigInt>),
     ValidationError,
@@ -38,7 +37,7 @@ impl SimulationWarningType {
     fn requires_spender_verification(&self) -> bool {
         match self {
             Self::SuspiciousSpender | Self::ExternallyOwnedSpender | Self::ValidationError => false,
-            Self::TokenApproval(_) | Self::NftCollectionApproval(_) | Self::PermitApproval(_) | Self::PermitBatchApproval(_) => true,
+            Self::TokenApproval(_) | Self::PermitApproval(_) | Self::PermitBatchApproval(_) => true,
         }
     }
 
@@ -46,7 +45,7 @@ impl SimulationWarningType {
         match self {
             Self::TokenApproval(a) | Self::PermitApproval(a) => Some(&a.value),
             Self::PermitBatchApproval(value) => Some(value),
-            Self::SuspiciousSpender | Self::ExternallyOwnedSpender | Self::NftCollectionApproval(_) | Self::ValidationError => None,
+            Self::SuspiciousSpender | Self::ExternallyOwnedSpender | Self::ValidationError => None,
         }
     }
 

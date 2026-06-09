@@ -1,6 +1,6 @@
 # Permissions
 
 NSCameraUsageDescription = Dompet Permata memerlukan akses kepada Kamera anda untuk mengimbas Kod QR.
-NSPhotoLibraryAddUsageDescription = Apl ini memerlukan akses kepada pustaka foto anda untuk menyimpan NFT.
+NSPhotoLibraryAddUsageDescription = Apl ini memerlukan akses kepada pustaka foto anda untuk menyimpan imej.
 NSFaceIDUsageDescription = Mendayakan Face ID membantu Gem Wallet memastikan aset anda selamat.
 NSPhotoLibraryUsageDescription = Kami memerlukan akses kepada pustaka foto anda untuk membolehkan anda memilih foto.

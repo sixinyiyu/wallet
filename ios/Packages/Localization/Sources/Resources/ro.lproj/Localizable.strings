@@ -80,7 +80,6 @@
 "wallet.title" = "Portofel";
 "wallet.add_token.title" = "Adăugați un token";
 "wallet.sell" = "Vinde";
-"wallet.receive_collection" = "Primește colecția";
 "wallet.more" = "Mai mult";
 "wallet.import.contract_address_field" = "Contract sau ID token";
 "wallet.import_address_warning" = "Puteți vizualiza soldurile și tranzacțiile pentru această adresă, dar **nu puteți trimite sau vinde fonduri**.";
@@ -455,18 +454,6 @@
 "info.minimum_amount.title" = "Suma minima";
 "info.minimum_amount.description" = "În rețeaua %@, suma minimă pentru această tranzacție este %@.";
 "input.enter_amount_to" = "Vă rugăm să introduceți suma până la %@";
-"nft.properties" = "Proprietăți";
-"nft.collections" = "Colecții";
-"nft.collection" = "Colecție";
-"nft.save_to_photos" = "Salvați în Fotografii";
-"nft.set_as_avatar" = "Setați ca Avatar";
-"nft.state.empty.title" = "NFT-urile tale vor apărea aici️";
-"nft.state.empty.description" = "Primește primul tău NFT";
-"nft.report.reason.spam" = "Spam";
-"nft.report.reason.malicious" = "Malignorant";
-"nft.report.reason.inappropriate" = "Conținut neadecvat";
-"nft.report.reason.copyright" = "Drepturi de autor";
-"nft.report.report_button_title" = "Raportează";
 "permissions.access_denied" = "Acces refuzat";
 "permissions.image.photo_access.denied.description" = "Această aplicație nu are permisiunea de a accesa biblioteca dvs. de fotografii. Vă rugăm să activați accesul în setările dispozitivului dvs.";
 "markets.title" = "Piețele";
@@ -571,5 +558,4 @@
 "contacts.add_to_contacts" = "Adăugați la Contacte";
 "simulation.header.unlimited_asset" = "Nelimitat %@";
 "simulation.warning.unlimited_token_approval.description" = "Aceasta îi oferă utilizatorului acces la utilizarea acestui token până când îi revocați aprobarea sau expiră.";
-"simulation.warning.nft_collection_approval.title" = "Acces complet la colecția NFT solicitat";
 "simulation.warning.unlimited_token_approval.title" = "Aprobare nelimitată de tokenuri";

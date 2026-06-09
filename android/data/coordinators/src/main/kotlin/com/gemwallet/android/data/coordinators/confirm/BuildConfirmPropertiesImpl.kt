@@ -72,7 +72,6 @@ class BuildConfirmPropertiesImpl(
             is ConfirmParams.Stake.Unfreeze,
             is ConfirmParams.SwapParams,
             is ConfirmParams.TokenApprovalParams,
-            is ConfirmParams.NftParams,
             is ConfirmParams.PerpetualParams,
             is ConfirmParams.TransferParams -> null
         }

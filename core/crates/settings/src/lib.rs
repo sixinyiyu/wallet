@@ -37,7 +37,6 @@ pub struct Settings {
     pub pusher: Pusher,
     pub scan: Scan,
     pub support: Support,
-    pub nft: NFT,
     pub ankr: Ankr,
     pub trongrid: Trongrid,
     pub assets: Assets,
@@ -356,18 +355,8 @@ impl Settings {
     }
 }
 
-#[derive(Debug, Deserialize, Clone)]
-pub struct NFT {
-    pub url: String,
-    pub nftscan: NFTScan,
-    pub opensea: OpenSea,
-    pub magiceden: MagicEden,
-}
 pub type Ankr = SecretKeySettings;
 pub type Trongrid = SecretKeySettings;
-pub type NFTScan = SecretKeySettings;
-pub type OpenSea = SecretKeySettings;
-pub type MagicEden = SecretKeySettings;
 
 pub type Assets = URL;
 

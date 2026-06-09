@@ -43,7 +43,6 @@ sealed interface ConfirmProperty {
                 is ConfirmParams.Stake.UndelegateParams,
                 is ConfirmParams.Stake.WithdrawParams -> Stake(data = validator?.name ?: "", address = validator?.id)
                 is ConfirmParams.TokenApprovalParams -> Provider(data = params.provider)
-                is ConfirmParams.NftParams,
                 is ConfirmParams.TransferParams.Token,
                 is ConfirmParams.TransferParams.Native -> params.destination()?.let {
                     Transfer(domain = it.name ?: addressName?.name, address = it.address)

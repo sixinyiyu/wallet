@@ -2,8 +2,6 @@
 
 import AssetsService
 import Components
-import NFT
-import NFTService
 import Primitives
 import SwiftUI
 import Transactions
@@ -59,8 +57,6 @@ extension NavigationPresenter {
         wallet: Wallet,
         navigationState: NavigationStateManager,
         assetsService: AssetsService,
-        nftService: NFTService,
-        nftDestination: NavigationPathState,
     ) async throws {
         switch action {
         case let .asset(assetId), let .perpetual(assetId):
@@ -73,9 +69,6 @@ extension NavigationPresenter {
                 wallet: wallet,
                 assetsService: assetsService,
             )
-        case let .nft(assetId):
-            let assetData = try await nftService.getOrFetchAssetData(assetId: assetId)
-            nftDestination.append(Scenes.Collectible(assetData: assetData))
         }
     }
 }

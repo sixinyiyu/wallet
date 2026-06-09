@@ -9,8 +9,6 @@ import com.wallet.core.primitives.FiatQuoteUrl
 import com.wallet.core.primitives.FiatQuotes
 import com.wallet.core.primitives.FiatTransactionData
 import com.wallet.core.primitives.InAppNotification
-import com.wallet.core.primitives.NFTAssetData
-import com.wallet.core.primitives.NFTData
 import com.wallet.core.primitives.NameRecord
 import com.wallet.core.primitives.PriceAlert
 import com.wallet.core.primitives.RedemptionRequest
@@ -140,16 +138,6 @@ interface GemDeviceApiClient {
     // Assets
     @GET("/v2/devices/assets")
     suspend fun getAssets(@Tag walletId: WalletId, @Query("from_timestamp") fromTimestamp: Long): List<String>
-
-    // NFT
-    @GET("/v2/devices/nft_assets")
-    suspend fun getNFTs(@Tag walletId: WalletId): List<NFTData>?
-
-    @GET("/v2/devices/nft_assets/{asset_id}")
-    suspend fun getNFT(@Path("asset_id") assetId: String): NFTAssetData
-
-    @POST("/v2/devices/nft_assets/{asset_id}/refresh")
-    suspend fun refreshNftAsset(@Tag walletId: WalletId, @Path("asset_id") assetId: String): Boolean
 
     // AUTH
     @GET("/v2/devices/auth/nonce")

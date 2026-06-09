@@ -51,9 +51,6 @@ pub trait BlockExplorer: Send + Sync {
     fn get_token_url(&self, _token: &str) -> Option<String> {
         None
     }
-    fn get_nft_url(&self, _contract: &str, _token_id: &str) -> Option<String> {
-        None
-    }
     fn get_validator_url(&self, _validator: &str) -> Option<String> {
         None
     }

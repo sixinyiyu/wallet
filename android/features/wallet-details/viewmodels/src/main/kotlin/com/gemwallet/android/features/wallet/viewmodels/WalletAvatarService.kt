@@ -25,9 +25,6 @@ class WalletAvatarService @Inject constructor(
     suspend fun setEmoji(walletId: WalletId, currentImageUrl: String?, emoji: String, backgroundColor: Int) =
         saveAvatar(walletId, currentImageUrl) { emojiRenderer.render(emoji, backgroundColor) }
 
-    suspend fun setNftImage(walletId: WalletId, currentImageUrl: String?, url: String) =
-        saveAvatar(walletId, currentImageUrl) { loadImage(url) }
-
     suspend fun reset(walletId: WalletId, currentImageUrl: String?) {
         withContext(Dispatchers.IO) { localStore.remove(currentImageUrl) }
         setWalletAvatar.setWalletAvatar(walletId, null)

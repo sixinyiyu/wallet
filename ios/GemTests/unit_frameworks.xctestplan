@@ -18,13 +18,6 @@
   "testTargets" : [
     {
       "target" : {
-        "containerPath" : "container:Features\/NFT",
-        "identifier" : "NFTTests",
-        "name" : "NFTTests"
-      }
-    },
-    {
-      "target" : {
         "containerPath" : "container:Packages\/Style",
         "identifier" : "StyleTests",
         "name" : "StyleTests"

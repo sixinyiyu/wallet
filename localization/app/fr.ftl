@@ -91,7 +91,6 @@ wallet_receive_no_destination_tag_required = Aucune balise de destination requis
 wallet_title = Portefeuille
 wallet_add_token_title = Ajouter un jeton
 wallet_sell = Vendre
-wallet_receive_collection = Recevoir la collection
 wallet_more = Plus
 wallet_import_contract_address_field = Contrat ou ID de jeton
 wallet_import_address_warning = Vous pouvez consulter les soldes et les transactions pour cette adresse, mais **vous ne pouvez pas envoyer ou vendre des fonds**.
@@ -573,21 +572,6 @@ info_minimum_amount_description = Sur le réseau %@, le montant minimum pour cet
 
 input_enter_amount_to = Veuillez saisir le montant de %@
 
-# Nft
-
-nft_properties = Propriétés
-nft_collections = Collections
-nft_collection = Collecte
-nft_save_to_photos = Enregistrer dans Photos
-nft_set_as_avatar = Définir comme avatar
-nft_state_empty_title = Vos NFT apparaîtront ici️
-nft_state_empty_description = Recevez votre premier NFT
-nft_report_reason_spam = Courrier indésirable
-nft_report_reason_malicious = Malveillant
-nft_report_reason_inappropriate = Contenu inapproprié
-nft_report_reason_copyright = Droits d'auteur
-nft_report_report_button_title = Signaler
-
 # Permissions
 
 permissions_access_denied = Accès refusé
@@ -733,7 +717,6 @@ contacts_add_to_contacts = Ajouter aux contacts
 
 simulation_header_unlimited_asset = Illimité %@
 simulation_warning_unlimited_token_approval_description = Cela donne au détenteur du jeton l'accès à utiliser jusqu'à ce que vous révoquiez l'autorisation ou que celle-ci expire.
-simulation_warning_nft_collection_approval_title = Demande d'accès à l'intégralité de la collection NFT
 simulation_warning_unlimited_token_approval_title = Approbation illimitée des jetons
 
 # Application

@@ -80,7 +80,6 @@
 "wallet.title" = "Geldbörse";
 "wallet.add_token.title" = "Token hinzufügen";
 "wallet.sell" = "Verkaufen";
-"wallet.receive_collection" = "Sammlung empfangen";
 "wallet.more" = "Mehr";
 "wallet.import.contract_address_field" = "Vertrag oder Token-ID";
 "wallet.import_address_warning" = "Sie können Guthaben und Transaktionen für diese Adresse anzeigen, aber **kein Geld senden oder verkaufen**.";
@@ -455,18 +454,6 @@
 "info.minimum_amount.title" = "Mindestbetrag";
 "info.minimum_amount.description" = "Im %@-Netzwerk beträgt der Mindestbetrag für diese Transaktion %@.";
 "input.enter_amount_to" = "Bitte geben Sie den Betrag %@ ein.";
-"nft.properties" = "Eigenschaften";
-"nft.collections" = "Sammlungen";
-"nft.collection" = "Sammlung";
-"nft.save_to_photos" = "In „Fotos“ speichern";
-"nft.set_as_avatar" = "Als Avatar festlegen";
-"nft.state.empty.title" = "Ihre NFTs werden hier angezeigt️";
-"nft.state.empty.description" = "Erhalten Sie Ihr erstes NFT";
-"nft.report.reason.spam" = "Spam";
-"nft.report.reason.malicious" = "Böswillig";
-"nft.report.reason.inappropriate" = "Unangemessene Inhalte";
-"nft.report.reason.copyright" = "Urheberrecht";
-"nft.report.report_button_title" = "Melden";
 "permissions.access_denied" = "Zugriff verweigert";
 "permissions.image.photo_access.denied.description" = "Diese App hat keine Berechtigung, auf Ihre Fotobibliothek zuzugreifen. Bitte aktivieren Sie den Zugriff in Ihren Geräteeinstellungen.";
 "markets.title" = "Märkte";
@@ -571,5 +558,4 @@
 "contacts.add_to_contacts" = "Zu Kontakten hinzufügen";
 "simulation.header.unlimited_asset" = "Unbegrenzt %@";
 "simulation.warning.unlimited_token_approval.description" = "Dadurch erhält der Ausgeber Zugriff auf dieses Token, bis Sie die Genehmigung widerrufen oder es abläuft.";
-"simulation.warning.nft_collection_approval.title" = "Vollständiger Zugriff auf die NFT-Sammlung angefordert";
 "simulation.warning.unlimited_token_approval.title" = "Unbegrenzte Token-Genehmigung";

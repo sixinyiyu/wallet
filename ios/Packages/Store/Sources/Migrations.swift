@@ -65,10 +65,6 @@ struct Migrations {
             try ContactRecord.create(db: db)
             try ContactAddressRecord.create(db: db)
 
-            // nft
-            try NFTCollectionRecord.create(db: db)
-            try NFTAssetRecord.create(db: db)
-            try NFTAssetAssociationRecord.create(db: db)
 
             // perpetuals
             try PerpetualRecord.create(db: db)
@@ -206,40 +202,6 @@ struct Migrations {
             }
         }
 
-        // not revelevant for new users, only debug
-        migrator.registerMigration("Add initial nft setup tables drop") { db in
-            try? db.drop(table: NFTCollectionRecord.databaseTableName)
-            try? db.drop(table: NFTAssetRecord.databaseTableName)
-            try? db.drop(table: NFTAssetAssociationRecord.databaseTableName)
-            try? db.drop(table: "nft_collection_images")
-            try? db.drop(table: "nft_images")
-            try? db.drop(table: "nft_attributes")
-        }
-
-        migrator.registerMigration("Add initial nft tables setup") { db in
-            try NFTCollectionRecord.create(db: db)
-            try NFTAssetRecord.create(db: db)
-            try NFTAssetAssociationRecord.create(db: db)
-        }
-
-        migrator.registerMigration("Add links to \(NFTCollectionRecord.databaseTableName)") { db in
-            try? db.alter(table: NFTCollectionRecord.databaseTableName) {
-                $0.add(column: NFTCollectionRecord.Columns.links.name, .jsonText)
-            }
-        }
-
-        migrator.registerMigration("Add attributes to \(NFTAssetRecord.databaseTableName)") { db in
-            try? db.drop(table: "nft_attributes")
-            try? db.alter(table: NFTAssetRecord.databaseTableName) {
-                $0.add(column: NFTAssetRecord.Columns.attributes.name, .jsonText)
-            }
-        }
-
-        migrator.registerMigration("Add contractAddress to \(NFTAssetRecord.databaseTableName)") { db in
-            try? db.alter(table: NFTAssetRecord.databaseTableName) {
-                $0.add(column: NFTAssetRecord.Columns.contractAddress.name, .text)
-            }
-        }
 
         migrator.registerMigration("Add imageUrl to \(WalletRecord.databaseTableName)") { db in
             try? db.alter(table: WalletRecord.databaseTableName) {
@@ -254,15 +216,6 @@ struct Migrations {
             }
         }
 
-        migrator.registerMigration("Re-create nft tables") { db in
-            try? db.drop(table: NFTAssetAssociationRecord.databaseTableName)
-            try? db.drop(table: NFTAssetRecord.databaseTableName)
-            try? db.drop(table: NFTCollectionRecord.databaseTableName)
-
-            try NFTCollectionRecord.create(db: db)
-            try NFTAssetRecord.create(db: db)
-            try NFTAssetAssociationRecord.create(db: db)
-        }
 
         migrator.registerMigration("Add fiat rates") { db in
             try? FiatRateRecord.create(db: db)
@@ -435,27 +388,14 @@ struct Migrations {
             }
         }
 
-        migrator.registerMigration("Add status to \(AddressRecord.databaseTableName) and \(NFTCollectionRecord.databaseTableName)") { db in
+        migrator.registerMigration("Add status to \(AddressRecord.databaseTableName)") { db in
             try? db.alter(table: AddressRecord.databaseTableName) {
                 $0.add(column: AddressRecord.Columns.status.name, .text)
                     .notNull()
                     .defaults(to: VerificationStatus.unverified.rawValue)
             }
-
-            try? db.alter(table: NFTCollectionRecord.databaseTableName) {
-                $0.add(column: NFTCollectionRecord.Columns.status.name, .text)
-                    .notNull()
-                    .defaults(to: VerificationStatus.unverified.rawValue)
-            }
         }
 
-        migrator.registerMigration("Delete isVerified columns in \(NFTCollectionRecord.databaseTableName)") { db in
-            if try db.columns(in: NFTCollectionRecord.databaseTableName).map(\.name).contains("isVerified") {
-                try db.alter(table: NFTCollectionRecord.databaseTableName) {
-                    $0.drop(column: "isVerified")
-                }
-            }
-        }
 
         migrator.registerMigration("Create \(FiatTransactionRecord.databaseTableName)") { db in
             try? FiatTransactionRecord.create(db: db)
@@ -483,16 +423,6 @@ struct Migrations {
             )
         }
 
-        migrator.registerMigration("Clear NFT cache") { db in
-            try Self.clearTables(
-                db,
-                tableNames: [
-                    NFTAssetAssociationRecord.databaseTableName,
-                    NFTAssetRecord.databaseTableName,
-                    NFTCollectionRecord.databaseTableName,
-                ],
-            )
-        }
 
         try migrator.migrate(dbQueue)
     }

@@ -5,8 +5,6 @@ import BalanceServiceTestKit
 import FiatService
 import FiatServiceTestKit
 import Foundation
-import NFTService
-import NFTServiceTestKit
 import PerpetualService
 import PerpetualServiceTestKit
 import Preferences
@@ -29,7 +27,6 @@ public extension StreamEventService {
         priceAlertService: PriceAlertService = .mock(),
         balanceUpdater: any BalanceUpdater = .mock(),
         transactionsService: TransactionsService = .mock(),
-        nftService: NFTService = .mock(),
         perpetualService: any HyperliquidPerpetualServiceable = PerpetualServiceMock(),
         fiatService: FiatService = .mock(),
         preferences: Preferences = .mock(),
@@ -41,7 +38,6 @@ public extension StreamEventService {
             priceAlertService: priceAlertService,
             balanceUpdater: balanceUpdater,
             transactionsService: transactionsService,
-            nftService: nftService,
             perpetualService: perpetualService,
             fiatService: fiatService,
             preferences: preferences,

@@ -6,7 +6,6 @@ import com.gemwallet.android.model.CryptoFiatConverter
 import com.gemwallet.android.model.CurrencyFormatter
 import com.gemwallet.android.model.ValueFormatter
 import com.wallet.core.primitives.Currency
-import com.wallet.core.primitives.NFTAsset
 import com.wallet.core.primitives.TransactionType
 import java.math.BigInteger
 
@@ -18,7 +17,6 @@ class AmountUIModel(
     val toAsset: AssetInfo?,
     val fromAmount: String,
     val toAmount: String?,
-    val nftAsset: NFTAsset?,
     val price: Double?,
     val currency: Currency = Currency.USD,
 ) {

@@ -13,7 +13,7 @@ public struct GridPosterView: View {
 
     public var body: some View {
         VStack(alignment: .leading) {
-            NftImageView(assetImage: model.assetImage)
+            AssetImageView(assetImage: model.assetImage)
                 .clipShape(RoundedRectangle(cornerRadius: .medium))
                 .aspectRatio(1, contentMode: .fit)
                 .overlay(alignment: .topTrailing) {
@@ -54,7 +54,7 @@ public struct GridPosterView: View {
     GridPosterView(
         model: GridPosterViewModel(
             assetImage: AssetImage(
-                imageURL: URL(string: "https://metadata.nftscan.com/eth/0x47a00fc8590c11be4c419d9ae50dec267b6e24ee/0x0000000000000000000000000000000000000000000000000000000000002e5f.png"),
+                imageURL: URL(string: "https://assets.gemwallet.com/images/placeholder.png"),
                 placeholder: nil,
                 chainPlaceholder: nil,
             ),

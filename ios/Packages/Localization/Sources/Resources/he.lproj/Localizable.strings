@@ -80,7 +80,6 @@
 "wallet.title" = "ארנק";
 "wallet.add_token.title" = "הוסף אסימון";
 "wallet.sell" = "מְכִירָה";
-"wallet.receive_collection" = "קבלת אוסף";
 "wallet.more" = "יוֹתֵר";
 "wallet.import.contract_address_field" = "חוזה או מזהה טוקן";
 "wallet.import_address_warning" = "ניתן לצפות ביתרות ועסקאות עבור כתובת זו, אך **לא ניתן לשלוח או למכור כספים**.";
@@ -455,18 +454,6 @@
 "info.minimum_amount.title" = "כמות מינימלית";
 "info.minimum_amount.description" = "ברשת %@, הסכום המינימלי לעסקה זו הוא %@.";
 "input.enter_amount_to" = "נא להזין סכום ל-%@";
-"nft.properties" = "נכסים";
-"nft.collections" = "אוספים";
-"nft.collection" = "גְבִיָה";
-"nft.save_to_photos" = "שמור בתמונות";
-"nft.set_as_avatar" = "הגדר כאווטר";
-"nft.state.empty.title" = "ה-NFT שלך יופיע כאן️";
-"nft.state.empty.description" = "קבל את ה-NFT הראשון שלך";
-"nft.report.reason.spam" = "ספאם";
-"nft.report.reason.malicious" = "זְדוֹנִי";
-"nft.report.reason.inappropriate" = "תוכן לא הולם";
-"nft.report.reason.copyright" = "זְכוּת יְוֹצרִים";
-"nft.report.report_button_title" = "דווח";
 "permissions.access_denied" = "הגִישָׁה נִדחֲתָה";
 "permissions.image.photo_access.denied.description" = "לאפליקציה הזו אין הרשאה לגשת לספריית התמונות שלך. אפשר גישה בהגדרות המכשיר שלך.";
 "markets.title" = "שווקים";
@@ -571,5 +558,4 @@
 "contacts.add_to_contacts" = "הוסף לאנשי קשר";
 "simulation.header.unlimited_asset" = "בִּלתִי מוּגבָּל %@";
 "simulation.warning.unlimited_token_approval.description" = "זה נותן למוציא גישה להשתמש באסימון זה עד שתבטל את האישור או שהוא יפוג תוקפו.";
-"simulation.warning.nft_collection_approval.title" = "התבקשה גישה מלאה לאוסף NFT";
 "simulation.warning.unlimited_token_approval.title" = "אישור אסימונים ללא הגבלה";

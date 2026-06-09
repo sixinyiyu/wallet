@@ -18,7 +18,6 @@ pub enum StreamEvent {
     Balances(StreamBalanceUpdate),
     Transactions(StreamTransactionsUpdate),
     PriceAlerts(StreamPriceAlertUpdate),
-    Nft(StreamWalletUpdate),
     Perpetual(StreamWalletUpdate),
     InAppNotification(StreamNotificationUpdate),
     FiatTransaction(StreamWalletUpdate),

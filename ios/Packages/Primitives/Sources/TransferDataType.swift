@@ -6,7 +6,6 @@ public enum TransferDataType: Hashable, Equatable, Sendable {
     case transfer(Asset)
     case deposit(Asset)
     case withdrawal(Asset)
-    case transferNft(NFTAsset)
     case swap(Asset, Asset, SwapData)
     case tokenApprove(Asset, ApprovalData)
     case stake(Asset, StakeType)
@@ -21,7 +20,6 @@ public enum TransferDataType: Hashable, Equatable, Sendable {
         case .deposit: .transfer
         case .withdrawal: .transfer
         case .generic: .smartContractCall
-        case .transferNft: .transferNFT
         case .tokenApprove: .tokenApproval
         case .swap: .swap
         case let .stake(_, type):
@@ -61,7 +59,6 @@ public enum TransferDataType: Hashable, Equatable, Sendable {
              let .earn(asset, _, _),
              let .tokenApprove(asset, _),
              let .generic(asset, _, _): asset.chain
-        case let .transferNft(asset): asset.chain
         }
     }
 
@@ -75,8 +72,6 @@ public enum TransferDataType: Hashable, Equatable, Sendable {
                 toValue: data.quote.toValue,
                 provider: data.quote.providerData.provider.rawValue,
             ))
-        case let .transferNft(asset):
-            return .encode(TransactionNFTTransferMetadata(assetId: asset.id, name: asset.name))
         case let .perpetual(_, type):
             guard let direction = type.data?.direction else { return nil }
             return .encode(
@@ -113,7 +108,6 @@ public enum TransferDataType: Hashable, Equatable, Sendable {
              let .perpetual(asset, _),
              let .earn(asset, _, _): [asset.id]
         case let .swap(from, to, _): [from.id, to.id]
-        case .transferNft: []
         }
     }
 
@@ -147,7 +141,7 @@ public enum TransferDataType: Hashable, Equatable, Sendable {
 
     public var shouldIgnoreValueCheck: Bool {
         switch self {
-        case .transferNft, .stake, .account, .tokenApprove, .perpetual, .earn: true
+        case .stake, .account, .tokenApprove, .perpetual, .earn: true
         case .transfer, .deposit, .withdrawal, .swap, .generic: false
         }
     }

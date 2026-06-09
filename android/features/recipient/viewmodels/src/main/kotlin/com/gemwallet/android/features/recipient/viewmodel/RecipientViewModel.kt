@@ -9,10 +9,7 @@ import com.gemwallet.android.application.session.coordinators.GetSession
 import com.gemwallet.android.blockchain.operators.ValidateAddressOperator
 import com.gemwallet.android.cases.contacts.ContactRecipient
 import com.gemwallet.android.cases.contacts.GetContacts
-import com.gemwallet.android.cases.nft.GetAssetNft
 import com.gemwallet.android.domains.asset.chain
-import com.gemwallet.android.ext.asset
-import com.gemwallet.android.ext.getAccount
 import com.gemwallet.android.ext.isMemoSupport
 import com.gemwallet.android.ext.mutableStateIn
 import com.gemwallet.android.features.recipient.viewmodel.models.QrScanField
@@ -20,30 +17,22 @@ import com.gemwallet.android.features.recipient.viewmodel.models.RecipientError
 import com.gemwallet.android.features.recipient.viewmodel.models.RecipientState
 import com.gemwallet.android.features.recipient.viewmodel.models.RecipientType
 import com.gemwallet.android.model.AmountParams
-import com.gemwallet.android.model.ConfirmParams
 import com.gemwallet.android.model.DestinationAddress
 import com.gemwallet.android.ui.models.actions.AmountTransactionAction
 import com.gemwallet.android.ui.models.actions.ConfirmTransactionAction
 import com.gemwallet.android.ui.models.navigation.RouteArgument
-import com.gemwallet.android.ui.models.navigation.optionalNftAssetId
 import com.gemwallet.android.ui.models.navigation.requireAssetId
 import com.wallet.core.primitives.AssetId
 import com.wallet.core.primitives.Chain
-import com.wallet.core.primitives.NFTAsset
 import com.wallet.core.primitives.NameRecord
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineStart
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
@@ -60,7 +49,6 @@ class RecipientViewModel @Inject constructor(
     private val getWallets: GetWallets,
     private val getContacts: GetContacts,
     private val getAssetInfo: GetAssetInfo,
-    private val getAssetNft: GetAssetNft,
     private val validateAddressOperator: ValidateAddressOperator,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -77,24 +65,11 @@ class RecipientViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
     private val assetId = savedStateHandle.requireAssetId(RouteArgument.AssetId)
-    private val nftAssetId = savedStateHandle.optionalNftAssetId(RouteArgument.NftAssetId)
-
-    private val nftAsset: Deferred<NFTAsset?> = viewModelScope.async(Dispatchers.IO, CoroutineStart.LAZY) {
-        val id = nftAssetId ?: return@async null
-        runCatching {
-            getAssetNft.getAssetNft(id).first().assets.firstOrNull()
-        }.getOrNull()
-    }
 
     val state: StateFlow<RecipientState> = getAssetInfo(assetId)
         .filterNotNull()
         .map { assetInfo ->
-            val type: RecipientType? = if (nftAssetId == null) {
-                RecipientType.Asset(assetInfo)
-            } else {
-                nftAsset.await()?.let { RecipientType.Nft(assetInfo, it) }
-            }
-            type?.let(RecipientState::Ready) ?: RecipientState.Loading
+            RecipientType.Asset(assetInfo).let(RecipientState::Ready)
         }
         .flowOn(Dispatchers.IO)
         .stateIn(viewModelScope, SharingStarted.Eagerly, RecipientState.Loading)
@@ -180,7 +155,6 @@ class RecipientViewModel @Inject constructor(
             return
         }
         when (type) {
-            is RecipientType.Nft -> onNftConfirm(type.nftAsset, destination, confirmAction)
             is RecipientType.Asset -> amountAction(
                 AmountParams.Transfer(type.assetInfo.id(), destination, memo.value)
             )
@@ -230,16 +204,6 @@ class RecipientViewModel @Inject constructor(
                 _memo.value = paymentWrapper.memo ?: data
             }
         }
-    }
-
-    private fun onNftConfirm(nftAsset: NFTAsset, destination: DestinationAddress, confirmAction: ConfirmTransactionAction) {
-        val params = ConfirmParams.NftParams(
-            asset = nftAsset.chain.asset(),
-            from = session.value?.wallet?.getAccount(nftAsset.chain) ?: return,
-            destination = destination,
-            nftAsset = nftAsset,
-        )
-        confirmAction(params)
     }
 
     private fun validateDestination(chain: Chain, destination: DestinationAddress): RecipientError =

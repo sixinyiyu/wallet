@@ -117,7 +117,6 @@ pub struct TransactionUpdate {
 #[uniffi::remote(Enum)]
 pub enum TransactionType {
     Transfer,
-    TransferNFT,
     Swap,
     TokenApproval,
     StakeDelegate,
@@ -311,10 +310,6 @@ pub enum GemTransactionInputType {
         metadata: GemWalletConnectionSessionAppMetadata,
         extra: GemTransferDataExtra,
     },
-    TransferNft {
-        asset: GemAsset,
-        nft_asset: GemNFTAsset,
-    },
     Account {
         asset: GemAsset,
         account_type: GemAccountDataType,
@@ -338,7 +333,6 @@ impl GemTransactionInputType {
             | Self::Stake { asset, .. }
             | Self::TokenApprove { asset, .. }
             | Self::Generic { asset, .. }
-            | Self::TransferNft { asset, .. }
             | Self::Account { asset, .. }
             | Self::Perpetual { asset, .. }
             | Self::Earn { asset, .. } => asset,
@@ -419,7 +413,6 @@ pub enum GemTransactionLoadMetadata {
         sender_token_address: Option<String>,
         recipient_token_address: Option<String>,
         token_program: Option<GemSolanaTokenProgramId>,
-        nft: Option<GemSolanaNftStandard>,
         block_hash: String,
     },
     Ton {
@@ -503,13 +496,11 @@ impl From<TransactionLoadMetadata> for GemTransactionLoadMetadata {
                 sender_token_address,
                 recipient_token_address,
                 token_program,
-                nft,
                 block_hash,
             } => GemTransactionLoadMetadata::Solana {
                 sender_token_address,
                 recipient_token_address,
                 token_program,
-                nft,
                 block_hash,
             },
             TransactionLoadMetadata::Ton {
@@ -593,13 +584,11 @@ impl From<GemTransactionLoadMetadata> for TransactionLoadMetadata {
                 sender_token_address,
                 recipient_token_address,
                 token_program,
-                nft,
                 block_hash,
             } => TransactionLoadMetadata::Solana {
                 sender_token_address,
                 recipient_token_address,
                 token_program,
-                nft,
                 block_hash,
             },
             GemTransactionLoadMetadata::Ton {
@@ -729,7 +718,6 @@ impl From<TransactionInputType> for GemTransactionInputType {
                 metadata,
                 extra: extra.into(),
             },
-            TransactionInputType::TransferNft(asset, nft_asset) => GemTransactionInputType::TransferNft { asset, nft_asset },
             TransactionInputType::Account(asset, account_type) => GemTransactionInputType::Account { asset, account_type },
             TransactionInputType::Perpetual(asset, perpetual_type) => GemTransactionInputType::Perpetual { asset, perpetual_type },
             TransactionInputType::Earn(asset, earn_type, data) => GemTransactionInputType::Earn { asset, earn_type, data },
@@ -884,7 +872,6 @@ impl From<GemTransactionInputType> for TransactionInputType {
                 },
             ),
             GemTransactionInputType::Generic { asset, metadata, extra } => TransactionInputType::Generic(asset, metadata, extra.into()),
-            GemTransactionInputType::TransferNft { asset, nft_asset } => TransactionInputType::TransferNft(asset, nft_asset),
             GemTransactionInputType::Account { asset, account_type } => TransactionInputType::Account(asset, account_type),
             GemTransactionInputType::Perpetual { asset, perpetual_type } => TransactionInputType::Perpetual(asset, perpetual_type),
             GemTransactionInputType::Earn { asset, earn_type, data } => TransactionInputType::Earn(asset, earn_type, data),

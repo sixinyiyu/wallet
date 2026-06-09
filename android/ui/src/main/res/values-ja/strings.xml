@@ -85,7 +85,6 @@
   <string name="wallet_title">ウォレット</string>
   <string name="wallet_add_token_title">トークンを追加</string>
   <string name="wallet_sell">売却する</string>
-  <string name="wallet_receive_collection">コレクションを受け取る</string>
   <string name="wallet_more">もっと見る</string>
   <string name="wallet_import_contract_address_field">契約またはトークンID</string>
   <string name="wallet_import_address_warning">このアドレスの残高と取引は表示できますが、**資金を送信または売却することはできません**。</string>
@@ -470,18 +469,6 @@
   <string name="info_minimum_amount_title">最低金額</string>
   <string name="info_minimum_amount_description">%1$s ネットワークで、この取引の最低金額は %2$s です。</string>
   <string name="input_enter_amount_to">%1$sの金額を入力してください</string>
-  <string name="nft_properties">プロパティ</string>
-  <string name="nft_collections">コレクション</string>
-  <string name="nft_collection">コレクション</string>
-  <string name="nft_save_to_photos">写真に保存</string>
-  <string name="nft_set_as_avatar">アバターとして設定</string>
-  <string name="nft_state_empty_title">NFTはここに表示されます️</string>
-  <string name="nft_state_empty_description">最初のNFTを受け取る</string>
-  <string name="nft_report_reason_spam">スパム</string>
-  <string name="nft_report_reason_malicious">悪意のある</string>
-  <string name="nft_report_reason_inappropriate">不適切なコンテンツ</string>
-  <string name="nft_report_reason_copyright">著作権</string>
-  <string name="nft_report_report_button_title">報告</string>
   <string name="permissions_access_denied">アクセスが拒否されました</string>
   <string name="permissions_image_photo_access_denied_description">このアプリには写真ライブラリにアクセスする権限がありません。デバイスの設定でアクセスを有効にしてください。</string>
   <string name="markets_title">マーケット</string>
@@ -586,7 +573,6 @@
   <string name="contacts_add_to_contacts">連絡先に追加</string>
   <string name="simulation_header_unlimited_asset">無制限 %1$s</string>
   <string name="simulation_warning_unlimited_token_approval_description">これにより、承認を取り消すか期限が切れるまで、支出者はこのトークンを使用できるようになります。</string>
-  <string name="simulation_warning_nft_collection_approval_title">NFTコレクションへのフルアクセスをリクエスト</string>
   <string name="simulation_warning_unlimited_token_approval_title">無制限のトークン承認</string>
   <string name="application_name">Gem</string>
   <string name="camera_permission_request_camera">QRコードのスキャンにはカメラの許可が必要です。\n許可をお願いします。</string>

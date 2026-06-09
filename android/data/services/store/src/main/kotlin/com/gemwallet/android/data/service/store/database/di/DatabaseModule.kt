@@ -14,7 +14,6 @@ import com.gemwallet.android.data.service.store.database.ContactsDao
 import com.gemwallet.android.data.service.store.database.FiatTransactionsDao
 import com.gemwallet.android.data.service.store.database.GemDatabase
 import com.gemwallet.android.data.service.store.database.InAppNotificationsDao
-import com.gemwallet.android.data.service.store.database.NftDao
 import com.gemwallet.android.data.service.store.database.NodesDao
 import com.gemwallet.android.data.service.store.database.PerpetualDao
 import com.gemwallet.android.data.service.store.database.PerpetualPositionDao
@@ -142,10 +141,6 @@ object DatabaseModule {
     @Singleton
     @Provides
     fun providePriceAlertsDao(db: GemDatabase): PriceAlertsDao = db.priceAlertsDao()
-
-    @Singleton
-    @Provides
-    fun provideNFTDao(db: GemDatabase): NftDao = db.nftDao()
 
     @Singleton
     @Provides

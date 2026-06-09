@@ -80,7 +80,6 @@
 "wallet.title" = "ওয়ালেট";
 "wallet.add_token.title" = "টোকেন যোগ করুন";
 "wallet.sell" = "বিক্রয়";
-"wallet.receive_collection" = "সংগ্রহ গ্রহণ";
 "wallet.more" = "আরও";
 "wallet.import.contract_address_field" = "কনট্রাক্ট বা টোকেন আইডি";
 "wallet.import_address_warning" = "আপনি এই ঠিকানার ব্যালেন্স এবং লেনদেন দেখতে পারবেন, কিন্তু **তহবিল পাঠাতে বা বিক্রি করতে পারবেন না**।";
@@ -455,18 +454,6 @@
 "info.minimum_amount.title" = "ন্যূনতম পরিমাণ";
 "info.minimum_amount.description" = "%@ নেটওয়ার্কে, এই লেনদেনের ন্যূনতম পরিমাণ %@।";
 "input.enter_amount_to" = "অনুগ্রহ করে %@ এ পরিমাণ লিখুন";
-"nft.properties" = "বৈশিষ্ট্য";
-"nft.collections" = "সংগ্রহ";
-"nft.collection" = "সংগ্রহ";
-"nft.save_to_photos" = "ফটোতে সেভ করুন";
-"nft.set_as_avatar" = "অবতার হিসাবে সেট করুন";
-"nft.state.empty.title" = "আপনার NFT গুলি এখানে প্রদর্শিত হবে️";
-"nft.state.empty.description" = "আপনার প্রথম NFT গ্রহণ করুন";
-"nft.report.reason.spam" = "স্প্যাম";
-"nft.report.reason.malicious" = "দূষিত";
-"nft.report.reason.inappropriate" = "অনুপযুক্ত কন্টেন্ট";
-"nft.report.reason.copyright" = "কপিরাইট";
-"nft.report.report_button_title" = "রিপোর্ট করুন";
 "permissions.access_denied" = "অ্যাক্সেস অস্বীকার করা হয়েছে৷";
 "permissions.image.photo_access.denied.description" = "এই অ্যাপটির আপনার ফটো লাইব্রেরি অ্যাক্সেস করার অনুমতি নেই। অনুগ্রহ করে আপনার ডিভাইস সেটিংসে অ্যাক্সেস সক্ষম করুন৷";
 "markets.title" = "বাজার";
@@ -571,5 +558,4 @@
 "contacts.add_to_contacts" = "পরিচিতিতে যোগ করুন";
 "simulation.header.unlimited_asset" = "সীমাহীন %@";
 "simulation.warning.unlimited_token_approval.description" = "এটি ব্যয়কারীকে এই টোকেনটি ব্যবহার করার অনুমতি দেয় যতক্ষণ না আপনি অনুমোদন প্রত্যাহার করেন অথবা এটির মেয়াদ শেষ হয়ে যায়।";
-"simulation.warning.nft_collection_approval.title" = "সম্পূর্ণ NFT সংগ্রহের অ্যাক্সেসের অনুরোধ করা হয়েছে";
 "simulation.warning.unlimited_token_approval.title" = "সীমাহীন টোকেন অনুমোদন";

@@ -85,7 +85,6 @@
   <string name="wallet_title">Dompet</string>
   <string name="wallet_add_token_title">Tambah Token</string>
   <string name="wallet_sell">Jual</string>
-  <string name="wallet_receive_collection">Terima Koleksi</string>
   <string name="wallet_more">Lagi</string>
   <string name="wallet_import_contract_address_field">Kontrak atau ID Token</string>
   <string name="wallet_import_address_warning">Anda boleh melihat baki dan urus niaga untuk alamat ini, tetapi **tidak boleh menghantar atau menjual dana**.</string>
@@ -470,18 +469,6 @@
   <string name="info_minimum_amount_title">Jumlah Minimum</string>
   <string name="info_minimum_amount_description">Pada rangkaian %1$s, jumlah minimum untuk transaksi ini ialah %2$s.</string>
   <string name="input_enter_amount_to">Sila masukkan amaun kepada %1$s</string>
-  <string name="nft_properties">Hartanah</string>
-  <string name="nft_collections">Koleksi</string>
-  <string name="nft_collection">Koleksi</string>
-  <string name="nft_save_to_photos">Simpan ke Foto</string>
-  <string name="nft_set_as_avatar">Tetapkan sebagai Avatar</string>
-  <string name="nft_state_empty_title">NFT anda akan muncul di sini️</string>
-  <string name="nft_state_empty_description">Terima NFT pertama anda</string>
-  <string name="nft_report_reason_spam">Spam</string>
-  <string name="nft_report_reason_malicious">Berniat jahat</string>
-  <string name="nft_report_reason_inappropriate">Kandungan Tidak Sesuai</string>
-  <string name="nft_report_reason_copyright">Hak Cipta</string>
-  <string name="nft_report_report_button_title">Laporan</string>
   <string name="permissions_access_denied">Akses Ditolak</string>
   <string name="permissions_image_photo_access_denied_description">Apl ini tidak mempunyai kebenaran untuk mengakses pustaka foto anda. Sila dayakan akses dalam tetapan peranti anda.</string>
   <string name="markets_title">Pasaran</string>
@@ -586,7 +573,6 @@
   <string name="contacts_add_to_contacts">Tambah ke Kenalan</string>
   <string name="simulation_header_unlimited_asset">Tidak terhad %1$s</string>
   <string name="simulation_warning_unlimited_token_approval_description">Ini memberi pembeli akses untuk menggunakan token ini sehingga anda membatalkan kelulusan atau ia tamat tempoh.</string>
-  <string name="simulation_warning_nft_collection_approval_title">Akses koleksi NFT penuh diminta</string>
   <string name="simulation_warning_unlimited_token_approval_title">Kelulusan token tanpa had</string>
   <string name="application_name">Gem</string>
   <string name="camera_permission_request_camera">Kebenaran kamera diperlukan untuk imbasan Kod QR.\nSila berikan kebenaran.</string>

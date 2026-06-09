@@ -127,27 +127,7 @@ public enum Scenes {
         }
     }
 
-    public struct Collection: Hashable, Codable, Sendable {
-        public let id: String
-        public let name: String
 
-        public init(id: String, name: String) {
-            self.id = id
-            self.name = name
-        }
-    }
-
-    public struct UnverifiedCollections: Hashable, Codable, Sendable {
-        public init() {}
-    }
-
-    public struct Collectible: Hashable, Codable, Sendable {
-        public let assetData: NFTAssetData
-
-        public init(assetData: NFTAssetData) {
-            self.assetData = assetData
-        }
-    }
 
     public struct Perpetuals: Hashable, Codable {
         public init() {}

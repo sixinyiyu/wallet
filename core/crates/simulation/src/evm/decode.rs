@@ -60,14 +60,14 @@ pub(crate) fn decode_evm_approval(chain: Chain, calldata: &[u8], contract_addres
         && let Ok(call) = <IERC721::setApprovalForAllCall as SolCall>::abi_decode(calldata)
         && call.approved
     {
-        return ApprovalRequest::nft_collection(chain, contract_address, format!("{:#x}", call.operator));
+        return ApprovalRequest::set_approval_for_all(chain, contract_address, format!("{:#x}", call.operator));
     }
 
     if calldata.starts_with(&<IERC1155::setApprovalForAllCall as SolCall>::SELECTOR)
         && let Ok(call) = <IERC1155::setApprovalForAllCall as SolCall>::abi_decode(calldata)
         && call.approved
     {
-        return ApprovalRequest::nft_collection(chain, contract_address, format!("{:#x}", call.operator));
+        return ApprovalRequest::set_approval_for_all(chain, contract_address, format!("{:#x}", call.operator));
     }
 
     None
@@ -282,9 +282,7 @@ mod tests {
         matches!(warning, SimulationWarningType::TokenApproval(_))
     }
 
-    fn is_nft_warning(warning: &SimulationWarningType) -> bool {
-        matches!(warning, SimulationWarningType::NftCollectionApproval(_))
-    }
+
 
     #[test]
     fn eip712_permit_simulation_result_contains_payload_and_warnings() {
@@ -425,7 +423,7 @@ mod tests {
 
         let result = simulate_evm_calldata(Chain::Ethereum, &calldata, "0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85");
 
-        assert!(is_nft_warning(warning(&result)));
+        assert!(is_token_warning(warning(&result)));
         assert_eq!(result.payload[0].kind, SimulationPayloadFieldKind::Contract);
         assert_eq!(result.payload[1].value, "Set Approval For All");
         assert_eq!(result.payload[2].kind, SimulationPayloadFieldKind::Spender);
@@ -450,7 +448,7 @@ mod tests {
 
         let result = simulate_evm_calldata(Chain::Ethereum, &calldata, "0x495f947276749Ce646f68AC8c248420045cb7b5e");
 
-        assert!(is_nft_warning(warning(&result)));
+        assert!(is_token_warning(warning(&result)));
         assert_eq!(result.payload[0].kind, SimulationPayloadFieldKind::Contract);
         assert_eq!(result.payload[1].value, "Set Approval For All");
         assert_eq!(result.payload[2].kind, SimulationPayloadFieldKind::Spender);

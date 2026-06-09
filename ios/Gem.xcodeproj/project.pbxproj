@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0741683A2D3AFDBB00AC26A4 /* NFT in Frameworks */ = {isa = PBXBuildFile; productRef = 074168392D3AFDBB00AC26A4 /* NFT */; };
-		07A9FE3D2D3565CD00ACDB94 /* NFTService in Frameworks */ = {isa = PBXBuildFile; productRef = 07A9FE3C2D3565CD00ACDB94 /* NFTService */; };
 		67AEE2D03EB6F99C6ECF9527 /* AmountNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032FCD1308A93D4A9B370F35 /* AmountNavigationView.swift */; };
 		830FDA422C2236B6003DA605 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830FDA412C2236B6003DA605 /* MainTabView.swift */; };
 		830FDA452C224316003DA605 /* NavigationStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830FDA442C224316003DA605 /* NavigationStateManager.swift */; };
@@ -110,7 +108,6 @@
 		D87316B82E3AF30300C11634 /* ui_tests.xctestplan in Resources */ = {isa = PBXBuildFile; fileRef = D87316B72E3AF30300C11634 /* ui_tests.xctestplan */; };
 		D873DA512D7933AF0003F5CE /* MarketsNavigtionStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = D873DA502D7933AF0003F5CE /* MarketsNavigtionStack.swift */; };
 		D890F7A52C7FC0AC00C26819 /* WalletsNavigationStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = D890F7A42C7FC0AC00C26819 /* WalletsNavigationStack.swift */; };
-		D891DD412D3F359F00241222 /* CollectionsNavigationStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = D891DD402D3F359F00241222 /* CollectionsNavigationStack.swift */; };
 		D896B57E2E2EE2D300ADE083 /* Perpetuals in Frameworks */ = {isa = PBXBuildFile; productRef = D896B57D2E2EE2D300ADE083 /* Perpetuals */; };
 		D89BB5EE2D1A085C00C7E510 /* ConfirmTransferNavigationStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89BB5ED2D1A085C00C7E510 /* ConfirmTransferNavigationStack.swift */; };
 		D89CD7A92CC70C7C007A2BAC /* SelectedAssetNavigationStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89CD7A72CC70C7C007A2BAC /* SelectedAssetNavigationStack.swift */; };
@@ -193,7 +190,6 @@
 
 /* Begin PBXFileReference section */
 		032FCD1308A93D4A9B370F35 /* AmountNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountNavigationView.swift; sourceTree = "<group>"; };
-		074168342D3AF81E00AC26A4 /* NFT */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = NFT; sourceTree = "<group>"; };
 		830FDA412C2236B6003DA605 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		830FDA442C224316003DA605 /* NavigationStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStateManager.swift; sourceTree = "<group>"; };
 		830FDA472C22EEC4003DA605 /* TabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabItem.swift; sourceTree = "<group>"; };
@@ -275,7 +271,6 @@
 		D873DA502D7933AF0003F5CE /* MarketsNavigtionStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketsNavigtionStack.swift; sourceTree = "<group>"; };
 		D88BB2682E2EE09F006310B9 /* Perpetuals */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Perpetuals; sourceTree = "<group>"; };
 		D890F7A42C7FC0AC00C26819 /* WalletsNavigationStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletsNavigationStack.swift; sourceTree = "<group>"; };
-		D891DD402D3F359F00241222 /* CollectionsNavigationStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsNavigationStack.swift; sourceTree = "<group>"; };
 		D89BB5ED2D1A085C00C7E510 /* ConfirmTransferNavigationStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmTransferNavigationStack.swift; sourceTree = "<group>"; };
 		D89CD7A72CC70C7C007A2BAC /* SelectedAssetNavigationStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedAssetNavigationStack.swift; sourceTree = "<group>"; };
 		D8A1F8732B17F21E00B15F54 /* Screenshots.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Screenshots.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -352,7 +347,6 @@
 				C3CF3BA729B5317300E96586 /* Keystore in Frameworks */,
 				C366791D2A18623800F1D74D /* QRScanner in Frameworks */,
 				83863EE72D19B93E005048A7 /* NodeService in Frameworks */,
-				0741683A2D3AFDBB00AC26A4 /* NFT in Frameworks */,
 				C3A7CB7C29CA5F7000431341 /* Store in Frameworks */,
 				D8F5B8602CCA008E0007E615 /* ChainService in Frameworks */,
 				8361BB6A2D400DB6008D89CF /* TransactionsService in Frameworks */,
@@ -363,7 +357,6 @@
 				C3CF3B7729A98C7B00E96586 /* Blockchain in Frameworks */,
 				8352C8D52D393E05000DEDD9 /* ExplorerService in Frameworks */,
 				D85AD29D2CD337BE0010DEF8 /* SwapService in Frameworks */,
-				07A9FE3D2D3565CD00ACDB94 /* NFTService in Frameworks */,
 				C3CF3B7B29A98C7B00E96586 /* Primitives in Frameworks */,
 				C3CF3BDB29BBE45D00E96586 /* Style in Frameworks */,
 				836281B02DEF34DC00CA5C75 /* Assets in Frameworks */,
@@ -488,7 +481,6 @@
 				8351CD282D5524FE002ACCAB /* Settings */,
 				8361BB6F2D402C63008D89CF /* WalletConnector */,
 				8361BB6E2D402C11008D89CF /* Transactions */,
-				D891DD3F2D3F359A00241222 /* NFT */,
 				D891DD3D2D3EDD7400241222 /* Stake */,
 				D8C4A3812C9388AC006FABE8 /* Price Alerts */,
 				830FDA442C224316003DA605 /* NavigationStateManager.swift */,
@@ -699,7 +691,6 @@
 				838383112D5E677A00D1CAF2 /* WalletTab */,
 				8349F1452D5E4D04003A0A93 /* ManageWallets */,
 				8361BB5C2D3FDBF1008D89CF /* Transactions */,
-				074168342D3AF81E00AC26A4 /* NFT */,
 				83A4F8042D30434E000E09BB /* Onboarding */,
 				833931A32D2D54060063BB6A /* PriceAlerts */,
 				D9F015752F10654000000001 /* InAppNotifications */,
@@ -751,14 +742,6 @@
 				D8C4A3752C8CF956006FABE8 /* StakeNavigationView.swift */,
 			);
 			path = Stake;
-			sourceTree = "<group>";
-		};
-		D891DD3F2D3F359A00241222 /* NFT */ = {
-			isa = PBXGroup;
-			children = (
-				D891DD402D3F359F00241222 /* CollectionsNavigationStack.swift */,
-			);
-			path = NFT;
 			sourceTree = "<group>";
 		};
 		D8C4A3812C9388AC006FABE8 /* Price Alerts */ = {
@@ -850,8 +833,6 @@
 				83FE37B32D273CC80048D54C /* WalletConnector */,
 				83EB5E2F2D2ECF00006A7CFB /* Onboarding */,
 				8352C8D42D393E05000DEDD9 /* ExplorerService */,
-				07A9FE3C2D3565CD00ACDB94 /* NFTService */,
-				074168392D3AFDBB00AC26A4 /* NFT */,
 				8361BB5E2D3FDE73008D89CF /* BalanceService */,
 				8361BB602D3FE5F2008D89CF /* Transactions */,
 				8361BB692D400DB6008D89CF /* TransactionsService */,
@@ -1145,7 +1126,6 @@
 				83E041582D0AFCB10031D4BC /* RootScene.swift in Sources */,
 				D852CAFD2C9C9837004121D3 /* AddAssetPriceAlertNavigationStack.swift in Sources */,
 				830FDA452C224316003DA605 /* NavigationStateManager.swift in Sources */,
-				D891DD412D3F359F00241222 /* CollectionsNavigationStack.swift in Sources */,
 				83B08BDB2D0B4AE200CA1B33 /* AppResolver+Storages.swift in Sources */,
 				D807004E2BBB283400ED770B /* WalletNavigationStack.swift in Sources */,
 				D8BAC9592BD0CDC8001608BC /* SelectAssetSceneNavigationStack.swift in Sources */,
@@ -1247,10 +1227,6 @@
 		D869D9472E358A9C0025A94D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			productRef = D869D9462E358A9C0025A94D /* BalanceServiceTestKit */;
-		};
-		D869D9492E358A9C0025A94D /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = D869D9482E358A9C0025A94D /* NFTServiceTestKit */;
 		};
 		D869D94B2E358A9C0025A94D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1506,7 +1482,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Gem Wallet needs access to your Camera to scan QR Codes.";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Enabling Face ID helps Gem Wallet keep your assets secure.";
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "This app requires access to your photo library to save NFTs.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "This app requires access to your photo library to save images.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -1573,7 +1549,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Gem Wallet needs access to your Camera to scan QR Codes.";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Enabling Face ID helps Gem Wallet keep your assets secure.";
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "This app requires access to your photo library to save NFTs.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "This app requires access to your photo library to save images.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -1880,14 +1856,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		074168392D3AFDBB00AC26A4 /* NFT */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = NFT;
-		};
-		07A9FE3C2D3565CD00ACDB94 /* NFTService */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = NFTService;
-		};
 		8327CBF02DF9E088000BF1E1 /* Validators */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Validators;
@@ -2151,10 +2119,6 @@
 		D869D9462E358A9C0025A94D /* BalanceServiceTestKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = BalanceServiceTestKit;
-		};
-		D869D9482E358A9C0025A94D /* NFTServiceTestKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = NFTServiceTestKit;
 		};
 		D869D94A2E358A9C0025A94D /* PriceServiceTestKit */ = {
 			isa = XCSwiftPackageProductDependency;

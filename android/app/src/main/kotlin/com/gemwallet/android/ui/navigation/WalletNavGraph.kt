@@ -178,7 +178,6 @@ fun WalletNavGraph(
                     when (it) {
                         TransactionDetailsAction.Close -> onCancel()
                         is TransactionDetailsAction.OpenAsset -> navigator.openAsset(it.assetId)
-                        is TransactionDetailsAction.OpenNft -> navigator.openNftAsset(it.assetId)
                         is TransactionDetailsAction.OpenPerpetual -> navigator.openPerpetualDetails(it.assetId)
                         is TransactionDetailsAction.OpenSwap -> navigator.openSwap(it.fromAssetId, it.toAssetId)
                     }

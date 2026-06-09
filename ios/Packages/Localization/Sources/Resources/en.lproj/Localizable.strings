@@ -80,7 +80,6 @@
 "wallet.title" = "Wallet";
 "wallet.add_token.title" = "Add Token";
 "wallet.sell" = "Sell";
-"wallet.receive_collection" = "Receive Collection";
 "wallet.more" = "More";
 "wallet.import.contract_address_field" = "Contract or Token ID";
 "wallet.import_address_warning" = "You can view balances and transactions for this address, but **cannot send or sell funds**.";
@@ -455,18 +454,6 @@
 "info.minimum_amount.title" = "Minimum Amount";
 "info.minimum_amount.description" = "On the %@ network, the minimum amount for this transaction is %@.";
 "input.enter_amount_to" = "Please enter amount to %@";
-"nft.properties" = "Properties";
-"nft.collections" = "Collections";
-"nft.collection" = "Collection";
-"nft.save_to_photos" = "Save to Photos";
-"nft.set_as_avatar" = "Set as Avatar";
-"nft.state.empty.title" = "Your NFTs will appear here️";
-"nft.state.empty.description" = "Receive your first NFT";
-"nft.report.reason.spam" = "Spam";
-"nft.report.reason.malicious" = "Malicious";
-"nft.report.reason.inappropriate" = "Inappropriate Content";
-"nft.report.reason.copyright" = "Copyright";
-"nft.report.report_button_title" = "Report";
 "permissions.access_denied" = "Access Denied";
 "permissions.image.photo_access.denied.description" = "This app does not have permission to access your photo library. Please enable access in your device settings.";
 "markets.title" = "Markets";
@@ -571,5 +558,4 @@
 "contacts.add_to_contacts" = "Add to Contacts";
 "simulation.header.unlimited_asset" = "Unlimited %@";
 "simulation.warning.unlimited_token_approval.description" = "This gives the spender access to use this token until you revoke the approval or it expires.";
-"simulation.warning.nft_collection_approval.title" = "Full NFT collection access requested";
 "simulation.warning.unlimited_token_approval.title" = "Unlimited token approval";

@@ -37,12 +37,4 @@ final class MainTabViewModel {
     var isMarketEnabled: Bool {
         false // TODO: Disabled. Preferences.standard.isDeveloperEnabled && wallet.type == .multicoin
     }
-
-    var isCollectionsEnabled: Bool {
-        switch wallet.type {
-        case .multicoin: true
-        case .single, .privateKey, .view:
-            wallet.accounts.first?.chain.isNFTSupported ?? false
-        }
-    }
 }

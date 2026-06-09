@@ -9,10 +9,6 @@ pub trait ChainSigner: Send + Sync {
         Err(SignerError::SigningError("sign_token_transfer not implemented".to_string()))
     }
 
-    fn sign_nft_transfer(&self, _input: &SignerInput, _private_key: &[u8]) -> Result<String, SignerError> {
-        Err(SignerError::SigningError("sign_nft_transfer not implemented".to_string()))
-    }
-
     fn sign_swap(&self, _input: &SignerInput, _private_key: &[u8]) -> Result<Vec<String>, SignerError> {
         Err(SignerError::SigningError("sign_swap not implemented".to_string()))
     }

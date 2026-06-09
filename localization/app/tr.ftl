@@ -91,7 +91,6 @@ wallet_receive_no_destination_tag_required = Miktar gereklidir
 wallet_title = Cüzdan
 wallet_add_token_title = Jeton Ekle
 wallet_sell = Satmak
-wallet_receive_collection = Koleksiyon Al
 wallet_more = Daha
 wallet_import_contract_address_field = Sözleşme veya Token ID
 wallet_import_address_warning = Bu adrese ait bakiyeleri ve işlemleri görüntüleyebilirsiniz, ancak **para gönderemez veya satamazsınız**.
@@ -573,21 +572,6 @@ info_minimum_amount_description = %@ ağında, bu işlem için minimum tutar %@.
 
 input_enter_amount_to = Lütfen tutarı %@ olarak girin
 
-# Nft
-
-nft_properties = Özellikler
-nft_collections = Koleksiyonlar
-nft_collection = Koleksiyon
-nft_save_to_photos = Fotoğraflara Kaydet
-nft_set_as_avatar = Avatar olarak ayarla
-nft_state_empty_title = NFT'leriniz burada görünecek️
-nft_state_empty_description = İlk NFT'nizi alın
-nft_report_reason_spam = İstenmeyen e-posta
-nft_report_reason_malicious = Kötü niyetli
-nft_report_reason_inappropriate = Uygunsuz İçerik
-nft_report_reason_copyright = Telif hakkı
-nft_report_report_button_title = Bildir
-
 # Permissions
 
 permissions_access_denied = Erişim engellendi
@@ -733,7 +717,6 @@ contacts_add_to_contacts = Kişilere Ekle
 
 simulation_header_unlimited_asset = Sınırsız %@
 simulation_warning_unlimited_token_approval_description = Bu, harcama yapan kişiye, siz onayı iptal edene veya süresi dolana kadar bu belirteci kullanma erişimi sağlar.
-simulation_warning_nft_collection_approval_title = NFT koleksiyonunun tamamına erişim talep edildi.
 simulation_warning_unlimited_token_approval_title = Sınırsız token onayı
 
 # Application

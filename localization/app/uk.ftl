@@ -91,7 +91,6 @@ wallet_receive_no_destination_tag_required = Тег призначення не 
 wallet_title = Гаманець
 wallet_add_token_title = Додати токен
 wallet_sell = Продати
-wallet_receive_collection = Отримати колекцію
 wallet_more = більше
 wallet_import_contract_address_field = Контракт або ID токена
 wallet_import_address_warning = Ви можете переглядати баланси та транзакції для цієї адреси, але **не можете надсилати або продавати кошти**.
@@ -573,21 +572,6 @@ info_minimum_amount_description = У мережі %@ мінімальна сум
 
 input_enter_amount_to = Будь ласка, введіть суму для %@
 
-# Nft
-
-nft_properties = Властивості
-nft_collections = Колекції
-nft_collection = Колекція
-nft_save_to_photos = Зберегти до фотографій
-nft_set_as_avatar = Встановити як аватар
-nft_state_empty_title = Ваші NFT-транзакції з'являться тут ️
-nft_state_empty_description = Отримайте свій перший NFT
-nft_report_reason_spam = Спам
-nft_report_reason_malicious = Зловмисний
-nft_report_reason_inappropriate = Неприйнятний контент
-nft_report_reason_copyright = Авторське право
-nft_report_report_button_title = Поскаржитися
-
 # Permissions
 
 permissions_access_denied = Доступ заборонено
@@ -733,7 +717,6 @@ contacts_add_to_contacts = Додати до контактів
 
 simulation_header_unlimited_asset = Безлімітний %@
 simulation_warning_unlimited_token_approval_description = Це надає споживачеві доступ до використання цього токена, доки ви не скасуєте схвалення або термін його дії не закінчиться.
-simulation_warning_nft_collection_approval_title = Запитується повний доступ до колекції NFT
 simulation_warning_unlimited_token_approval_title = Необмежене схвалення токенів
 
 # Application

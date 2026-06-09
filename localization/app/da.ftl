@@ -91,7 +91,6 @@ wallet_receive_no_destination_tag_required = Der kræves ingen destinationsmærk
 wallet_title = Tegnebog
 wallet_add_token_title = Tilføj token
 wallet_sell = Sælg
-wallet_receive_collection = Modtag samling
 wallet_more = Mere
 wallet_import_contract_address_field = Kontrakt eller token-ID
 wallet_import_address_warning = Du kan se saldi og transaktioner for denne adresse, men **kan ikke sende eller sælge penge**.
@@ -573,21 +572,6 @@ info_minimum_amount_description = På %@-netværket er minimumsbeløbet for denn
 
 input_enter_amount_to = Indtast venligst beløb til %@
 
-# Nft
-
-nft_properties = Egenskaber
-nft_collections = Samlinger
-nft_collection = Samling
-nft_save_to_photos = Gem til Fotos
-nft_set_as_avatar = Indstil som Avatar
-nft_state_empty_title = Dine NFT'er vil blive vist her️
-nft_state_empty_description = Modtag din første NFT
-nft_report_reason_spam = Spam
-nft_report_reason_malicious = Ondsindet
-nft_report_reason_inappropriate = Upassende indhold
-nft_report_reason_copyright = Ophavsret
-nft_report_report_button_title = Rapport
-
 # Permissions
 
 permissions_access_denied = Adgang nægtet
@@ -733,7 +717,6 @@ contacts_add_to_contacts = Føj til Kontakter
 
 simulation_header_unlimited_asset = Ubegrænset %@
 simulation_warning_unlimited_token_approval_description = Dette giver brugeren adgang til at bruge denne token, indtil du tilbagekalder godkendelsen, eller den udløber.
-simulation_warning_nft_collection_approval_title = Fuld adgang til NFT-samling anmodes
 simulation_warning_unlimited_token_approval_title = Ubegrænset tokengodkendelse
 
 # Application

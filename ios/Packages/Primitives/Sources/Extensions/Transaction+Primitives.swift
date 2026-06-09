@@ -30,7 +30,6 @@ public extension Transaction {
              .stakeRewards,
              .stakeWithdraw,
              .assetActivation,
-             .transferNFT,
              .smartContractCall,
              .perpetualOpenPosition,
              .perpetualClosePosition,

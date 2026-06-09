@@ -55,9 +55,6 @@ sealed class StreamEvent {
 	@SerialName("priceAlerts")
 	data class PriceAlerts(val data: StreamPriceAlertUpdate): StreamEvent()
 	@Serializable
-	@SerialName("nft")
-	data class Nft(val data: StreamWalletUpdate): StreamEvent()
-	@Serializable
 	@SerialName("perpetual")
 	data class Perpetual(val data: StreamWalletUpdate): StreamEvent()
 	@Serializable

@@ -75,14 +75,7 @@ public protocol GemAPIPriceAlertService: Sendable {
     func deletePriceAlerts(priceAlerts: [PriceAlert]) async throws
 }
 
-public protocol GemAPINFTService: Sendable {
-    func getDeviceNFTAssets(walletId: WalletId) async throws -> [NFTData]
-    func getDeviceNFTAsset(assetId: NFTAssetId) async throws -> NFTAssetData
-    func refreshNftAsset(walletId: WalletId, assetId: NFTAssetId) async throws
-    func reportNft(report: ReportNft) async throws
-}
-
-public protocol GemAPIScanService: Sendable {
+: Sendable {
     func getScanTransaction(payload: ScanTransactionPayload) async throws -> ScanTransaction
 }
 
@@ -278,28 +271,7 @@ extension GemAPIService: GemAPIPriceAlertService {
     }
 }
 
-extension GemAPIService: GemAPINFTService {
-    public func getDeviceNFTAssets(walletId: WalletId) async throws -> [NFTData] {
-        try await requestDevice(.getDeviceNFTAssets(walletId: walletId))
-            .mapResponse(as: [NFTData].self)
-    }
-
-    public func getDeviceNFTAsset(assetId: NFTAssetId) async throws -> NFTAssetData {
-        try await requestDevice(.getDeviceNFTAsset(assetId: assetId))
-            .mapResponse(as: NFTAssetData.self)
-    }
-
-    public func refreshNftAsset(walletId: WalletId, assetId: NFTAssetId) async throws {
-        _ = try await requestDevice(.refreshNftAsset(walletId: walletId, assetId: assetId))
-            .mapResponse(as: Bool.self)
-    }
-
-    public func reportNft(report: ReportNft) async throws {
-        _ = try await requestDevice(.reportNft(report: report))
-    }
-}
-
-extension GemAPIService: GemAPIScanService {
+ {
     public func getScanTransaction(payload: ScanTransactionPayload) async throws -> ScanTransaction {
         try await requestDevice(.scanTransaction(payload: payload))
             .mapResponse(as: ScanTransaction.self)

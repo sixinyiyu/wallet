@@ -8,7 +8,6 @@ import com.wallet.core.primitives.AssetId
 import com.wallet.core.primitives.BlockExplorerLink
 import com.wallet.core.primitives.Currency
 import com.wallet.core.primitives.Resource
-import com.wallet.core.primitives.TransactionNFTTransferMetadata
 import com.wallet.core.primitives.TransactionState
 
 sealed interface TransactionDetailsValue {
@@ -21,8 +20,6 @@ sealed interface TransactionDetailsValue {
             val toValue: String,
             val currency: Currency,
         ) : Amount
-
-        class NFT(val metadata: TransactionNFTTransferMetadata) : Amount
 
         class Plain(
             val asset: Asset,

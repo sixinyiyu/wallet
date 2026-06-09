@@ -19,7 +19,6 @@ struct MigrationsTests {
             #expect(try! db.tableExists(TransactionRecord.databaseTableName))
             #expect(try! db.tableExists(NodeRecord.databaseTableName))
             #expect(try! db.tableExists(BannerRecord.databaseTableName))
-            #expect(try! db.tableExists(NFTCollectionRecord.databaseTableName))
         }
     }
 

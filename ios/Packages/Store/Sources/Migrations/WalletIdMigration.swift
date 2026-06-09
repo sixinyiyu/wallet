@@ -9,7 +9,6 @@ enum WalletIdMigration {
         AccountRecord.databaseTableName,
         BalanceRecord.databaseTableName,
         BannerRecord.databaseTableName,
-        NFTAssetAssociationRecord.databaseTableName,
         NotificationRecord.databaseTableName,
         PerpetualPositionRecord.databaseTableName,
         RecentActivityRecord.databaseTableName,

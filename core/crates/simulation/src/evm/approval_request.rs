@@ -39,7 +39,7 @@ impl ApprovalRequest {
         )
     }
 
-    pub(crate) fn nft_collection(chain: Chain, contract_address: &str, spender_address: String) -> Option<Self> {
+    pub(crate) fn set_approval_for_all(chain: Chain, contract_address: &str, spender_address: String) -> Option<Self> {
         Self::new(
             chain,
             ApprovalContext {
@@ -54,6 +54,7 @@ impl ApprovalRequest {
             },
         )
     }
+
 
     pub(crate) fn permit(
         chain: Chain,
@@ -148,7 +149,10 @@ impl ApprovalRequest {
                 asset_id: self.asset_id.clone(),
                 value: self.warning_approval_value(),
             }),
-            ApprovalMethod::SetApprovalForAll => SimulationWarningType::NftCollectionApproval(self.asset_id.clone()),
+            ApprovalMethod::SetApprovalForAll => SimulationWarningType::TokenApproval(SimulationWarningApproval {
+                asset_id: self.asset_id.clone(),
+                value: None,
+            }),
             ApprovalMethod::Permit | ApprovalMethod::PermitSingle => SimulationWarningType::PermitApproval(SimulationWarningApproval {
                 asset_id: self.asset_id.clone(),
                 value: self.warning_approval_value(),

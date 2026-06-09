@@ -27,7 +27,6 @@ pub enum QueueName {
     FetchTokenAssociations,
     // Fetch address coin balances from providers and store to db
     FetchCoinAssociations,
-    // Fetch address nft assets from providers and store to db
     // Fetch address transactions from providers and store to db
     FetchAddressTransactions,
     // Process fiat order webhooks

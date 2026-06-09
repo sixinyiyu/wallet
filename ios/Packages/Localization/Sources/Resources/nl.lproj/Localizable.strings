@@ -80,7 +80,6 @@
 "wallet.title" = "Portemonnee";
 "wallet.add_token.title" = "Token toevoegen";
 "wallet.sell" = "Verkopen";
-"wallet.receive_collection" = "Ontvang collectie";
 "wallet.more" = "Meer";
 "wallet.import.contract_address_field" = "Contract of token-ID";
 "wallet.import_address_warning" = "U kunt het saldo en de transacties voor dit adres bekijken, maar u kunt geen geld verzenden of verkopen.";
@@ -455,18 +454,6 @@
 "info.minimum_amount.title" = "Minimumbedrag";
 "info.minimum_amount.description" = "Op het %@-netwerk is het minimumbedrag voor deze transactie %@.";
 "input.enter_amount_to" = "Voer een bedrag in tot %@";
-"nft.properties" = "Eigenschappen";
-"nft.collections" = "Collecties";
-"nft.collection" = "Collectie";
-"nft.save_to_photos" = "Opslaan in Foto's";
-"nft.set_as_avatar" = "Instellen als Avatar";
-"nft.state.empty.title" = "Uw NFT's verschijnen hier️";
-"nft.state.empty.description" = "Ontvang uw eerste NFT";
-"nft.report.reason.spam" = "Spam";
-"nft.report.reason.malicious" = "Kwaadwillend";
-"nft.report.reason.inappropriate" = "Ongepaste inhoud";
-"nft.report.reason.copyright" = "Auteursrecht";
-"nft.report.report_button_title" = "Melden";
 "permissions.access_denied" = "Toegang geweigerd";
 "permissions.image.photo_access.denied.description" = "Deze app heeft geen toestemming om toegang te krijgen tot uw fotobibliotheek. Schakel de toegang in via de apparaatinstellingen.";
 "markets.title" = "Markten";
@@ -571,5 +558,4 @@
 "contacts.add_to_contacts" = "Toevoegen aan contacten";
 "simulation.header.unlimited_asset" = "Onbeperkt %@";
 "simulation.warning.unlimited_token_approval.description" = "Dit geeft de gebruiker toegang tot het gebruik van dit token totdat u de goedkeuring intrekt of het token verloopt.";
-"simulation.warning.nft_collection_approval.title" = "Volledige toegang tot de NFT-collectie aangevraagd";
 "simulation.warning.unlimited_token_approval.title" = "Onbeperkte tokengoedkeuring";

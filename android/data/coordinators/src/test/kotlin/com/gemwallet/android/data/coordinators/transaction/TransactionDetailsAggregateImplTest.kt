@@ -7,14 +7,12 @@ import com.wallet.core.primitives.Transaction
 import com.gemwallet.android.model.TransactionExtended
 import com.gemwallet.android.serializer.jsonEncoder
 import com.gemwallet.android.testkit.mockAsset
-import com.gemwallet.android.testkit.mockNftAssetId
 import com.wallet.core.primitives.Asset
 import com.wallet.core.primitives.AssetId
 import com.wallet.core.primitives.AssetType
 import com.wallet.core.primitives.Chain
 import com.wallet.core.primitives.Currency
 import com.wallet.core.primitives.Price
-import com.wallet.core.primitives.TransactionNFTTransferMetadata
 import com.wallet.core.primitives.SwapProvider
 import com.wallet.core.primitives.TransactionDirection
 import com.wallet.core.primitives.TransactionId
@@ -653,43 +651,6 @@ class TransactionDetailsAggregateImplTest {
         Assert.assertNull(aggregate.swapAgain)
     }
 
-    @Test
-    fun testAmountNFT_withMetadata() {
-        val assetId = mockNftAssetId()
-        val metadata = TransactionNFTTransferMetadata(
-            assetId = assetId,
-            name = "NFT Name",
-        )
-        val nftMetadata = jsonEncoder.encodeToString(TransactionNFTTransferMetadata.serializer(), metadata)
-
-        val transaction = createTransaction(
-            type = TransactionType.TransferNFT,
-            value = "1",
-            metadata = nftMetadata,
-        )
-        val extended = createTransactionExtended(transaction, asset = ethAsset)
-        val aggregate = createAggregate(extended)
-
-        val amount = aggregate.amount
-        Assert.assertTrue(amount is TransactionDetailsValue.Amount.NFT)
-        val nftAmount = amount as TransactionDetailsValue.Amount.NFT
-        Assert.assertEquals("NFT Name", nftAmount.metadata.name)
-        Assert.assertEquals(assetId, nftAmount.metadata.assetId)
-    }
-
-    @Test
-    fun testAmountNFT_missingMetadata() {
-        val transaction = createTransaction(
-            type = TransactionType.TransferNFT,
-            value = "1",
-            metadata = null,
-        )
-        val extended = createTransactionExtended(transaction, asset = ethAsset)
-        val aggregate = createAggregate(extended)
-
-        val amount = aggregate.amount
-        Assert.assertTrue(amount is TransactionDetailsValue.Amount.None)
-    }
 
     @Test
     fun testFee_withPrice() {

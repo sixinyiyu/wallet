@@ -10,7 +10,6 @@ import com.gemwallet.android.domains.transaction.aggregates.TransactionDataAggre
 import com.gemwallet.android.domains.asset.getImageUrl
 import com.gemwallet.android.ext.AddressFormatter
 import com.gemwallet.android.ext.HypercoreUSDC
-import com.gemwallet.android.ext.getNftMetadata
 import com.gemwallet.android.ext.getPerpetualMetadata
 import com.gemwallet.android.ext.getResourceMetadata
 import com.gemwallet.android.ext.getSwapMetadata
@@ -80,7 +79,6 @@ class TransactionDataAggregateImpl(
     }?.name
 
     override val address: String get() = when (data.transaction.type) {
-        TransactionType.TransferNFT,
         TransactionType.Transfer,
         TransactionType.TokenApproval,
         TransactionType.SmartContractCall -> when (data.transaction.direction) {
@@ -128,7 +126,6 @@ class TransactionDataAggregateImpl(
         TransactionType.StakeUnfreeze -> getFormattedValue()
         TransactionType.Transfer -> AmountSign(data.transaction.direction).format(getFormattedValue())
         TransactionType.TokenApproval -> data.asset.symbol
-        TransactionType.TransferNFT,
         TransactionType.AssetActivation,
         TransactionType.SmartContractCall,
         TransactionType.PerpetualModifyPosition
@@ -141,8 +138,6 @@ class TransactionDataAggregateImpl(
         }
         else -> null
     }
-
-    override val nftImageUrl: String? = data.transaction.getNftMetadata()?.getImageUrl()
 
     override val type: TransactionType = data.transaction.type
 

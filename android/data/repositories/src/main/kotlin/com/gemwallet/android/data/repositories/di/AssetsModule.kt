@@ -7,7 +7,6 @@ import com.gemwallet.android.application.pricealerts.coordinators.UpdatePriceAle
 import com.gemwallet.android.application.transactions.coordinators.GetChangedTransactions
 import com.gemwallet.android.blockchain.services.BalancesService
 import com.gemwallet.android.blockchain.services.PerpetualService
-import com.gemwallet.android.cases.nft.SyncNfts
 import com.gemwallet.android.cases.stake.SyncStakeDelegations
 import com.gemwallet.android.cases.tokens.SearchTokensCase
 import com.gemwallet.android.application.transactions.coordinators.SyncTransactions
@@ -47,7 +46,6 @@ object AssetsModule {
         balancesService: BalancesService,
         getChangedTransactions: GetChangedTransactions,
         syncStakeDelegations: SyncStakeDelegations,
-        syncNfts: SyncNfts,
         searchTokensCase: SearchTokensCase,
         streamSubscriptionService: StreamSubscriptionService,
     ): AssetsRepository = AssetsRepository(
@@ -59,7 +57,6 @@ object AssetsModule {
         getChangedTransactions = getChangedTransactions,
         balancesService = balancesService,
         syncStakeDelegations = syncStakeDelegations,
-        syncNfts = syncNfts,
         searchTokensCase = searchTokensCase,
         streamSubscriptionService = streamSubscriptionService,
     )
@@ -88,7 +85,6 @@ object AssetsModule {
         pricesDao: PricesDao,
         sessionRepository: SessionRepository,
         syncTransactions: dagger.Lazy<SyncTransactions>,
-        syncNfts: SyncNfts,
         updatePriceAlerts: UpdatePriceAlerts,
         syncFiatTransactions: dagger.Lazy<SyncFiatTransactions>,
         walletsRepository: WalletsRepository,
@@ -99,7 +95,6 @@ object AssetsModule {
         pricesDao = pricesDao,
         sessionRepository = sessionRepository,
         syncTransactions = syncTransactions,
-        syncNfts = syncNfts,
         updatePriceAlerts = updatePriceAlerts,
         syncFiatTransactions = syncFiatTransactions,
         walletsRepository = walletsRepository,

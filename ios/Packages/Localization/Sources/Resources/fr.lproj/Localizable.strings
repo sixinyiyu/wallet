@@ -80,7 +80,6 @@
 "wallet.title" = "Portefeuille";
 "wallet.add_token.title" = "Ajouter un jeton";
 "wallet.sell" = "Vendre";
-"wallet.receive_collection" = "Recevoir la collection";
 "wallet.more" = "Plus";
 "wallet.import.contract_address_field" = "Contrat ou ID de jeton";
 "wallet.import_address_warning" = "Vous pouvez consulter les soldes et les transactions pour cette adresse, mais **vous ne pouvez pas envoyer ou vendre des fonds**.";
@@ -455,18 +454,6 @@
 "info.minimum_amount.title" = "Montant minimum";
 "info.minimum_amount.description" = "Sur le réseau %@, le montant minimum pour cette transaction est %@.";
 "input.enter_amount_to" = "Veuillez saisir le montant de %@";
-"nft.properties" = "Propriétés";
-"nft.collections" = "Collections";
-"nft.collection" = "Collecte";
-"nft.save_to_photos" = "Enregistrer dans Photos";
-"nft.set_as_avatar" = "Définir comme avatar";
-"nft.state.empty.title" = "Vos NFT apparaîtront ici️";
-"nft.state.empty.description" = "Recevez votre premier NFT";
-"nft.report.reason.spam" = "Courrier indésirable";
-"nft.report.reason.malicious" = "Malveillant";
-"nft.report.reason.inappropriate" = "Contenu inapproprié";
-"nft.report.reason.copyright" = "Droits d'auteur";
-"nft.report.report_button_title" = "Signaler";
 "permissions.access_denied" = "Accès refusé";
 "permissions.image.photo_access.denied.description" = "Cette application n'a pas l'autorisation d'accéder à votre photothèque. Veuillez autoriser l'accès dans les paramètres de votre appareil.";
 "markets.title" = "Marchés";
@@ -571,5 +558,4 @@
 "contacts.add_to_contacts" = "Ajouter aux contacts";
 "simulation.header.unlimited_asset" = "Illimité %@";
 "simulation.warning.unlimited_token_approval.description" = "Cela donne au détenteur du jeton l'accès à utiliser jusqu'à ce que vous révoquiez l'autorisation ou que celle-ci expire.";
-"simulation.warning.nft_collection_approval.title" = "Demande d'accès à l'intégralité de la collection NFT";
 "simulation.warning.unlimited_token_approval.title" = "Approbation illimitée des jetons";

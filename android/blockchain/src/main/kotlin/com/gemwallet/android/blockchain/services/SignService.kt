@@ -112,24 +112,6 @@ class SignService : SignClient {
         )
     }
 
-    override suspend fun signNft(
-        params: ConfirmParams.NftParams,
-        metadata: GemTransactionLoadMetadata,
-        finalAmount: BigInteger,
-        fee: Fee,
-        privateKey: ByteArray
-    ): List<ByteArray> {
-        val data = buildSignerInput(
-            params = params,
-            metadata = metadata,
-            finalAmount = finalAmount,
-            fee = fee,
-        )
-        return listOf(
-            getSigner(params).signNftTransfer(data, privateKey).toByteArray()
-        )
-    }
-
     override suspend fun signPerpetual(
         params: ConfirmParams.PerpetualParams,
         metadata: GemTransactionLoadMetadata,

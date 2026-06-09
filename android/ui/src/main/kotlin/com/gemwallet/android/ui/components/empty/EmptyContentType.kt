@@ -1,7 +1,6 @@
 package com.gemwallet.android.ui.components.empty
 
 sealed interface EmptyContentType {
-    data class Nft(val onReceive: (() -> Unit)? = null) : EmptyContentType
     data class Asset(
         val symbol: String,
         val onBuy: (() -> Unit)? = null,

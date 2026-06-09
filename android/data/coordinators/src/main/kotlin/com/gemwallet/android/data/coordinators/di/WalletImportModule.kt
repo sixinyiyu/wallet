@@ -7,7 +7,6 @@ import com.gemwallet.android.application.wallet_import.coordinators.SyncWalletIm
 import com.gemwallet.android.application.transactions.coordinators.SyncTransactions
 import com.gemwallet.android.cases.banners.AddBanner
 import com.gemwallet.android.cases.device.SyncSubscription
-import com.gemwallet.android.cases.nft.SyncNfts
 import com.gemwallet.android.cases.tokens.SearchTokensCase
 import com.gemwallet.android.data.coordinators.wallet_import.SyncWalletConfigurationImpl
 import com.gemwallet.android.data.coordinators.wallet_import.services.ImportWalletService
@@ -55,7 +54,6 @@ object WalletImportModule {
         assetsRepository: AssetsRepository,
         syncSubscription: SyncSubscription,
         syncTransactions: SyncTransactions,
-        syncNfts: SyncNfts,
         walletConfigurationSync: SyncWalletConfiguration,
     ): ImportWalletService = ImportWalletService(
         sessionRepository = sessionRepository,
@@ -64,7 +62,6 @@ object WalletImportModule {
         assetsRepository = assetsRepository,
         syncSubscription = syncSubscription,
         syncTransactions = syncTransactions,
-        syncNfts = syncNfts,
         walletConfigurationSync = walletConfigurationSync,
     )
 

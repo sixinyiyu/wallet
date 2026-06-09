@@ -85,7 +85,6 @@
   <string name="wallet_title">کیف پول</string>
   <string name="wallet_add_token_title">افزودن توکن.</string>
   <string name="wallet_sell">فروش</string>
-  <string name="wallet_receive_collection">دریافت مجموعه</string>
   <string name="wallet_more">بیشتر</string>
   <string name="wallet_import_contract_address_field">قرارداد یا شناسه توکن</string>
   <string name="wallet_import_address_warning">شما می‌توانید موجودی و تراکنش‌های این آدرس را مشاهده کنید، اما **نمی‌توانید وجه ارسال یا بفروشید**.</string>
@@ -470,18 +469,6 @@
   <string name="info_minimum_amount_title">حداقل مقدار</string>
   <string name="info_minimum_amount_description">در شبکه %1$s، حداقل مبلغ برای این تراکنش %2$s است.</string>
   <string name="input_enter_amount_to">لطفاً مبلغ را به %1$s وارد کنید</string>
-  <string name="nft_properties">خواص</string>
-  <string name="nft_collections">مجموعه ها</string>
-  <string name="nft_collection">مجموعه</string>
-  <string name="nft_save_to_photos">ذخیره در عکس ها</string>
-  <string name="nft_set_as_avatar">به عنوان آواتار تنظیم کنید</string>
-  <string name="nft_state_empty_title">NFT های شما اینجا ظاهر خواهند شد️</string>
-  <string name="nft_state_empty_description">اولین NFT خود را دریافت کنید</string>
-  <string name="nft_report_reason_spam">هرزنامه</string>
-  <string name="nft_report_reason_malicious">مخرب</string>
-  <string name="nft_report_reason_inappropriate">محتوای نامناسب</string>
-  <string name="nft_report_reason_copyright">حق نشر</string>
-  <string name="nft_report_report_button_title">گزارش</string>
   <string name="permissions_access_denied">دسترسی ممنوع شد</string>
   <string name="permissions_image_photo_access_denied_description">این برنامه اجازه دسترسی به کتابخانه عکس شما را ندارد. لطفاً دسترسی را در تنظیمات دستگاه خود فعال کنید.</string>
   <string name="markets_title">بازارها</string>
@@ -586,7 +573,6 @@
   <string name="contacts_add_to_contacts">اضافه کردن به مخاطبین</string>
   <string name="simulation_header_unlimited_asset">نامحدود %1$s</string>
   <string name="simulation_warning_unlimited_token_approval_description">این به خرج‌کننده دسترسی می‌دهد تا زمانی که تأییدیه را لغو کنید یا منقضی شود، از این توکن استفاده کند.</string>
-  <string name="simulation_warning_nft_collection_approval_title">دسترسی کامل به مجموعه NFT درخواست شد</string>
   <string name="simulation_warning_unlimited_token_approval_title">تایید نامحدود توکن</string>
   <string name="application_name">Gem</string>
   <string name="camera_permission_request_camera">مجوز دوربین برای اسکن کد QR مورد نیاز است.\nلطفا اجازه بدهید.</string>
