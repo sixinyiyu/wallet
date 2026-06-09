@@ -237,10 +237,8 @@ fn extract_memo(message: &OutMessage) -> Option<String> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::address::base64_to_hex_address;
     use crate::models::{MessageTransactions, TraceResponse};
     use crate::provider::testkit::{FAILED_SWAP_ROOT_TRANSACTION_HEX_HASH, SUCCESS_SWAP_ROOT_TRANSACTION_HEX_HASH, TEST_TRANSACTION_ID};
-    use primitives::testkit::signer_mock::TEST_TON_SENDER;
     use serde_json::{Map, Value, json};
 
     #[test]

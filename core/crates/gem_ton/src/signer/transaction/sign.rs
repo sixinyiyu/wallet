@@ -90,10 +90,9 @@ fn resolve_expire_at(sequence: u32, expire_at: Option<u32>) -> Result<u32, Signe
 
 #[cfg(test)]
 mod tests {
-    use num_bigint::{BigInt, BigUint};
+    use num_bigint::BigUint;
     use primitives::{
-        Address as AddressTrait, Asset, AssetId, AssetType, Chain, FeeOption, SignerInput, TransactionFee, TransactionInputType, TransactionLoadMetadata,
-        asset_constants::TON_USDT_TOKEN_ID, swap::SwapData,
+        Address as AddressTrait, Asset, AssetId, AssetType, Chain, SignerInput, TransactionInputType, TransactionLoadMetadata, asset_constants::TON_USDT_TOKEN_ID, swap::SwapData,
     };
 
     use super::super::{

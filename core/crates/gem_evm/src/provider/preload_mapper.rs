@@ -266,6 +266,7 @@ fn encode_stake_hub(stake_type: &StakeType, amount: &BigInt) -> Result<Vec<u8>, 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::encode::{encode_erc721_transfer, encode_erc1155_transfer};
     use crate::everstake::{EVERSTAKE_POOL_ADDRESS, IAccounting};
     use num_bigint::BigUint;
     use primitives::{Delegation, DelegationBase, DelegationState, DelegationValidator, RedelegateData};

@@ -182,7 +182,6 @@ impl EthereumMapper {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::provider::testkit::TEST_TRANSACTION_ID;
     use crate::rpc::model::{Log, Transaction, TransactionReciept};
     use num_bigint::BigUint;
     use primitives::{
